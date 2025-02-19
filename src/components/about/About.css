@@ -11,7 +11,7 @@
 
 .about-section .container {
     position: relative;
-    background-image: url('../../Smilley Guy.jpg');
+    background-image: url('/public/images/Smilley Guy.jpg');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
