@@ -18,25 +18,11 @@
 }
 
 
-/* New Loader - Matches the Image */
+/* Style for the GIF loader */
 
-.loader {
+.loader-gif {
     width: 20px;
+    /* Adjust the size as needed */
     height: 20px;
-    border: 3px solid white;
-    border-radius: 50%;
-    border-top: 3px solid transparent;
-    animation: spinLoader 0.8s linear infinite;
-}
-
-
-/* Animation for the rotating effect */
-
-@keyframes spinLoader {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
+    /* Adjust the size as needed */
 }
