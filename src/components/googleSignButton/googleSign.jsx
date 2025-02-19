@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "react-bootstrap";
 import { FcGoogle } from "react-icons/fc"; // Google Icon
 
-const GoogleSignInButton = () => {
+const GoogleSignInButton = ({handleGoogleSignIn}) => {
   return (
     <>
       <style>
@@ -21,6 +21,7 @@ const GoogleSignInButton = () => {
       <Button
         variant="light"
         className="d-flex align-items-center border shadow-sm px-4 py-2 google-sign-in-btn"
+        onClick={handleGoogleSignIn}
       >
         <FcGoogle className="me-2" size={24} />
         Sign in with Google

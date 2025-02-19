@@ -2,7 +2,7 @@ import React from "react";
 import { Form } from "react-bootstrap";
 import { FiSearch } from "react-icons/fi"; // Search Icon
 
-const SearchBar = () => {
+const SearchBar = ({ value, onChange }) => { // Accepting value and onChange as props
   const containerStyle = {
     position: "relative",
     width: "100%",
@@ -28,7 +28,13 @@ const SearchBar = () => {
   return (
     <div style={containerStyle}>
       <FiSearch size={18} style={iconStyle} />
-      <Form.Control type="text" placeholder="Search..." style={inputStyle} />
+      <Form.Control
+        type="text"
+        placeholder="Search..."
+        value={value} // Binding value from parent
+        onChange={onChange} // Binding the onChange from parent
+        style={inputStyle}
+      />
     </div>
   );
 };
