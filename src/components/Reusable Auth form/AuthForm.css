@@ -1,0 +1,48 @@
+.auth-form {
+    border: none !important;
+}
+
+.form-control-grey:focus {
+    border-color: #069bd6 !important;
+    box-shadow: none !important;
+    border-radius: 5px !important;
+    
+   
+    
+}
+
+.form-label {
+    transition: all 0.3s ease; 
+    font-weight:500 ;
+   
+
+}
+
+.mb-3 {
+    position: relative;
+}
+
+.mb-3:hover .form-control-grey {
+    border-color: #069bd6 !important; 
+     border-radius: 5px !important;
+     
+}
+
+.form-control-grey {
+    border-color: #069bd6 ;
+    box-shadow: none !important;
+   border-radius: 0px !important;
+    background-color: rgba(211, 211, 211, 0.486) !important;
+}
+
+
+
+.password-eye-button {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: none;
+    cursor: pointer;
+}
