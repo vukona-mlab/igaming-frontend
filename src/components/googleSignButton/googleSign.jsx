@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "react-bootstrap";
 import { FcGoogle } from "react-icons/fc"; // Google Icon
 
+//pass props 
 const GoogleSignInButton = ({handleGoogleSignIn}) => {
   return (
     <>
