@@ -1,0 +1,13 @@
+.email-reset-button{
+    font-family: 'Poppins';
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    background-color: #333333;
+    color: #FFFFFF;
+    border-radius: 20px;
+    padding-left: 24px;
+    padding-right: 24px;
+    width: 551px;
+    height:77px;
+}
