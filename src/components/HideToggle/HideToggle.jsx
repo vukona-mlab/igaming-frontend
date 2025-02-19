@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "./HideToggle.css";
 
-const HideToggle = ({ children }) => {
-  const [isVisible, setIsVisible] = useState(false);
+const HideToggle = ({ isVisible, toggleVisible, children }) => {
+ 
 
   return (
     <div style={{ textAlign: "center", marginTop: "20px" }}>
@@ -10,7 +10,7 @@ const HideToggle = ({ children }) => {
         <input 
           type="checkbox" 
           checked={isVisible} 
-          onChange={() => setIsVisible(!isVisible)} 
+          onChange={() => toggleVisible(!isVisible)} 
         />
         <span className="slider"></span>
       </label>
