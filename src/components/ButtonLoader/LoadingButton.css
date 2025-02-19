@@ -1,0 +1,28 @@
+.loading-button {
+    background-color: black;
+    color: white;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    position: relative;
+}
+
+.loading-button:disabled {
+    cursor: not-allowed;
+}
+
+
+/* Style for the GIF loader */
+
+.loader-gif {
+    width: 20px;
+    /* Adjust the size as needed */
+    height: 20px;
+    /* Adjust the size as needed */
+}
