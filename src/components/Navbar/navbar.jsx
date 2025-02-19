@@ -2,6 +2,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import './navbar.css';
+import SubNavBar from '../SubNavBar/SubNavBar';
 
 function NavBar() {
   return (
@@ -16,9 +17,10 @@ function NavBar() {
             <Nav.Link className="nav-link" href="#pricing">FAQ</Nav.Link>
           </Nav>
         </Container>
+        <SubNavBar/>
       </Navbar>
     </>
   );
 }
 
-export default ColorSchemesExample;
+export default NavBar;
