@@ -6,7 +6,7 @@ const About = () => {
   return (
     <section className="about-section text-center text-white d-flex align-items-center">
       <div className="container">
-        <h1 className="display-4 fw-bold">Ri Experts</h1>
+        <h1 className="display-4 fw-bold"> Ri Experts </h1>
         <p className="lead">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
           Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor 
