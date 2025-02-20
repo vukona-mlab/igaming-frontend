@@ -21,8 +21,6 @@
 /* Style for the GIF loader */
 
 .loader-gif {
-    width: 20px;
-    /* Adjust the size as needed */
-    height: 20px;
-    /* Adjust the size as needed */
+    filter: brightness(0) invert(1);
+    /* Brightness 0 makes it black, invert(1 makes it white */
 }

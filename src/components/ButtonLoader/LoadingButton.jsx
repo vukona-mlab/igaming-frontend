@@ -17,10 +17,10 @@ const LoadingButton = ({ onClick, text }) => {
     <button onClick={handleClick} className="loading-button" disabled={loading}>
       {loading ? (
         <img
-          src="/public/images/spinDash.gif" // Path to your GIF
+          src="/public/images/load.gif" // Path to your GIF
           alt="Loading"
           className="loader-gif" // Add a class for styling if needed
-          style={{ width: "22px", height: "22px" }} // Adjust size here
+          style={{ width: "25px", height: "25px" }} // Adjust size here
         />
       ) : (
         text
