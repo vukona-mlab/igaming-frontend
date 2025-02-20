@@ -91,7 +91,7 @@ ul li {
 }
 
 .subscribe-button {
-    width: 25%;
+    width: 27%;
     padding: 5px;
     background-color: white;
     color: black;
@@ -111,15 +111,66 @@ ul li {
 
 /* Footer Bottom */
 
+
+/* Footer Logo */
+
+
+/*------------------------------- */
+
+
+/* Footer Bottom */
+
 .footer-bottom {
+    /* Center content horizontally */
     text-align: center;
-    padding-top: 20px;
+    padding-top: 0px;
     font-size: 14px;
-    margin-top: 20px;
+    margin-top: -45px;
+    text-align: center;
+    /* Ensure text is centered */
 }
 
+.footer-logo-container {
+    display: flex;
+    justify-content: center;
+    margin-right: 80%;
+    margin-top: 40px;
+    /* Space between logo and text */
+}
+
+
+/* Footer Logo */
+
 .footer-logo {
-    font-size: 20px;
-    font-weight: bold;
-    color: red;
+    width: 150px;
+    /* Adjust size if needed */
+    height: auto;
+    transition: opacity 0.3s ease;
+    /* Pushes the logo to the left */
+}
+
+.footer-logo:hover {
+    opacity: 0.8;
+}
+
+
+/* Responsive Design */
+
+@media screen and (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .footer-section {
+        width: 100%;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .subscribe-section {
+        max-width: 100%;
+    }
+    .subscribe-button {
+        width: 100%;
+    }
 }

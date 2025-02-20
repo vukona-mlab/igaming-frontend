@@ -69,10 +69,21 @@ const Footer = () => {
       </div>
 
       {/* Bottom Section */}
-      <div className="footer-bottom">
-        <div className="text-gray-500">&copy; iGaming International Ltd. 2025</div>
-        <div className="footer-logo">RiExperts</div>
+
+      <div className="footer-logo-container">
+        <img 
+          src="/images/logo-ri-express.png" 
+          alt="RiExperts Logo" 
+          className="footer-logo"
+        />
       </div>
+
+
+      <div className="footer-bottom">
+ 
+  <div className="text-gray-500">&copy; iGaming International Ltd. 2025</div>
+</div>
+
     </footer>
   );
 };
