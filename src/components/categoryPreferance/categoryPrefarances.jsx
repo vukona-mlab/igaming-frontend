@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
+import "../../assets/styles/categoryPrefarances.css"; // Ensure this path is correct
 
 const CategoryPreferences = () => {
   const [prices, setPrices] = useState({
@@ -19,19 +20,19 @@ const CategoryPreferences = () => {
         {/* First Column */}
         <Col>
           <h5>Categories Preferences</h5>
-          <Form.Check type="checkbox" label="Graphic/Logo Design" />
-          <Form.Check type="checkbox" label="UI/UX Design" />
-          <Form.Check type="checkbox" label="Animation & Illustration" />
-          <Form.Check type="checkbox" label="Image Editing" />
+          <Form.Check type="checkbox" label="Graphic/Logo Design" className="custom-checkbox"/>
+          <Form.Check type="checkbox" label="UI/UX Design"  className="custom-checkbox" />
+          <Form.Check type="checkbox" label="Animation & Illustration"  className="custom-checkbox" />
+          <Form.Check type="checkbox" label="Image Editing"  className="custom-checkbox"/>
         </Col>
 
         {/* Middle Column */}
         <Col style={{paddingTop:"10px"}}>
           
-          <Form.Check type="checkbox" label="3D Game Art" />
-          <Form.Check type="checkbox" label="Character Modeling" />
-          <Form.Check type="checkbox" label="Game Designers" />
-          <Form.Check type="checkbox" label="Font & Typography" />
+          <Form.Check type="checkbox" label="3D Game Art"  className="custom-checkbox"/>
+          <Form.Check type="checkbox" label="Character Modeling" className="custom-checkbox"/>
+          <Form.Check type="checkbox" label="Game Designers" className="custom-checkbox" />
+          <Form.Check type="checkbox" label="Font & Typography" className="custom-checkbox" />
         </Col>
 
         {/* Third Column */}
@@ -41,7 +42,7 @@ const CategoryPreferences = () => {
   {/* 3 Days */}
   <Row className="mb-3">
     <Col xs={6}>
-      <Form.Check type="checkbox" label="3 Days" />
+      <Form.Check type="checkbox" label="3 Days" className="custom-checkbox"/>
     </Col>
     <Col xs={6}>
       <Form.Control
@@ -59,7 +60,7 @@ const CategoryPreferences = () => {
   {/* 5 Days */}
   <Row className="mb-3">
     <Col xs={6}>
-      <Form.Check type="checkbox" label="5 Days" />
+      <Form.Check type="checkbox" label="5 Days" className="custom-checkbox"/>
     </Col>
     <Col xs={6}>
       <Form.Control
@@ -76,7 +77,7 @@ const CategoryPreferences = () => {
   {/* 7 Days */}
   <Row className="mb-3">
     <Col xs={6}>
-      <Form.Check type="checkbox" label="7 Days" />
+      <Form.Check  type="checkbox" label="7 Days" className="custom-checkbox"/>
     </Col>
     <Col xs={6}>
       <Form.Control
@@ -93,7 +94,7 @@ const CategoryPreferences = () => {
   {/* 14 Days */}
   <Row className="mb-3">
     <Col xs={6}>
-      <Form.Check type="checkbox" label="14 Days" />
+      <Form.Check type="checkbox" label="14 Days" className="custom-checkbox"/>
     </Col>
     <Col xs={6}>
       <Form.Control
@@ -109,7 +110,7 @@ const CategoryPreferences = () => {
 </Col>
 
       </Row>
-      <Button variant="primary" type="submit">
+      <Button variant="dark" type="submit">
         Submit
       </Button>
     </Form>
