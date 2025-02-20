@@ -1,0 +1,27 @@
+/* PortfolioCard.css */
+.text-input {
+    background-color:#000000;
+    color: white; /* White text */
+    border: 1px solid #ccc; /* Light border */
+    padding: 8px;
+    width: 100%;
+    font-size: 16px;
+    text-align: center;
+    border-radius: 10px;
+    margin-top: 10px;
+    outline: none;
+  }
+  
+  .text-input:focus {
+    border-color: #888; /* Focus effect */
+  }
+  .card-text {
+    font-family: 'Poppins', sans-serif; /* Apply Poppins to card text */
+    font-size: 16px;
+    line-height: 1.5;
+    font-weight: 500;
+    text-align: left;
+    color: #00000080;
+    ; /* Dark text color */
+  }
+  
