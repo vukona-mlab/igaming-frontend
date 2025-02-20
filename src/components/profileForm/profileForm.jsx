@@ -1,9 +1,10 @@
 import React from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
+import './profileForm.css'
 
 const UserForm = ({ formData, handleChange, handleSubmit }) => {
   return (
-    <Form onSubmit={handleSubmit} style={{ maxWidth: "600px", margin: "auto" }}>
+    <Form onSubmit={handleSubmit} style={{ maxWidth: "800px", margin: "auto" }} className="profile-form">
       <Row className="mb-3">
         <Col>
           <Form.Label>Name</Form.Label>
@@ -77,14 +78,12 @@ const UserForm = ({ formData, handleChange, handleSubmit }) => {
             name="speciality"
             value={formData.speciality}
             onChange={handleChange}
-            style={{ maxWidth: "290px" }} // Set max width here
+            style={{ maxWidth: "370px" }} // Set max width here
           />
         </Col>
       </Row>
 
-      <Button variant="dark" type="submit">
-        Submit
-      </Button>
+     
     </Form>
   );
 };

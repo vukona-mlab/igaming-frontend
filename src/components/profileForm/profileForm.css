@@ -1,0 +1,50 @@
+.profile-form {
+    
+    padding: 20px;
+    
+    background-color: #ffffff; /* White background for better contrast */
+
+}
+
+/* Form Labels */
+.profile-form label {
+    font-weight: 600; /* Make labels slightly bolder */
+    color: #333; /* Dark grey for better readability */
+}
+
+/* Form Inputs */
+.profile-form input {
+    border: 1px solid #ccc; /* Light grey border */
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    width: 100%;
+}
+
+/* Input Focus Effect */
+.profile-form input:focus {
+    border-color: #000; /* Darker border on focus */
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Speciality Input */
+.profile-form input[name="speciality"] {
+    max-width: 290px;
+}
+
+/* Submit Button */
+.profile-form button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    background-color: #000; /* Black background */
+    color: white; /* White text */
+    transition: 0.3s ease-in-out;
+}
+
+.profile-form button:hover {
+    background-color: #333; /* Slightly lighter black on hover */
+}

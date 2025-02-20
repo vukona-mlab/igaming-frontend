@@ -1,0 +1,42 @@
+/* Align button-container width with Bootstrap Container */
+.button-container {
+    display: flex;
+    justify-content: flex-end; /* Aligns buttons to the right */
+    gap: 20px; /* Space between buttons */
+    width: 90%; /* Make it responsive */
+    max-width: 1290px; /* Matches Bootstrap's container width */
+    margin: -80px auto 0; /* Moves the container up by 30px */
+    padding: 10px; /* Adds internal spacing */
+    background: white; /* Background to prevent overlap */
+    
+}
+
+/* Cancel Button */
+.cancel-button {
+    background: none;
+    border: none;
+    color: red;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.cancel-button:hover {
+    text-decoration: underline;
+}
+
+/* Update Button */
+.update-button {
+    background-color: black;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.update-button:hover {
+    background-color: #333;
+}
