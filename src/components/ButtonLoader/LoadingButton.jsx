@@ -20,7 +20,7 @@ const LoadingButton = ({ onClick, text }) => {
           src="/public/images/spinDash.gif" // Path to your GIF
           alt="Loading"
           className="loader-gif" // Add a class for styling if needed
-          style={{ width: "20px", height: "20px" }} // Adjust size here
+          style={{ width: "22px", height: "22px" }} // Adjust size here
         />
       ) : (
         text
