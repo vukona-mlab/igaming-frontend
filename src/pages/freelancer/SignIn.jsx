@@ -29,7 +29,7 @@ export default function SignIn(){
     return(
         <>
        <div className="container">
-        <div className="input-form">
+        <div className="input-form" >
         <LoginRegisterButton text="Register"/>
         <div className="welcome-box">
         <div className="red-line"></div>
@@ -44,7 +44,8 @@ export default function SignIn(){
           <GoogleSignInButton/>
           </div>
           </div>
-        <div className='image-section'><img src="/public/images/ri-experts.jpg" alt="logo" width="800" className="image" ></img></div>
+        <div className='image-section'>
+          <img src="/public/images/ri-experts.jpg" alt="logo" className="image" ></img></div>
        </div>
         </>
     )
