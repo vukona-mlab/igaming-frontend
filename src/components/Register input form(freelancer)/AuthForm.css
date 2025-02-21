@@ -27,7 +27,6 @@
     border-color: #069bd6;
     box-shadow: none !important;
     width: 100%; /* Makes it responsive */
-    height: 60px;
     border-radius: 0px !important;
     background-color: rgba(211, 211, 211, 0.486) !important;
 }
