@@ -75,7 +75,7 @@ const CategoryPreferences = ({ onSubmit }) => {
         </Col>
 
         {/* Middle Column */}
-        <Col style={{ paddingTop: "10px" }}>
+        <Col style={{ paddingTop: "30px",border:"1px solid pink" }}>
           <Form.Check type="checkbox" label="3D Game Art" name="gameArt" className="custom-checkbox" onChange={handleCheckboxChange} />
           <Form.Check type="checkbox" label="Character Modeling" name="characterModeling" className="custom-checkbox" onChange={handleCheckboxChange} />
           <Form.Check type="checkbox" label="Game Designers" name="gameDesigners" className="custom-checkbox" onChange={handleCheckboxChange} />
@@ -83,7 +83,7 @@ const CategoryPreferences = ({ onSubmit }) => {
         </Col>
 
         {/* Third Column */}
-        <Col>
+        <Col className="" style={{border:"1px solid yellow"}}>
           <h5>How much extra to speed up project</h5>
 
           {[
@@ -92,8 +92,9 @@ const CategoryPreferences = ({ onSubmit }) => {
             { key: "sevenDays", label: "7 Days" },
             { key: "fourteenDays", label: "14 Days" },
           ].map(({ key, label }) => (
+
             <Row className="mb-3" key={key}>
-              <Col xs={6}>
+              <Col xs={3} style={{border:"2px solid black"}}>
                 <Form.Check type="checkbox" label={label} name={key} className="custom-checkbox" onChange={handleCheckboxChange} />
               </Col>
               <Col xs={6}>
