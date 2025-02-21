@@ -26,7 +26,7 @@ const AuthForm = ({ onSubmit }) => {
     if (!formData.password) newErrors.password = "Password is required";
     if (!formData.jobTitle) newErrors.jobTitle = "Job Title is required";
     if (!formData.experience) newErrors.experience = "Experience is required";
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -64,11 +64,16 @@ const AuthForm = ({ onSubmit }) => {
             isInvalid={!!errors.password}
             className="form-control-grey"
           />
-          <Button 
-            variant="link" 
+          <Button
+            variant="link"
             className="text-secondary p-0 border-0"
             onClick={() => setShowPassword(!showPassword)}
-            style={{ position: "absolute", right: "10px", top: "50%", transform: "translateY(-50%)" }}
+            style={{
+              position: "absolute",
+              right: "10px",
+              top: "50%",
+              transform: "translateY(-50%)",
+            }}
           >
             {showPassword ? <EyeSlash /> : <Eye />}
           </Button>
