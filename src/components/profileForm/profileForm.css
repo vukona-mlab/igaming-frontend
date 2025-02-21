@@ -7,8 +7,9 @@
 
 /* Form Labels */
 .profile-form label {
+    font-family: "Poppins", sans-serif;
     font-weight: 600;
-    color: #333;
+    color: #00000080;
 }
 
 /* Form Inputs */
@@ -64,5 +65,7 @@
     .profile-form input {
         font-size: 14px;
         padding: 8px;
+        font-family: "Poppins", sans-serif;
+        color: #00000080;
     }
 }
