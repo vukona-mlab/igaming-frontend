@@ -1,21 +1,17 @@
 .auth-form {
     border: none !important;
+    padding: 15px;
 }
 
 .form-control-grey:focus {
     border-color: #069bd6 !important;
     box-shadow: none !important;
     border-radius: 5px !important;
-    
-   
-    
 }
 
 .form-label {
-    transition: all 0.3s ease; 
-    font-weight:500 ;
-   
-
+    transition: all 0.3s ease;
+    font-weight: 500;
 }
 
 .mb-3 {
@@ -23,19 +19,17 @@
 }
 
 .mb-3:hover .form-control-grey {
-    border-color: #069bd6 !important; 
-     border-radius: 5px !important;
-     
+    border-color: #069bd6 !important;
+    border-radius: 5px !important;
 }
 
 .form-control-grey {
-    border-color: #069bd6 ;
+    border-color: #069bd6;
     box-shadow: none !important;
-   border-radius: 0px !important;
+    width: 100%; /* Makes it responsive */
+    border-radius: 0px !important;
     background-color: rgba(211, 211, 211, 0.486) !important;
 }
-
-
 
 .password-eye-button {
     position: absolute;
@@ -45,4 +39,15 @@
     border: none;
     background: none;
     cursor: pointer;
+}
+
+/* Responsive Styles */
+@media (max-width: 767px) {
+    .form-control-grey {
+        width: 100% !important;
+    }
+
+    .auth-form {
+        padding: 20px;
+    }
 }
