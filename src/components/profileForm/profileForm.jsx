@@ -1,12 +1,12 @@
 import React from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
-import './profileForm.css'
+import './profileForm.css';
 
 const UserForm = ({ formData, handleChange, handleSubmit }) => {
   return (
-    <Form onSubmit={handleSubmit} style={{ maxWidth: "800px", margin: "auto" }} className="profile-form">
+    <Form onSubmit={handleSubmit} className="profile-form">
       <Row className="mb-3">
-        <Col>
+        <Col xs={12} md={6}>
           <Form.Label>Name</Form.Label>
           <Form.Control
             type="text"
@@ -15,7 +15,7 @@ const UserForm = ({ formData, handleChange, handleSubmit }) => {
             onChange={handleChange}
           />
         </Col>
-        <Col>
+        <Col xs={12} md={6}>
           <Form.Label>Surname</Form.Label>
           <Form.Control
             type="text"
@@ -27,7 +27,7 @@ const UserForm = ({ formData, handleChange, handleSubmit }) => {
       </Row>
 
       <Row className="mb-3">
-        <Col>
+        <Col xs={12} md={6}>
           <Form.Label>Display Name</Form.Label>
           <Form.Control
             type="text"
@@ -36,7 +36,7 @@ const UserForm = ({ formData, handleChange, handleSubmit }) => {
             onChange={handleChange}
           />
         </Col>
-        <Col>
+        <Col xs={12} md={6}>
           <Form.Label>Phone Number</Form.Label>
           <Form.Control
             type="text"
@@ -48,7 +48,7 @@ const UserForm = ({ formData, handleChange, handleSubmit }) => {
       </Row>
 
       <Row className="mb-3">
-        <Col>
+        <Col xs={12} md={6}>
           <Form.Label>Email</Form.Label>
           <Form.Control
             type="email"
@@ -57,33 +57,30 @@ const UserForm = ({ formData, handleChange, handleSubmit }) => {
             onChange={handleChange}
           />
         </Col>
-        <Col>
+        <Col xs={12} md={6}>
           <Form.Label>Date of Birth</Form.Label>
           <Form.Control
             type="date"
             name="dateOfBirth"
             value={formData.dateOfBirth}
             onChange={handleChange}
-            placeholder="DD/MM/YYYY"
           />
         </Col>
       </Row>
 
-      {/* New Speciality Field */}
       <Row className="mb-3">
-        <Col>
+        <Col xs={12} md={6}>
           <Form.Label>Speciality</Form.Label>
           <Form.Control
             type="text"
             name="speciality"
             value={formData.speciality}
             onChange={handleChange}
-            style={{ maxWidth: "370px" }} // Set max width here
           />
         </Col>
       </Row>
 
-     
+      <Button type="submit">Update Profile</Button>
     </Form>
   );
 };

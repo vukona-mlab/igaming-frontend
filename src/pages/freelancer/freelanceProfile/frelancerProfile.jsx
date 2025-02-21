@@ -16,7 +16,7 @@ const ProfilePage = ({ formData = {}, handleChange, handleSubmit }) => {
             {/* Left Column - ProfileCard Component */}
             <ProfileCard speciality="" image="" />
           </Col>
-          <Col md={8}>
+          <Col md={9}>
             {/* Right Column - ProfileForm Component with props from components */}
             <ProfileForm 
               formData={{
