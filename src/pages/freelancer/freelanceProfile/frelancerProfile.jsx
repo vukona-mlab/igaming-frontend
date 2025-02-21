@@ -4,19 +4,19 @@ import ProfileCard from "../../../components/portfolioCard/portfolioCard"; // Im
 import ProfileForm from "../../../components/profileForm/profileForm"; // Import ProfileForm component
 import CategoryPreferences from "../../../components/categoryPreferance/categoryPrefarances"; // Import CategoryPreferences component
 import './freelancerProfile.css';
-import Navbar from '../../../components/Navbar/navbar'
+//import Navbar from '../../../components/Navbar/navbar'
 const ProfilePage = ({ formData = {}, handleChange, handleSubmit }) => {
   return (
     <>
-      <Container style={{ minHeight: "100vh", paddingBottom: "60px" }}>
+      <Container style={{border:"2px solid red", minHeight: "100vh", paddingBottom: "60px" }}>
         {/* First Row with ProfileCard and ProfileForm */}
-        <Navbar/>
+        {/*<Navbar/>*/}
         <Row className="my-4">
           <Col md={3}>
             {/* Left Column - ProfileCard Component */}
             <ProfileCard speciality="" image="" />
           </Col>
-          <Col md={9}>
+          <Col md={9} style={{border:"1px solid blue "}}>
             {/* Right Column - ProfileForm Component with props from components */}
             <ProfileForm 
               formData={{
