@@ -1,10 +1,8 @@
 import "./App.css";
 
-import ResetPassword from  "./components/ResetPassword/ResetPassword";
-
 function App() {
   return <div className="App">
-    <ResetPassword/>
+  
   </div>;
 }
 
