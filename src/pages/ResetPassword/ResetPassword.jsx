@@ -1,6 +1,6 @@
 import React from "react";
 import { FiArrowRight } from "react-icons/fi"; // Import the arrow icon
-import LoadingButton from "../../components/ButtonLoader/LoadingButton";
+import LoadingButton from "../../components/Common/ButtonLoader/LoadingButton";
 import "./ResetPassword.css";
 
 const ResetPassword = () => {

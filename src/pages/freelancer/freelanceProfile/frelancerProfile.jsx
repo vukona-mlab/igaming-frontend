@@ -1,8 +1,8 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import ProfileCard from "../../../components/portfolioCard/portfolioCard"; // Import ProfileCard component
-import ProfileForm from "../../../components/profileForm/profileForm"; // Import ProfileForm component
-import CategoryPreferences from "../../../components/categoryPreferance/categoryPrefarances"; // Import CategoryPreferences component
+import ProfileCard from "../../../components/Profile/portfolioCard/portfolioCard"; // Import ProfileCard component
+import ProfileForm from "../../../components/Profile/profileForm/profileForm"; // Import ProfileForm component
+import CategoryPreferences from "../../../components/Profile/categoryPreferance/categoryPrefarances"; // Import CategoryPreferences component
 //import './freelancerProfile.css';
 //import Navbar from '../../../components/Navbar/navbar'
 const ProfilePage = ({ formData = {}, handleChange }) => {
@@ -16,9 +16,9 @@ const ProfilePage = ({ formData = {}, handleChange }) => {
             {/* Left Column - ProfileCard Component */}
             <ProfileCard speciality="" image="" />
           </Col>
-          <Col md={9} >
+          <Col md={9}>
             {/* Right Column - ProfileForm Component with props from components */}
-            <ProfileForm 
+            <ProfileForm
               formData={{
                 name: formData.name,
                 surname: formData.surname,
@@ -27,9 +27,8 @@ const ProfilePage = ({ formData = {}, handleChange }) => {
                 email: formData.email || "",
                 dateOfBirth: formData.dateOfBirth,
                 speciality: formData.speciality,
-              }} 
-              handleChange={handleChange} 
-              
+              }}
+              handleChange={handleChange}
             />
           </Col>
         </Row>

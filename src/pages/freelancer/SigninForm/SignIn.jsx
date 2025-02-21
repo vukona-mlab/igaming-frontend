@@ -1,22 +1,22 @@
-import React, {useState} from 'react';
-import './SignIn.css';
-import InputForm from '../../../components/reusable-input-form/InputForm';
-import LoginRegisterButton from '../../../components/LoginRegisterButton/LoginRegisterButton';
-import EmailResetButton from '../../../components/EmailResetButton/Button';
-import GoogleSignInButton from '../../../components/googleSignButton/googleSign';
+import React, { useState } from "react";
+import "./SignIn.css";
+import InputForm from "../../../components/Auth/reusable-input-form/InputForm";
+import LoginRegisterButton from "../../../components/Auth/LoginRegisterButton/LoginRegisterButton";
+import EmailResetButton from "../../../components/Auth/EmailResetButton/Button";
+import GoogleSignInButton from "../../../components/Auth/googleSignButton/googleSign";
 
-export default function SignIn(){
-  const [formData, setFormData] = useState({username:"", password:""});
-  const [error, setError] = useState('');
+export default function SignIn() {
+  const [formData, setFormData] = useState({ username: "", password: "" });
+  const [error, setError] = useState("");
 
-  function handleFormDataChange(e){
+  function handleFormDataChange(e) {
     const value = e.target.value;
-    setFormData(value)
+    setFormData(value);
 
     if (!value.trim()) {
-      setError('This field is required.');
+      setError("This field is required.");
     } else {
-      setError('');
+      setError("");
     }
   }
 
@@ -26,27 +26,44 @@ export default function SignIn(){
       // Submit form
     }
   };
-    return(
-        <>
-       <div className="container">
-        <div className="input-form" >
-        <LoginRegisterButton text="Register"/>
-        <div className="welcome-box">
-        <div className="red-line"></div>
-        <div className="welcome-text"><h1>WELCOME BACK <br/>
-           SIGN IN</h1></div>
-        </div>
-          <InputForm formData={formData } handleFormDataChange={setFormData} label1={'username'} label2={'password'}/>
+  return (
+    <>
+      <div className="container">
+        <div className="input-form">
+          <LoginRegisterButton text="Register" />
+          <div className="welcome-box">
+            <div className="red-line"></div>
+            <div className="welcome-text">
+              <h1>
+                WELCOME BACK <br />
+                SIGN IN
+              </h1>
+            </div>
+          </div>
+          <InputForm
+            formData={formData}
+            handleFormDataChange={setFormData}
+            label1={"username"}
+            label2={"password"}
+          />
           <div className="email-button">
-          <EmailResetButton text='Continue with email' onClick={handleSubmit}/>
+            <EmailResetButton
+              text="Continue with email"
+              onClick={handleSubmit}
+            />
           </div>
           <div className="google-signin">
-          <GoogleSignInButton/>
+            <GoogleSignInButton />
           </div>
-          </div>
-        <div className='image-section'>
-          <img src="/public/images/ri-experts.jpg" alt="logo" className="image" ></img></div>
-       </div>
-        </>
-    )
+        </div>
+        <div className="image-section">
+          <img
+            src="/public/images/ri-experts.jpg"
+            alt="logo"
+            className="image"
+          ></img>
+        </div>
+      </div>
+    </>
+  );
 }
