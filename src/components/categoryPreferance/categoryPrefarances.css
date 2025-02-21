@@ -1,24 +1,85 @@
+/* Custom Checkbox Styling */
 .custom-checkbox input[type="checkbox"] {
-    appearance: none; /* Remove default checkbox */
-    width: 18px;
-    height: 18px;
-    border: 1px solid gray;
-    border-radius: 4px;
-    cursor: pointer;
-    position: relative;
-  }
-  
-  .custom-checkbox input[type="checkbox"]:checked {
-    background-color: black;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 1px solid gray;
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+}
 
-  }
-  
-  .custom-checkbox input[type="checkbox"]:checked::after {
+.custom-checkbox input[type="checkbox"]:checked {
+  background-color: black ;
+}
 
-    position: absolute;
-    top: -2px;
-    left: 4px;
-    font-size: 14px;
-    color: white;
-  }
-  
+.custom-checkbox label {
+  color: #00000080; /* Light black font color */
+  font-weight: 500;
+}
+
+/* Category Header */
+.category-header {
+  color: #00000080; /* Light black font color */
+}
+
+/* Buttons */
+button {
+  transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+/* Cancel Button */
+.cancel-button {
+  background: none !important;
+  border: none !important;
+  color: red !important;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.cancel-button:hover {
+  text-decoration: underline;
+}
+
+/* Update Button */
+.update-button {
+  background-color: black;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.update-button:hover {
+  background-color: #333;
+}
+
+/* Textbox with Bottom Border Only */
+.custom-input {
+  border: none !important; /* Remove all borders */
+  border-bottom: 1px solid black !important; /* Only bottom border */
+  border-radius: 0 !important;
+  background: transparent !important;
+  outline: none !important;
+  padding: 5px !important;
+  width: 100% !important;
+  font-size: 16px;
+}
+
+/* Ensuring it stays black when focused */
+.custom-input:focus {
+  border-bottom: 1px solid black !important;
+  box-shadow: none !important;
+}
