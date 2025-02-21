@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import './SignIn.css';
-import InputForm from '../../components/reusable-input-form/InputForm';
-import LoginRegisterButton from '../../components/LoginRegisterButton/LoginRegisterButton';
-import EmailResetButton from '../../components/EmailResetButton/Button';
-import GoogleSignInButton from '../../components/googleSignButton/googleSign';
+import InputForm from '../../../components/reusable-input-form/InputForm';
+import LoginRegisterButton from '../../../components/LoginRegisterButton/LoginRegisterButton';
+import EmailResetButton from '../../../components/EmailResetButton/Button';
+import GoogleSignInButton from '../../../components/googleSignButton/googleSign';
 
 export default function SignIn(){
   const [formData, setFormData] = useState({username:"", password:""});
