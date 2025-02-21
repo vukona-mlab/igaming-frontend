@@ -4,6 +4,7 @@ import "./Footer.css"; // Ensure styling
 
 const Footer = () => {
   return (
+    
     <footer className="footer">
       <div className="container">
         {/* Quick Links (Scroll to Sections) */}
@@ -66,7 +67,6 @@ const Footer = () => {
           />
           <button className="subscribe-button">Subscribe</button>
         </div>
-      </div>
 
       {/* Bottom Section */}
 
@@ -82,6 +82,7 @@ const Footer = () => {
       <div className="footer-bottom">
  
   <div className="text-gray-500">&copy; iGaming International Ltd. 2025</div>
+</div>
 </div>
 
     </footer>
