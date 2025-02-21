@@ -1,8 +1,11 @@
-import React, { useState } from "react"; 
+import React, { useState } from "react";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import AuthForm from "../../../components/Register input form(freelancer)/AuthForm";
 import LoadingButton from "../../../components/ButtonLoader/LoadingButton";
 import GoogleSignInButton from "../../../components/googleSignButton/googleSign";
-import LoginRegisterButton from "../../../components/LoginRegisterButton/LoginRegisterButton"; // import the new button component
+import LoginRegisterButton from "../../../components/LoginRegisterButton/LoginRegisterButton";
 import "./Register.css";
 
 const Register = () => {
@@ -22,25 +25,32 @@ const Register = () => {
   };
 
   return (
-    <div className="register-container d-flex">
-      <div className="form-section col-12 col-md-6"> {/* Full-width on small screens, half-width on medium screens and up */}
-        <LoginRegisterButton text="Login" func={goBack} /> 
-    
-        <h4 className="headertext">
-            <div className="welcome">
-            WELCOME 
-            </div>
-            <div className="freelancer">
-            SIGN UP AS A FREELANCER
-            </div>
-        </h4>
-        <AuthForm onSubmit={handleSubmit} />
-        <LoadingButton onClick={() => console.log("Registering...")} text="Register" />
-        <GoogleSignInButton handleGoogleSignIn={handleGoogleSignIn} />
-      </div>
+    <Container fluid className="register-container vh-100 d-flex align-items-center" style={{ border: "1px solid red" }}>
+  
+    <Row className="w-100">
+    {/* Form Section */}
+    <Col xs={12} md={7} className="form-section vh-100 d-flex flex-column justify-content-center align-items-center p-4">
+  <LoginRegisterButton text="Login" func={goBack} />
+  
+  <h4 className="headertext">
+  <div>
+    WELCOME <br />
+    SIGN UP AS A FREELANCER
+  </div>
+</h4>
 
-      <div className="image-section col-12 col-md-6"></div> {/* Full-width on small screens, half-width on medium screens and up */}
-    </div>
+  <AuthForm onSubmit={handleSubmit} />
+  <LoadingButton onClick={() => console.log("Registering...")} text="Register" />
+  <GoogleSignInButton handleGoogleSignIn={handleGoogleSignIn} />
+</Col>
+
+<Col xs={12} md={5} className="image-section d-none d-md-flex align-items-center justify-content-center">
+  <img className="image-m" src="/images/ri-experts.jpg" alt="Freelancer" />
+</Col>
+  </Row>
+
+</Container>
+
   );
 };
 

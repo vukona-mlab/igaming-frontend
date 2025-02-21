@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import InputGroup from "react-bootstrap/InputGroup";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import { Eye, EyeSlash } from "react-bootstrap-icons";
 import './AuthForm.css';
 
@@ -37,59 +38,65 @@ const AuthForm = ({ onSubmit }) => {
   };
 
   return (
-    <Form onSubmit={handleSubmit} className="p-3 auth-form rounded shadow-sm">
-      <Form.Group className="mb-3">
-        <Form.Label>Username</Form.Label>
-        <Form.Control
-          type="text"
-          name="username"
-          placeholder="Enter username"
-          value={formData.username}
-          onChange={handleChange}
-          isInvalid={!!errors.username}
-          className="form-control-grey"
-        />
-        <Form.Control.Feedback type="invalid">{errors.username}</Form.Control.Feedback>
-      </Form.Group>
-
-      <Form.Group className="mb-3">
-        <Form.Label>Password</Form.Label>
-        <div className="input-group-wrapper">
+    <Form onSubmit={handleSubmit} className="auth-form p-3 rounded shadow-sm">
+      <Row className="mb-3">
+        <Col xs={12}>
+          <Form.Label>Username</Form.Label>
           <Form.Control
-            type={showPassword ? "text" : "password"}
-            name="password"
-            placeholder="Enter password"
-            value={formData.password}
+            type="text"
+            name="username"
+            placeholder="Enter username"
+            value={formData.username}
             onChange={handleChange}
-            isInvalid={!!errors.password}
+            isInvalid={!!errors.username}
             className="form-control-grey"
           />
-          <Button
-            variant="link"
-            className="text-secondary p-0 border-0 btn-eye"
-            onClick={() => setShowPassword(!showPassword)}
-          >
-            {showPassword ? <EyeSlash /> : <Eye />}
-          </Button>
-        </div>
-        <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
-      </Form.Group>
+          <Form.Control.Feedback type="invalid">{errors.username}</Form.Control.Feedback>
+        </Col>
+      </Row>
 
-      <Form.Group className="mb-3">
-        <Form.Label>Job Interest</Form.Label>
-        <div className="job-interest-options">
-          {jobInterests.map((interest, index) => (
-            <div
-              key={index}
-              className={`job-interest-option ${formData.jobInterest === interest ? 'selected' : ''}`}
-              onClick={() => setFormData({ ...formData, jobInterest: interest })}
+      <Row className="mb-3">
+        <Col xs={12}>
+          <Form.Label>Password</Form.Label>
+          <div className="input-group-wrapper">
+            <Form.Control
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Enter password"
+              value={formData.password}
+              onChange={handleChange}
+              isInvalid={!!errors.password}
+              className="form-control-grey"
+            />
+            <Button
+              variant="link"
+              className="text-secondary p-0 border-0 btn-eye"
+              onClick={() => setShowPassword(!showPassword)}
             >
-              {interest}
-            </div>
-          ))}
-        </div>
-        <Form.Control.Feedback type="invalid">{errors.jobInterest}</Form.Control.Feedback>
-      </Form.Group>
+              {showPassword ? <EyeSlash /> : <Eye />}
+            </Button>
+          </div>
+          <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+        </Col>
+      </Row>
+
+      <Row className="mb-3">
+        <Col xs={12}>
+          <Form.Label>Job Interest</Form.Label>
+          <div className="job-interest-options">
+            {jobInterests.map((interest, index) => (
+              <div
+                key={index}
+                className={`job-interest-option ${formData.jobInterest === interest ? 'selected' : ''}`}
+                onClick={() => setFormData({ ...formData, jobInterest: interest })}
+              >
+                {interest}
+              </div>
+            ))}
+          </div>
+          <Form.Control.Feedback type="invalid">{errors.jobInterest}</Form.Control.Feedback>
+        </Col>
+      </Row>
     </Form>
   );
 };
