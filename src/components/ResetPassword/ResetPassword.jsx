@@ -1,34 +1,37 @@
 import React from "react";
-import LoadingButton from "../components/LoadingButton"; // Adjust the path if needed
-import "../styles/ResetPassword.css"; // Add styles separately
+import LoadingButton from "../ButtonLoader/LoadingButton"; // Adjust the path if needed
+import "./ResetPassword.css"; // Add styles separately
 
 const ResetPassword = () => {
   return (
     <div className="reset-container">
       {/* Left Section */}
       <div className="reset-left">
+        {/* Register Button */}
+        <button className="register-btn">Register →</button>
+        <div className="reset-form">
         <h2 className="reset-title">
-          <span>WELCOME</span> <br />
+          <span className="red-line"></span> WELCOME <br />
           RESET PASSWORD
         </h2>
-        
+
         <div className="input-group">
           <label>Username</label>
-          <input type="text" value="oscarpoca@figma.com" disabled />
+          <input type="text" placeholder="Enter username" />
         </div>
 
         <div className="input-group">
           <label>Phone</label>
-          <input type="text" value="+27 68 0850 741" disabled />
+          <input type="text" placeholder="Enter phone number" />
         </div>
 
         {/* Reset Button */}
         <LoadingButton text="Reset" />
       </div>
-
+</div>
       {/* Right Section */}
       <div className="reset-right">
-        <img src="/asri-experts.jpg" alt="Woman with digital interface" />
+        <img src="/public/images/ri-experts.jpg" alt="Woman with digital interface" />
       </div>
     </div>
   );

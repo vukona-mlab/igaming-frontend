@@ -1,10 +1,10 @@
 import "./App.css";
 
-import Footer from  "./components/footer/Footer";
+import ResetPassword from  "./components/ResetPassword/ResetPassword";
 
 function App() {
   return <div className="App">
-    <Footer/>
+    <ResetPassword/>
   </div>;
 }
 
