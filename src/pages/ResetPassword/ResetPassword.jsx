@@ -1,6 +1,6 @@
 import React from "react";
 import { FiArrowRight } from "react-icons/fi"; // Import the arrow icon
-import LoadingButton from "../ButtonLoader/LoadingButton";
+import LoadingButton from "../../components/ButtonLoader/LoadingButton";
 import "./ResetPassword.css";
 
 const ResetPassword = () => {
@@ -10,7 +10,9 @@ const ResetPassword = () => {
       <div className="reset-left">
         {/* Register Button */}
         <button className="register-btn">
-          <b>Register <FiArrowRight className="register-arrow" /></b>
+          <b>
+            Register <FiArrowRight className="register-arrow" />
+          </b>
         </button>
 
         <div className="reset-form">
@@ -36,7 +38,10 @@ const ResetPassword = () => {
 
       {/* Right Section */}
       <div className="reset-right">
-        <img src="/public/images/ri-experts.jpg" alt="Woman with digital interface" />
+        <img
+          src="/public/images/ri-experts.jpg"
+          alt="Woman with digital interface"
+        />
       </div>
     </div>
   );
