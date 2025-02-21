@@ -1,0 +1,71 @@
+.profile-form {
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+    background-color: #ffffff;
+}
+
+/* Form Labels */
+.profile-form label {
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    color: #00000080;
+}
+
+/* Form Inputs */
+.profile-form input {
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    width: 100%;
+}
+
+/* Input Focus Effect */
+.profile-form input:focus {
+    border-color: #000;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Submit Button */
+.profile-form button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    background-color: #000;
+    color: white;
+    transition: 0.3s ease-in-out;
+    border: none;
+}
+
+.profile-form button:hover {
+    background-color: #333;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .profile-form {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 576px) {
+    .profile-form {
+        padding: 10px;
+    }
+
+    .profile-form button {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .profile-form input {
+        font-size: 14px;
+        padding: 8px;
+        font-family: "Poppins", sans-serif;
+        color: #00000080;
+    }
+}
