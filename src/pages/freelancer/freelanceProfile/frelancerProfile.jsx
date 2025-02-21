@@ -3,12 +3,12 @@ import { Container, Row, Col } from "react-bootstrap";
 import ProfileCard from "../../../components/portfolioCard/portfolioCard"; // Import ProfileCard component
 import ProfileForm from "../../../components/profileForm/profileForm"; // Import ProfileForm component
 import CategoryPreferences from "../../../components/categoryPreferance/categoryPrefarances"; // Import CategoryPreferences component
-import './freelancerProfile.css';
+//import './freelancerProfile.css';
 //import Navbar from '../../../components/Navbar/navbar'
-const ProfilePage = ({ formData = {}, handleChange, handleSubmit }) => {
+const ProfilePage = ({ formData = {}, handleChange }) => {
   return (
     <>
-      <Container style={{border:"2px solid red", minHeight: "100vh", paddingBottom: "60px" }}>
+      <Container style={{ minHeight: "100vh", paddingBottom: "60px" }}>
         {/* First Row with ProfileCard and ProfileForm */}
         {/*<Navbar/>*/}
         <Row className="my-4">
@@ -16,7 +16,7 @@ const ProfilePage = ({ formData = {}, handleChange, handleSubmit }) => {
             {/* Left Column - ProfileCard Component */}
             <ProfileCard speciality="" image="" />
           </Col>
-          <Col md={9} style={{border:"1px solid blue "}}>
+          <Col md={9} >
             {/* Right Column - ProfileForm Component with props from components */}
             <ProfileForm 
               formData={{
@@ -29,7 +29,7 @@ const ProfilePage = ({ formData = {}, handleChange, handleSubmit }) => {
                 speciality: formData.speciality,
               }} 
               handleChange={handleChange} 
-              handleSubmit={handleSubmit} 
+              
             />
           </Col>
         </Row>
@@ -43,11 +43,11 @@ const ProfilePage = ({ formData = {}, handleChange, handleSubmit }) => {
         </Row>
       </Container>
 
-      {/* Place buttons outside of the container for better positioning */}
+      {/* Place buttons outside of the container for better positioning 
       <div className="button-container">
         <button className="cancel-button">Cancel</button>
         <button className="update-button">Update</button>
-      </div>
+      </div>*/}
     </>
   );
 };

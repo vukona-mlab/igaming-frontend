@@ -4,9 +4,9 @@ import './profileForm.css';
 
 const UserForm = ({ formData, handleChange, handleSubmit }) => {
   return (
-    <Form onSubmit={handleSubmit} className="profile-form" style={{border:"1px solid green"}}>
+    <Form onSubmit={handleSubmit} className="profile-form">
       <Row className="mb-3">
-        <Col xs={12} md={6} style={{border:"1px solid yellow"}}>
+        <Col xs={12} md={6}>
           <Form.Label>Name</Form.Label>
           <Form.Control
             type="text"
@@ -80,7 +80,7 @@ const UserForm = ({ formData, handleChange, handleSubmit }) => {
         </Col>
       </Row>
 
-      <Button type="submit">Update Profile</Button>
+    
     </Form>
   );
 };
