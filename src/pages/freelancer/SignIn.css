@@ -1,0 +1,68 @@
+.container {
+  display: flex;
+  height:fit-content;
+
+}
+
+.input-form {
+  flex: 1;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.login-register-button{
+    position: relative;
+    left: 70%;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+.welcome-box{
+    /* display: flex; */
+    padding: 50px;
+    gap: 50px;
+    align-items: center;
+    margin-top: 40px;
+}
+h1 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold; /* Try 900 if needed */
+  font-size: 48px;
+  line-height: 72px;
+  color: black;
+  position: relative;
+  left: -35px;
+  bottom: 50px;
+}
+
+
+
+.red-line {
+  color: #B90909;
+  width: 20%;
+  border: none;
+  height: 9px;
+  /* background-color:  #b90909; */
+  transform: rotate(90deg);
+  position: relative;
+  right: 120px;
+  background-color: #B90909;
+}
+
+.image {
+  flex: 1;
+  width: 120%;
+  max-width: 1800px;
+  height: 900px;
+  max-height: 100%;
+}
+
+.google-sign-in-btn {
+  margin-top: 20px;
+  border: 1px solid #4e3629 !important;
+  border-radius: 20px !important;
+  width: 551px!important;
+  height:77px !important;
+  justify-content: center;
+  padding-left: 24px;
+    padding-right: 24px;
+}
