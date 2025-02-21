@@ -43,7 +43,7 @@ ul {
 
 ul li {
     margin-bottom: 15px;
-    margin-left: -30px;
+    margin-left: -20px;
 }
 
 
@@ -65,6 +65,8 @@ ul li {
 
 .category-item {
     cursor: pointer;
+    margin-left: 0px;
+    margin-top: 30px;
 }
 
 .category-item:hover {

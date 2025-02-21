@@ -11,7 +11,7 @@
 
 .about-section .container {
     position: relative;
-    background-image: url('/public/images/Smilley Guy.jpg');
+    background-image: url('/public/images/FacelessDummy.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -19,15 +19,15 @@
     border-radius: 20px;
     text-align: center;
     color: black;
-    max-width: 900px;
-    min-height: 400px;
+    max-width: 1150px;
+    min-height: 300px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    background-color: rgba(211, 211, 211, 0.6);
+    background-color: rgba(245, 242, 242, 0.712);
     /* Light grey overlay */
-    filter: brightness(0.7);
+    filter: brightness(0.9);
     /* Darkens the image to blend with grey */
 }
