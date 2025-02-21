@@ -1,63 +1,70 @@
-.container {
-  display: flex;
-  height:fit-content;
 
+ .container {
+  display: flex;
+  /* height:fit-content;
+  border: 2px solid red; */
 }
 
 .input-form {
   flex: 1;
   width: 100%;
-  max-width: 1200px;
+  /* max-width: 1200px; */
+  margin-top: 20px;
 }
+
 
 .login-register-button{
     position: relative;
-    left: 70%;
-    margin-top: 40px;
-    margin-bottom: 20px;
+    left: 75%;
+    margin-top: 28px;
+    margin-bottom: 28px;
 }
 .welcome-box{
-    /* display: flex; */
-    padding: 50px;
-    gap: 50px;
+     display: flex; 
+     padding: 38px; 
+     gap: 50px;
     align-items: center;
-    margin-top: 40px;
+    margin-top: 10px;
+    margin-bottom: -62px;
 }
+
 h1 {
   font-family: 'Poppins', sans-serif;
-  font-weight: bold; /* Try 900 if needed */
-  font-size: 48px;
+  font-weight: bold; 
+   font-size: 48px;
   line-height: 72px;
   color: black;
   position: relative;
-  left: -35px;
-  bottom: 50px;
-}
+  right: 50px;
+  bottom: 55px;
+} 
 
 
 
-.red-line {
+ .red-line {
   color: #B90909;
-  width: 20%;
+  width: 15%;
   border: none;
-  height: 9px;
-  /* background-color:  #b90909; */
-  transform: rotate(90deg);
-  position: relative;
-  right: 120px;
-  background-color: #B90909;
-}
+  height: 9px; 
+   background-color:  #b90909; 
+   transform: rotate(90deg); 
+   position: relative;
+  right: 3px;
+  bottom: 50px;
+} 
 
-.image {
-  flex: 1;
-  width: 120%;
-  max-width: 1800px;
-  height: 900px;
-  max-height: 100%;
-}
+ .image-section {
+  display: flex;
 
-.google-sign-in-btn {
+}  
+ .image{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+ }
+ .google-sign-in-btn {
   margin-top: 20px;
+  margin-bottom: 10px;
   border: 1px solid #4e3629 !important;
   border-radius: 20px !important;
   width: 551px!important;
@@ -65,4 +72,4 @@ h1 {
   justify-content: center;
   padding-left: 24px;
     padding-right: 24px;
-}
+}  
