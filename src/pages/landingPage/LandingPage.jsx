@@ -1,9 +1,9 @@
 import React from "react";
 import CustomNavBar from "../pages/CustomNavBar";
 import "./LandingPage.css";
-import SubNavBar from "../components/SubNavBar/SubNavBar";
-import About from "../components/about/About";
-import Footer from "./footer/Footer";
+import SubNavBar from "../../components/SubNavBar/SubNavBar";
+import About from "../../components/about/About";
+import Footer from "../footer/Footer";
 
 function LandingPage() {
   return (
