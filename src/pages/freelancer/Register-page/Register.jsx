@@ -25,32 +25,29 @@ const Register = () => {
   };
 
   return (
-    <Container fluid className="register-container vh-100 d-flex align-items-center" style={{ border: "1px solid red" }}>
-  
-    <Row className="w-100">
-    {/* Form Section */}
-    <Col xs={12} md={7} className="form-section vh-100 d-flex flex-column justify-content-center align-items-center p-4">
-  <LoginRegisterButton text="Login" func={goBack} />
-  
-  <h4 className="headertext">
-  <div>
-    WELCOME <br />
-    SIGN UP AS A FREELANCER
-  </div>
-</h4>
+    <Container fluid className="register-container vh-100 d-flex align-items-center">
+      <Row className="w-100">
+        {/* Form Section */}
+        <Col xs={12} md={7} className="form-section vh-100 d-flex flex-column justify-content-center align-items-center p-4">
+          <LoginRegisterButton text="Login" func={goBack} />
+          <h4 className="headertext">
+            <div>
+              WELCOME <br />
+              SIGN UP AS A FREELANCER
+            </div>
+          </h4>
 
-  <AuthForm onSubmit={handleSubmit} />
-  <LoadingButton onClick={() => console.log("Registering...")} text="Register" />
-  <GoogleSignInButton handleGoogleSignIn={handleGoogleSignIn} />
-</Col>
+          <AuthForm onSubmit={handleSubmit} />
+          <LoadingButton onClick={() => console.log("Registering...")} text="Register" />
+          <GoogleSignInButton handleGoogleSignIn={handleGoogleSignIn} />
+        </Col>
 
-<Col xs={12} md={5} className="image-section d-none d-md-flex align-items-center justify-content-center">
-  <img className="image-m" src="/images/ri-experts.jpg" alt="Freelancer" />
-</Col>
-  </Row>
-
-</Container>
-
+        {/* Image Section */}
+        <Col xs={12} md={5} className="image-section d-none d-md-flex align-items-center justify-content-center">
+          <img className="image-m" src="/images/ri-experts.jpg" alt="Freelancer" />
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

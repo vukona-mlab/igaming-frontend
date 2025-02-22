@@ -5,6 +5,9 @@
 
 .form-section {
   display: flex;
+  overflow-y: auto;
+  height: 100vh;
+  z-index: 1;
   flex: 55% !important;
   flex-direction: column;
   justify-content: center;
@@ -12,16 +15,15 @@
   padding: 20px;
   margin-left: 25px;
 }
-  
-  
+
 .headertext {
   font-weight: 700;
   border-left: 6px solid #B90909;
   font-size: 35px;
   line-height: 68px;
   margin: 0;
-  padding-left: 10px; 
-  text-align: left; 
+  padding-left: 10px;
+  text-align: left;
   justify-content: left;
   margin-left: 10%;
   width: 100%;
@@ -33,16 +35,15 @@
     line-height: 50px;
   }
 }
+
 .loading-button {
   width: 90% !important;
   height: 5%;
   margin-left: 25px;
-  
 }
 
 .auth-form {
   width: 90% !important;
-  
   border: none !important;
   background: none !important;
   margin-left: 25px;
@@ -54,7 +55,6 @@
   width: 90% !important;
   margin-top: 15px;
   height: 5%;
- 
   justify-content: center;
   margin-left: 25px;
 }
@@ -68,46 +68,42 @@
 @media (max-width: 1200px) {
   .login-register-button {
     margin-left: 70% !important;
-   
   }
 }
 
 @media (max-width: 992px) {
   .login-register-button {
-    margin-left: 60% !important; 
-   
+    margin-left: 60% !important;
   }
 }
 
 @media (max-width: 768px) {
   .login-register-button {
     margin-left: 50% !important;
-
   }
 }
 
 @media (max-width: 576px) {
   .login-register-button {
-    margin-left: 40% !important; 
-   
+    margin-left: 40% !important;
   }
 }
 
-
 .image-section {
+  overflow: hidden;
+  z-index: 0;
   padding: 0 !important;
   margin: 0 !important;
-  width: 100%;
+  width: 45%;
+  height: 100vh;
 }
 
 .image-m {
   width: 100%;
-  height: 100vh;
+  height: 100%;
   object-fit: cover;
   margin-right: 0 !important;
   padding-right: 0 !important;
-  display: flex;
-  flex: 45% !important;
 }
 
 @media (max-width: 770px) {
@@ -115,4 +111,3 @@
     display: none !important;
   }
 }
-
