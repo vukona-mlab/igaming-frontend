@@ -3,7 +3,7 @@ import { Card } from "react-bootstrap";
 import { CiCamera } from "react-icons/ci"; // Import the camera icon
 import "./PortfolioCard.css"; // Import CSS
 
-const PortfolioCard = ({ speciality, image }) => {
+const PortfolioCard = ({ speciality, image, handleImageChange }) => {
   const [currentImage, setCurrentImage] = useState(image);
 
   useEffect(() => {
@@ -11,21 +11,11 @@ const PortfolioCard = ({ speciality, image }) => {
     setCurrentImage(image);
   }, [image]);
 
-  // Handle image selection
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => setCurrentImage(e.target.result);
-      reader.readAsDataURL(file);
-    }
-  };
-
   // Open file picker
   const handleFileUpload = () => {
     document.getElementById("fileInput").click();
   };
-
+  console.log({ image, speciality });
   return (
     <Card className="portfolio-card">
       {/* Image Container */}
@@ -38,7 +28,13 @@ const PortfolioCard = ({ speciality, image }) => {
 
         {/* Camera Icon Button */}
         <div className="camera-icon" onClick={handleFileUpload}>
-          <input type="file" id="fileInput" accept="image/*" hidden onChange={handleImageChange} />
+          <input
+            type="file"
+            id="fileInput"
+            accept="image/*"
+            hidden
+            onChange={handleImageChange}
+          />
           <CiCamera size={20} color="black" />
         </div>
       </div>
@@ -46,7 +42,8 @@ const PortfolioCard = ({ speciality, image }) => {
       {/* Card Body */}
       <Card.Body>
         <Card.Text className="card-text">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu fugiat nulla pariatur.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu fugiat
+          nulla pariatur.
         </Card.Text>
 
         {/* Speciality Input */}

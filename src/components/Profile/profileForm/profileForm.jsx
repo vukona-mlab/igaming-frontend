@@ -1,6 +1,6 @@
 import React from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
-import './profileForm.css';
+import "./profileForm.css";
 
 const UserForm = ({ formData, handleChange, handleSubmit }) => {
   return (
@@ -79,8 +79,6 @@ const UserForm = ({ formData, handleChange, handleSubmit }) => {
           />
         </Col>
       </Row>
-
-    
     </Form>
   );
 };
