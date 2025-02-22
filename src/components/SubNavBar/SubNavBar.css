@@ -2,14 +2,14 @@
     float: left;
     overflow: hidden;
     justify-content: center;
-  }
+}
 
-  .subnavbtn{
+.subnavbtn {
     background-color: black;
     color: white;
-  }
+}
 
-  .subnav .subnavbtn {
+.subnav .subnavbtn {
     font-size: 16px;
     border: none;
     outline: none;
@@ -18,13 +18,14 @@
     /* background-color: inherit; */
     font-family: inherit;
     margin: 0;
-  }
+}
 
-  /* .navbar a:hover, .subnav:hover .subnavbtn {
+
+/* .navbar a:hover, .subnav:hover .subnavbtn {
     background-color: red;
   } */
 
-  a{
+a {
     float: left;
     font-size: 16px;
     color: black;
@@ -32,12 +33,11 @@
     padding: 14px 16px;
     text-decoration: none;
     justify-content: center;
-  }
+}
 
-  .subnav-content {
+.subnav-content {
     /* display: none; */
     position: absolute;
-    
     background-color: black;
     width: 100%;
     height: 46px;
@@ -48,19 +48,19 @@
     line-height: 24px;
     display: flex;
     justify-content: space-evenly;
-  }
+}
 
-  .subnav-content a {
+.subnav-content a {
     float: left;
     color: white;
     text-decoration: none;
-    
-  }
+}
 
-  .subnav-content a:hover {
+.subnav-content a:hover {
     background-color: #eee;
     color: black;
-  }
+}
 
-  /* .subnav:hover .subnav-content {
+
+/* .subnav:hover .subnav-content {
   } */

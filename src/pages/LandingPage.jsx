@@ -1,17 +1,17 @@
 import React from "react";
-import NavBar from "../components/Navbar/navbar";
+import CustomNavBar from "../pages/CustomNavBar";
 import "./LandingPage.css";
 import SubNavBar from "../components/SubNavBar/SubNavBar";
-import About from "../components/about/About"; 
+import About from "../components/about/About";
 import Footer from "./footer/Footer";
 
 function LandingPage() {
   return (
     <>
-      <NavBar />
+      <CustomNavBar />
       <SubNavBar />
-      <About/>
-     <Footer/>
+      <About />
+      <Footer />
     </>
   );
 }
