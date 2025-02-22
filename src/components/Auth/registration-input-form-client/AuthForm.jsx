@@ -4,19 +4,18 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Eye, EyeSlash } from "react-bootstrap-icons";
-import './AuthForm.css';
+import "./AuthForm.css";
+import { useNavigate } from "react-router";
 
-const AuthForm = ({ onSubmit }) => {
-  const [formData, setFormData] = useState({
-    username: "",
-    password: "",
-    jobInterest: "",
-  });
-
+const AuthForm = ({ formData, setFormData, onSubmit }) => {
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
 
-  const jobInterests = ["Game Developer", "Design & Creative", "Quality Assurance"];
+  const jobInterests = [
+    "Game Developer",
+    "Design & Creative",
+    "Quality Assurance",
+  ];
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -26,7 +25,8 @@ const AuthForm = ({ onSubmit }) => {
     let newErrors = {};
     if (!formData.username) newErrors.username = "Username is required";
     if (!formData.password) newErrors.password = "Password is required";
-    if (!formData.jobInterest) newErrors.jobInterest = "Job Interest is required";
+    if (!formData.jobInterest)
+      newErrors.jobInterest = "Job Interest is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -38,7 +38,7 @@ const AuthForm = ({ onSubmit }) => {
   };
 
   return (
-    <Form onSubmit={handleSubmit} className="auth-form p-3 rounded shadow-sm">
+    <Form className="auth-form p-3 rounded shadow-sm">
       <Row className="mb-3">
         <Col xs={12}>
           <Form.Label>Username</Form.Label>
@@ -51,7 +51,9 @@ const AuthForm = ({ onSubmit }) => {
             isInvalid={!!errors.username}
             className="form-control-grey"
           />
-          <Form.Control.Feedback type="invalid">{errors.username}</Form.Control.Feedback>
+          <Form.Control.Feedback type="invalid">
+            {errors.username}
+          </Form.Control.Feedback>
         </Col>
       </Row>
 
@@ -76,7 +78,9 @@ const AuthForm = ({ onSubmit }) => {
               {showPassword ? <EyeSlash /> : <Eye />}
             </Button>
           </div>
-          <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+          <Form.Control.Feedback type="invalid">
+            {errors.password}
+          </Form.Control.Feedback>
         </Col>
       </Row>
 
@@ -87,14 +91,20 @@ const AuthForm = ({ onSubmit }) => {
             {jobInterests.map((interest, index) => (
               <div
                 key={index}
-                className={`job-interest-option ${formData.jobInterest === interest ? 'selected' : ''}`}
-                onClick={() => setFormData({ ...formData, jobInterest: interest })}
+                className={`job-interest-option ${
+                  formData.jobInterest === interest ? "selected" : ""
+                }`}
+                onClick={() =>
+                  setFormData({ ...formData, jobInterest: interest })
+                }
               >
                 {interest}
               </div>
             ))}
           </div>
-          <Form.Control.Feedback type="invalid">{errors.jobInterest}</Form.Control.Feedback>
+          <Form.Control.Feedback type="invalid">
+            {errors.jobInterest}
+          </Form.Control.Feedback>
         </Col>
       </Row>
     </Form>
