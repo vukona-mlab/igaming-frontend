@@ -7,7 +7,7 @@ import FreelancerProfile from "./pages/freelancer/freelanceProfile/frelancerProf
 
 import ClientProfile from "./pages/client/clientProfile/clientProfile";
 import ClientRegister from "./pages/client/Register-page/ClientRegister";
-
+import LandingPage from "./pages/landingPage/LandingPage";
 import ProtectedRouteReg from "./components/Protected/ProtectedReg";
 import ProtectedRoutes from "./components/Protected/ProtectedRoutes";
 import ProtectRole from "./components/Protected/ProtectRole";
@@ -19,7 +19,7 @@ function App() {
       <Router>
         <div className="App">
           <Routes>
-            {/* <Route exact path="/" element={<LandingPage />} /> */}
+            <Route exact path="/" element={<LandingPage />} />
             <Route path="/resetPassword" element={<ResetPassword />} />
 
             <Route element={<ProtectedRouteReg />}>
