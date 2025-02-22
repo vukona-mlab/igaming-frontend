@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import ProfileCard from "../../../components/Profile/portfolioCard/portfolioCard"; // Import ProfileCard component
 import ProfileForm from "../../../components/Profile/profileForm/profileForm"; // Import ProfileForm component
 import CategoryPreferences from "../../../components/Profile/categoryPreferance/categoryPrefarances"; // Import CategoryPreferences component
 //import './freelancerProfile.css';
-//import Navbar from '../../../components/Navbar/navbar'
+import Navbar from "../../../components/Common/Navbar/navbar";
 import { Form, Button } from "react-bootstrap";
 
 const ProfilePage = ({}) => {
@@ -18,9 +18,15 @@ const ProfilePage = ({}) => {
   });
   const [image, setImage] = useState();
   const [currImage, setCurrImage] = useState();
+  const [loading, setLoading] = useState(false);
+  const [isUpdate, setIsUpdate] = useState(false);
 
   const uid = localStorage.getItem("uid");
   const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    getProfile();
+  }, []);
   function handleChange(e) {
     e.preventDefault();
     const { name, value } = e.target;
@@ -46,6 +52,44 @@ const ProfilePage = ({}) => {
     setFormData((prev) => ({ ...prev, categories: arr }));
   };
 
+  const getProfile = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `http://localhost:8000/api/auth/users/${uid}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        console.log({ d: data });
+        setFormData((prev) => ({ ...prev, name: data.user.name }));
+        setFormData((prev) => ({ ...prev, surname: data.user.surname }));
+        setFormData((prev) => ({
+          ...prev,
+          displayName: data.user.displayName,
+        }));
+        setFormData((prev) => ({ ...prev, phone: data.user.phone }));
+        setFormData((prev) => ({
+          ...prev,
+          dateOfBirth: data.user.dateOfBirth,
+        }));
+        setFormData((prev) => ({ ...prev, speciality: data.user.speciality }));
+        setCurrImage(data.user.profilePicture);
+        //setData(data);
+        // alert(data.message);
+      } else {
+        // Handle error
+      }
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const updateUserProfile = async (data) => {
     try {
       if (JSON.stringify(data) === "{}") {
@@ -86,11 +130,13 @@ const ProfilePage = ({}) => {
     }
   };
 
+  if (loading) return;
   return (
     <>
+      <Navbar />
+
       <Container style={{ minHeight: "100vh", paddingBottom: "60px" }}>
         {/* First Row with ProfileCard and ProfileForm */}
-        {/*<Navbar/>*/}
         <Row className="my-4">
           <Col md={3}>
             {/* Left Column - ProfileCard Component */}
@@ -104,12 +150,12 @@ const ProfilePage = ({}) => {
             {/* Right Column - ProfileForm Component with props from components */}
             <ProfileForm
               formData={{
-                name: formData.name,
-                surname: formData.surname,
-                displayName: formData.displayName,
+                name: formData.name || "",
+                surname: formData.surname || "",
+                displayName: formData.displayName || "",
                 phone: formData.phone || "",
                 email: formData.email || "",
-                dateOfBirth: formData.dateOfBirth,
+                dateOfBirth: formData.dateOfBirth || "",
                 speciality: formData.speciality || "",
               }}
               handleChange={handleChange}
