@@ -4,7 +4,7 @@ import ProfileCard from "../../../components/Profile/portfolioCard/portfolioCard
 import ProfileForm from "../../../components/Profile/profileForm/profileForm"; // Import ProfileForm component
 import CategoryPreferences from "../../../components/Profile/categoryPreferance/categoryPrefarencesClient"; // Import CategoryPreferences component
 //import './freelancerProfile.css';
-//import Navbar from '../../../components/Navbar/navbar'
+import Navbar from "../../../components/Common/Navbar/navbar";
 import { Form, Button } from "react-bootstrap";
 
 const ProfilePage = ({}) => {
@@ -15,6 +15,7 @@ const ProfilePage = ({}) => {
     phone: "",
     dateOfBirth: "",
     speciality: "",
+    categories: [],
   });
   const [image, setImage] = useState();
   const [currImage, setCurrImage] = useState();
@@ -46,6 +47,10 @@ const ProfilePage = ({}) => {
       if (data.categories[key] === true) {
         return key;
       }
+    });
+    updateUserProfile({
+      ...formData,
+      categories: arr,
     });
     setFormData((prev) => ({ ...prev, categories: arr }));
   };
@@ -102,9 +107,7 @@ const ProfilePage = ({}) => {
       formData.append("dateOfBirth", data.dateOfBirth);
       // formData.append("bio", formData.bio);
       formData.append("speciality", data.speciality);
-      formData.append("category", data.category);
-      //formData.append("extraAmount", formData.extraAmount);
-      // formData.append("jobTitle", formData.jobTitle);
+      formData.append("category", JSON.stringify(data.categories));
       formData.append("profilePicture", image);
       const response = await fetch(
         `http://localhost:8000/api/auth/users/${uid}/update`,
@@ -123,6 +126,7 @@ const ProfilePage = ({}) => {
       } else {
         // Handle error
       }
+      setIsUpdate(false);
     } catch (error) {
       console.log(error);
     }
@@ -131,6 +135,8 @@ const ProfilePage = ({}) => {
   if (loading) return;
   return (
     <>
+      <Navbar />
+      {!isUpdate && <button onClick={() => setIsUpdate(true)}>Edit</button>}
       <Container style={{ minHeight: "100vh", paddingBottom: "60px" }}>
         {/* First Row with ProfileCard and ProfileForm */}
         {/*<Navbar/>*/}
@@ -160,7 +166,11 @@ const ProfilePage = ({}) => {
             <Row>
               <Col>
                 {/* Below the profile card and form - CategoryPreferences Component */}
-                <CategoryPreferences onSubmit={handleCategoriesSubmit} />
+                <CategoryPreferences
+                  onSubmit={handleCategoriesSubmit}
+                  isUpdate={isUpdate}
+                  cancel={() => setIsUpdate(false)}
+                />
               </Col>
             </Row>
             {/* <Row className="justify-content-end mt-4">

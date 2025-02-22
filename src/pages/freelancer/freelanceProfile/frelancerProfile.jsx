@@ -15,6 +15,8 @@ const ProfilePage = ({}) => {
     phone: "",
     dateOfBirth: "",
     speciality: "",
+    categories: [],
+    extraAmount: {},
   });
   const [image, setImage] = useState();
   const [currImage, setCurrImage] = useState();
@@ -49,7 +51,14 @@ const ProfilePage = ({}) => {
         return key;
       }
     });
+    updateUserProfile({
+      ...formData,
+      categories: arr,
+      extraAmount: data.prices,
+    });
+
     setFormData((prev) => ({ ...prev, categories: arr }));
+    setFormData((prev) => ({ ...prev, extraAmount: data.prices }));
   };
 
   const getProfile = async () => {
@@ -66,7 +75,6 @@ const ProfilePage = ({}) => {
       );
       if (response.ok) {
         const data = await response.json();
-        console.log({ d: data });
         setFormData((prev) => ({ ...prev, name: data.user.name }));
         setFormData((prev) => ({ ...prev, surname: data.user.surname }));
         setFormData((prev) => ({
@@ -104,8 +112,8 @@ const ProfilePage = ({}) => {
       formData.append("dateOfBirth", data.dateOfBirth);
       // formData.append("bio", formData.bio);
       formData.append("speciality", data.speciality);
-      formData.append("category", data.category);
-      //formData.append("extraAmount", formData.extraAmount);
+      formData.append("category", JSON.stringify(data.categories));
+      formData.append("extraAmount", JSON.stringify(data.extraAmount));
       // formData.append("jobTitle", formData.jobTitle);
       formData.append("profilePicture", image);
       const response = await fetch(
@@ -125,6 +133,7 @@ const ProfilePage = ({}) => {
       } else {
         // Handle error
       }
+      setIsUpdate(false);
     } catch (error) {
       console.log(error);
     }
@@ -134,7 +143,7 @@ const ProfilePage = ({}) => {
   return (
     <>
       <Navbar />
-
+      {!isUpdate && <button onClick={() => setIsUpdate(true)}>Edit</button>}
       <Container style={{ minHeight: "100vh", paddingBottom: "60px" }}>
         {/* First Row with ProfileCard and ProfileForm */}
         <Row className="my-4">
@@ -159,24 +168,16 @@ const ProfilePage = ({}) => {
                 speciality: formData.speciality || "",
               }}
               handleChange={handleChange}
+              isUpdate={isUpdate}
             />
             <Row>
               <Col>
                 {/* Below the profile card and form - CategoryPreferences Component */}
-                <CategoryPreferences onSubmit={handleCategoriesSubmit} />
-              </Col>
-            </Row>
-            <Row className="justify-content-end mt-4">
-              <Col xs={12} className="text-right">
-                <Button className="cancel-button me-4">Cancel</Button>
-                <Button
-                  variant="dark"
-                  className="update-button"
-                  type="submit"
-                  onClick={() => updateUserProfile(formData)}
-                >
-                  Update
-                </Button>
+                <CategoryPreferences
+                  onSubmit={handleCategoriesSubmit}
+                  isUpdate={isUpdate}
+                  cancel={() => setIsUpdate(false)}
+                />
               </Col>
             </Row>
           </Col>

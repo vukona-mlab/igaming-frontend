@@ -14,7 +14,6 @@ import ProtectedRoutes from "./components/Protected/ProtectedRoutes";
 import ProtectRole from "./components/Protected/ProtectRole";
 function App() {
   const userRole = localStorage.getItem("role");
-  console.log({ userRole });
   return (
     <div className="App">
       <Router>
