@@ -3,6 +3,7 @@ import { Form, Row, Col, Button } from "react-bootstrap";
 import "./profileForm.css";
 
 const UserForm = ({ formData, handleChange, handleSubmit }) => {
+  console.log({ formData });
   return (
     <Form onSubmit={handleSubmit} className="profile-form">
       <Row className="mb-3">

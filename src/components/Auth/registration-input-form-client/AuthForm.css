@@ -1,6 +1,6 @@
 /* Form Container */
 .auth-form {
-  width: 80% !important; 
+  width: 80% !important;
   border: none !important;
   background: none !important;
 }
@@ -9,7 +9,7 @@
 .form-label {
   transition: all 0.3s ease;
   font-weight: 500 !important;
-  font-family: 'Poppins', sans-serif !important;
+  font-family: "Poppins", sans-serif !important;
   letter-spacing: -0.02em !important;
 }
 
@@ -17,22 +17,35 @@
 .form-control-grey {
   border: 2px solid #069bd6;
   border-radius: 5px !important;
-  
+
   background-color: rgba(211, 211, 211, 0.486) !important;
   transition: border 0.3s ease-in-out;
-  
 }
 
 /* Focus Style */
 .form-control-grey:focus {
   border: 2px solid #069bd6 !important;
   box-shadow: none !important;
+  border-radius: 5px !important;
 }
 
-/* Password Input with Eye Icon */
+/* Base border with 2px thickness */
+.form-control-grey {
+  border: 2px solid #069bd6;
+  box-shadow: none !important;
+  border-radius: 5px !important;
+  width: 90% !important;
+  background-color: rgba(211, 211, 211, 0.486) !important;
+  transition: border 0.3s ease-in-out;
+}
+
 .input-group-wrapper {
   position: relative;
-  width: 100%;
+  width: 549px;
+}
+
+.input-group-wrapper .form-control-grey {
+  width: 549px;
 }
 
 .input-group-wrapper .btn-eye {
@@ -42,20 +55,21 @@
   transform: translateY(-50%);
 }
 
-/* Job Interest Options */
 .job-interest-options {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 3px;
 }
 
 .job-interest-option {
-  padding: 10px;
+  padding: 5px;
   border-radius: 5px;
   background-color: rgba(211, 211, 211, 0.486);
   cursor: pointer;
   transition: all 0.2s ease;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
+  width: 549px;
+  margin-bottom: 1px;
 }
 
 .job-interest-option:hover,
