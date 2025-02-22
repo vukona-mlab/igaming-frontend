@@ -21,8 +21,7 @@
     border: 2px solid #069bd6;  
     box-shadow: none !important;
     border-radius: 5px !important;
-    width: 549px !important;
-    height: 50px !important;
+    width: 90% !important;
     background-color: rgba(211, 211, 211, 0.486) !important;
     transition: border 0.3s ease-in-out;  
   }
@@ -34,8 +33,8 @@
   }
   
   .input-group-wrapper .form-control-grey {
-    width: 100%;
-    height: 50px;
+    width: 549px;
+
   }
   
   .input-group-wrapper .btn-eye {
@@ -43,24 +42,26 @@
     right: 10px;
     top: 50%;
     transform: translateY(-50%);
-    height: 50px;
+    
+
   }
   
   .job-interest-options {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 3px;
   }
   
   .job-interest-option {
-    padding: 10px;
+    padding: 5px;
     border-radius: 5px;
     background-color: rgba(211, 211, 211, 0.486);
     cursor: pointer;
     transition: all 0.2s ease;
-    border: 2px solid transparent;
+    border: 1px solid transparent;
     width: 549px;
-    height: 50px;
+    margin-bottom: 1px;
+   
   }
   
   .job-interest-option:hover,

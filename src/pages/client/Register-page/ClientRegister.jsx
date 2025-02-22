@@ -1,54 +1,57 @@
-import React, { useState } from "react";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import AuthForm from "../../../components/registration-input-form-client/AuthForm"; 
+import React from "react"; 
+import { FiArrowRight } from "react-icons/fi"; // Import the arrow icon
 import LoadingButton from "../../../components/ButtonLoader/LoadingButton";
 import GoogleSignInButton from "../../../components/googleSignButton/googleSign";
-import LoginRegisterButton from "../../../components/LoginRegisterButton/LoginRegisterButton";
+import AuthForm from "../../../components/registration-input-form-client/AuthForm";
 import "./ClientRegister.css";
 
 const ClientRegister = () => {
-  const [formData, setFormData] = useState(null);
-
-  const handleSubmit = (data) => {
-    console.log("Submitted Data:", data);
-    setFormData(data);
-  };
-
   const handleGoogleSignIn = () => {
-    console.log("Google Sign-In clicked!");
+    console.log("Google Sign-In Clicked");
   };
 
-  const goBack = () => {
-    window.history.back();
+  const handleFormSubmit = (formData) => {
+    console.log("Form Submitted:", formData);
+    // Handle form submission logic here
   };
 
   return (
-    <Container fluid className="register-container vh-100 d-flex align-items-center" style={{ border: "1px solid red" }}>
-      <Row className="w-100">
-        {/* Form Section */}
-        <Col xs={12} md={7} className="form-section vh-100 d-flex flex-column justify-content-center align-items-center p-4">
-          <LoginRegisterButton text="Login" func={goBack} />
-          
-          <h4 className="headertext">
-            <div>
-              WELCOME <br />
-              SIGN UP AS A FREELANCER
-            </div>
-          </h4>
+    <div className="client-register-container">
+      {/* Left Section */}
+      <div className="client-register-left">
+        {/* Register Button */}
+        <button className="client-register-btn">
+          <b>
+            Login <FiArrowRight className="client-register-arrow" />
+          </b>
+        </button>
 
-          {/* The AuthForm Component is now integrated here */}
-          <AuthForm onSubmit={handleSubmit} />
-          <LoadingButton onClick={() => console.log("Registering...")} text="Register" />
+        <div className="client-register-form">
+          <h2 className="client-register-title">
+            <span className="client-red-line"></span> WELCOME <br />
+            REGISTER ACCOUNT
+          </h2>
+
+          {/* AuthForm Component Replaces Manual Inputs */}
+          <AuthForm onSubmit={handleFormSubmit} />
+
+          {/* Sign Up Button */}
+          <LoadingButton text="Sign up" />
+
+          {/* Google Sign-In Button */}
           <GoogleSignInButton handleGoogleSignIn={handleGoogleSignIn} />
-        </Col>
+        </div>
+      </div>
 
-        <Col xs={12} md={5} className="image-section d-none d-md-flex align-items-center justify-content-center">
-          <img className="image-m" src="/images/ri-experts.jpg" alt="Freelancer" />
-        </Col>
-      </Row>
-    </Container>
+      {/* Right Section */}
+      <div className="client-register-right d-flex align-items-stretch">
+        <img
+          src="/public/images/ri-experts.jpg"
+          alt="Woman with digital interface"
+          className="img-fluid h-100"
+        />
+      </div>
+    </div>
   );
 };
 
