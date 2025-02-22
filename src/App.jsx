@@ -7,6 +7,7 @@ import FreelancerProfile from "./pages/freelancer/freelanceProfile/frelancerProf
 
 import ClientProfile from "./pages/client/clientProfile/clientProfile";
 import ClientRegister from "./pages/client/Register-page/ClientRegister";
+import ClientSignIn from "./pages/client/SignInPage/SignIn";
 import LandingPage from "./pages/landingPage/LandingPage";
 import ProtectedRouteReg from "./components/Protected/ProtectedReg";
 import ProtectedRoutes from "./components/Protected/ProtectedRoutes";
@@ -30,7 +31,7 @@ function App() {
                 element={<FreelancerRegister />}
               />
 
-              {/* <Route exact path="clientSignin" element={<ClientSignIn />} /> */}
+              <Route exact path="clientSignin" element={<ClientSignIn />} />
               <Route
                 exact
                 path="freelancerSignin"
