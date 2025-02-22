@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Form, Row, Col, Button, Container } from "react-bootstrap";
 import "./categoryPrefarances.css"; // Ensure this path is correct
 
-const CategoryPreferences = ({ onSubmit }) => {
+const CategoryPreferences = ({ onSubmit, isUpdate, cancel }) => {
   const [formData, setFormData] = useState({
     categories: {
       graphicDesign: false,
@@ -41,28 +41,37 @@ const CategoryPreferences = ({ onSubmit }) => {
           {/* First Column */}
           <Col xs={12} md={6} className="mb-3">
             <h5 className="category-header">Categories Preferences</h5>
-            {["graphicDesign", "uiUxDesign", "animation", "imageEditing"].map((category) => (
-              <Form.Check 
-                key={category} 
-                type="checkbox" 
-                label={category.replace(/([A-Z])/g, " $1")} 
-                name={category} 
-                className="custom-checkbox" 
-                onChange={handleCheckboxChange} 
-              />
-            ))}
+            {["graphicDesign", "uiUxDesign", "animation", "imageEditing"].map(
+              (category) => (
+                <Form.Check
+                  key={category}
+                  type="checkbox"
+                  label={category.replace(/([A-Z])/g, " $1")}
+                  name={category}
+                  className="custom-checkbox"
+                  onChange={handleCheckboxChange}
+                  disabled={!isUpdate}
+                />
+              )
+            )}
           </Col>
 
           {/* Second Column */}
           <Col xs={12} md={6} className="mb-3 mt-5">
-            {["gameArt", "characterModeling", "gameDesigners", "typography"].map((category) => (
-              <Form.Check 
-                key={category} 
-                type="checkbox" 
-                label={category.replace(/([A-Z])/g, " $1")} 
-                name={category} 
-                className="custom-checkbox" 
-                onChange={handleCheckboxChange} 
+            {[
+              "gameArt",
+              "characterModeling",
+              "gameDesigners",
+              "typography",
+            ].map((category) => (
+              <Form.Check
+                key={category}
+                type="checkbox"
+                label={category.replace(/([A-Z])/g, " $1")}
+                name={category}
+                className="custom-checkbox"
+                onChange={handleCheckboxChange}
+                disabled={!isUpdate}
               />
             ))}
           </Col>
@@ -70,11 +79,17 @@ const CategoryPreferences = ({ onSubmit }) => {
 
         {/* Buttons */}
         <Row className="justify-content-end mt-4">
-          <Col xs={12} className="text-right mt-5">
-            <Button className="cancel-button me-4">Cancel</Button>
-            <Button variant="dark" className="update-button" type="submit">
-              Update
-            </Button>
+          <Col xs={12} className="text-right">
+            {isUpdate && (
+              <Button className="cancel-button me-4" onClick={cancel}>
+                Cancel
+              </Button>
+            )}
+            {isUpdate && (
+              <Button variant="dark" className="update-button" type="submit">
+                Update
+              </Button>
+            )}
           </Col>
         </Row>
       </Form>

@@ -15,7 +15,6 @@ const PortfolioCard = ({ speciality, image, handleImageChange }) => {
   const handleFileUpload = () => {
     document.getElementById("fileInput").click();
   };
-  console.log({ image, speciality });
   return (
     <Card className="portfolio-card">
       {/* Image Container */}

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Form, Row, Col, Button, Container } from "react-bootstrap";
 import "./categoryPrefarances.css"; // Ensure this path is correct
 
-const CategoryPreferences = ({ onSubmit }) => {
+const CategoryPreferences = ({ onSubmit, isUpdate, cancel }) => {
   const [formData, setFormData] = useState({
     categories: {
       graphicDesign: false,
@@ -78,6 +78,7 @@ const CategoryPreferences = ({ onSubmit }) => {
                   name={category}
                   className="custom-checkbox"
                   onChange={handleCheckboxChange}
+                  disabled={!isUpdate}
                 />
               )
             )}
@@ -98,6 +99,7 @@ const CategoryPreferences = ({ onSubmit }) => {
                 name={category}
                 className="custom-checkbox"
                 onChange={handleCheckboxChange}
+                disabled={!isUpdate}
               />
             ))}
           </Col>
@@ -121,6 +123,7 @@ const CategoryPreferences = ({ onSubmit }) => {
                     name={speed.name}
                     className="custom-checkbox"
                     onChange={handleCheckboxChange}
+                    disabled={!isUpdate}
                   />
                 </Col>
                 <Col xs={8}>
@@ -148,6 +151,20 @@ const CategoryPreferences = ({ onSubmit }) => {
             </Button>
           </Col>
         </Row> */}
+        <Row className="justify-content-end mt-4">
+          <Col xs={12} className="text-right">
+            {isUpdate && (
+              <Button className="cancel-button me-4" onClick={cancel}>
+                Cancel
+              </Button>
+            )}
+            {isUpdate && (
+              <Button variant="dark" className="update-button" type="submit">
+                Update
+              </Button>
+            )}
+          </Col>
+        </Row>
       </Form>
     </Container>
   );

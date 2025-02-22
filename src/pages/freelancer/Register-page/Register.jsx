@@ -22,7 +22,6 @@ const Register = () => {
   const navigation = useNavigate();
 
   const handleSubmit = (data) => {
-    console.log("Submitted Data:", data);
     setFormData(data);
   };
 
@@ -62,7 +61,6 @@ const Register = () => {
   };
   const handleRegister = async () => {
     //e.preventDefault();
-    console.log({ formData });
     // Submit form
     return new Promise(async (r) => {
       try {
@@ -81,7 +79,6 @@ const Register = () => {
         });
         const data = await res.json();
         if (res.ok) {
-          console.log({ data });
           alert(data.message);
           r(true);
           //navigation("/profile");

@@ -2,8 +2,7 @@ import React from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import "./profileForm.css";
 
-const UserForm = ({ formData, handleChange, handleSubmit }) => {
-  console.log({ formData });
+const UserForm = ({ formData, handleChange, handleSubmit, isUpdate }) => {
   return (
     <Form onSubmit={handleSubmit} className="profile-form">
       <Row className="mb-3">
@@ -14,6 +13,7 @@ const UserForm = ({ formData, handleChange, handleSubmit }) => {
             name="name"
             value={formData.name}
             onChange={handleChange}
+            disabled={!isUpdate}
           />
         </Col>
         <Col xs={12} md={6}>
@@ -23,6 +23,7 @@ const UserForm = ({ formData, handleChange, handleSubmit }) => {
             name="surname"
             value={formData.surname}
             onChange={handleChange}
+            disabled={!isUpdate}
           />
         </Col>
       </Row>
@@ -35,6 +36,7 @@ const UserForm = ({ formData, handleChange, handleSubmit }) => {
             name="displayName"
             value={formData.displayName}
             onChange={handleChange}
+            disabled={!isUpdate}
           />
         </Col>
         <Col xs={12} md={6}>
@@ -44,6 +46,7 @@ const UserForm = ({ formData, handleChange, handleSubmit }) => {
             name="phone"
             value={formData.phone}
             onChange={handleChange}
+            disabled={!isUpdate}
           />
         </Col>
       </Row>
@@ -56,6 +59,7 @@ const UserForm = ({ formData, handleChange, handleSubmit }) => {
             name="email"
             value={formData.email}
             onChange={handleChange}
+            disabled={!isUpdate}
           />
         </Col>
         <Col xs={12} md={6}>
@@ -65,6 +69,7 @@ const UserForm = ({ formData, handleChange, handleSubmit }) => {
             name="dateOfBirth"
             value={formData.dateOfBirth}
             onChange={handleChange}
+            disabled={!isUpdate}
           />
         </Col>
       </Row>
@@ -77,6 +82,7 @@ const UserForm = ({ formData, handleChange, handleSubmit }) => {
             name="speciality"
             value={formData.speciality}
             onChange={handleChange}
+            disabled={!isUpdate}
           />
         </Col>
       </Row>
