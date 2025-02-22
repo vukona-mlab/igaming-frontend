@@ -1,26 +1,14 @@
-import { useState } from "react";
-import "./LoadingButton.css"; // Import CSS file
+import "./LoadingButton.css";
 
-const LoadingButton = ({ onClick, text }) => {
-  const [loading, setLoading] = useState(false);
-
-  const handleClick = async () => {
-    setLoading(true);
-    try {
-      await onClick();
-    } finally {
-      setLoading(false);
-    }
-  };
-
+const LoadingButton = ({ onClick, text, loading }) => {
   return (
-    <button onClick={handleClick} className="loading-button" disabled={loading}>
+    <button onClick={onClick} className="loading-button" disabled={loading}>
       {loading ? (
         <img
-          src="/public/images/spinDash.gif" // Path to your GIF
+          src="/images/spinDash.gif"
           alt="Loading"
-          className="loader-gif" // Add a class for styling if needed
-          style={{ width: "20px", height: "20px" }} // Adjust size here
+          className="loader-gif"
+          style={{ width: "20px", height: "20px" }}
         />
       ) : (
         text
