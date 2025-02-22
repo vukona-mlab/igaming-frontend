@@ -69,35 +69,44 @@ const CategoryPreferences = ({ onSubmit }) => {
           {/* First Column */}
           <Col xs={12} md={4} className="mb-3">
             <h5 className="category-header">Categories Preferences</h5>
-            {["graphicDesign", "uiUxDesign", "animation", "imageEditing"].map((category) => (
-              <Form.Check 
-                key={category} 
-                type="checkbox" 
-                label={category.replace(/([A-Z])/g, " $1")} 
-                name={category} 
-                className="custom-checkbox" 
-                onChange={handleCheckboxChange} 
-              />
-            ))}
+            {["graphicDesign", "uiUxDesign", "animation", "imageEditing"].map(
+              (category) => (
+                <Form.Check
+                  key={category}
+                  type="checkbox"
+                  label={category.replace(/([A-Z])/g, " $1")}
+                  name={category}
+                  className="custom-checkbox"
+                  onChange={handleCheckboxChange}
+                />
+              )
+            )}
           </Col>
 
           {/* Middle Column */}
           <Col xs={12} md={4} className="mb-3 mt-5">
-            {["gameArt", "characterModeling", "gameDesigners", "typography"].map((category) => (
-              <Form.Check 
-                key={category} 
-                type="checkbox" 
-                label={category.replace(/([A-Z])/g, " $1")} 
-                name={category} 
-                className="custom-checkbox" 
-                onChange={handleCheckboxChange} 
+            {[
+              "gameArt",
+              "characterModeling",
+              "gameDesigners",
+              "typography",
+            ].map((category) => (
+              <Form.Check
+                key={category}
+                type="checkbox"
+                label={category.replace(/([A-Z])/g, " $1")}
+                name={category}
+                className="custom-checkbox"
+                onChange={handleCheckboxChange}
               />
             ))}
           </Col>
 
           {/* Third Column */}
           <Col xs={12} md={4} className="mb-3">
-            <h5 className="category-header">How much do extra amount speed up projects</h5>
+            <h5 className="category-header">
+              How much do extra amount speed up projects
+            </h5>
             {[
               { name: "threeDays", label: "3 Days" },
               { name: "fiveDays", label: "5 Days" },
@@ -131,14 +140,14 @@ const CategoryPreferences = ({ onSubmit }) => {
         </Row>
 
         {/* Buttons */}
-        <Row className="justify-content-end mt-4">
+        {/* <Row className="justify-content-end mt-4">
           <Col xs={12} className="text-right">
             <Button className="cancel-button me-4">Cancel</Button>
             <Button variant="dark" className="update-button" type="submit">
               Update
             </Button>
           </Col>
-        </Row>
+        </Row> */}
       </Form>
     </Container>
   );

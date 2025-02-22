@@ -1,7 +1,12 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth, setPersistence, inMemoryPersistence } from "firebase/auth";
+import {
+  getAuth,
+  setPersistence,
+  inMemoryPersistence,
+  GoogleAuthProvider,
+} from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -28,5 +33,5 @@ const auth = getAuth(app);
 await setPersistence(auth, inMemoryPersistence);
 const db = getFirestore(app);
 //const storage = getStorage(app);
-
-export { auth, db };
+const googleProvider = new GoogleAuthProvider();
+export { auth, db, googleProvider };

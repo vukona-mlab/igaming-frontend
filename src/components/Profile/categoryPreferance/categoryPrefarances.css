@@ -10,7 +10,7 @@
 }
 
 .custom-checkbox input[type="checkbox"]:checked {
-  background-color: black ;
+  background-color: black;
 }
 
 .custom-checkbox label {

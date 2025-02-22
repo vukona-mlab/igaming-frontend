@@ -5,6 +5,8 @@ import LoginRegisterButton from "../../../components/Auth/LoginRegisterButton/Lo
 import EmailResetButton from "../../../components/Auth/EmailResetButton/Button";
 import GoogleSignInButton from "../../../components/Auth/googleSignButton/googleSign";
 import { useNavigate } from "react-router";
+import { auth, googleProvider } from "../../../config/firebase";
+import { signInWithPopup } from "firebase/auth";
 export default function SignIn() {
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
@@ -53,6 +55,37 @@ export default function SignIn() {
       }
     }
   };
+  const handleGoogleSignIn = async () => {
+    try {
+      // Sign in with Google
+      const result = await signInWithPopup(auth, googleProvider);
+
+      // Get ID token
+      const idToken = await result.user.getIdToken();
+
+      // Send token to backend
+      const response = await fetch("http://localhost:8000/api/auth/google", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ idToken }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("uid", data.user.uid);
+        localStorage.setItem("role", data.user.roles[0]);
+
+        navigation("/profile");
+      }
+      //setUserInfo(data);
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Error signing in: " + error.message);
+    }
+  };
   return (
     <>
       <div className="container">
@@ -77,7 +110,7 @@ export default function SignIn() {
             <EmailResetButton text="Continue with email" func={handleSubmit} />
           </div>
           <div className="google-signin">
-            <GoogleSignInButton />
+            <GoogleSignInButton handleGoogleSignIn={handleGoogleSignIn} />
           </div>
         </div>
         <div className="image-section">

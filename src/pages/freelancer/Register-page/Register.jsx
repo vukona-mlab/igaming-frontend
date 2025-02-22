@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router";
+
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -7,21 +9,80 @@ import LoadingButton from "../../../components/Common/ButtonLoader/LoadingButton
 import GoogleSignInButton from "../../../components/Auth/googleSignButton/googleSign";
 import LoginRegisterButton from "../../../components/Auth/LoginRegisterButton/LoginRegisterButton";
 import "./Register.css";
-
+import { auth, googleProvider } from "../../../config/firebase";
+import { signInWithPopup } from "firebase/auth";
 const Register = () => {
   const [formData, setFormData] = useState(null);
+  const navigation = useNavigate();
 
   const handleSubmit = (data) => {
     console.log("Submitted Data:", data);
     setFormData(data);
   };
 
-  const handleGoogleSignIn = () => {
-    console.log("Google Sign-In clicked!");
-  };
+  const handleGoogleSignIn = async () => {
+    try {
+      // Sign in with Google
+      const result = await signInWithPopup(auth, googleProvider);
 
+      // Get ID token
+      const idToken = await result.user.getIdToken();
+
+      // Send token to backend
+      const response = await fetch("http://localhost:8000/api/auth/google", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ idToken }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("uid", data.user.uid);
+        localStorage.setItem("role", data.user.roles[0]);
+
+        navigation("/profile");
+      }
+      //setUserInfo(data);
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Error signing in: " + error.message);
+    }
+  };
   const goBack = () => {
     window.history.back();
+  };
+  const handleRegister = async () => {
+    //e.preventDefault();
+
+    if (!error) {
+      // Submit form
+      try {
+        const res = await fetch(`http://localhost:8000/api/auth/register`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: formData.username,
+            password: formData.password,
+          }),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          console.log({ data });
+          alert(data.message);
+          //navigation("/profile");
+        }
+
+        //setLoading(false);
+      } catch (err) {
+        console.log(err);
+        //setLoading(false);
+      }
+    }
   };
 
   return (
