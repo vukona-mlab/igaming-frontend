@@ -163,7 +163,7 @@ const ProfilePage = ({}) => {
                 <CategoryPreferences onSubmit={handleCategoriesSubmit} />
               </Col>
             </Row>
-            <Row className="justify-content-end mt-4">
+            {/* <Row className="justify-content-end mt-4">
               <Col xs={12} className="text-right">
                 <Button className="cancel-button me-4">Cancel</Button>
                 <Button
@@ -175,7 +175,7 @@ const ProfilePage = ({}) => {
                   Update
                 </Button>
               </Col>
-            </Row>
+            </Row> */}
           </Col>
         </Row>
 
