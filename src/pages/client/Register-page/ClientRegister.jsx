@@ -68,6 +68,7 @@ const ClientRegister = () => {
           body: JSON.stringify({
             email: formData.username,
             password: formData.password,
+            jobInterest: formData.jobInterest,
             roles: ["Client"],
           }),
         });
@@ -91,7 +92,10 @@ const ClientRegister = () => {
       {/* Left Section */}
       <div className="client-register-left">
         {/* Register Button */}
-        <button className="client-register-btn">
+        <button
+          className="client-register-btn"
+          onClick={() => navigation("/clientSignin")}
+        >
           <b>
             Login <FiArrowRight className="client-register-arrow" />
           </b>

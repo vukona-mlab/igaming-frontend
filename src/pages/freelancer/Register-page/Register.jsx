@@ -74,6 +74,8 @@ const Register = () => {
           body: JSON.stringify({
             email: formData.username,
             password: formData.password,
+            jobTitle: jobTitle,
+            experience: experience,
             roles: ["Freelancer"],
           }),
         });
