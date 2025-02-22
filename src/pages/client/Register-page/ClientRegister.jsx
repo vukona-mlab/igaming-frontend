@@ -1,30 +1,22 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import AuthForm from "../../../components/Auth/Register input form(freelancer)/AuthForm";
+import { FiArrowRight } from "react-icons/fi"; // Import the arrow icon
 import LoadingButton from "../../../components/Common/ButtonLoader/LoadingButton";
 import GoogleSignInButton from "../../../components/Auth/googleSignButton/googleSign";
-import LoginRegisterButton from "../../../components/Auth/LoginRegisterButton/LoginRegisterButton";
-import "./Register.css";
+import AuthForm from "../../../components/Auth/registration-input-form-client/AuthForm";
+import "./ClientRegister.css";
 import { auth, googleProvider } from "../../../config/firebase";
 import { signInWithPopup } from "firebase/auth";
-const Register = () => {
+
+const ClientRegister = () => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
-    jobTitle: "",
-    experience: "",
+    jobInterest: "",
   });
 
   const navigation = useNavigate();
-
-  const handleSubmit = (data) => {
-    console.log("Submitted Data:", data);
-    setFormData(data);
-  };
 
   const handleGoogleSignIn = async () => {
     try {
@@ -57,8 +49,10 @@ const Register = () => {
       alert("Error signing in: " + error.message);
     }
   };
-  const goBack = () => {
-    window.history.back();
+
+  const handleFormSubmit = (formData) => {
+    console.log("Form Submitted:", formData);
+    // Handle form submission logic here
   };
   const handleRegister = async () => {
     //e.preventDefault();
@@ -74,7 +68,7 @@ const Register = () => {
           body: JSON.stringify({
             email: formData.username,
             password: formData.password,
-            roles: ["Freelancer"],
+            roles: ["Client"],
           }),
         });
         const data = await res.json();
@@ -92,52 +86,48 @@ const Register = () => {
       }
     });
   };
-
   return (
-    <Container
-      fluid
-      className="register-container vh-100 d-flex align-items-center"
-      style={{ border: "1px solid red" }}
-    >
-      <Row className="w-100">
-        {/* Form Section */}
-        <Col
-          xs={12}
-          md={7}
-          className="form-section vh-100 d-flex flex-column justify-content-center align-items-center p-4"
-        >
-          <LoginRegisterButton text="Login" func={goBack} />
+    <div className="client-register-container">
+      {/* Left Section */}
+      <div className="client-register-left">
+        {/* Register Button */}
+        <button className="client-register-btn">
+          <b>
+            Login <FiArrowRight className="client-register-arrow" />
+          </b>
+        </button>
 
-          <h4 className="headertext">
-            <div>
-              WELCOME <br />
-              SIGN UP AS A FREELANCER
-            </div>
-          </h4>
+        <div className="client-register-form">
+          <h2 className="client-register-title">
+            <span className="client-red-line"></span> WELCOME <br />
+            REGISTER ACCOUNT
+          </h2>
 
+          {/* AuthForm Component Replaces Manual Inputs */}
           <AuthForm
             formData={formData}
             setFormData={setFormData}
-            onSubmit={handleSubmit}
+            onSubmit={handleFormSubmit}
           />
-          <LoadingButton onClick={handleRegister} text="Register" />
-          <GoogleSignInButton handleGoogleSignIn={handleGoogleSignIn} />
-        </Col>
 
-        <Col
-          xs={12}
-          md={5}
-          className="image-section d-none d-md-flex align-items-center justify-content-center"
-        >
-          <img
-            className="image-m"
-            src="/images/ri-experts.jpg"
-            alt="Freelancer"
-          />
-        </Col>
-      </Row>
-    </Container>
+          {/* Sign Up Button */}
+          <LoadingButton onClick={handleRegister} text="Sign up" />
+
+          {/* Google Sign-In Button */}
+          <GoogleSignInButton handleGoogleSignIn={handleGoogleSignIn} />
+        </div>
+      </div>
+
+      {/* Right Section */}
+      <div className="client-register-right d-flex align-items-stretch">
+        <img
+          src="/public/images/ri-experts.jpg"
+          alt="Woman with digital interface"
+          className="img-fluid h-100"
+        />
+      </div>
+    </div>
   );
 };
 
-export default Register;
+export default ClientRegister;

@@ -6,11 +6,14 @@ import FreelancerSignIn from "./pages/freelancer/SigninForm/SignIn";
 import FreelancerProfile from "./pages/freelancer/freelanceProfile/frelancerProfile";
 
 import ClientProfile from "./pages/client/clientProfile/clientProfile";
+import ClientRegister from "./pages/client/Register-page/ClientRegister";
 
 import ProtectedRouteReg from "./components/Protected/ProtectedReg";
 import ProtectedRoutes from "./components/Protected/ProtectedRoutes";
+import ProtectRole from "./components/Protected/ProtectRole";
 function App() {
-  const userRole = localStorage.getItem("userRole");
+  const userRole = localStorage.getItem("role");
+  console.log({ userRole });
   return (
     <div className="App">
       <Router>
@@ -20,7 +23,7 @@ function App() {
             <Route path="/resetPassword" element={<ResetPassword />} />
 
             <Route element={<ProtectedRouteReg />}>
-              {/* <Route exact path="clientRegister" element={<ClientRegister />} /> */}
+              <Route exact path="clientRegister" element={<ClientRegister />} />
               <Route
                 exact
                 path="freelancerRegister"
@@ -36,16 +39,7 @@ function App() {
             </Route>
 
             <Route element={<ProtectedRoutes />}>
-              <Route
-                path="profile"
-                element={
-                  userRole === "client" ? (
-                    <ClientProfile />
-                  ) : (
-                    <FreelancerProfile />
-                  )
-                }
-              />
+              <Route path="profile" element={<ProtectRole />} />
             </Route>
           </Routes>
         </div>

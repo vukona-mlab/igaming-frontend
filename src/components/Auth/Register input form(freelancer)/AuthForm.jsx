@@ -3,16 +3,9 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import { Eye, EyeSlash } from "react-bootstrap-icons";
-import './AuthForm.css';
+import "./AuthForm.css";
 
-const AuthForm = ({ onSubmit }) => {
-  const [formData, setFormData] = useState({
-    username: "",
-    password: "",
-    jobTitle: "",
-    experience: "",
-  });
-
+const AuthForm = ({ formData, setFormData, onSubmit }) => {
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
 
@@ -37,7 +30,7 @@ const AuthForm = ({ onSubmit }) => {
   };
 
   return (
-    <Form onSubmit={handleSubmit} className="p-3 auth-form rounded shadow-sm">
+    <Form className="p-3 auth-form rounded shadow-sm">
       <Form.Group className="mb-3">
         <Form.Label>Username</Form.Label>
         <Form.Control
@@ -49,7 +42,9 @@ const AuthForm = ({ onSubmit }) => {
           isInvalid={!!errors.username}
           className="form-control-grey"
         />
-        <Form.Control.Feedback type="invalid">{errors.username}</Form.Control.Feedback>
+        <Form.Control.Feedback type="invalid">
+          {errors.username}
+        </Form.Control.Feedback>
       </Form.Group>
 
       <Form.Group className="mb-3">
@@ -77,7 +72,9 @@ const AuthForm = ({ onSubmit }) => {
           >
             {showPassword ? <EyeSlash /> : <Eye />}
           </Button>
-          <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+          <Form.Control.Feedback type="invalid">
+            {errors.password}
+          </Form.Control.Feedback>
         </InputGroup>
       </Form.Group>
 
@@ -92,7 +89,9 @@ const AuthForm = ({ onSubmit }) => {
           isInvalid={!!errors.jobTitle}
           className="form-control-grey"
         />
-        <Form.Control.Feedback type="invalid">{errors.jobTitle}</Form.Control.Feedback>
+        <Form.Control.Feedback type="invalid">
+          {errors.jobTitle}
+        </Form.Control.Feedback>
       </Form.Group>
 
       <Form.Group className="mb-3">
@@ -106,7 +105,9 @@ const AuthForm = ({ onSubmit }) => {
           isInvalid={!!errors.experience}
           className="form-control-grey"
         />
-        <Form.Control.Feedback type="invalid">{errors.experience}</Form.Control.Feedback>
+        <Form.Control.Feedback type="invalid">
+          {errors.experience}
+        </Form.Control.Feedback>
       </Form.Group>
     </Form>
   );
