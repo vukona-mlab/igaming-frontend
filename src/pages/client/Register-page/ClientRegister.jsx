@@ -104,7 +104,7 @@ const ClientRegister = () => {
         <div className="client-register-form">
           <h2 className="client-register-title">
             <span className="client-red-line"></span> WELCOME <br />
-            REGISTER ACCOUNT
+            SIGN UP AS A HIRE
           </h2>
 
           {/* AuthForm Component Replaces Manual Inputs */}

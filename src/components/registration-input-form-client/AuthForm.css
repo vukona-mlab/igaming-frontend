@@ -1,6 +1,7 @@
 /* Form Container */
 .auth-form {
-  width: 90% !important;
+  max-width: 100%;
+  width: 80%; /* Set to 80% of the container */
   border: none !important;
   background: none !important;
 }
@@ -9,7 +10,9 @@
 .form-label {
   transition: all 0.3s ease;
   font-weight: 500 !important;
-  font-family: "Poppins", sans-serif !important;
+  font-size: 15px !important;
+  line-height: 22.5px;
+  font-family: 'Poppins', sans-serif !important;
   letter-spacing: -0.02em !important;
 }
 
@@ -17,35 +20,24 @@
 .form-control-grey {
   border: 2px solid #069bd6;
   border-radius: 5px !important;
-  width: 90% !important;
   background-color: rgba(211, 211, 211, 0.486) !important;
   transition: border 0.3s ease-in-out;
+  height: 50px;
+  width: 100%; /* Full width on smaller screens */
+  max-width: 549px; /* Maintain size on larger screens */
 }
 
 /* Focus Style */
 .form-control-grey:focus {
   border: 2px solid #069bd6 !important;
   box-shadow: none !important;
-  border-radius: 5px !important;
 }
 
-/* Base border with 2px thickness */
-.form-control-grey {
-  border: 2px solid #069bd6;
-  box-shadow: none !important;
-  border-radius: 5px !important;
-  width: 100% !important;
-  background-color: rgba(211, 211, 211, 0.486) !important;
-  transition: border 0.3s ease-in-out;
-}
-
+/* Password Input with Eye Icon */
 .input-group-wrapper {
   position: relative;
-  width: 100% !important;
-}
-
-.input-group-wrapper .form-control-grey {
-  width: 100% !important;
+  width: 100%;
+  max-width: 549px;
 }
 
 .input-group-wrapper .btn-eye {
@@ -53,33 +45,58 @@
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
+  height: 50px;
 }
 
+/* Job Interest Options */
 .job-interest-options {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 5px;
+  width: 100%;
 }
 
 .job-interest-option {
-  padding: 5px;
+  padding: 10px;
   border-radius: 5px;
   background-color: rgba(211, 211, 211, 0.486);
   cursor: pointer;
   transition: all 0.2s ease;
-  border: 1px solid transparent;
-  width: 100% !important;
-  margin-bottom: 2px;
+  border: 2px solid transparent;
+  width: 100%;
+  max-width: 549px;
+  height: 50px;
 }
 
 .job-interest-option:hover,
 .job-interest-option.selected {
   border-color: #069bd6;
 }
-@media screen and (max-width: 425px) {
-    .auth-form {
-      width: 95% !important;
-    
-    }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .auth-form {
+    width: 90%;
+  }
+
+  .form-control-grey,
+  .job-interest-option {
+    width: 100%;
+  }
 }
 
+@media (max-width: 576px) {
+  .auth-form {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .input-group-wrapper {
+    width: 100%;
+  }
+
+  .form-control-grey,
+  .job-interest-option {
+    height: 45px;
+  }
+}
