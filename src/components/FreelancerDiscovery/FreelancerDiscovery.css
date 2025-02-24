@@ -1,0 +1,44 @@
+.freelancer-discovery {
+  padding: 2rem;
+  padding-top: 0;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background-color: #e0e0e0;
+  margin: 2rem 0;
+  position: relative;
+}
+
+.freelancer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+  justify-items: center;
+}
+
+.freelancer-discovery-loading,
+.freelancer-discovery-error {
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.freelancer-discovery-error {
+  color: #ff4444;
+}
+
+@media (max-width: 768px) {
+  .freelancer-discovery {
+    padding: 1rem;
+  }
+
+  .freelancer-grid {
+    grid-template-columns: 1fr;
+  }
+} 
