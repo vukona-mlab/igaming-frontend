@@ -1,4 +1,4 @@
-import React, { useState } from "react"; 
+import React, { useState } from "react";
 import { useNavigate } from "react-router";
 
 import { FiArrowRight } from "react-icons/fi"; // Import the arrow icon
@@ -95,7 +95,7 @@ const ClientRegister = () => {
             email: formData.username,
             password: formData.password,
             jobInterest: formData.jobInterest,
-            roles: ["Client"],
+            roles: ["client"],
           }),
         });
         const data = await res.json();
@@ -140,8 +140,12 @@ const ClientRegister = () => {
           />
 
           {/* Display validation errors */}
-          {errors.username && <p className="error-message">{errors.username}</p>}
-          {errors.password && <p className="error-message">{errors.password}</p>}
+          {errors.username && (
+            <p className="error-message">{errors.username}</p>
+          )}
+          {errors.password && (
+            <p className="error-message">{errors.password}</p>
+          )}
 
           {/* Sign Up Button */}
           <LoadingButton onClick={handleRegister} text="Sign up" />
