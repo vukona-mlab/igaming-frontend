@@ -38,7 +38,7 @@ const AuthForm = ({ formData, setFormData, onSubmit }) => {
   };
 
   return (
-    <Form className="auth-form p-3 rounded shadow-sm">
+    <Form className="auth-form p-0 ">
       <Row className="mb-3">
         <Col xs={12}>
           <Form.Label>Username</Form.Label>
