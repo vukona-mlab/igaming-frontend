@@ -11,7 +11,7 @@ const GoogleSignInButton = ({ handleGoogleSignIn }) => {
           .google-sign-in-btn {
             border: 1px solid #4e3629 !important; /* Dark Brown Border */
             border-radius: 15px !important; /* Rounded corners */
-            width: 90% !important;
+            width: 80% !important;
             height: 50px !important; /* Set height to 40px */
           }
 
