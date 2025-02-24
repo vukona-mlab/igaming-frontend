@@ -4,13 +4,14 @@ import ProfileCard from "../../../components/Profile/portfolioCard/portfolioCard
 import ProfileForm from "../../../components/Profile/profileForm/profileFormClient"; // Import ProfileForm component
 import CategoryPreferences from "../../../components/Profile/categoryPreferance/categoryPrefarencesClient"; // Import CategoryPreferences component
 import Navbar from "../../../components/Common/Navbar/navbar";
-import './clientProfile.css';
-import Swal from 'sweetalert2';
+import "./clientProfile.css";
+import Swal from "sweetalert2";
 
 const ProfilePage = () => {
   const [formData, setFormData] = useState({
     name: "",
     surname: "",
+    email: "",
     displayName: "",
     phone: "",
     dateOfBirth: "",
@@ -57,10 +58,10 @@ const ProfilePage = () => {
 
   const showAlert = () => {
     Swal.fire({
-      title: 'Well done!',
-      text: 'Your profile has been updated.',
-      icon: 'success',
-      confirmButtonText: 'Cool'
+      title: "Well done!",
+      text: "Your profile has been updated.",
+      icon: "success",
+      confirmButtonText: "Cool",
     });
   };
 
@@ -79,6 +80,7 @@ const ProfilePage = () => {
         setFormData({
           name: data.user.name,
           surname: data.user.surname,
+          email: data.user.email,
           displayName: data.user.displayName,
           phone: data.user.phone,
           dateOfBirth: data.user.dateOfBirth,
@@ -133,19 +135,24 @@ const ProfilePage = () => {
       <Navbar />
       <Container style={{ minHeight: "100vh", paddingBottom: "60px" }}>
         <div className="profile-edit d-flex justify-content-between align-items-center">
-         <div className="welcome-message">
-           <h4 className="welcome-name">Welcome, John Doe</h4> {/* Placeholder for the user's name */}
-         </div>
-         {!isUpdate && (
-           <Button variant="dark" onClick={() => setIsUpdate(true)}>
-             Edit
-           </Button>
-         )}
-       </div>
+          <div className="welcome-message">
+            {formData.displayName !== "" ? (
+              <h4 className="welcome-name">Welcome, {formData.displayName}</h4>
+            ) : (
+              <h4 className="welcome-name"></h4>
+            )}
+            {/* Placeholder for the user's name */}
+          </div>
+          {!isUpdate && (
+            <Button variant="dark" onClick={() => setIsUpdate(true)}>
+              Edit
+            </Button>
+          )}
+        </div>
         <Row className="my-4">
           <Col md={3}>
             <ProfileCard
-              speciality={formData.speciality}
+              speciality={"Recruiter"}
               image={currImage}
               handleImageChange={handleImageChange}
             />

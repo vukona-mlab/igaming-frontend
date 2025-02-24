@@ -118,7 +118,7 @@ const ClientRegister = () => {
         {/* Register Button */}
         <button
           className="client-register-btn"
-          onClick={() => navigation("/clientSignin")}
+          onClick={() => navigation("/client-signin")}
         >
           <b>
             Login <FiArrowRight className="client-register-arrow" />

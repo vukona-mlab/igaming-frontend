@@ -6,11 +6,13 @@ import CategoryPreferences from "../../../components/Profile/categoryPreferance/
 //import './freelancerProfile.css';
 import Navbar from "../../../components/Common/Navbar/navbar";
 import { Form, Button } from "react-bootstrap";
+import Swal from "sweetalert2";
 
 const ProfilePage = ({}) => {
   const [formData, setFormData] = useState({
     name: "",
     surname: "",
+    email: "",
     displayName: "",
     phone: "",
     dateOfBirth: "",
@@ -60,6 +62,14 @@ const ProfilePage = ({}) => {
     setFormData((prev) => ({ ...prev, categories: arr }));
     setFormData((prev) => ({ ...prev, extraAmount: data.prices }));
   };
+  const showAlert = () => {
+    Swal.fire({
+      title: "Well done!",
+      text: "Your profile has been updated.",
+      icon: "success",
+      confirmButtonText: "Cool",
+    });
+  };
 
   const getProfile = async () => {
     setLoading(true);
@@ -75,8 +85,11 @@ const ProfilePage = ({}) => {
       );
       if (response.ok) {
         const data = await response.json();
+        console.log({ data });
         setFormData((prev) => ({ ...prev, name: data.user.name }));
         setFormData((prev) => ({ ...prev, surname: data.user.surname }));
+        setFormData((prev) => ({ ...prev, email: data.user.email }));
+
         setFormData((prev) => ({
           ...prev,
           displayName: data.user.displayName,
@@ -128,8 +141,8 @@ const ProfilePage = ({}) => {
       );
       if (response.ok) {
         const data = await response.json();
-        //setData(data);
-        alert(data.message);
+        // Show SweetAlert after successful update
+        showAlert();
       } else {
         // Handle error
       }
@@ -143,19 +156,23 @@ const ProfilePage = ({}) => {
   return (
     <>
       <Navbar />
-    
-      <Container style={{ minHeight: "100vh", paddingBottom: "60px" }}>
-      <div className="profile-edit d-flex justify-content-between align-items-center">
-  <div className="welcome-message">
-    <h4 className="welcome-name">Welcome, John Doe</h4> {/* Placeholder for the user's name */}
-  </div>
-  {!isUpdate && (
-    <Button variant="dark" onClick={() => setIsUpdate(true)}>
-      Edit
-    </Button>
-  )}
-</div>
 
+      <Container style={{ minHeight: "100vh", paddingBottom: "60px" }}>
+        <div className="profile-edit d-flex justify-content-between align-items-center">
+          <div className="welcome-message">
+            {formData.displayName !== "" ? (
+              <h4 className="welcome-name">Welcome, {formData.displayName}</h4>
+            ) : (
+              <h4 className="welcome-name"></h4>
+            )}
+            {/* Placeholder for the user's name */}
+          </div>
+          {!isUpdate && (
+            <Button variant="dark" onClick={() => setIsUpdate(true)}>
+              Edit
+            </Button>
+          )}
+        </div>
 
         {/* First Row with ProfileCard and ProfileForm */}
         <Row className="my-4">
@@ -185,37 +202,32 @@ const ProfilePage = ({}) => {
             <Row>
               <Col>
                 {/* Below the profile card and form - CategoryPreferences Component */}
-                <CategoryPreferences
-                 
-                />
+                <CategoryPreferences />
               </Col>
             </Row>
           </Col>
         </Row>
 
         {/* Update and Cancel buttons at the bottom right */}
-               {isUpdate && (
-                 <div className="profile-buttons-container">
-                   <Button
-                     variant="secondary"
-                     onClick={() => setIsUpdate(false)}
-                     className="cancel-button"
-                   >
-                     Cancel
-                   </Button>
-                   <Button
-                     variant="dark"
-                     onClick={() => handleCategoriesSubmit(formData)}
-                     className="update-button"
-                   >
-                     Update
-                   </Button>
-                 </div>
-               )}
-        
+        {isUpdate && (
+          <div className="profile-buttons-container">
+            <Button
+              variant="secondary"
+              onClick={() => setIsUpdate(false)}
+              className="cancel-button"
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="dark"
+              onClick={() => handleCategoriesSubmit(formData)}
+              className="update-button"
+            >
+              Update
+            </Button>
+          </div>
+        )}
       </Container>
-
-      
     </>
   );
 };
