@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import ProfileCard from "../../../components/Profile/portfolioCard/portfolioCard"; // Import ProfileCard component
-import ProfileForm from "../../../components/Profile/profileForm/profileForm"; // Import ProfileForm component
+import ProfileForm from "../../../components/Profile/profileForm/profileFormClient"; // Import ProfileForm component
 import CategoryPreferences from "../../../components/Profile/categoryPreferance/categoryPrefarencesClient"; // Import CategoryPreferences component
-//import './freelancerProfile.css';
 import Navbar from "../../../components/Common/Navbar/navbar";
-import { Form, Button } from "react-bootstrap";
+import './clientProfile.css';
+import Swal from 'sweetalert2';
 
-const ProfilePage = ({}) => {
+const ProfilePage = () => {
   const [formData, setFormData] = useState({
     name: "",
     surname: "",
     displayName: "",
     phone: "",
     dateOfBirth: "",
-    speciality: "",
     categories: [],
   });
   const [image, setImage] = useState();
@@ -23,15 +22,16 @@ const ProfilePage = ({}) => {
   const [isUpdate, setIsUpdate] = useState(false);
   const uid = localStorage.getItem("uid");
   const token = localStorage.getItem("token");
+
   useEffect(() => {
     getProfile();
   }, []);
-  function handleChange(e) {
-    e.preventDefault();
+
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-  }
-  // Handle image selection
+  };
+
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -43,16 +43,25 @@ const ProfilePage = ({}) => {
   };
 
   const handleCategoriesSubmit = (data) => {
-    let arr = Object.keys(data.categories).filter((key) => {
-      if (data.categories[key] === true) {
-        return key;
-      }
-    });
+    let selectedCategories = Object.keys(data.categories).filter(
+      (key) => data.categories[key]
+    );
+
     updateUserProfile({
       ...formData,
-      categories: arr,
+      categories: selectedCategories,
     });
-    setFormData((prev) => ({ ...prev, categories: arr }));
+
+    setFormData((prev) => ({ ...prev, categories: selectedCategories }));
+  };
+
+  const showAlert = () => {
+    Swal.fire({
+      title: 'Well done!',
+      text: 'Your profile has been updated.',
+      icon: 'success',
+      confirmButtonText: 'Cool'
+    });
   };
 
   const getProfile = async () => {
@@ -62,42 +71,31 @@ const ProfilePage = ({}) => {
         `http://localhost:8000/api/auth/users/${uid}`,
         {
           method: "GET",
-          headers: {
-            Authorization: token,
-          },
+          headers: { Authorization: token },
         }
       );
       if (response.ok) {
         const data = await response.json();
-        console.log({ d: data });
-        setFormData((prev) => ({ ...prev, name: data.user.name }));
-        setFormData((prev) => ({ ...prev, surname: data.user.surname }));
-        setFormData((prev) => ({
-          ...prev,
+        setFormData({
+          name: data.user.name,
+          surname: data.user.surname,
           displayName: data.user.displayName,
-        }));
-        setFormData((prev) => ({ ...prev, phone: data.user.phone }));
-        setFormData((prev) => ({
-          ...prev,
+          phone: data.user.phone,
           dateOfBirth: data.user.dateOfBirth,
-        }));
-        setFormData((prev) => ({ ...prev, speciality: data.user.speciality }));
+          categories: data.user.categories || [],
+        });
         setCurrImage(data.user.profilePicture);
-        //setData(data);
-        // alert(data.message);
-      } else {
-        // Handle error
       }
       setLoading(false);
     } catch (error) {
       console.log(error);
     }
   };
+
   const updateUserProfile = async (data) => {
     try {
-      if (JSON.stringify(data) === "{}") {
-        return;
-      }
+      if (!Object.keys(data).length) return;
+
       const formData = new FormData();
       formData.append("name", data.name);
       formData.append("surname", data.surname);
@@ -105,26 +103,22 @@ const ProfilePage = ({}) => {
       formData.append("phoneNumber", data.phone);
       formData.append("email", data.email);
       formData.append("dateOfBirth", data.dateOfBirth);
-      // formData.append("bio", formData.bio);
-      formData.append("speciality", data.speciality);
       formData.append("category", JSON.stringify(data.categories));
       formData.append("profilePicture", image);
+
       const response = await fetch(
         `http://localhost:8000/api/auth/users/${uid}/update`,
         {
           method: "PUT",
-          headers: {
-            Authorization: token,
-          },
+          headers: { Authorization: token },
           body: formData,
         }
       );
+
       if (response.ok) {
         const data = await response.json();
-        //setData(data);
-        alert(data.message);
-      } else {
-        // Handle error
+        // Show SweetAlert after successful update
+        showAlert();
       }
       setIsUpdate(false);
     } catch (error) {
@@ -133,16 +127,23 @@ const ProfilePage = ({}) => {
   };
 
   if (loading) return;
+
   return (
     <>
       <Navbar />
-      {!isUpdate && <button onClick={() => setIsUpdate(true)}>Edit</button>}
       <Container style={{ minHeight: "100vh", paddingBottom: "60px" }}>
-        {/* First Row with ProfileCard and ProfileForm */}
-        {/*<Navbar/>*/}
+        <div className="profile-edit d-flex justify-content-between align-items-center">
+         <div className="welcome-message">
+           <h4 className="welcome-name">Welcome, John Doe</h4> {/* Placeholder for the user's name */}
+         </div>
+         {!isUpdate && (
+           <Button variant="dark" onClick={() => setIsUpdate(true)}>
+             Edit
+           </Button>
+         )}
+       </div>
         <Row className="my-4">
           <Col md={3}>
-            {/* Left Column - ProfileCard Component */}
             <ProfileCard
               speciality={formData.speciality}
               image={currImage}
@@ -150,7 +151,6 @@ const ProfilePage = ({}) => {
             />
           </Col>
           <Col md={9}>
-            {/* Right Column - ProfileForm Component with props from components */}
             <ProfileForm
               formData={{
                 name: formData.name,
@@ -159,50 +159,41 @@ const ProfilePage = ({}) => {
                 phone: formData.phone || "",
                 email: formData.email || "",
                 dateOfBirth: formData.dateOfBirth,
-                speciality: formData.speciality,
               }}
               handleChange={handleChange}
+              isUpdate={isUpdate} // Pass isUpdate as a prop
             />
             <Row>
               <Col>
-                {/* Below the profile card and form - CategoryPreferences Component */}
                 <CategoryPreferences
                   onSubmit={handleCategoriesSubmit}
                   isUpdate={isUpdate}
-                  cancel={() => setIsUpdate(false)}
                 />
               </Col>
             </Row>
-            {/* <Row className="justify-content-end mt-4">
-              <Col xs={12} className="text-right">
-                <Button className="cancel-button me-4">Cancel</Button>
-                <Button
-                  variant="dark"
-                  className="update-button"
-                  type="submit"
-                  onClick={() => updateUserProfile(formData)}
-                >
-                  Update
-                </Button>
-              </Col>
-            </Row> */}
           </Col>
         </Row>
 
-        {/* Second Row with CategoryPreferences */}
-        <Row>
-          <Col>
-            {/* Below the profile card and form - CategoryPreferences Component */}
-            {/* <CategoryPreferences />*/}
-          </Col>
-        </Row>
+        {/* Update and Cancel buttons at the bottom right */}
+        {isUpdate && (
+          <div className="profile-buttons-container">
+            <Button
+              variant="secondary"
+              onClick={() => setIsUpdate(false)}
+              className="cancel-button"
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="dark"
+              onClick={() => updateUserProfile(formData)}
+              className="update-button"
+            >
+              Update
+            </Button>
+          </div>
+        )}
       </Container>
-
-      {/* Place buttons outside of the container for better positioning 
-      <div className="button-container">
-        <button className="cancel-button">Cancel</button>
-        <button className="update-button">Update</button>
-      </div>*/}
     </>
   );
 };
