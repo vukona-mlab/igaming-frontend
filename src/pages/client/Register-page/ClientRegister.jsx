@@ -148,7 +148,7 @@ const ClientRegister = () => {
           )}
 
           {/* Sign Up Button */}
-          <LoadingButton onClick={handleRegister} text="Sign up" />
+          <LoadingButton onClick={handleRegister} text="Continue with email" />
 
           {/* Google Sign-In Button */}
           <GoogleSignInButton handleGoogleSignIn={handleGoogleSignIn} />
