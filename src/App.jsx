@@ -12,6 +12,7 @@ import LandingPage from "./pages/landingPage/LandingPage";
 import ProtectedRouteReg from "./components/Protected/ProtectedReg";
 import ProtectedRoutes from "./components/Protected/ProtectedRoutes";
 import ProtectRole from "./components/Protected/ProtectRole";
+
 function App() {
   const userRole = localStorage.getItem("role");
   return (
