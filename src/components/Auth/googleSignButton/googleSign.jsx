@@ -2,15 +2,17 @@ import React from "react";
 import { Button } from "react-bootstrap";
 import { FcGoogle } from "react-icons/fc"; // Google Icon
 
-//pass props 
-const GoogleSignInButton = ({handleGoogleSignIn}) => {
+// Pass props
+const GoogleSignInButton = ({ handleGoogleSignIn }) => {
   return (
     <>
       <style>
         {`
           .google-sign-in-btn {
             border: 1px solid #4e3629 !important; /* Dark Brown Border */
-            border-radius: 8px !important; /* Rounded corners */
+            border-radius: 15px !important; /* Rounded corners */
+            width: 90% !important;
+            height: 50px !important; /* Set height to 40px */
           }
 
           /* Optional: Button hover effect */
