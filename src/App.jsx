@@ -21,7 +21,8 @@ function App() {
           <Routes>
             <Route exact path="/" element={<LandingPage />} />
             <Route path="/resetPassword" element={<ResetPassword />} />
-
+            <Route path="/freelancerProfile" element={<FreelancerProfile/>} />
+            <Route path="/clientProfile" element={<ClientProfile/>} />
             <Route element={<ProtectedRouteReg />}>
               <Route exact path="clientRegister" element={<ClientRegister />} />
               <Route
