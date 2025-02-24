@@ -12,38 +12,47 @@ import LandingPage from "./pages/landingPage/LandingPage";
 import ProtectedRouteReg from "./components/Protected/ProtectedReg";
 import ProtectedRoutes from "./components/Protected/ProtectedRoutes";
 import ProtectRole from "./components/Protected/ProtectRole";
+import FreelancerCard from "./components/Freelancer Card/FreelancerCard";
+import profileImage from './assets/download.jpg';
+
+
 function App() {
   const userRole = localStorage.getItem("role");
+  
+  const handleMessage = (freelancerName) => {
+    console.log(`Messaging ${freelancerName}`);
+    // Add your message handling logic here
+  };
+
   return (
     <div className="App">
-      <Router>
-        <div className="App">
-          <Routes>
-            <Route exact path="/" element={<LandingPage />} />
-            <Route path="/resetPassword" element={<ResetPassword />} />
-
-            <Route element={<ProtectedRouteReg />}>
-              <Route exact path="clientRegister" element={<ClientRegister />} />
-              <Route
-                exact
-                path="freelancerRegister"
-                element={<FreelancerRegister />}
-              />
-
-              <Route exact path="clientSignin" element={<ClientSignIn />} />
-              <Route
-                exact
-                path="freelancerSignin"
-                element={<FreelancerSignIn />}
-              />
-            </Route>
-
-            <Route element={<ProtectedRoutes />}>
-              <Route path="profile" element={<ProtectRole />} />
-            </Route>
-          </Routes>
+      <div className="app-container">
+        <div style={{ 
+          maxWidth: "1200px", 
+          width: "100%",
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          gap: "20px"
+        }}>
+          <FreelancerCard
+            profilePicture={profileImage}
+            name="John Doe"
+            jobTitle="Full Stack Developer"
+            projectsCompleted={25}
+            rating={4.8}
+            onMessageClick={() => handleMessage("John Doe")}
+          />
+          <FreelancerCard
+            profilePicture={profileImage}
+            name="Jane Smith"
+            jobTitle="UI/UX Designer"
+            projectsCompleted={32}
+            rating={4}
+            onMessageClick={() => handleMessage("Jane Smith")}
+          />
         </div>
-      </Router>
+      </div>
     </div>
   );
 }
