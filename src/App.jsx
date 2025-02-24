@@ -13,8 +13,6 @@ import ProtectedRouteReg from "./components/Protected/ProtectedReg";
 import ProtectedRoutes from "./components/Protected/ProtectedRoutes";
 import ProtectRole from "./components/Protected/ProtectRole";
 
-import ForgotPassword from "./pages/forgotPassword/ForgotPassword";
-
 function App() {
   const userRole = localStorage.getItem("role");
   return (
@@ -23,27 +21,20 @@ function App() {
         <div className="App">
           <Routes>
             <Route exact path="/" element={<LandingPage />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/resetPassword" element={<ResetPassword />} />
 
-            <Route path="/freelancer-profile" element={<FreelancerProfile />} />
-            <Route path="/client-profile" element={<ClientProfile />} />
             <Route element={<ProtectedRouteReg />}>
+              <Route exact path="clientRegister" element={<ClientRegister />} />
               <Route
                 exact
-                path="client-register"
-                element={<ClientRegister />}
-              />
-              <Route
-                exact
-                path="freelancer-register"
+                path="freelancerRegister"
                 element={<FreelancerRegister />}
               />
 
-              <Route exact path="client-signin" element={<ClientSignIn />} />
+              <Route exact path="clientSignin" element={<ClientSignIn />} />
               <Route
                 exact
-                path="freelancer-signin"
+                path="freelancerSignin"
                 element={<FreelancerSignIn />}
               />
             </Route>

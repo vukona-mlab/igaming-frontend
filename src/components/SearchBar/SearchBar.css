@@ -41,4 +41,9 @@
 
 .search-input::placeholder {
   color: #999;
+}
+
+.search-bar-container {
+  margin-top: 10rem;
+  margin-bottom: 2rem;
 } 
