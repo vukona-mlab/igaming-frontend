@@ -58,11 +58,11 @@
 .job-interest-options {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
 }
 
 .job-interest-option {
-  padding: 5px;
+  padding: 10px;
   border-radius: 5px;
   background-color: rgba(211, 211, 211, 0.486);
   cursor: pointer;
