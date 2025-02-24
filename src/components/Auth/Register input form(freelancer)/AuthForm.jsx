@@ -30,7 +30,7 @@ const AuthForm = ({ formData, setFormData, onSubmit }) => {
   };
 
   return (
-    <Form className="p-3 auth-form rounded shadow-sm">
+    <Form className="auth-form p-0">
       <Form.Group className="mb-3">
         <Form.Label>Username</Form.Label>
         <Form.Control
@@ -49,7 +49,6 @@ const AuthForm = ({ formData, setFormData, onSubmit }) => {
 
       <Form.Group className="mb-3">
         <Form.Label>Password</Form.Label>
-        <InputGroup>
           <Form.Control
             type={showPassword ? "text" : "password"}
             name="password"
@@ -59,23 +58,10 @@ const AuthForm = ({ formData, setFormData, onSubmit }) => {
             isInvalid={!!errors.password}
             className="form-control-grey"
           />
-          <Button
-            variant="link"
-            className="text-secondary p-0 border-0"
-            onClick={() => setShowPassword(!showPassword)}
-            style={{
-              position: "absolute",
-              right: "10px",
-              top: "50%",
-              transform: "translateY(-50%)",
-            }}
-          >
-            {showPassword ? <EyeSlash /> : <Eye />}
-          </Button>
           <Form.Control.Feedback type="invalid">
             {errors.password}
           </Form.Control.Feedback>
-        </InputGroup>
+    
       </Form.Group>
 
       <Form.Group className="mb-3">
