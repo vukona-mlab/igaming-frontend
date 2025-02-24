@@ -1,0 +1,15 @@
+.SeeMoreButton {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-size: 26px;
+  width: auto;
+  padding: 1.1rem 1.8rem;
+  background-color: #333333;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+  font-size: 0.9rem;
+}
