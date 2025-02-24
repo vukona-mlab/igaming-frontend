@@ -20,21 +20,25 @@ function App() {
         <div className="App">
           <Routes>
             <Route exact path="/" element={<LandingPage />} />
-            <Route path="/resetPassword" element={<ResetPassword />} />
-            <Route path="/freelancerProfile" element={<FreelancerProfile/>} />
-            <Route path="/clientProfile" element={<ClientProfile/>} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/freelancer-profile" element={<FreelancerProfile />} />
+            <Route path="/client-profile" element={<ClientProfile />} />
             <Route element={<ProtectedRouteReg />}>
-              <Route exact path="clientRegister" element={<ClientRegister />} />
               <Route
                 exact
-                path="freelancerRegister"
+                path="client-register"
+                element={<ClientRegister />}
+              />
+              <Route
+                exact
+                path="freelancer-register"
                 element={<FreelancerRegister />}
               />
 
-              <Route exact path="clientSignin" element={<ClientSignIn />} />
+              <Route exact path="client-signin" element={<ClientSignIn />} />
               <Route
                 exact
-                path="freelancerSignin"
+                path="freelancer-signin"
                 element={<FreelancerSignIn />}
               />
             </Route>

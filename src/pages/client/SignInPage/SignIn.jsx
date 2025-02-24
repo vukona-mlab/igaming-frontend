@@ -92,7 +92,7 @@ export default function Signin() {
         <div className="left-side">
           <LoginRegisterButton
             text="Register"
-            func={() => navigation("/clientRegister")}
+            func={() => navigation("/client-register")}
           />
           <div className="welcome-box">
             <div className="red-line"></div>

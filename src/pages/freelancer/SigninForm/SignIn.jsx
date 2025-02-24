@@ -92,7 +92,7 @@ export default function SignIn() {
         <div className="input-form">
           <LoginRegisterButton
             text="Register"
-            func={() => navigation("/freelancerRegister")}
+            func={() => navigation("/freelancer-register")}
           />
           <div className="welcome-box">
             <div className="red-line"></div>
