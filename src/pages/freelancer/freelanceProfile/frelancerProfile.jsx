@@ -143,8 +143,20 @@ const ProfilePage = ({}) => {
   return (
     <>
       <Navbar />
-      {!isUpdate && <button onClick={() => setIsUpdate(true)}>Edit</button>}
+    
       <Container style={{ minHeight: "100vh", paddingBottom: "60px" }}>
+      <div className="profile-edit d-flex justify-content-between align-items-center">
+  <div className="welcome-message">
+    <h4 className="welcome-name">Welcome, John Doe</h4> {/* Placeholder for the user's name */}
+  </div>
+  {!isUpdate && (
+    <Button variant="dark" onClick={() => setIsUpdate(true)}>
+      Edit
+    </Button>
+  )}
+</div>
+
+
         {/* First Row with ProfileCard and ProfileForm */}
         <Row className="my-4">
           <Col md={3}>
@@ -174,29 +186,36 @@ const ProfilePage = ({}) => {
               <Col>
                 {/* Below the profile card and form - CategoryPreferences Component */}
                 <CategoryPreferences
-                  onSubmit={handleCategoriesSubmit}
-                  isUpdate={isUpdate}
-                  cancel={() => setIsUpdate(false)}
+                 
                 />
               </Col>
             </Row>
           </Col>
         </Row>
 
-        {/* Second Row with CategoryPreferences */}
-        <Row>
-          <Col>
-            {/* Below the profile card and form - CategoryPreferences Component */}
-            {/* <CategoryPreferences onSubmit={handleCategoriesSubmit} /> */}
-          </Col>
-        </Row>
+        {/* Update and Cancel buttons at the bottom right */}
+               {isUpdate && (
+                 <div className="profile-buttons-container">
+                   <Button
+                     variant="secondary"
+                     onClick={() => setIsUpdate(false)}
+                     className="cancel-button"
+                   >
+                     Cancel
+                   </Button>
+                   <Button
+                     variant="dark"
+                     onClick={() => handleCategoriesSubmit(formData)}
+                     className="update-button"
+                   >
+                     Update
+                   </Button>
+                 </div>
+               )}
+        
       </Container>
 
-      {/* Place buttons outside of the container for better positioning 
-      <div className="button-container">
-        <button className="cancel-button">Cancel</button>
-        <button className="update-button">Update</button>
-      </div>*/}
+      
     </>
   );
 };
