@@ -7,25 +7,40 @@ import LoginRegisterButton from "../../../components/Auth/LoginRegisterButton/Lo
 import { useNavigate } from "react-router";
 import { auth, googleProvider } from "../../../config/firebase";
 import { signInWithPopup } from "firebase/auth";
+import {validateEmail, validatePassword} from '../../../utils/validateForminputs'
+
 export default function Signin() {
-  const [formData, setFormData] = useState({ username: "", password: "" });
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const navigation = useNavigate();
 
   function handleFormDataChange(e) {
+    let errorMessage = "";
+    if (name === "email") errorMessage = validateEmail(value);
+    if (name === "password") errorMessage = validatePassword(value);
     const value = e.target.value;
-    setFormData(value);
+    // setFormData(value);
 
-    if (!value.trim()) {
-      setError("This field is required.");
-    } else {
-      setError("");
-    }
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: errorMessage }));
+
+    // if (!value.trim()) {
+    //   setError("This field is required.");
+    // } else {
+    //   setError("");
+    // }
   }
+
+
+
   const handleSubmit = async () => {
     //e.preventDefault();
-
-    if (!error) {
+    const emailError = validateEmail(formData.email);
+    console.log(formData.email)
+    const passwordError = validatePassword(formData.password);
+    if (emailError || passwordError) {
+      setError({ email: emailError, password: passwordError });
+      return;
       // Submit form
       try {
         const res = await fetch(`http://localhost:8000/api/auth/login`, {
@@ -34,7 +49,7 @@ export default function Signin() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            email: formData.username,
+            email: formData.email,
             password: formData.password,
           }),
         });
@@ -106,7 +121,7 @@ export default function Signin() {
           <InputForm
             formData={formData}
             handleFormDataChange={setFormData}
-            label1={"username"}
+            label1={"email"}
             label2={"password"}
           />
           <div className="loading-btn">
