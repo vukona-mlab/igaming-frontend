@@ -27,6 +27,7 @@
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
+    font-weight: bold;
 }
 
 .cancel-button:hover {
@@ -48,3 +49,22 @@
 .update-button:hover {
     background-color: #333;
 }
+
+.profile-buttons-container {
+    width: 100%; /* Ensures the div takes full width */
+    display: flex;
+    justify-content: flex-end; /* Aligns buttons to the right */
+    gap: 10px; /* Adds spacing between buttons */
+    margin-top: 20px;
+    padding: 10px;
+  }
+  
+  .profile-edit {
+    width: 100%; /* Ensures the div takes full width */
+    display: flex;
+    justify-content: flex-end; /* Aligns buttons to the right */
+    gap: 10px; /* Adds spacing between buttons */
+    margin-top: 20px;
+    padding: 10px;
+  }
+  
