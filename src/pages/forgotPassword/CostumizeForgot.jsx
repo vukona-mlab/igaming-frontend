@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { FiArrowRight } from "react-icons/fi";
-import LoadingButton from "../../components/ButtonLoader/LoadingButton";
+import LoadingButton from "../../components/Common/ButtonLoader/LoadingButton";
 import "./CostumizeForgot.css";
-
+import { auth } from "../../config/firebase";
+import { sendPasswordResetEmail } from "firebase/auth";
 const CostumizeForgot = () => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -20,6 +21,16 @@ const CostumizeForgot = () => {
       setEmailError("");
       // Trigger the email reset process here
       console.log("Reset email sent to:", email);
+      return new Promise((r) =>
+        sendPasswordResetEmail(auth, email)
+          .then(() => {
+            alert("Check your email");
+            r(true);
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+      );
     }
   };
 
