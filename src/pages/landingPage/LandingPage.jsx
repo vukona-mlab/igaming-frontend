@@ -7,6 +7,7 @@ import Footer from "../footer/Footer";
 import Showcase from "../../components/Landing/Showcase/Showcase";
 import TopFreelancers from "../../components/Landing/TopFreelancers/TopFreelancers";
 import MadeOnRI from "../../components/Landing/MadeOnRI/MadeOnRI";
+import FAQSection from "../../components/Landing/FAQSection/FAQSection";
 function LandingPage() {
   return (
     <>
@@ -15,6 +16,7 @@ function LandingPage() {
       <Showcase />
       <TopFreelancers />
       <MadeOnRI />
+      <FAQSection />
       <About />
       <Footer />
     </>
