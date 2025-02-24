@@ -1,0 +1,27 @@
+.question {
+  font-weight: 700;
+  font-size: 20px;
+  box-shadow: 2px 2px 5px #0000000d;
+  height: 75px;
+  border-radius: 5px;
+  margin: 15px 0px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.answer {
+  background-color: #ebebeb;
+  border-radius: 5px;
+  padding: 25px;
+  box-shadow: 2px 2px 5px #0000000d;
+}
+
+.answerTitle {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.answerDescription {
+  font-size: 16px;
+  font-weight: 400;
+}
