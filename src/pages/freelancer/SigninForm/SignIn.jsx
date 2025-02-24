@@ -1,74 +1,75 @@
 import React, { useState } from "react";
-import "./SignIn.css";
+import "./signin.css";
 import InputForm from "../../../components/Auth/reusable-input-form/InputForm";
-import LoginRegisterButton from "../../../components/Auth/LoginRegisterButton/LoginRegisterButton";
-import EmailResetButton from "../../../components/Auth/EmailResetButton/Button";
+import LoadingButton from "../../../components/Common/ButtonLoader/LoadingButton";
 import GoogleSignInButton from "../../../components/Auth/googleSignButton/googleSign";
+import LoginRegisterButton from "../../../components/Auth/LoginRegisterButton/LoginRegisterButton";
 import { useNavigate } from "react-router";
 import { auth, googleProvider } from "../../../config/firebase";
 import { signInWithPopup } from "firebase/auth";
-export default function SignIn() {
-  const [formData, setFormData] = useState({ username: "", password: "" });
-  const [error, setError] = useState("");
-  const navigation = useNavigate();
-  function handleFormDataChange(e) {
-    const value = e.target.value;
-    setFormData(value);
+import { validateEmail, validatePassword } from "../../../utils/validation"; // Import validation functions
 
-    if (!value.trim()) {
-      setError("This field is required.");
-    } else {
-      setError("");
+export default function Signin() {
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [errors, setErrors] = useState({ email: "", password: "" });
+  const navigation = useNavigate();
+
+  function handleFormDataChange(e) {
+    const { name, value } = e.target;
+
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+
+    // Validate input
+    if (name === "email") {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        email: validateEmail(value),
+      }));
+    } else if (name === "password") {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        password: validatePassword(value),
+      }));
     }
   }
 
   const handleSubmit = async () => {
-    //e.preventDefault();
+    // Check for errors before submitting
+    if (errors.email || errors.password || !formData.email || !formData.password) {
+      alert("Please fix the errors before submitting.");
+      return;
+    }
 
-    if (!error) {
-      // Submit form
-      try {
-        const res = await fetch(`http://localhost:8000/api/auth/login`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: formData.username,
-            password: formData.password,
-          }),
-        });
-        const data = await res.json();
-        if (res.ok) {
-          console.log({ data });
-          localStorage.setItem("token", data.token);
-          localStorage.setItem("uid", data.user.uid);
-          localStorage.setItem("role", data.user.roles[0]);
+    try {
+      const res = await fetch("http://localhost:8000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
-          navigation("/profile");
-        }
-
-        //setLoading(false);
-      } catch (err) {
-        console.log(err);
-        //setLoading(false);
+      const data = await res.json();
+      if (res.ok) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("uid", data.user.uid);
+        localStorage.setItem("role", data.user.roles[0]);
+        navigation("/profile");
       }
+    } catch (err) {
+      console.error("Login error:", err);
     }
   };
+
   const handleGoogleSignIn = async () => {
     try {
-      // Sign in with Google
       const result = await signInWithPopup(auth, googleProvider);
-
-      // Get ID token
       const idToken = await result.user.getIdToken();
 
-      // Send token to backend
       const response = await fetch("http://localhost:8000/api/auth/google", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ idToken }),
       });
 
@@ -77,51 +78,48 @@ export default function SignIn() {
         localStorage.setItem("token", data.token);
         localStorage.setItem("uid", data.user.uid);
         localStorage.setItem("role", data.user.roles[0]);
-
         navigation("/profile");
       }
-      //setUserInfo(data);
     } catch (error) {
       console.error("Error:", error);
       alert("Error signing in: " + error.message);
     }
   };
+
   return (
     <>
       <div className="container">
-        <div className="input-form">
-          <LoginRegisterButton
-            text="Register"
-            func={() => navigation("/freelancerRegister")}
-          />
+        <div className="left-side">
+          <LoginRegisterButton text="Register" func={() => navigation("/clientRegister")} />
           <div className="welcome-box">
             <div className="red-line"></div>
             <div className="welcome-text">
-              <h1>
-                WELCOME BACK <br />
-                SIGN IN
-              </h1>
+              <h1>WELCOME BACK <br /> SIGN IN</h1>
             </div>
           </div>
+
           <InputForm
             formData={formData}
-            handleFormDataChange={setFormData}
-            label1={"username"}
+            handleFormDataChange={handleFormDataChange}
+            label1={"email"}
             label2={"password"}
+            errors={errors} // Pass errors as props to display messages
           />
-          <div className="email-button">
-            <EmailResetButton text="Continue with email" func={handleSubmit} />
+
+          {errors.email && <p className="error-message">{errors.email}</p>}
+          {errors.password && <p className="error-message">{errors.password}</p>}
+
+          <div className="loading-btn">
+            <LoadingButton onClick={handleSubmit} text="Continue with email" />
           </div>
+
           <div className="google-signin">
             <GoogleSignInButton handleGoogleSignIn={handleGoogleSignIn} />
           </div>
         </div>
-        <div className="image-section">
-          <img
-            src="/public/images/ri-experts.jpg"
-            alt="logo"
-            className="image"
-          ></img>
+
+        <div className="right-side">
+          <img src="/public/images/ri-experts.jpg" alt="logo" className="image" />
         </div>
       </div>
     </>
