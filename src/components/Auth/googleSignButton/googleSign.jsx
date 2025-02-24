@@ -13,6 +13,7 @@ const GoogleSignInButton = ({ handleGoogleSignIn }) => {
             border-radius: 15px !important; /* Rounded corners */
             width: 80% !important;
             height: 50px !important; /* Set height to 40px */
+            min-width: 270px;
           }
 
           /* Optional: Button hover effect */

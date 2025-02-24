@@ -1,7 +1,6 @@
-import React, { useState } from "react"; 
+import React, { useState } from "react";
 import { useNavigate } from "react-router";
-
-import { FiArrowRight } from "react-icons/fi"; // Import the arrow icon
+import { FiArrowRight } from "react-icons/fi";
 import LoadingButton from "../../../components/Common/ButtonLoader/LoadingButton";
 import GoogleSignInButton from "../../../components/Auth/googleSignButton/googleSign";
 import AuthForm from "../../../components/Auth/Register input form(freelancer)/AuthForm";
@@ -19,6 +18,20 @@ export const validatePassword = (password) => {
 export const validateEmail = (email) => {
   if (!email.match(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/)) {
     return "Invalid email format";
+  }
+  return "";
+};
+
+export const validateJobTitle = (jobTitle) => {
+  if (!jobTitle.trim()) {
+    return "Job title is required";
+  }
+  return "";
+};
+
+export const validateExperience = (experience) => {
+  if (!experience || isNaN(experience) || experience < 0) {
+    return "Experience must be a positive number";
   }
   return "";
 };
@@ -42,13 +55,8 @@ const Register = () => {
 
   const handleGoogleSignIn = async () => {
     try {
-      // Sign in with Google
       const result = await signInWithPopup(auth, googleProvider);
-
-      // Get ID token
       const idToken = await result.user.getIdToken();
-
-      // Send token to backend
       const response = await fetch("http://localhost:8000/api/auth/google", {
         method: "POST",
         headers: {
@@ -71,60 +79,54 @@ const Register = () => {
     }
   };
 
-  const handleFormSubmit = (formData) => {
-    console.log("Form Submitted:", formData);
-    // Handle form submission logic here
-  };
-
   const handleRegister = async () => {
     const emailError = validateEmail(formData.username);
     const passwordError = validatePassword(formData.password);
+    const jobTitleError = validateJobTitle(formData.jobTitle);
+    const experienceError = validateExperience(formData.experience);
 
-    if (emailError || passwordError) {
-      setErrors({ username: emailError, password: passwordError });
+    if (emailError || passwordError || jobTitleError || experienceError) {
+      setErrors({
+        username: emailError,
+        password: passwordError,
+        jobTitle: jobTitleError,
+        experience: experienceError,
+      });
       return;
     }
 
-    console.log({ formData });
+    try {
+      const res = await fetch("http://localhost:8000/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.username,
+          password: formData.password,
+          jobTitle: formData.jobTitle,
+          experience: formData.experience,
+          roles: ["Freelancer"],
+        }),
+      });
 
-    return new Promise(async (r) => {
-      try {
-        const res = await fetch(`http://localhost:8000/api/auth/register`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: formData.username,
-            password: formData.password,
-            jobTitle: formData.jobTitle,
-            experience: formData.experience,
-            roles: ["Freelancer"],
-            
-          }),
-        });
-        const data = await res.json();
-        if (res.ok) {
-          console.log({ data });
-          alert(data.message);
-          r(true);
-        }
-      } catch (err) {
-        console.log(err);
-        r(false);
+      const data = await res.json();
+      if (res.ok) {
+        alert(data.message);
+        navigation("/profile");
+      } else {
+        alert(data.error || "Registration failed");
       }
-    });
+    } catch (err) {
+      console.log(err);
+      alert("Error registering user");
+    }
   };
 
   return (
     <div className="client-register-container">
-      {/* Left Section */}
       <div className="client-register-left">
-        {/* Register Button */}
-        <button
-          className="client-register-btn"
-          onClick={() => navigation("/clientSignin")}
-        >
+        <button className="client-register-btn" onClick={() => navigation("/clientSignin")}>
           <b>
             Login <FiArrowRight className="client-register-arrow" />
           </b>
@@ -136,27 +138,18 @@ const Register = () => {
             SIGN UP AS A FREELANCER
           </h2>
 
-          {/* AuthForm Component */}
-          <AuthForm
-            formData={formData}
-            setFormData={setFormData}
-            onSubmit={handleFormSubmit}
-            errors={errors}
-          />
+          <AuthForm formData={formData} setFormData={setFormData} errors={errors} />
 
-          {/* Display validation errors */}
           {errors.username && <p className="error-message">{errors.username}</p>}
           {errors.password && <p className="error-message">{errors.password}</p>}
+          {errors.jobTitle && <p className="error-message">{errors.jobTitle}</p>}
+          {errors.experience && <p className="error-message">{errors.experience}</p>}
 
-          {/* Sign Up Button */}
-          <LoadingButton onClick={handleRegister} text="Sign up" />
-
-          {/* Google Sign-In Button */}
+          <LoadingButton onClick={handleRegister} text="Continue with email" />
           <GoogleSignInButton handleGoogleSignIn={handleGoogleSignIn} />
         </div>
       </div>
 
-      {/* Right Section */}
       <div className="client-register-right d-flex align-items-stretch">
         <img
           src="/public/images/ri-experts.jpg"
