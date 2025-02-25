@@ -7,7 +7,7 @@ import LoginRegisterButton from "../../../components/Auth/LoginRegisterButton/Lo
 import { useNavigate } from "react-router";
 import { auth, googleProvider } from "../../../config/firebase";
 import { signInWithPopup } from "firebase/auth";
-import { validateEmail, validatePassword } from "../../../utils/validation"; // Import validation functions
+import {validateEmail, validatePassword} from '../../../utils/validateForminputs'
 
 export default function Signin() {
   const [formData, setFormData] = useState({ email: "", password: "" });
