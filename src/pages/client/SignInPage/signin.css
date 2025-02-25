@@ -1,79 +1,187 @@
-.container {
+.client-login-container {
   display: flex;
-}
-
-.login-register-button {
+  height: 100vh;
+  background: #fff;
   position: relative;
-  left: 75%;
-  margin-top: 28px;
-  margin-bottom: 28px;
+  align-items: stretch;
+  width: 100% !important;
 }
 
-.left-side {
-  flex: 1;
-  width: 100%;
-  margin-top: 20px;
-}
-
-.welcome-box {
+.client-login-left {
+  flex: 55%;
+  width: 55% !important;
+  background: #fff;
+  padding: 50px;
   display: flex;
-  padding: 38px;
-  gap: 50px;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  height: 100%;
+  margin-top: 0;
+  width: 100% !important;
+  align-items: center !important;
+}
+
+.client-login-right {
+  flex: 45%;
+  width: 45% !important;
+  display: flex;
+  justify-content: center;
   align-items: center;
-  margin-top: 10px;
-  margin-bottom: 20px;
+  height: 100vh;
+  overflow: hidden;
+  padding: 1px;
 }
 
-h1 {
-  font-family: "Poppins", sans-serif;
-  font-weight: bold;
-  font-size: 48px;
-  line-height: 72px;
-  color: black;
-  position: relative;
-  right: 50px;
-  bottom: 55px;
-}
-
-.red-line {
-  color: #b90909;
-  width: 15%;
-  border: none;
-  height: 9px;
-  background-color: #b90909;
-  transform: rotate(90deg);
-  position: relative;
-  right: 3px;
-  bottom: 50px;
-}
-
-.right-side {
-  display: flex;
-}
-
-.image {
+.client-login-right img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  padding: 1px;
+  object-position: center;
 }
 
-.loading-btn {
-  border-radius: 20px !important;
-  width: 551px !important;
-  /* height:77px !important; */
-  justify-content: center;
-  padding-left: 24px;
-  padding-right: 24px;
+.client-login-btn {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  background: black;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  font-family: "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease-in-out;
 }
 
-.google-sign-in-btn {
-  margin-top: 20px;
-  margin-bottom: 10px;
-  border: 1px solid #4e3629 !important;
-  border-radius: 20px !important;
-  width: 551px !important;
-  height: 77px !important;
-  justify-content: center;
-  padding-left: 24px;
-  padding-right: 24px;
+.client-login-arrow {
+  font-size: 1.2rem;
+  margin-left: 3px;
+}
+
+.client-login-form {
+  margin-top: 45px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100% !important;
+}
+
+.client-login-title {
+  font-size: 37px;
+  font-weight: 700;
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 60px;
+  width: 80%;
+  margin-left: -50px;
+}
+
+.client-red-line {
+  width: 10px;
+  height: 100%;
+  background: #b90909;
+  margin-right: 20px;
+}
+
+.client-input-group {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.client-input-group label {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.client-input-group input {
+  width: 100% !important;
+  padding: 15px !important;
+  margin-top: 8px;
+  border: 0px solid #ddd;
+  border-radius: 5px;
+  background: #f7f7f7;
+}
+
+.client-login-left .loading-button {
+  height: 50px;
+  margin-top: 8px !important;
+
+  width: 80% !important;
+  border-radius: 15px;
+}
+
+.error-message {
+  font-size: 11px;
+  color: red;
+  text-align: center;
+  width: 100%;
+  margin-top: 2px;
+  font-weight: 500;
+}
+
+@media screen and (max-width: 768px) {
+  .client-login-right {
+    display: none;
+    flex: 0;
+  }
+  .client-login-right img {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .client-login-left {
+    flex: 100%;
+    width: 100% !important;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .auth-form {
+    width: 95% !important;
+  }
+  .client-login-title {
+    font-size: 25px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+  }
+}
+
+@media screen and (max-width: 902px) and (min-width: 770px) {
+  .client-login-title {
+    font-size: 32px;
+    margin-bottom: 50px;
+  }
+  .client-red-line {
+    height: 115px;
+  }
+}
+
+@media screen and (max-width: 340px) and (min-width: 331px) {
+  .client-login-form {
+    width: 95% !important;
+  }
+}
+
+@media screen and (max-width: 425px) and (min-width: 341px) {
+  .client-login-form {
+    width: 75% !important;
+  }
+}
+
+.success-message {
+  color: #28a745;
+  font-size: 10px;
+  font-weight: bold;
+  margin-top: 10px;
+  text-align: center;
 }
