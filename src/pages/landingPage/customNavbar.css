@@ -1,7 +1,6 @@
 .custom-navigation {
   height: 90px;
   position: relative;
-  /* Needed for absolute positioning */
 }
 
 .custom-navbar {
@@ -9,61 +8,77 @@
   width: 100%;
 }
 
-.nav-link {
+/* Increased specificity for .nav-link */
+
+.custom-navigation .custom-navbar .nav-link {
   width: 151px;
   height: 39px;
   text-align: center;
   border-radius: 12px;
   padding: 10px;
   font-weight: 500;
-  font-size: 12px;
+  font-size: 20px;
   line-height: 18px;
   font-family: "Poppins";
   color: #000;
-  border: none;
+  border: 1px solid transparent;
   background-color: transparent;
+  transition: all 0.3s ease;
 }
 
-/* Only Home Link Active Style */
+/* Increased specificity for hover state */
 
-.nav-link[href="#home"] {
-  background-color: black;
+.custom-navigation .custom-navbar .nav-link:hover {
   color: white !important;
-  border-radius: 12px;
+  /* Force white text on hover */
+  background-color: #020202 !important;
+  /* Force background color on hover */
+  border: 1px solid black !important;
+  /* Force border color on hover */
 }
 
-/* Hover behavior stays consistent */
+/* Search Container */
 
-.nav-link:hover {
-  color: #ffffff;
+/* Ensure search-container keeps icon & bar together */
+
+.search-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  /* Ensures both elements stay aligned */
 }
 
-/* Search Icon Styling */
+/* Adjust search icon */
 
 .search-icon {
-  display: flex;
-  align-items: center;
-  margin-right: 15px;
   cursor: pointer;
+  margin-right: 10px;
 }
 
-/* Search Bar (Positioned Absolutely) */
+/* Adjust search bar so it stays within the navbar */
 
 .search-bar {
-  position: absolute;
-  top: 50%;
-  /* Vertically center */
-  right: 10px;
-  /* Align to the right */
-  transform: translateY(-50%);
-  display: flex;
-  align-items: center;
+  display: none;
+  /* Hidden by default */
+  width: 180px;
   background-color: #fff;
-  padding: 5px 10px;
-  border-radius: 12px;
+  padding: 5px 8px;
+  border-radius: 5px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  /* Ensure it appears above other elements */
+}
+
+/* Show search bar when toggled */
+
+.search-container .search-bar {
+  display: flex;
+}
+
+/* Show search bar on hover over search icon */
+
+/* Hide search icon when search bar is visible */
+
+.search-container:hover .search-icon {
+  display: none;
 }
 
 .search-input {
