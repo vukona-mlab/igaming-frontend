@@ -130,7 +130,9 @@
 }
 
 
-
+  
+  
+  
 @media screen and (max-width: 768px) {
   .client-register-right {
     display: none;
@@ -139,37 +141,69 @@
   .client-register-right img {
     display: none;
   }
-  .client-register-left {
-    flex: 100%; 
-    width: 100% !important;
-    
-  }
-  
   
 }
 
-@media screen and (max-width: 425px) {
+
+@media screen and (max-width: 768px) {
   .client-register-left {
-
-    padding: 20px !important;
+    flex: 100%; 
+    width: 100% !important;
   }
-  .client-register-left  {
+}
 
-    width: 90% !important;
-    
-  }
-
+@media screen and (max-width: 425px) {
   .auth-form {
-    width: 90% !important;
+    width: 95% !important;
   
   }
   .client-register-title {
-    font-size: 5px;
+    font-size: 25px;
     font-weight: bold;
     display: flex;
     align-items: center;
-    width: 100%;
 
+  }
+}
+
+@media screen and (max-width: 902px) and (min-width: 770px) {
+  .client-register-title {
+    font-size: 32px; 
+    margin-bottom: 50px;
+  }
+  .client-red-line {
+    height: 115px;
+   
+  }
+}
+
+@media screen and (max-width: 340px) and (min-width: 331px) {
+ 
+  .client-register-form {
+    width: 95% !important;
+    
+  }
+}
+
+@media screen and (max-width: 392px) and (min-width: 371px) {
+ 
+  .client-register-form {
+    width: 83% !important;
+    
+  }
+}
+@media screen and (max-width: 370px) and (min-width: 341px) {
+ 
+  .client-register-form {
+    width: 90% !important;
+    
+  }
+}
+@media screen and (max-width: 425px) and (min-width: 381px) {
+ 
+  .client-register-form {
+    width: 75% !important;
+    
   }
 }
 
