@@ -1,5 +1,4 @@
 import "./App.css";
-import GetStarted from "./pages/GetStartedSection/GetStarted";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import FreelancerRegister from "./pages/freelancer/Register-page/Register";
@@ -14,7 +13,6 @@ import ProtectedRouteReg from "./components/Protected/ProtectedReg";
 import ProtectedRoutes from "./components/Protected/ProtectedRoutes";
 import ProtectRole from "./components/Protected/ProtectRole";
 import DiscoveryPage from "./pages/DiscoveryPage/DiscoveryPage";
-
 
 function App() {
   const userRole = localStorage.getItem("role");

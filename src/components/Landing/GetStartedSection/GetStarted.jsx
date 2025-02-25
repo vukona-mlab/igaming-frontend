@@ -25,43 +25,43 @@ export default function GetStarted() {
         <Container>
           <Row>
             <Col>
-            <div className="cards">
-            <div className="img-card">
-            <img
-                src="/public/images/red-magnifying-img.png"
-                width="300"
-              ></img>
-            </div>
-              <hr />
-              <p>Access a pool of top talent across gaming categories.</p>
-            </div>
+              <div className="cards">
+                <div className="img-card">
+                  <img
+                    src="/public/images/red-magnifying-img.png"
+                    width="300"
+                  ></img>
+                </div>
+                <hr />
+                <p>Access a pool of top talent across gaming categories.</p>
+              </div>
             </Col>
             <Col>
               <div className="cards">
                 <div className="img-card">
-                <img
-                src="/public/images/green-red-img.png"
-                width="300"
-              ></img>
+                  <img src="/public/images/green-red-img.png" width="300"></img>
                 </div>
-                  <hr />
-                  <p>Get quality done quickly and within <br/>budget.</p>
+                <hr />
+                <p>
+                  Get quality done quickly and within <br />
+                  budget.
+                </p>
               </div>
             </Col>
             <Col>
-            <div className="cards">
-            <div className="img-card">
-            <img
-                src="/public/images/green-tick-img.png"
-                width="300"
-              ></img>
-            </div>
-                  <hr />
-                  <p>
-                  Only pay when you're happy with the <br/>
+              <div className="cards">
+                <div className="img-card">
+                  <img
+                    src="/public/images/green-tick-img.png"
+                    width="300"
+                  ></img>
+                </div>
+                <hr />
+                <p>
+                  Only pay when you're happy with the <br />
                   services.
-                  </p>
-            </div>
+                </p>
+              </div>
             </Col>
           </Row>
         </Container>
