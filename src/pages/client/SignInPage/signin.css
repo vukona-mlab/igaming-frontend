@@ -194,5 +194,12 @@
   }
 }
 
+.success-message {
+  color: #28a745; 
+  font-size: 10px;
+  font-weight: bold;
+  margin-top: 10px;
+  text-align: center;
+}
 
 

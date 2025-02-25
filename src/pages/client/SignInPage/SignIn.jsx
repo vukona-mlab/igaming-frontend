@@ -96,6 +96,10 @@ const ClientLogin = () => {
           console.log({ data });
           setSuccessMessage("Login successful! Redirecting..."); 
           setTimeout(() => {
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("uid", data.user.uid);
+            localStorage.setItem("role", data.user.roles[0]);
+  
             navigation("/profile");
           }, 2000); 
           r(true);
