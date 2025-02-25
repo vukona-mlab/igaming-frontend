@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '../Button/MessageButton';
+import { LuMessageSquareShare } from 'react-icons/lu'; // Import the LuMessageSquareShare icon
 import ThumbsUpIcon from '../../assets/mdi-light_thumb-up.svg';
 import ShareIcon from '../../assets/share.svg';
 import './ProjectCard.css';
@@ -8,7 +8,7 @@ const ProjectCard = ({
   projectPicture, 
   projectName, 
   likes,
-  authorName, // Corrected prop name
+  authorName, 
   onDemoClick,
   onShareClick 
 }) => {
@@ -20,7 +20,7 @@ const ProjectCard = ({
     <div className="project-card">
       <div className="project-image">
         <button className="share-button" onClick={onShareClick}>
-          <img src={ShareIcon} alt="share" className="share-icon" />
+          <img src={ShareIcon} alt="share" className="share-icon-first" />
         </button>
         <img 
           src={projectPicture} 
@@ -32,19 +32,18 @@ const ProjectCard = ({
         <div className="project-details">
           <h3 className="project-name">{projectName}</h3>
           <p className="project-likes">{formatLikes(likes)} likes</p>
-          <div className="project-stats">
-            <span className="author">Author : {authorName}</span>
-            <div className="thumbs-up">
+          <p className="author">Author : {authorName}</p>
+          <div className="project-footer">
+            <div className="d-flex justify-content-between align-items-center">
               <img src={ThumbsUpIcon} alt="thumbs up" className="thumbs-icon" />
+              <LuMessageSquareShare 
+                size={24} 
+                className="share-icon" 
+                onClick={onShareClick} 
+              />
             </div>
           </div>
         </div>
-        <Button 
-          onClick={onDemoClick}
-          className="demo-btn"
-        >
-          Demo Link
-        </Button>
       </div>
     </div>
   );
