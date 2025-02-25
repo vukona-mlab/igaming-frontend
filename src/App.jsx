@@ -2,7 +2,7 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import FreelancerRegister from "./pages/freelancer/Register-page/Register";
-import FreelancerSignIn from "./pages/freelancer/SigninForm/SignIn";
+import FreelancerSignIn from "./pages/freelancer/FreelancerSignIn/SignIn";
 import FreelancerProfile from "./pages/freelancer/freelanceProfile/frelancerProfile";
 
 import ClientProfile from "./pages/client/clientProfile/clientProfile";
