@@ -10,6 +10,7 @@
   margin: 1rem;
   background-color: white;
   overflow: hidden;
+  position: relative;
 }
 
 .freelancer-profile {
@@ -107,4 +108,32 @@
 
 .message-btn:hover {
   background-color: #000000;
+}
+
+.message-icon {
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+
+.message-button {
+  position: absolute;
+  top: 24rem;
+  right: 1rem;
+  background-color: #3d3d3d;
+  height: 45px;
+  width: 45px;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+  z-index: 1;
+}
+
+.message-button:hover {
+  background-color: #2d2d2d;
 } 

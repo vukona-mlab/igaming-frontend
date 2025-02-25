@@ -10,6 +10,7 @@ const FreelancerCard = ({
   jobTitle, 
   projectsCompleted, 
   rating,
+  messageIcon,
   onMessageClick 
 }) => {
   const renderStars = () => {
@@ -56,12 +57,9 @@ const FreelancerCard = ({
             </div>
           </div>
         </div>
-        <Button 
-          onClick={onMessageClick}
-          className="message-btn"
-        >
-          Message
-        </Button>
+        <button className="message-button" onClick={onMessageClick}>
+          <img src={messageIcon} alt="Message" className="message-icon" />
+        </button>
       </div>
     </div>
   );
