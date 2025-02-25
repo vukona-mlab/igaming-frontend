@@ -1,10 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
 .showcase-section {
     padding: 60px 0;
 }
 
 .showcase-content {
-    margin-top: 80px;
+    margin-top: 100px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -15,7 +16,6 @@
     max-width: 34%;
     margin-top: -13%;
 }
-
 .showcase-text h2 {
     font-size: 36px;
     font-weight: bold;
@@ -47,9 +47,7 @@
     margin-top: -5%;
 }
 
-
 /* General styles for all images */
-
 .showcase-images img {
     width: 242px;
     height: 495px;
@@ -59,15 +57,11 @@
     transition: transform 0.3s ease;
 }
 
-
 /* Individual adjustments for each image */
-
 .img-card-1 {
     width: 242px;
-    /* Adjust size */
     height: 495px;
     border-radius: 40px;
-    /* Custom border-radius */
 }
 
 .img-card-2 {
@@ -79,7 +73,72 @@
 
 .img-card-3 {
     width: 260px;
-    /* Larger image */
     height: 495px;
     border-radius: 20px;
+}
+
+/* Chat With Us Section 
+.chat-with-us {
+    display: flex;
+    align-items: center;
+margin-left: 30px;    
+    cursor: pointer; /* Make it look clickable 
+
+}    */
+/*
+.chat-with-us span {
+    font-size: 34px;
+    color: #000000;   
+    font-family: 'Poppins';
+    margin-right: 10px; /* Add space between text and icon 
+
+
+.chat-icon {
+    width: 74px;
+    height: 74px;
+}
+
+*/
+@media screen and (max-width: 768px) {
+    .showcase-images img {
+        visibility: hidden;
+        width: 0;
+        height: 0;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .showcase-images {
+        display: none; /* Hides all the images on small screens */
+    }
+
+    
+    .showcase-text {
+        max-width: 70%;
+        margin-top: -13%;
+        margin-left: 13%;
+
+    }
+}
+
+@media screen and (max-width: 1120px) {
+  
+
+    .showcase-content {
+        margin-top: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .showcase-images img {
+        width: 142px;
+        height: 295px;
+        object-fit: cover;
+        border-radius: 40px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s ease;
+    }
+    
 }
