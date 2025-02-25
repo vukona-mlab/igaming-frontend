@@ -15,11 +15,11 @@ function LandingPage() {
       <CustomNavBar />
       <SubNavBar />
       <Showcase />
+      <About />
       <TopFreelancers />
-      <PopularServices/>
+      <PopularServices />
       <MadeOnRI />
       <FAQSection />
-      <About />
       <Footer />
     </>
   );
