@@ -47,22 +47,31 @@ const FreelancerDiscovery = () => {
     return <div className="freelancer-discovery-error">Error: {error}</div>;
   }
 
+  // Group freelancers into rows of 4
+  const rows = [];
+  for (let i = 0; i < freelancers.length; i += 4) {
+    rows.push(freelancers.slice(i, i + 4));
+  }
+
   return (
     <div className="freelancer-discovery">
       <div className="section-divider"></div>
-      <div className="freelancer-grid">
-        {freelancers.map((freelancer) => (
-          <FreelancerCard
-            key={freelancer.id}
-            profilePicture={freelancer.profilePicture || defaultProfile}
-            name={freelancer.displayName || 'Anonymous Freelancer'}
-            jobTitle={freelancer.jobTitle || 'Freelancer'}
-            projectsCompleted={freelancer.projects?.length || 0}
-            rating={4.5} // You might want to calculate this based on project ratings
-            onMessageClick={() => handleMessageClick(freelancer.id)}
-          />
-        ))}
-      </div>
+      {rows.map((row, rowIndex) => (
+        <div key={rowIndex} className="freelancer-row">
+          {row.map((freelancer) => (
+            <div key={freelancer.id} className="freelancer-card-wrapper">
+              <FreelancerCard
+                profilePicture={freelancer.profilePicture || defaultProfile}
+                name={freelancer.displayName || 'Anonymous Freelancer'}
+                jobTitle={freelancer.jobTitle || 'Freelancer'}
+                projectsCompleted={freelancer.projects?.length || 0}
+                rating={4.5}
+                onMessageClick={() => handleMessageClick(freelancer.id)}
+              />
+            </div>
+          ))}
+        </div>
+      ))}
     </div>
   );
 };
