@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import ServicesCard from "../../ServicesCard/ServicesCard"; 
+import SectionHeader from "../section-header/SectionHeader";
+import SeeMoreButton from "../SeeMoreButton/SeeMoreButton";
 import "./PopularServices.css";
 
 const PopularServices = () => {
@@ -10,8 +12,12 @@ const PopularServices = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/services"); 
-        setServices(response.data);
+        const response = await fetch("http://localhost:8000/api/services");
+        if (!response.ok) {
+          throw new Error("Failed to load services");
+        }
+        const data = await response.json();
+        setServices(data);
       } catch (err) {
         console.error("Error fetching services:", err);
         setError("Failed to load services. Please try again.");
@@ -28,25 +34,24 @@ const PopularServices = () => {
 
   return (
     <section className="popular-services">
-      <h2 className="popular-title">Popular Services</h2>
+      <SectionHeader text="Popular Services" />
       <div className="services-container">
         {services.map((service) => (
-          <div key={service.id} className="project-card">
-            <img
-              src={service.image || "https://via.placeholder.com/300"}
-              alt={service.name}
-              className="project-image"
+          <div key={service.id} className="service-card">
+            <ServicesCard
+              profilePicture={service.image || "https://via.placeholder.com/150"}
+              name={service.name}
+              projectsCompleted={service.projects || 0}
+              likes={service.likes || 0}
+              onMessageClick={() => console.log(`Explore ${service.name}`)} 
+              buttonText="Explore" 
             />
-            <div className="project-info">
-              <h3 className="project-name">{service.name}</h3>
-              <p className="project-likes">{service.likes || 0} likes</p>
-              <p className="project-count">{service.projects || 0} Projects</p>
-              <button className="explore-btn">Explore</button>
-            </div>
           </div>
         ))}
       </div>
-      <button className="see-more-btn">See more</button>
+      <div className="sectionButton">
+      <SeeMoreButton text="See more" onClick={() => console.log()} />
+      </div>
     </section>
   );
 };
