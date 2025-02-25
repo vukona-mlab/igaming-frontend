@@ -1,0 +1,23 @@
+.TestifierCard {
+  display: flex;
+  align-items: center;
+}
+.testifierImage {
+  width: 128px;
+}
+.testifierName {
+  font-weight: 400;
+  font-size: 20px;
+  color: #918d8d;
+}
+
+.testifierCountry {
+  font-weight: 400;
+  font-size: 19px;
+  color: #171717;
+}
+.testifierDate {
+  font-weight: 400;
+  font-size: 19px;
+  color: #171717;
+}
