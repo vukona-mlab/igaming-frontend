@@ -1,0 +1,22 @@
+.SpeechBubble {
+  width: 340px;
+  height: 225px;
+  background: linear-gradient(#aecaca33, #0000001a);
+  padding: 30px;
+  text-align: center;
+  font-size: 35px;
+  border-radius: 35px;
+  position: relative;
+}
+
+.SpeechBubble:before {
+  content: "";
+  position: absolute;
+  background: linear-gradient(#aecaca33, #0000001a);
+  border-left: 25px solid transparent;
+  border-right: 25px solid transparent;
+  border-top: 50px solid #aecaca33;
+  border-bottom: 50px solid transparent;
+  left: 30px;
+  top: 220px;
+}
