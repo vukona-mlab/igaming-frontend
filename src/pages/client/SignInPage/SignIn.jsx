@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
-import { FiArrowRight } from "react-icons/fi"; 
+import { FiArrowRight } from "react-icons/fi";
 import LoadingButton from "../../../components/Common/ButtonLoader/LoadingButton";
 import GoogleSignInButton from "../../../components/Auth/googleSignButton/googleSign";
 import AuthForm from "../../../components/Auth/reusable-input-form/InputForm";
@@ -34,7 +34,7 @@ const ClientLogin = () => {
     password: "",
   });
 
-  const [successMessage, setSuccessMessage] = useState(""); 
+  const [successMessage, setSuccessMessage] = useState("");
   const navigation = useNavigate();
 
   const handleGoogleSignIn = async () => {
@@ -66,7 +66,7 @@ const ClientLogin = () => {
     console.log("Form Submitted:", formData);
   };
 
-  const handleLogin = async () => {  
+  const handleLogin = async () => {
     const emailError = validateEmail(formData.username);
     const passwordError = validatePassword(formData.password);
 
@@ -87,21 +87,20 @@ const ClientLogin = () => {
           body: JSON.stringify({
             email: formData.username,
             password: formData.password,
-            roles: ["client"],
           }),
         });
 
         const data = await res.json();
         if (res.ok) {
           console.log({ data });
-          setSuccessMessage("Login successful! Redirecting..."); 
+          setSuccessMessage("Login successful! Redirecting...");
           setTimeout(() => {
             localStorage.setItem("token", data.token);
             localStorage.setItem("uid", data.user.uid);
             localStorage.setItem("role", data.user.roles[0]);
-  
+
             navigation("/profile");
-          }, 2000); 
+          }, 2000);
           r(true);
         }
       } catch (err) {
@@ -126,7 +125,7 @@ const ClientLogin = () => {
         <div className="client-login-form">
           <h2 className="client-login-title">
             <span className="client-red-line"></span> WELCOME BACK <br />
-            SIGN IN 
+            SIGN IN
           </h2>
 
           {/* Pass handleFormDataChange to AuthForm */}
@@ -146,7 +145,9 @@ const ClientLogin = () => {
           )}
 
           {/* Display success message */}
-          {successMessage && <p className="success-message">{successMessage}</p>}
+          {successMessage && (
+            <p className="success-message">{successMessage}</p>
+          )}
 
           <LoadingButton onClick={handleLogin} text="Continue with email" />
           <GoogleSignInButton handleGoogleSignIn={handleGoogleSignIn} />
