@@ -1,26 +1,26 @@
 .loading-button {
-    background-color: black;
-    color: white;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    position: relative;
+  background-color: black;
+  color: white;
+  width: 100% !important;
+
+  min-width: 270px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  position: relative;
 }
 
 .loading-button:disabled {
-    cursor: not-allowed;
+  cursor: not-allowed;
 }
-
 
 /* Style for the GIF loader */
 
 .loader-gif {
-    filter: brightness(0) invert(1);
-    /* Brightness 0 makes it black, invert(1 makes it white */
+  filter: brightness(0) invert(1);
 }

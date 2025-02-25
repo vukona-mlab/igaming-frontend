@@ -9,11 +9,30 @@ import "./ClientRegister.css";
 import { auth, googleProvider } from "../../../config/firebase";
 import { signInWithPopup } from "firebase/auth";
 
+export const validatePassword = (password) => {
+  if (!password.match(/^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$/)) {
+    return "Password must be at least 6 characters, with a number, one uppercase letter, and a special character";
+  }
+  return "";
+};
+
+export const validateEmail = (email) => {
+  if (!email.match(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/)) {
+    return "Invalid email format";
+  }
+  return "";
+};
+
 const ClientRegister = () => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
     jobInterest: "",
+  });
+
+  const [errors, setErrors] = useState({
+    username: "",
+    password: "",
   });
 
   const navigation = useNavigate();
@@ -43,7 +62,6 @@ const ClientRegister = () => {
 
         navigation("/profile");
       }
-      //setUserInfo(data);
     } catch (error) {
       console.error("Error:", error);
       alert("Error signing in: " + error.message);
@@ -54,10 +72,18 @@ const ClientRegister = () => {
     console.log("Form Submitted:", formData);
     // Handle form submission logic here
   };
+
   const handleRegister = async () => {
-    //e.preventDefault();
+    const emailError = validateEmail(formData.username);
+    const passwordError = validatePassword(formData.password);
+
+    if (emailError || passwordError) {
+      setErrors({ username: emailError, password: passwordError });
+      return;
+    }
+
     console.log({ formData });
-    // Submit form
+
     return new Promise(async (r) => {
       try {
         const res = await fetch(`http://localhost:8000/api/auth/register`, {
@@ -69,7 +95,7 @@ const ClientRegister = () => {
             email: formData.username,
             password: formData.password,
             jobInterest: formData.jobInterest,
-            roles: ["Client"],
+            roles: ["client"],
           }),
         });
         const data = await res.json();
@@ -77,16 +103,14 @@ const ClientRegister = () => {
           console.log({ data });
           alert(data.message);
           r(true);
-          //navigation("/profile");
         }
-        //setLoading(false);
       } catch (err) {
         console.log(err);
         r(false);
-        //setLoading(false);
       }
     });
   };
+
   return (
     <div className="client-register-container">
       {/* Left Section */}
@@ -94,7 +118,7 @@ const ClientRegister = () => {
         {/* Register Button */}
         <button
           className="client-register-btn"
-          onClick={() => navigation("/clientSignin")}
+          onClick={() => navigation("/client-signin")}
         >
           <b>
             Login <FiArrowRight className="client-register-arrow" />
@@ -104,18 +128,27 @@ const ClientRegister = () => {
         <div className="client-register-form">
           <h2 className="client-register-title">
             <span className="client-red-line"></span> WELCOME <br />
-            REGISTER ACCOUNT
+            SIGN UP AS A HIRE
           </h2>
 
-          {/* AuthForm Component Replaces Manual Inputs */}
+          {/* AuthForm Component */}
           <AuthForm
             formData={formData}
             setFormData={setFormData}
             onSubmit={handleFormSubmit}
+            errors={errors}
           />
 
+          {/* Display validation errors */}
+          {errors.username && (
+            <p className="error-message">{errors.username}</p>
+          )}
+          {errors.password && (
+            <p className="error-message">{errors.password}</p>
+          )}
+
           {/* Sign Up Button */}
-          <LoadingButton onClick={handleRegister} text="Sign up" />
+          <LoadingButton onClick={handleRegister} text="Continue with email" />
 
           {/* Google Sign-In Button */}
           <GoogleSignInButton handleGoogleSignIn={handleGoogleSignIn} />

@@ -3,6 +3,7 @@
   width: 80% !important;
   border: none !important;
   background: none !important;
+  padding: 50px !important;
 }
 
 /* Labels */
@@ -17,7 +18,7 @@
 .form-control-grey {
   border: 2px solid #069bd6;
   border-radius: 5px !important;
-
+  width: 90% !important;
   background-color: rgba(211, 211, 211, 0.486) !important;
   transition: border 0.3s ease-in-out;
 }
@@ -34,18 +35,18 @@
   border: 2px solid #069bd6;
   box-shadow: none !important;
   border-radius: 5px !important;
-  width: 90% !important;
+  width: 100% !important;
   background-color: rgba(211, 211, 211, 0.486) !important;
   transition: border 0.3s ease-in-out;
 }
 
 .input-group-wrapper {
   position: relative;
-  width: 549px;
+  width: 100% !important;
 }
 
 .input-group-wrapper .form-control-grey {
-  width: 549px;
+  width: 100% !important;
 }
 
 .input-group-wrapper .btn-eye {
@@ -58,21 +59,26 @@
 .job-interest-options {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
 }
 
 .job-interest-option {
-  padding: 5px;
+  padding: 10px;
   border-radius: 5px;
   background-color: rgba(211, 211, 211, 0.486);
   cursor: pointer;
   transition: all 0.2s ease;
   border: 1px solid transparent;
-  width: 549px;
-  margin-bottom: 1px;
+  width: 100% !important;
+  margin-bottom: 2px;
 }
 
 .job-interest-option:hover,
 .job-interest-option.selected {
   border-color: #069bd6;
+}
+@media screen and (max-width: 425px) {
+  .auth-form {
+    width: 95% !important;
+  }
 }
