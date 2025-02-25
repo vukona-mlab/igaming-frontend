@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import InputGroup from "react-bootstrap/InputGroup";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import { Eye, EyeSlash } from "react-bootstrap-icons";
 import "./AuthForm.css";
+import { useNavigate } from "react-router";
 
 const AuthForm = ({ formData, setFormData, onSubmit }) => {
   const [errors, setErrors] = useState({});
@@ -30,70 +32,87 @@ const AuthForm = ({ formData, setFormData, onSubmit }) => {
   };
 
   return (
-    <Form className="auth-form p-0">
-      <Form.Group className="mb-3">
-        <Form.Label>Username</Form.Label>
-        <Form.Control
-          type="text"
-          name="username"
-          placeholder="Enter username"
-          value={formData.username}
-          onChange={handleChange}
-          isInvalid={!!errors.username}
-          className="form-control-grey"
-        />
-        <Form.Control.Feedback type="invalid">
-          {errors.username}
-        </Form.Control.Feedback>
-      </Form.Group>
+    <Form className="auth-form p-0 ">
+      <Row className="mb-3">
+        <Col xs={12}>
+          <Form.Label>Username</Form.Label>
+          <Form.Control
+            type="text"
+            name="username"
+            placeholder="Enter username"
+            value={formData.username}
+            onChange={handleChange}
+            isInvalid={!!errors.username}
+            className="form-control-grey"
+          />
+          <Form.Control.Feedback type="invalid">
+            {errors.username}
+          </Form.Control.Feedback>
+        </Col>
+      </Row>
 
-      <Form.Group className="mb-3">
-        <Form.Label>Password</Form.Label>
-        <Form.Control
-          type={showPassword ? "text" : "password"}
-          name="password"
-          placeholder="Enter password"
-          value={formData.password}
-          onChange={handleChange}
-          isInvalid={!!errors.password}
-          className="form-control-grey"
-        />
-        <Form.Control.Feedback type="invalid">
-          {errors.password}
-        </Form.Control.Feedback>
-      </Form.Group>
+      <Row className="mb-3">
+        <Col xs={12}>
+          <Form.Label>Password</Form.Label>
+          <div className="input-group-wrapper">
+            <Form.Control
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Enter password"
+              value={formData.password}
+              onChange={handleChange}
+              isInvalid={!!errors.password}
+              className="form-control-grey"
+            />
+            <Button
+              variant="link"
+              className="text-secondary p-0 border-0 btn-eye"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <EyeSlash /> : <Eye />}
+            </Button>
+          </div>
+          <Form.Control.Feedback type="invalid">
+            {errors.password}
+          </Form.Control.Feedback>
+        </Col>
+      </Row>
 
-      <Form.Group className="mb-3">
-        <Form.Label>Job Title</Form.Label>
-        <Form.Control
-          type="text"
-          name="jobTitle"
-          placeholder="Enter job title"
-          value={formData.jobTitle}
-          onChange={handleChange}
-          isInvalid={!!errors.jobTitle}
-          className="form-control-grey"
-        />
-        <Form.Control.Feedback type="invalid">
-          {errors.jobTitle}
-        </Form.Control.Feedback>
-      </Form.Group>
+      <Row className="mb-3">
+        <Col xs={12}>
+          <Form.Label>Job Title</Form.Label>
+          <Form.Control
+            type="text"
+            name="jobTitle"
+            placeholder="Enter job title"
+            value={formData.jobTitle}
+            onChange={handleChange}
+            isInvalid={!!errors.jobTitle}
+            className="form-control-grey"
+          />
+          <Form.Control.Feedback type="invalid">
+            {errors.jobTitle}
+          </Form.Control.Feedback>
+        </Col>
+      </Row>
 
-      <Form.Group className="mb-3">
-        <Form.Label>Years of Experience</Form.Label>
-        <Form.Control
-          type="number"
-          name="experience"
-          placeholder="Enter years of experience"
-          value={formData.experience}
-          onChange={handleChange}
-          isInvalid={!!errors.experience}
-          className="form-control-grey"
-        />
-        <Form.Control.Feedback type="invalid">
-          {errors.experience}
-        </Form.Control.Feedback>
-      </Form.Group>
+      <Row className="mb-3">
+        <Col xs={12}>
+          <Form.Label>Years of Experience</Form.Label>
+          <Form.Control
+            type="number"
+            name="experience"
+            placeholder="Enter years of experience"
+            value={formData.experience}
+            onChange={handleChange}
+            isInvalid={!!errors.experience}
+            className="form-control-grey"
+          />
+          <Form.Control.Feedback type="invalid">
+            {errors.experience}
+          </Form.Control.Feedback>
+        </Col>
+      </Row>
     </Form>
   );
 };
