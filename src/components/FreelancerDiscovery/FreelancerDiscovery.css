@@ -1,23 +1,35 @@
 .freelancer-discovery {
-  padding: 2rem;
-  padding-top: 0;
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 130%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1 1rem;
+}
+
+.freelancer-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.5rem 7rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+  width: 100%;
+  max-width: 1600px;
+}
+
+.freelancer-card-wrapper {
+  flex: 0 0 calc(25% - 3.75rem);
+  min-width: 200px;
+  max-width: 280px;
 }
 
 .section-divider {
-  width: 100%;
+  width: 85%;
   height: 1px;
-  background-color: #e0e0e0;
+  background-color: #3d3d3d;
   margin: 2rem 0;
   position: relative;
-}
-
-.freelancer-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 2rem;
-  justify-items: center;
+  margin-left: 7.3%;
+  margin-top: 5rem;
 }
 
 .freelancer-discovery-loading,
@@ -33,12 +45,376 @@
   color: #ff4444;
 }
 
-@media (max-width: 768px) {
+/* Large Desktop (1400px and below) */
+@media (max-width: 1400px) {
+  .freelancer-row {
+    max-width: 1200px;
+    gap: 1.5rem;
+  }
+  
+  .freelancer-card-wrapper {
+    flex: 0 0 calc(25% - 1.125rem);
+  }
+}
+
+/* Desktop (1200px and below) */
+@media (max-width: 1200px) {
+  .freelancer-row {
+    max-width: 1200px;
+    gap: 5rem;
+    margin-left: -10%;
+  }
+  
+  .freelancer-card-wrapper {
+    flex: 0 0 calc(33.333% - 2rem);
+    min-width: 260px;
+  }
+}
+
+/* Laptop (971px - 1024px) */
+@media screen and (min-width: 971px) and (max-width: 1024px) {
+  .freelancer-row {
+    max-width: 960px;
+    gap: 1.5rem;
+  }
+  
+  .freelancer-card-wrapper {
+    flex: 0 0 calc(33.333% - 1rem);
+    min-width: 270px;
+    margin: 0.5rem;
+  }
+  
   .freelancer-discovery {
-    padding: 1rem;
+    padding: 0 1rem;
+  }
+}
+
+/* Tablet (768px - 970px) */
+@media screen and (min-width: 768px) and (max-width: 970px) {
+  .freelancer-row {
+    max-width: 800px;
+    gap: 1.25rem;
+    margin-left: -12%;
+  }
+  
+  .freelancer-card-wrapper {
+    flex: 0 0 calc(50% - 0.75rem);
+    min-width: 240px;
+    margin: 0.375rem;
+    margin-left: 2%;
+  }
+  
+  .freelancer-discovery {
+    padding: 0 0.75rem;
+  }
+}
+
+/* Small Tablet (900px and below) */
+@media (max-width: 900px) {
+  .freelancer-discovery {
+    padding: 0 0.5rem;
   }
 
-  .freelancer-grid {
-    grid-template-columns: 1fr;
+  .freelancer-row {
+    max-width: 600px;
+    gap: 2.5rem;
   }
-} 
+  
+  .freelancer-card-wrapper {
+    flex: 0 0 calc(50% - 1.25rem);
+    min-width: 220px;
+  }
+}
+
+/* Mobile (600px and below) */
+@media (max-width: 600px) {
+  .freelancer-discovery {
+    padding: 0 0.25rem;
+  }
+
+  .freelancer-row {
+    gap: 2rem;
+    margin-left: -10%;
+  }
+  
+  .freelancer-card-wrapper {
+    flex: 0 0 100%;
+    min-width: unset;
+    margin: 0.25rem 0;
+  }
+}
+
+/* Small Mobile (360x800) */
+@media screen and (min-width: 360px) and (max-width: 800px) {
+  .freelancer-discovery {
+    padding: 0 0.25rem;
+  }
+
+  .freelancer-row {
+    gap: 1.5rem;
+    margin-left: -5%;
+  }
+  
+  .freelancer-card-wrapper {
+    flex: 0 0 100%;
+    min-width: 300px;
+    max-width: 350px;
+    margin: 0.25rem auto;
+  }
+}
+
+/* Extra Small Mobile (320x568) - iPhone 5/SE */
+@media screen and (min-width: 320px) and (max-width: 359px) {
+  .freelancer-discovery {
+    padding: 0 0.15rem;
+  }
+
+  .freelancer-row {
+    gap: 1rem;
+    margin-left: -20%;
+  }
+  
+  .freelancer-card-wrapper {
+    flex: 0 0 100%;
+    min-width: 280px;
+    max-width: 300px;
+    margin: 0.25rem auto;
+  }
+}
+
+/* iPad Air (820x1180) */
+@media screen and (min-width: 820px) and (max-width: 1180px) {
+  .freelancer-row {
+    max-width: 800px;
+    gap: 2rem;
+    margin-left: -8%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .freelancer-card-wrapper {
+    flex: 0 0 calc(50% - 2rem);
+    min-width: 300px;
+    max-width: 350px;
+    margin: 0;
+  }
+  
+  .freelancer-discovery {
+    padding: 0 1rem;
+    width: 100%;
+  }
+}
+
+/* 800x1280 Devices */
+@media screen and (width: 800px) and (height: 1280px) {
+  .freelancer-row {
+    max-width: 780px;
+    gap: 2rem;
+    margin-left: -12%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .freelancer-card-wrapper {
+    flex: 0 0 calc(50% - 2rem);
+    min-width: 280px;
+    max-width: 340px;
+    margin: 0;
+  }
+  
+  .freelancer-discovery {
+    padding: 0 1rem;
+    width: 100%;
+  }
+}
+
+/* MacBook Air (1280x800) */
+@media screen and (width: 1280px) and (height: 800px) {
+  .freelancer-row {
+    max-width: 1200px;
+    gap: 2rem;
+    margin-left: -5%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .freelancer-card-wrapper {
+    flex: 0 0 calc(33.333% - 2rem); /* Three columns */
+    min-width: 300px;
+    max-width: 360px;
+    margin: 0;
+  }
+  
+  .freelancer-discovery {
+    padding: 0 1rem;
+    width: 100%;
+  }
+}
+
+/* 1440x970 Devices */
+@media screen and (width: 1440px) and (height: 970px) {
+  .freelancer-row {
+    max-width: 1360px;
+    gap: 2rem;
+    margin-left: -3%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .freelancer-card-wrapper {
+    flex: 0 0 calc(33.333% - 2rem); /* Three columns instead of four */
+    min-width: 320px;
+    max-width: 400px;
+    margin: 0;
+  }
+  
+  .freelancer-discovery {
+    padding: 0 1rem;
+    width: 100%;
+  }
+}
+
+/* 1366x768 - Common Laptop */
+@media screen and (width: 1366px) and (height: 768px) {
+  .freelancer-row {
+    max-width: 1280px;
+    gap: 2rem;
+    margin-left: -4%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .freelancer-card-wrapper {
+    flex: 0 0 calc(33.333% - 2rem);
+    min-width: 300px;
+    max-width: 380px;
+    margin: 0;
+  }
+  
+  .freelancer-discovery {
+    padding: 0 1rem;
+    width: 100%;
+  }
+}
+
+/* 1920x1080 - Full HD Laptop */
+@media screen and (width: 1920px) and (height: 1080px) {
+  .freelancer-row {
+    max-width: 1800px;
+    gap: 2rem;
+    margin-left: -2%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .freelancer-card-wrapper {
+    flex: 0 0 calc(33.333% - 2rem);
+    min-width: 320px;
+    max-width: 420px;
+    margin: 0;
+  }
+  
+  .freelancer-discovery {
+    padding: 0 1rem;
+    width: 100%;
+  }
+}
+
+/* 1440x838 Devices */
+@media screen and (width: 1440px) and (height: 838px) {
+  .freelancer-row {
+    max-width: 1360px;
+    gap: 2rem;
+    margin-left: -3%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .freelancer-card-wrapper {
+    flex: 0 0 calc(33.333% - 2rem); /* Three columns */
+    min-width: 320px;
+    max-width: 400px;
+    margin: 0;
+  }
+  
+  .freelancer-discovery {
+    padding: 0 1rem;
+    width: 100%;
+  }
+}
+
+/* 1210x784 Devices */
+@media screen and (width: 1210px) and (height: 784px) {
+  .freelancer-row {
+    max-width: 100%;
+    gap: 1.5rem;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0 2rem;
+  }
+  
+  .freelancer-card-wrapper {
+    flex: 0 0 calc(33.333% - 1rem);
+    min-width: 250px;
+    max-width: 350px;
+    margin: 0;
+  }
+  
+  .freelancer-discovery {
+    padding: 0 1rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* Common styles for 3-column layouts (1920x1080, 1440x970, 1440x838, 1366x768, 1280x800, 1114x705) */
+@media screen and (width: 1920px) and (height: 1080px),
+       screen and (width: 1440px) and (height: 970px),
+       screen and (width: 1440px) and (height: 838px),
+       screen and (width: 1366px) and (height: 768px),
+       screen and (width: 1280px) and (height: 800px),
+       screen and (width: 1114px) and (height: 705px),
+       screen and (width: 1210px) and (height: 784px) {
+  .freelancer-row {
+    max-width: 100%;
+    gap: 1.5rem;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    padding: 0 2rem;
+  }
+  
+  .freelancer-card-wrapper {
+    flex: 0 0 calc(33.333% - 1rem);
+    min-width: 250px;
+    max-width: 350px;
+    margin: 0;
+  }
+  
+  .freelancer-discovery {
+    padding: 0 1rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .freelancer-discovery > div {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+

@@ -57,9 +57,9 @@ const FAQSection = () => {
   return (
     <section className={styles.FAQSection}>
       <SectionHeader text="FAQ" />
-
-      {data.map((item) => (
-        <Accordion question={item.question} answer={item.answer} />
+      <div className={styles.FAQTitle}>Frequently Asked Questions</div>
+      {data.map((item, i) => (
+        <Accordion key={i} question={item.question} answer={item.answer} />
       ))}
     </section>
   );
