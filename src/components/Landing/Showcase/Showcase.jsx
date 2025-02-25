@@ -45,11 +45,7 @@ const Showcase = () => {
             </button>
           </div>
 
-          {/* Chat With Us Section 
-          <div className="chat-with-us" onClick={handleChatClick}>
-            <span>Chat with us</span>
-            <img src={chatIcon} alt="Chat Icon" className="chat-icon" />
-          </div>*/}
+         
         </div>
 
         {/* Right Side - Image Cards */}
