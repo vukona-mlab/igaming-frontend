@@ -3,11 +3,12 @@ import { useNavigate } from "react-router";
 import { FiArrowRight } from "react-icons/fi";
 import LoadingButton from "../../../components/Common/ButtonLoader/LoadingButton";
 import GoogleSignInButton from "../../../components/Auth/googleSignButton/googleSign";
-import AuthForm from "../../../components/Auth/Register input form(freelancer)/AuthForm";
-import "./Register.css";
+import AuthForm from "../../../components/Auth/reusable-input-form/InputForm";
+import "./SignIn.css";
 import { auth, googleProvider } from "../../../config/firebase";
 import { signInWithPopup } from "firebase/auth";
 
+// Validation functions
 export const validatePassword = (password) => {
   if (!password.match(/^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$/)) {
     return "Password must be at least 6 characters, with a number, one uppercase letter, and a special character";
@@ -22,35 +23,18 @@ export const validateEmail = (email) => {
   return "";
 };
 
-export const validateJobTitle = (jobTitle) => {
-  if (!jobTitle.trim()) {
-    return "Job title is required";
-  }
-  return "";
-};
-
-export const validateExperience = (experience) => {
-  if (!experience || isNaN(experience) || experience < 0) {
-    return "Experience must be a positive number";
-  }
-  return "";
-};
-
-const Register = () => {
+const FreelancerSignIn = () => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
-    jobTitle: "",
-    experience: "",
   });
 
   const [errors, setErrors] = useState({
     username: "",
     password: "",
-    jobTitle: "",
-    experience: "",
   });
 
+  const [successMessage, setSuccessMessage] = useState("");
   const navigation = useNavigate();
 
   const handleGoogleSignIn = async () => {
@@ -70,7 +54,6 @@ const Register = () => {
         localStorage.setItem("token", data.token);
         localStorage.setItem("uid", data.user.uid);
         localStorage.setItem("role", data.user.roles[0]);
-
         navigation("/profile");
       }
     } catch (error) {
@@ -79,93 +62,98 @@ const Register = () => {
     }
   };
 
-  const handleRegister = async () => {
+  const handleFormSubmit = (formData) => {
+    console.log("Form Submitted:", formData);
+  };
+
+  const handleLogin = async () => {
     const emailError = validateEmail(formData.username);
     const passwordError = validatePassword(formData.password);
-    const jobTitleError = validateJobTitle(formData.jobTitle);
-    const experienceError = validateExperience(formData.experience);
 
-    if (emailError || passwordError || jobTitleError || experienceError) {
-      setErrors({
-        username: emailError,
-        password: passwordError,
-        jobTitle: jobTitleError,
-        experience: experienceError,
-      });
+    if (emailError || passwordError) {
+      setErrors({ username: emailError, password: passwordError });
       return;
     }
 
-    try {
-      const res = await fetch("http://localhost:8000/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: formData.username,
-          password: formData.password,
-          jobTitle: formData.jobTitle,
-          experience: formData.experience,
-          roles: ["freelancer"],
-        }),
-      });
+    console.log({ formData });
 
-      const data = await res.json();
-      if (res.ok) {
-        alert(data.message);
-        navigation("/profile");
-      } else {
-        alert(data.error || "Registration failed");
+    return new Promise(async (r) => {
+      try {
+        const res = await fetch("http://localhost:8000/api/auth/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: formData.username,
+            password: formData.password,
+          }),
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          setSuccessMessage("Login successful! Redirecting...");
+          setTimeout(() => {
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("uid", data.user.uid);
+            localStorage.setItem("role", data.user.roles[0]);
+
+            navigation("/profile");
+          }, 2000);
+          r(true);
+        }
+      } catch (err) {
+        console.log(err);
+        r(false);
       }
-    } catch (err) {
-      console.log(err);
-      alert("Error registering user");
-    }
+    });
   };
 
   return (
-    <div className="client-register-container">
+    <div className="client-login-container">
       <div className="client-register-left">
         <button
-          className="client-register-btn"
+          className="client-login-btn"
           onClick={() => navigation("/client-signin")}
         >
           <b>
-            Login <FiArrowRight className="client-register-arrow" />
+            Register <FiArrowRight className="client-login-arrow" />
           </b>
         </button>
 
-        <div className="client-register-form">
-          <h2 className="client-register-title">
-            <span className="client-red-line"></span> WELCOME <br />
-            SIGN UP AS A FREELANCER
+        <div className="client-login-form">
+          <h2 className="client-login-title">
+            <span className="client-red-line"></span> WELCOME BACK <br />
+            SIGN IN
           </h2>
 
+          {/* Pass handleFormDataChange to AuthForm */}
           <AuthForm
             formData={formData}
-            setFormData={setFormData}
+            handleFormDataChange={setFormData} // passing setFormData to InputForm
+            onSubmit={handleFormSubmit}
             errors={errors}
           />
 
+          {/* Display validation errors */}
           {errors.username && (
             <p className="error-message">{errors.username}</p>
           )}
           {errors.password && (
             <p className="error-message">{errors.password}</p>
           )}
-          {errors.jobTitle && (
-            <p className="error-message">{errors.jobTitle}</p>
-          )}
-          {errors.experience && (
-            <p className="error-message">{errors.experience}</p>
+
+          {/* Display success message */}
+          {successMessage && (
+            <p className="success-message">{successMessage}</p>
           )}
 
-          <LoadingButton onClick={handleRegister} text="Continue with email" />
+          <LoadingButton onClick={handleLogin} text="Continue with email" />
           <GoogleSignInButton handleGoogleSignIn={handleGoogleSignIn} />
         </div>
       </div>
 
-      <div className="client-register-right d-flex align-items-stretch">
+      <div className="client-login-right d-flex align-items-stretch">
         <img
           src="/public/images/ri-experts.jpg"
           alt="Woman with digital interface"
@@ -176,4 +164,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default FreelancerSignIn;

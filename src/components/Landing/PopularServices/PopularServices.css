@@ -1,15 +1,14 @@
-.MadeOnRI {
+.popular-services {
   width: 90%;
-  margin: 15px auto;
+  margin: auto;
 }
 
-.sectionBody {
+.services-container {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  min-height: 650px;
+  justify-content: center;
   flex-wrap: wrap;
 }
+
 .sectionButton {
   display: flex;
   justify-content: flex-end;

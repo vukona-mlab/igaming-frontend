@@ -4,6 +4,8 @@ import "./MadeOnRI.css";
 import SectionHeader from "../section-header/SectionHeader";
 import ProjectCard from "../../Project Card/ProjectCard";
 import SeeMoreButton from "../SeeMoreButton/SeeMoreButton";
+import SectionTitle from "../SectionTitle/SectionTitle";
+
 const MadeOnRI = () => {
   const [loading, setLoading] = useState(true);
   const [projects, setProjects] = useState([]);
@@ -34,6 +36,11 @@ const MadeOnRI = () => {
   return (
     <section className={styles.MadeOnRI}>
       <SectionHeader text={`Made on`} bold="RI Experts" />
+      <SectionTitle
+        title="Projects from our"
+        subtitle="Our freelancers are capable of doing unmatched projects that no one can do."
+        span="freelancers"
+      />
       <div className={styles.sectionBody}>
         {projects &&
           projects.map((project, i) => (
