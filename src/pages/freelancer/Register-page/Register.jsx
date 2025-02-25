@@ -52,12 +52,13 @@ const Register = () => {
   });
 
   const navigation = useNavigate();
+  const url = import.meta.env.VITE_API_URL;
 
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const idToken = await result.user.getIdToken();
-      const response = await fetch("http://localhost:8000/api/auth/google", {
+      const response = await fetch(`${url}/api/auth/google`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -96,7 +97,7 @@ const Register = () => {
     }
 
     try {
-      const res = await fetch("http://localhost:8000/api/auth/register", {
+      const res = await fetch(`${url}/api/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

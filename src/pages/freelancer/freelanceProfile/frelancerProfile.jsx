@@ -27,6 +27,7 @@ const ProfilePage = ({}) => {
 
   const uid = localStorage.getItem("uid");
   const token = localStorage.getItem("token");
+  const url = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     getProfile();
@@ -74,15 +75,12 @@ const ProfilePage = ({}) => {
   const getProfile = async () => {
     setLoading(true);
     try {
-      const response = await fetch(
-        `http://localhost:8000/api/auth/users/${uid}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
+      const response = await fetch(`${url}/api/auth/users/${uid}`, {
+        method: "GET",
+        headers: {
+          Authorization: token,
+        },
+      });
       if (response.ok) {
         const data = await response.json();
         console.log({ data });
@@ -129,16 +127,13 @@ const ProfilePage = ({}) => {
       formData.append("extraAmount", JSON.stringify(data.extraAmount));
       // formData.append("jobTitle", formData.jobTitle);
       formData.append("profilePicture", image);
-      const response = await fetch(
-        `http://localhost:8000/api/auth/users/${uid}/update`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: token,
-          },
-          body: formData,
-        }
-      );
+      const response = await fetch(`${url}/api/auth/users/${uid}/update`, {
+        method: "PUT",
+        headers: {
+          Authorization: token,
+        },
+        body: formData,
+      });
       if (response.ok) {
         const data = await response.json();
         // Show SweetAlert after successful update
