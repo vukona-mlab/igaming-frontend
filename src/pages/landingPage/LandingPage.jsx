@@ -3,6 +3,7 @@ import CustomNavBar from "./CustomNavBar";
 import "./LandingPage.css";
 import SubNavBar from "../../components/Common/SubNavBar/SubNavBar";
 import About from "../../components/about/About";
+import PopularServices from "../../components/Landing/PopularServices/PopularServices";
 import Footer from "../footer/Footer";
 import Showcase from "../../components/Landing/Showcase/Showcase";
 import TopFreelancers from "../../components/Landing/TopFreelancers/TopFreelancers";
@@ -14,6 +15,7 @@ function LandingPage() {
       <SubNavBar />
       <Showcase />
       <TopFreelancers />
+      <PopularServices/>
       <MadeOnRI />
       <About />
       <Footer />
