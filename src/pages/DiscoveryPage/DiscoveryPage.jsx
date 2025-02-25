@@ -12,9 +12,12 @@ const DiscoveryPage = () => {
         <NavBar />
         <SubNavBar />
       </div>
-      
-      <div className="content-container">
+      <div className="search-container">
         <SearchBar placeholder="Search freelancers..." />
+      </div>
+      <div className="section-divider"></div>
+
+      <div className="content-container">
         <FreelancerDiscovery />
       </div>
     </div>
