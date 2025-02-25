@@ -1,7 +1,7 @@
 import Reac, { useState, useEffect } from "react";
 import styles from "./TopFreelancers.module.css";
 import SectionHeader from "../section-header/SectionHeader";
-import FreelancerCard from "../../Freelancer Card/FreelancerCard";
+import FreelancerCard from "../../Freelancer Card/DpFreelancerCard";
 import SeeMoreButton from "../SeeMoreButton/SeeMoreButton";
 
 const TopFreelancers = () => {
