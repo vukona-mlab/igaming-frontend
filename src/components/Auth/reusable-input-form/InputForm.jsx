@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button";
 import { Eye, EyeSlash } from "react-bootstrap-icons";
 import './InputForm.css';
 
-const InputForm = ({ formData, handleFormDataChange, label1, label2 }) => {
+const InputForm = ({ formData, handleFormDataChange }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
@@ -12,13 +12,13 @@ const InputForm = ({ formData, handleFormDataChange, label1, label2 }) => {
   };
 
   return (
-    <Form className="p-3 auth-form rounded shadow-sm">
+    <Form className="p-0 auth-form ">
       <Form.Group className="mb-3">
-        <Form.Label>{label1}</Form.Label>
+        <Form.Label>Username</Form.Label>
         <Form.Control
           type="text"
           name="username"
-          placeholder={`Enter value for ${label1}`}
+          placeholder="Enter your username"
           value={formData.username || ""}
           onChange={handleChange}
           className="form-control-grey"
@@ -26,12 +26,12 @@ const InputForm = ({ formData, handleFormDataChange, label1, label2 }) => {
       </Form.Group>
 
       <Form.Group className="mb-3">
-        <Form.Label>{label2}</Form.Label>
+        <Form.Label>Password</Form.Label>
         <div className="input-group-wrapper">
           <Form.Control
             type={showPassword ? "text" : "password"}
             name="password"
-            placeholder={`Enter value for ${label2}`}
+            placeholder="Enter your password"
             value={formData.password || ""}
             onChange={handleChange}
             className="form-control-grey"
