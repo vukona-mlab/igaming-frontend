@@ -33,21 +33,13 @@ function App() {
               />
               <Route
                 exact
-                path="client-register"
-                element={<ClientRegister />}
-              />
-              <Route
-                exact
-                path="freelancer-register"
                 path="freelancer-register"
                 element={<FreelancerRegister />}
               />
 
               <Route exact path="client-signin" element={<ClientSignIn />} />
-              <Route exact path="client-signin" element={<ClientSignIn />} />
               <Route
                 exact
-                path="freelancer-signin"
                 path="freelancer-signin"
                 element={<FreelancerSignIn />}
               />
