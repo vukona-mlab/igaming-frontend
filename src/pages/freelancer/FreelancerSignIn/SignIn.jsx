@@ -114,7 +114,7 @@ const FreelancerSignIn = () => {
       <div className="client-register-left">
         <button
           className="client-login-btn"
-          onClick={() => navigation("/client-signin")}
+          onClick={() => navigation("/freelancer-register")}
         >
           <b>
             Register <FiArrowRight className="client-login-arrow" />
