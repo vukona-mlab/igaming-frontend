@@ -55,7 +55,6 @@ const FreelancerDiscovery = () => {
 
   return (
     <div className="freelancer-discovery">
-      <div className="section-divider"></div>
       {rows.map((row, rowIndex) => (
         <div key={rowIndex} className="freelancer-row">
           {row.map((freelancer) => (

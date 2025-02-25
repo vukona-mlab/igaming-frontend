@@ -1,6 +1,5 @@
 .discovery-page {
   min-height: 100vh;
-  background-color: #3a3636;
 }
 
 .navigation-container {
@@ -13,12 +12,32 @@
 .content-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
+  align-items: center;
 }
+
+.search-container {
+  width: 66.7%;
+  padding-left: 4.8rem;
+  margin-top: 2rem;
+  margin-bottom: -2rem;
+  display: flex;
+  justify-content: flex-start;
+  align-self: flex-start;
+}
+
+.freelancer-content {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -1rem;
+}
+
+
 
 /* Add responsive breakpoints */
 @media (max-width: 1200px) {
