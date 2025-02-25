@@ -68,8 +68,8 @@
   color: #666;
   font-size: 1rem;
   display: flex;
-  align-items: center;
   gap: 0.5rem;
+  justify-content: center;
 }
 
 
@@ -172,9 +172,7 @@
   display: inline-flex; /* Ensure it behaves like an inline element */
 }
 
-.share-icon:hover {
-  background-color: #444; /* Darken the background on hover */
-}
+
 
 
 .share-icon {

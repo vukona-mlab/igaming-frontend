@@ -13,13 +13,13 @@ const FreelancerProjects = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log("Fetched data:", data); // Log the fetched data
-  
+
         if (data && data.freelancers && Array.isArray(data.freelancers)) {
           // Find the freelancer by their ID
           const freelancer = data.freelancers.find(
             (freelancer) => freelancer.id === freelancerIdToShow
           );
-  
+
           if (freelancer) {
             // If the freelancer exists, filter their projects
             const filteredProjects = Array.isArray(freelancer.projects)
@@ -27,7 +27,7 @@ const FreelancerProjects = () => {
                   (project) => project.freelancerId === freelancerIdToShow
                 )
               : []; // If no projects array exists, return an empty array
-  
+
             // Update state with filtered projects (even if empty)
             setProjects(filteredProjects);
           } else {
@@ -44,8 +44,11 @@ const FreelancerProjects = () => {
         setProjects([]); // If there's an error, set an empty array
       });
   }, []);
-  
-  
+
+  const handleSeeMore = () => {
+    setVisibleProjects((prev) => prev + 6); // Increase the visible projects by 6
+  };
+
   return (
     <>
       <Navbar />
@@ -69,7 +72,7 @@ const FreelancerProjects = () => {
             </Row>
             {visibleProjects < projects.length && (
               <div className="text-center mt-4">
-                <Button onClick={handleSeeMore}>See More</Button>
+                <Button variant="darck" onClick={handleSeeMore}>See More</Button>
               </div>
             )}
           </Col>
