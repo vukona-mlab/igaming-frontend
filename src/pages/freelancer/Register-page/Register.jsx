@@ -128,7 +128,7 @@ const Register = () => {
       <div className="client-register-left">
         <button
           className="client-register-btn"
-          onClick={() => navigation("/clientSignin")}
+          onClick={() => navigation("/client-signin")}
         >
           <b>
             Login <FiArrowRight className="client-register-arrow" />
