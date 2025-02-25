@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import FreelancerCard from '../Freelancer Card/FreelancerCard';
+import FreelancerCard from '../Freelancer Card/DpFreelancerCard';
 import defaultProfile from '../../assets/clem.jpg';
 import messageIcon from '../../assets/message.svg';
 import './FreelancerDiscovery.css';
