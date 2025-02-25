@@ -4,7 +4,7 @@ import { FiArrowRight } from "react-icons/fi";
 import LoadingButton from "../../../components/Common/ButtonLoader/LoadingButton";
 import GoogleSignInButton from "../../../components/Auth/googleSignButton/googleSign";
 import AuthForm from "../../../components/Auth/reusable-input-form/InputForm";
-import "./Signin.css";
+import "./signin.css";
 import { auth, googleProvider } from "../../../config/firebase";
 import { signInWithPopup } from "firebase/auth";
 

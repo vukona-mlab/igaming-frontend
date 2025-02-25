@@ -13,11 +13,10 @@
 .SpeechBubble:before {
   content: "";
   position: absolute;
-  background: linear-gradient(#aecaca33, #0000001a);
   border-left: 25px solid transparent;
   border-right: 25px solid transparent;
-  border-top: 50px solid #aecaca33;
+  border-top: 45px solid #aecaca33;
   border-bottom: 50px solid transparent;
   left: 30px;
-  top: 220px;
+  top: 225px;
 }
