@@ -5,7 +5,7 @@ import LoadingButton from "../../../components/Common/ButtonLoader/LoadingButton
 import GoogleSignInButton from "../../../components/Auth/googleSignButton/googleSign";
 import LoginRegisterButton from "../../../components/Auth/LoginRegisterButton/LoginRegisterButton";
 import { useNavigate } from "react-router";
-import { auth, googleProvider } from "../../../config/firebase";
+import { auth, googleProvider } from "./../../../config/firebase";
 import { signInWithPopup } from "firebase/auth";
 export default function Signin() {
   const [formData, setFormData] = useState({ username: "", password: "" });

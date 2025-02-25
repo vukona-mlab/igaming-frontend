@@ -8,7 +8,7 @@ const ProjectCard = ({
   projectPicture, 
   projectName, 
   likes,
-  authorName,
+  authorName, // Corrected prop name
   onDemoClick,
   onShareClick 
 }) => {
@@ -50,4 +50,4 @@ const ProjectCard = ({
   );
 };
 
-export default ProjectCard; 
+export default ProjectCard;

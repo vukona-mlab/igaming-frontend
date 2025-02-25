@@ -12,6 +12,7 @@ import LandingPage from "./pages/landingPage/LandingPage";
 import ProtectedRouteReg from "./components/Protected/ProtectedReg";
 import ProtectedRoutes from "./components/Protected/ProtectedRoutes";
 import ProtectRole from "./components/Protected/ProtectRole";
+import FreelancerProjects from "./pages/freelancer/freelancesProjectsPage/freelancerProjectsPage"
 
 function App() {
   const userRole = localStorage.getItem("role");
@@ -22,6 +23,7 @@ function App() {
           <Routes>
             <Route exact path="/" element={<LandingPage />} />
             <Route path="/resetPassword" element={<ResetPassword />} />
+            <Route path="/freelancerProjects" element={<FreelancerProjects />} />
 
             <Route element={<ProtectedRouteReg />}>
               <Route exact path="clientRegister" element={<ClientRegister />} />
