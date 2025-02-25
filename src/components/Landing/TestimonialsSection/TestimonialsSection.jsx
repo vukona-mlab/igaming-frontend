@@ -1,19 +1,18 @@
 import Reac, { useState, useEffect } from "react";
-import styles from "./TopFreelancers.module.css";
+import styles from "./TestimonialsSection.module.css";
 import SectionHeader from "../section-header/SectionHeader";
-import FreelancerCard from "../../Freelancer Card/FreelancerCard";
-import SeeMoreButton from "../SeeMoreButton/SeeMoreButton";
+import TestimonyCard from "./TestimonyCard";
 
-const TopFreelancers = () => {
+const TestimonialsSection = () => {
   const [loading, setLoading] = useState(true);
-  const [freelancers, setFreelancers] = useState([]);
-  const url = "http://localhost:8000/api/freelancers/projects";
+  const [testimonials, setTestimonials] = useState([]);
+  const url = "http://localhost:8000/api/testimonials";
 
   useEffect(() => {
-    getTopFreelancers();
+    getTestimonials();
   }, []);
 
-  const getTopFreelancers = async () => {
+  const getTestimonials = async () => {
     try {
       const response = await fetch(url, {
         method: "GET",
@@ -21,9 +20,9 @@ const TopFreelancers = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(response);
+        console.log(data.testimonials);
 
-        setFreelancers(data.freelancers.slice(0, 3));
+        setTestimonials(data.testimonials);
       }
 
       setLoading(false);
@@ -32,27 +31,35 @@ const TopFreelancers = () => {
     }
   };
   if (loading) return;
+  console.log(testimonials);
   return (
-    <section className={styles.TopFreelancers}>
-      <SectionHeader text="Top Freelancers" />
+    <section className={styles.TestimonialsSection}>
+      <SectionHeader text="Testimonials" />
+      <div className={styles.TestimonialsHeader}>
+        <div className={styles.TestimonialsTitle}>
+          What <span className={styles.TestimonialsSpan}>customers</span> are
+          saying
+        </div>
+        <div className={styles.TestimonialsSubTitle}>
+          Hear from our happpy customers about their experiences with our
+          service
+        </div>
+      </div>
       <div className={styles.sectionBody}>
-        {freelancers &&
-          freelancers.map((freelancer, i) => (
-            <FreelancerCard
+        {testimonials &&
+          testimonials.map((testimonial, i) => (
+            <TestimonyCard
               key={i}
-              profilePicture={freelancer.profilePicture}
-              name={freelancer.displayName}
-              jobTitle={freelancer.jobTitle}
-              projectsCompleted={freelancer.projects.length}
-              rating={freelancer.rating}
+              text={testimonial.message}
+              name={testimonial.name}
+              country={testimonial.country}
+              date={testimonial.dateWritten._seconds}
+              imageUrl={testimonial.clientProfile}
             />
           ))}
-      </div>
-      <div className={styles.sectionButton}>
-        <SeeMoreButton text="See more" onClick={() => console.log()} />
       </div>
     </section>
   );
 };
 
-export default TopFreelancers;
+export default TestimonialsSection;
