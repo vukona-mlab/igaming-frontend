@@ -134,65 +134,80 @@
   
   
   
-  @media screen and (max-width: 768px) {
-    .client-login-right {
-      display: none;
-      flex: 0;
-    }
-    .client-login-right img {
-      display: none;
-    }
+  
+@media screen and (max-width: 768px) {
+  .client-login-right {
+    display: none;
+    flex: 0;
+  }
+  .client-login-right img {
+    display: none;
+  }
+  
+}
+
+
+@media screen and (max-width: 768px) {
+  .client-login-left {
+    flex: 100%; 
+    width: 100% !important;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .auth-form {
+    width: 95% !important;
+  
+  }
+  .client-login-title {
+    font-size: 25px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+
+  }
+}
+
+@media screen and (max-width: 902px) and (min-width: 770px) {
+  .client-login-title {
+    font-size: 32px; 
+    margin-bottom: 50px;
+  }
+  .client-red-line {
+    height: 115px;
+   
+  }
+}
+
+@media screen and (max-width: 340px) and (min-width: 331px) {
+ 
+  .client-login-form {
+    width: 95% !important;
     
   }
-  
-  
-  @media screen and (max-width: 768px) {
-    .client-login-left {
-      flex: 100%; 
-      width: 100% !important;
-    }
-  }
-  
-  @media screen and (max-width: 425px) {
-    .auth-form {
-      width: 95% !important;
+}
+
+@media screen and (max-width: 392px) and (min-width: 371px) {
+ 
+  .client-login-form {
+    width: 83% !important;
     
-    }
-    .client-login-title {
-      font-size: 25px;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-  
-    }
   }
-  
-  @media screen and (max-width: 902px) and (min-width: 770px) {
-    .client-login-title {
-      font-size: 32px; 
-      margin-bottom: 50px;
-    }
-    .client-red-line {
-      height: 115px;
-     
-    }
+}
+@media screen and (max-width: 370px) and (min-width: 341px) {
+ 
+  .client-login-form {
+    width: 90% !important;
+    
   }
-  
-  @media screen and (max-width: 340px) and (min-width: 331px) {
-   
-    .client-login-form {
-      width: 95% !important;
-      
-    }
+}
+@media screen and (max-width: 425px) and (min-width: 381px) {
+ 
+  .client-login-form {
+    width: 75% !important;
+    
   }
-  
-  @media screen and (max-width: 425px) and (min-width: 341px) {
-   
-    .client-login-form {
-      width: 75% !important;
-      
-    }
-  }
+}
   
   .success-message {
     color: #28a745; 
