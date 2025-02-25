@@ -9,6 +9,7 @@ import Showcase from "../../components/Landing/Showcase/Showcase";
 import TopFreelancers from "../../components/Landing/TopFreelancers/TopFreelancers";
 import MadeOnRI from "../../components/Landing/MadeOnRI/MadeOnRI";
 import FAQSection from "../../components/Landing/FAQSection/FAQSection";
+import SpeechBubble from "../../components/Landing/TestimonialsSection/SpeechBubble";
 function LandingPage() {
   return (
     <>
@@ -20,6 +21,7 @@ function LandingPage() {
       <PopularServices />
       <MadeOnRI />
       <FAQSection />
+      {/* <SpeechBubble text="testingntesting" /> */}
       <Footer />
     </>
   );
