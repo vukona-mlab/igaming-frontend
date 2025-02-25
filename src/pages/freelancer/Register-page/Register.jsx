@@ -106,7 +106,7 @@ const Register = () => {
           password: formData.password,
           jobTitle: formData.jobTitle,
           experience: formData.experience,
-          roles: ["Freelancer"],
+          roles: ["freelancer"],
         }),
       });
 
