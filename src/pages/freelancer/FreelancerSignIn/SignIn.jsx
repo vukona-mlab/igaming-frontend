@@ -87,13 +87,11 @@ const FreelancerSignIn = () => {
           body: JSON.stringify({
             email: formData.username,
             password: formData.password,
-            roles: ["Freelancer"],
           }),
         });
 
         const data = await res.json();
         if (res.ok) {
-          console.log({ data });
           setSuccessMessage("Login successful! Redirecting...");
           setTimeout(() => {
             localStorage.setItem("token", data.token);
