@@ -113,7 +113,7 @@
 .client-register-left .loading-button {
   height: 50px;
   margin-top: 8px !important;
-
+  margin-bottom: 15px !important;
   width: 90% !important;
   border-radius: 15px;
   
