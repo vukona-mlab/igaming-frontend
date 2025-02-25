@@ -1,19 +1,13 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import "./Showcase.css";
 import freelancerImg1 from "/src/assets/Card1.png";
 import freelancerImg2 from "/src/assets/Card2.png";
 import freelancerImg3 from "/src/assets/Card3.png";
 
-// import chatIcon from "/src/assets/chatty.png"; // Import the chat icon
-
 const Showcase = () => {
   const [selected, setSelected] = useState("Freelancer");
-
-  const handleChatClick = () => {
-    // Add your click handler logic here
-    console.log("Chat icon clicked!");
-    // You can redirect to a chat page or open a chat modal, etc.
-  };
+  const navigation = useNavigate();
 
   return (
     <section className="container showcase-section">
@@ -32,20 +26,28 @@ const Showcase = () => {
           {/* Toggle Buttons */}
           <div className="toggle-buttons">
             <button
-              className={`btn ${selected === "Freelancer" ? "btn-dark" : "btn-light"}`}
-              onClick={() => setSelected("Freelancer")}
+              className={`btn ${
+                selected === "Freelancer" ? "btn-dark" : "btn-light"
+              }`}
+              onClick={() => {
+                setSelected("Freelancer");
+                navigation("/freelancer-register");
+              }}
             >
               Freelancer
             </button>
             <button
-              className={`btn ${selected === "Recruiter" ? "btn-dark" : "btn-light"}`}
-              onClick={() => setSelected("Recruiter")}
+              className={`btn ${
+                selected === "Recruiter" ? "btn-dark" : "btn-light"
+              }`}
+              onClick={() => {
+                setSelected("Recruiter");
+                navigation("/client-register");
+              }}
             >
               Recruiter
             </button>
           </div>
-
-         
         </div>
 
         {/* Right Side - Image Cards */}
