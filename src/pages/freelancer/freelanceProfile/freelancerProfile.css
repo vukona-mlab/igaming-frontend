@@ -1,50 +1,50 @@
 /* Button Container */
 .button-container {
-    display: flex;
-    justify-content: center; /* Centers buttons on small screens */
-    gap: 15px; /* Space between buttons */
-    width: 100%; /* Make it fully responsive */
-    max-width: 1290px; /* Matches Bootstrap's container width */
-    margin: 20px auto; /* Ensures it stays aligned */
-    padding: 10px; /* Adds internal spacing */
-    background: white; /* Background to prevent overlap */
-    flex-wrap: wrap; /* Allows buttons to wrap on small screens */
+  display: flex;
+  justify-content: center; /* Centers buttons on small screens */
+  gap: 15px; /* Space between buttons */
+  width: 100%; /* Make it fully responsive */
+  max-width: 1290px; /* Matches Bootstrap's container width */
+  margin: 20px auto; /* Ensures it stays aligned */
+  padding: 10px; /* Adds internal spacing */
+  background: white; /* Background to prevent overlap */
+  flex-wrap: wrap; /* Allows buttons to wrap on small screens */
 }
 
 /* Media query for larger screens */
 @media (min-width: 768px) {
-    .button-container {
-        justify-content: flex-end; /* Aligns to the right on larger screens */
-        margin: -80px auto 0; /* Moves up for better positioning */
-    }
+  .button-container {
+    justify-content: flex-end; /* Aligns to the right on larger screens */
+    margin: -80px auto 0; /* Moves up for better positioning */
+  }
 }
 
 /* Cancel Button */
 .cancel-button {
-    background: none;
-    border: none;
-    color: red;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
+  background: none;
+  border: none;
+  color: red;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 .cancel-button:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 /* Update Button */
 .update-button {
-    background-color: black;
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 5px;
-    cursor: pointer;
+  background-color: black;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .update-button:hover {
-    background-color: #333;
+  background-color: #333;
 }
