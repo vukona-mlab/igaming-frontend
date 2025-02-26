@@ -1,7 +1,8 @@
 .loading-button {
     background-color: black;
     color: white;
-    width: 100%;
+    width: 100% !important;
+    min-width: 270px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -20,9 +21,23 @@
 
 /* Style for the GIF loader */
 
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 .loader-gif {
-    width: 20px;
-    /* Adjust the size as needed */
-    height: 20px;
-    /* Adjust the size as needed */
+    filter: brightness(0) invert(1);
+    /* This makes the GIF spin */
+}
+
+.loader-gif {
+    animation: spin 30s linear infinite;
+    animation-duration: 2s;
+    animation-iteration-count: 5;
+    /* Spins for 10 seconds (2s * 5) */
 }
