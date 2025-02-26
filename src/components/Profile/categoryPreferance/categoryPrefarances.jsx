@@ -2,32 +2,104 @@ import React, { useState } from "react";
 import { Form, Row, Col, Button, Container } from "react-bootstrap";
 import "./categoryPrefarances.css"; // Ensure this path is correct
 
-const CategoryPreferences = ({ onSubmit, isUpdate, cancel }) => {
+const CategoryPreferences = ({
+  onSubmit,
+  isUpdate,
+  cancel,
+  categoriesArr,
+  extraAmountObj,
+}) => {
   const [formData, setFormData] = useState({
     categories: {
-      graphicDesign: false,
-      uiUxDesign: false,
-      animation: false,
-      imageEditing: false,
-      gameArt: false,
-      characterModeling: false,
-      gameDesigners: false,
-      typography: false,
+      graphicDesign:
+        categoriesArr && categoriesArr.indexOf("graphicDesign") !== -1
+          ? true
+          : false,
+      uiUxDesign:
+        categoriesArr && categoriesArr.indexOf("uiUxDesign") !== -1
+          ? true
+          : false,
+      animation:
+        categoriesArr && categoriesArr.indexOf("animation") !== -1
+          ? true
+          : false,
+      imageEditing:
+        categoriesArr && categoriesArr.indexOf("imageEditing") !== -1
+          ? true
+          : false,
+      gameArt:
+        categoriesArr && categoriesArr.indexOf("gameArt") !== -1 ? true : false,
+      characterModeling:
+        categoriesArr && categoriesArr.indexOf("characterModeling") !== -1
+          ? true
+          : false,
+      gameDesigners:
+        categoriesArr && categoriesArr.indexOf("gameDesigners") !== -1
+          ? true
+          : false,
+      typography:
+        categoriesArr && categoriesArr.indexOf("typography") !== -1
+          ? true
+          : false,
     },
     prices: {
-      threeDays: "",
-      fiveDays: "",
-      sevenDays: "",
-      fourteenDays: "",
+      threeDays:
+        extraAmountObj &&
+        extraAmountObj.threeDays &&
+        extraAmountObj.threeDays !== ""
+          ? extraAmountObj.threeDays
+          : "",
+      fiveDays:
+        extraAmountObj &&
+        extraAmountObj.fiveDays &&
+        extraAmountObj.fiveDays !== ""
+          ? extraAmountObj.fiveDays
+          : "",
+      sevenDays:
+        extraAmountObj &&
+        extraAmountObj.sevenDays &&
+        extraAmountObj.sevenDays !== ""
+          ? extraAmountObj.sevenDays
+          : "",
+      fourteenDays:
+        extraAmountObj &&
+        extraAmountObj.fourteenDays &&
+        extraAmountObj.fourteenDays !== ""
+          ? extraAmountObj.fourteenDays
+          : "",
     },
     speedUp: {
-      threeDays: false,
-      fiveDays: false,
-      sevenDays: false,
-      fourteenDays: false,
+      threeDays:
+        extraAmountObj &&
+        extraAmountObj.threeDays &&
+        extraAmountObj.threeDays !== ""
+          ? true
+          : false,
+      fiveDays:
+        extraAmountObj &&
+        extraAmountObj.fiveDays &&
+        extraAmountObj.fiveDays !== ""
+          ? true
+          : false,
+      sevenDays:
+        extraAmountObj &&
+        extraAmountObj.sevenDays &&
+        extraAmountObj.sevenDays !== ""
+          ? true
+          : false,
+      fourteenDays:
+        extraAmountObj &&
+        extraAmountObj.fourteenDays &&
+        extraAmountObj.fourteenDays !== ""
+          ? true
+          : false,
     },
   });
-
+  console.log(
+    "testt",
+    extraAmountObj.threeDays,
+    extraAmountObj && extraAmountObj.threeDays !== ""
+  );
   // Handle checkbox change
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
@@ -61,7 +133,10 @@ const CategoryPreferences = ({ onSubmit, isUpdate, cancel }) => {
     e.preventDefault();
     onSubmit(formData); // Pass formData to parent component
   };
-
+  console.log(
+    categoriesArr,
+    categoriesArr && categoriesArr.indexOf("graphicDesign") !== -1
+  );
   return (
     <Container>
       <Form onSubmit={handleSubmit}>
@@ -77,6 +152,7 @@ const CategoryPreferences = ({ onSubmit, isUpdate, cancel }) => {
                   label={category.replace(/([A-Z])/g, " $1")}
                   name={category}
                   className="custom-checkbox"
+                  checked={formData.categories[category]}
                   onChange={handleCheckboxChange}
                   disabled={!isUpdate}
                 />
@@ -98,6 +174,7 @@ const CategoryPreferences = ({ onSubmit, isUpdate, cancel }) => {
                 label={category.replace(/([A-Z])/g, " $1")}
                 name={category}
                 className="custom-checkbox"
+                checked={formData.categories[category]}
                 onChange={handleCheckboxChange}
                 disabled={!isUpdate}
               />
@@ -124,6 +201,7 @@ const CategoryPreferences = ({ onSubmit, isUpdate, cancel }) => {
                     className="custom-checkbox"
                     onChange={handleCheckboxChange}
                     disabled={!isUpdate}
+                    checked={formData.speedUp[speed.name]}
                   />
                 </Col>
                 <Col xs={8}>
@@ -134,7 +212,7 @@ const CategoryPreferences = ({ onSubmit, isUpdate, cancel }) => {
                     value={formData.prices[speed.name]}
                     onChange={handlePriceChange}
                     className="custom-input"
-                    disabled={!formData.speedUp[speed.name]} // Disable input if checkbox is not selected
+                    disabled={!formData.speedUp[speed.name] || !isUpdate} // Disable input if checkbox is not selected
                   />
                 </Col>
               </Row>

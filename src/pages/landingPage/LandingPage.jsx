@@ -12,6 +12,8 @@ import FAQSection from "../../components/Landing/FAQSection/FAQSection";
 import SpeechBubble from "../../components/Landing/TestimonialsSection/SpeechBubble";
 import TestimonialsSection from "../../components/Landing/TestimonialsSection/TestimonialsSection";
 function LandingPage() {
+  const userRole = localStorage.getItem("role");
+
   return (
     <>
       <CustomNavBar />

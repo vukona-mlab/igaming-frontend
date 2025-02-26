@@ -112,8 +112,7 @@ const Register = () => {
 
       const data = await res.json();
       if (res.ok) {
-        alert(data.message);
-        navigation("/profile");
+        navigation("/freelancer-signin");
       } else {
         alert(data.error || "Registration failed");
       }
@@ -128,7 +127,7 @@ const Register = () => {
       <div className="client-register-left">
         <button
           className="client-register-btn"
-          onClick={() => navigation("/client-signin")}
+          onClick={() => navigation("/freelancer-signin")}
         >
           <b>
             Login <FiArrowRight className="client-register-arrow" />

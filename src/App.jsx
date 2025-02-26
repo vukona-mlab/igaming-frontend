@@ -15,7 +15,6 @@ import ProtectRole from "./components/Protected/ProtectRole";
 import DiscoveryPage from "./pages/DiscoveryPage/DiscoveryPage";
 
 function App() {
-  const userRole = localStorage.getItem("role");
   return (
     <div className="App">
       <Router>

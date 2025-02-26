@@ -44,16 +44,17 @@ const ProfilePage = () => {
   };
 
   const handleCategoriesSubmit = (data) => {
-    let selectedCategories = Object.keys(data.categories).filter(
-      (key) => data.categories[key]
-    );
-
+    let arr = Object.keys(data.categories).filter((key) => {
+      if (data.categories[key] === true) {
+        return key;
+      }
+    });
     updateUserProfile({
       ...formData,
-      categories: selectedCategories,
+      categories: arr || [],
     });
 
-    setFormData((prev) => ({ ...prev, categories: selectedCategories }));
+    setFormData((prev) => ({ ...prev, categories: arr }));
   };
 
   const showAlert = () => {
@@ -77,12 +78,14 @@ const ProfilePage = () => {
       );
       if (response.ok) {
         const data = await response.json();
+        console.log(data);
+
         setFormData({
           name: data.user.name,
           surname: data.user.surname,
           email: data.user.email,
           displayName: data.user.displayName,
-          phone: data.user.phone,
+          phone: data.user.phoneNumber,
           dateOfBirth: data.user.dateOfBirth,
           categories: data.user.categories || [],
         });
@@ -105,8 +108,8 @@ const ProfilePage = () => {
       formData.append("phoneNumber", data.phone);
       formData.append("email", data.email);
       formData.append("dateOfBirth", data.dateOfBirth);
-      formData.append("category", JSON.stringify(data.categories));
-      formData.append("profilePicture", image);
+      formData.append("categories", JSON.stringify(data.categories));
+      formData.append("profilePicture", image || "");
 
       const response = await fetch(
         `http://localhost:8000/api/auth/users/${uid}/update`,
@@ -152,7 +155,7 @@ const ProfilePage = () => {
         <Row className="my-4">
           <Col md={3}>
             <ProfileCard
-              speciality={"Recruiter"}
+              jobTitle={"Recruiter"}
               image={currImage}
               handleImageChange={handleImageChange}
             />
@@ -175,6 +178,8 @@ const ProfilePage = () => {
                 <CategoryPreferences
                   onSubmit={handleCategoriesSubmit}
                   isUpdate={isUpdate}
+                  cancel={() => setIsUpdate(false)}
+                  categoriesArr={formData.categories}
                 />
               </Col>
             </Row>
@@ -182,7 +187,7 @@ const ProfilePage = () => {
         </Row>
 
         {/* Update and Cancel buttons at the bottom right */}
-        {isUpdate && (
+        {/* {isUpdate && (
           <div className="profile-buttons-container">
             <Button
               variant="secondary"
@@ -199,7 +204,7 @@ const ProfilePage = () => {
               Update
             </Button>
           </div>
-        )}
+        )} */}
       </Container>
     </>
   );
