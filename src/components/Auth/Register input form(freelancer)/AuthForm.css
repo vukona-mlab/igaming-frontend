@@ -66,4 +66,16 @@
       }
   }
   
+  .error-border {
+    border-color: red !important;  
+  }
   
+  
+  .form-control.is-invalid {
+    padding-right: 2.25rem; 
+  }
+  
+  .invalid-feedback {
+    display: none !important; 
+    margin-right: 10px;
+  } 
