@@ -5,11 +5,13 @@ import SectionHeader from "../section-header/SectionHeader";
 import ProjectCard from "../../Project Card/ProjectCard";
 import SeeMoreButton from "../SeeMoreButton/SeeMoreButton";
 import SectionTitle from "../SectionTitle/SectionTitle";
+import { useNavigate } from "react-router";
 
 const MadeOnRI = () => {
   const [loading, setLoading] = useState(true);
   const [projects, setProjects] = useState([]);
   const url = "http://localhost:8000/api/projects";
+  const navigation = useNavigate();
 
   useEffect(() => {
     getProjects();
@@ -55,7 +57,10 @@ const MadeOnRI = () => {
           ))}
       </div>
       <div className={styles.sectionButton}>
-        <SeeMoreButton text="See more" onClick={() => console.log()} />
+        <SeeMoreButton
+          text="See more"
+          onClick={() => navigation("/discovery")}
+        />
       </div>
     </section>
   );
