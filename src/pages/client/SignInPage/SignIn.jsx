@@ -80,7 +80,7 @@ const ClientLogin = () => {
 
     return new Promise(async (r) => {
       try {
-        const res = await fetch(`${url}//api/auth/login`, {
+        const res = await fetch(`${url}/api/auth/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
