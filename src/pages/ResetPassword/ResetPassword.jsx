@@ -1,9 +1,66 @@
-import React from "react";
+import React, { useState } from "react";
 import { FiArrowRight } from "react-icons/fi"; // Import the arrow icon
 import LoadingButton from "../../components/ButtonLoader/LoadingButton";
 import "./ResetPassword.css";
 
 const ResetPassword = () => {
+  // State to manage form values and errors
+  const [formData, setFormData] = useState({
+    username: "",
+    phone: "",
+  });
+
+  const [errors, setErrors] = useState({
+    username: "",
+    phone: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+
+  // Handle input changes
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+    // Clear errors when user types
+    setErrors({ ...errors, [e.target.name]: "" });
+  };
+
+  // Validate form fields
+  const handleValidation = () => {
+    let newErrors = {};
+    let isValid = true;
+
+    if (!formData.username.trim()) {
+      newErrors.username = "Username is required.";
+      isValid = false;
+    }
+
+    if (!formData.phone.trim()) {
+      newErrors.phone = "Phone number is required.";
+      isValid = false;
+    } else if (!/^\d{10}$/.test(formData.phone)) {
+      newErrors.phone = "Enter a valid 10-digit phone number.";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  // Handle form submission
+  const handleReset = async () => {
+    if (!handleValidation()) return;
+
+    setLoading(true);
+    try {
+      // Simulate API call (wait for 2 seconds)
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      alert("Password reset request submitted!");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="reset-container">
       {/* Left Section */}
@@ -21,27 +78,40 @@ const ResetPassword = () => {
             RESET PASSWORD
           </h2>
 
+          {/* Username Input */}
           <div className="input-group">
             <label>Username</label>
-            <input type="text" placeholder="Enter username" />
+            <input
+              type="text"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              placeholder="Enter username"
+            />
+            {errors.username && <p className="error-text">{errors.username}</p>}
           </div>
 
+          {/* Phone Input */}
           <div className="input-group">
             <label>Phone</label>
-            <input type="text" placeholder="Enter phone number" />
+            <input
+              type="text"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              placeholder="Enter phone number"
+            />
+            {errors.phone && <p className="error-text">{errors.phone}</p>}
           </div>
 
           {/* Reset Button */}
-          <LoadingButton text="Reset" />
+          <LoadingButton onClick={handleReset} text="Reset" disabled={loading} />
         </div>
       </div>
 
       {/* Right Section */}
       <div className="reset-right">
-        <img
-          src="/public/images/ri-experts.jpg"
-          alt="Woman with digital interface"
-        />
+        <img src="/public/images/ri-experts.jpg" alt="Woman with digital interface" />
       </div>
     </div>
   );
