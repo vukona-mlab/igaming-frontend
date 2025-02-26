@@ -6,6 +6,7 @@ import {
   setPersistence,
   inMemoryPersistence,
   GoogleAuthProvider,
+  signOut,
 } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
@@ -34,4 +35,20 @@ await setPersistence(auth, inMemoryPersistence);
 const db = getFirestore(app);
 //const storage = getStorage(app);
 const googleProvider = new GoogleAuthProvider();
-export { auth, db, googleProvider };
+
+// Add logout function
+const handleLogout = async () => {
+  try {
+    await signOut(auth);
+    // Clear all authentication-related items from localStorage
+    localStorage.removeItem('token');
+    localStorage.removeItem('uid');
+    localStorage.removeItem('role');
+    return true;
+  } catch (error) {
+    console.error("Error logging out:", error);
+    return false;
+  }
+};
+
+export { auth, db, googleProvider, handleLogout };
