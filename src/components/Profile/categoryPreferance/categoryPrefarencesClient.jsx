@@ -59,7 +59,7 @@ const CategoryPreferences = ({ onSubmit, isUpdate, cancel, categoriesArr }) => {
       <Form onSubmit={handleSubmit}>
         <Row className="mb-4">
           {/* First Column */}
-          <Col xs={12} md={6} className="mb-3">
+          <Col xs={12} md={4} className="mb-3">
             <h5 className="category-header">Category Preferences</h5>
             {["graphicDesign", "uiUxDesign", "animation", "imageEditing"].map(
               (category) => (
@@ -78,7 +78,7 @@ const CategoryPreferences = ({ onSubmit, isUpdate, cancel, categoriesArr }) => {
           </Col>
 
           {/* Second Column */}
-          <Col xs={12} md={6} className="mb-3 mt-5">
+          <Col xs={12} md={4} className="mb-3 mt-5">
             {[
               "gameArt",
               "characterModeling",
