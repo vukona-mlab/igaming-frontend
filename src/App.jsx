@@ -1,5 +1,5 @@
 import "./App.css";
-import NavBar from './components/Common/Navbar/navbar';
+import NavBar from "./components/Common/Navbar/navbar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import FreelancerRegister from "./pages/freelancer/Register-page/Register";
