@@ -4,7 +4,7 @@ import defaultProfile from '../../assets/clem.jpg';
 import messageIcon from '../../assets/message.svg';
 import './FreelancerDiscovery.css';
 
-const FreelancerDiscovery = () => {
+const FreelancerDiscovery = ({ searchQuery }) => {
   const [freelancers, setFreelancers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -77,6 +77,27 @@ const FreelancerDiscovery = () => {
     console.log(`Message clicked for freelancer: ${freelancerId}`);
   };
 
+  const filteredFreelancers = freelancers.filter((freelancer) => {
+    if (!searchQuery.trim()) return true; // Show all when no search query
+    
+    const searchLower = searchQuery.toLowerCase();
+    const displayName = (freelancer.displayName || 'Anonymous Freelancer').toLowerCase();
+    const jobTitle = (freelancer.jobTitle || 'Freelancer').toLowerCase();
+    
+    // Check for multiple search terms
+    const searchTerms = searchLower.split(' ');
+    
+    return searchTerms.every(term => {
+      // Check if searching for "anonymous" specifically
+      if (term === 'anonymous' && displayName.includes('anonymous')) {
+        return true;
+      }
+      
+      // Check if the term matches either name or job title
+      return displayName.includes(term) || jobTitle.includes(term);
+    });
+  });
+
   if (loading) {
     return <div className="freelancer-discovery-loading">Loading...</div>;
   }
@@ -87,8 +108,8 @@ const FreelancerDiscovery = () => {
 
   // Group freelancers into rows based on current column count
   const rows = [];
-  for (let i = 0; i < freelancers.length; i += columns) {
-    rows.push(freelancers.slice(i, i + columns));
+  for (let i = 0; i < filteredFreelancers.length; i += columns) {
+    rows.push(filteredFreelancers.slice(i, i + columns));
   }
 
   return (
