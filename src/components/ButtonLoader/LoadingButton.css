@@ -38,6 +38,6 @@
 .loader-gif {
     animation: spin 30s linear infinite;
     animation-duration: 2s;
-    animation-iteration-count: 5;
+    animation-iteration-count: 9;
     /* Spins for 10 seconds (2s * 5) */
 }
