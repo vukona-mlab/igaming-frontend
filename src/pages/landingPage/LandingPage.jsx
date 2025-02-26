@@ -1,5 +1,5 @@
 import React from "react";
-import CustomNavBar from "./CustomNavBar";
+import NavBar from "../../components/Common/Navbar/navbar";
 import "./LandingPage.css";
 import SubNavBar from "../../components/Common/SubNavBar/SubNavBar";
 import About from "../../components/about/About";
@@ -16,7 +16,7 @@ function LandingPage() {
 
   return (
     <>
-      <CustomNavBar />
+      <NavBar />
       <SubNavBar />
       <Showcase />
       <About />
