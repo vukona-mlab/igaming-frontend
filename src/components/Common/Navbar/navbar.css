@@ -1,65 +1,65 @@
-.me-auto{
-    justify-content: center !important;
-    width: 100%;
-    position: relative;
-    left:14%;
+.me-auto {
+  justify-content: center !important;
+  width: 100%;
+  position: relative;
+  /* left:14%; */
 }
 
-.navigation{
-    height: 90px;
+.navigation {
+  height: 90px;
 }
 
-.nav-logo{
-    position: relative;
-    left:36%;
+.nav-logo {
+  position: relative;
+  left: 36%;
 }
 
-.nav-link{
-    width:151px;
-    height:39px;
-    text-align: center;
-    border-radius: 12px;  
-    padding:10px;
-    gap:10px;
-    font-weight: 500;
-    font-size: 12px;
-    line-height: 18px;
-    font-family: 'Poppins';
+.nav-link {
+  width: 151px;
+  height: 39px;
+  text-align: center;
+  border-radius: 12px;
+  padding: 10px;
+  gap: 10px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
+  font-family: "Poppins";
 }
 
-.text{
-    margin-top: 2px;
-    margin-bottom: 0 auto;
+.text {
+  margin-top: 2px;
+  margin-bottom: 0 auto;
 }
 
-.nav-link:hover{
-    background-color: #000000;
-    color:#FFFFFF;
-    width:151px;
-    height:39px;
-    text-align: center;
+.nav-link:hover {
+  background-color: #000000;
+  color: #ffffff;
+  width: 151px;
+  height: 39px;
+  text-align: center;
 }
 
-.nav-link:hover .text{
-    color:#FFFFFF;
+.nav-link:hover .text {
+  color: #ffffff;
 }
 
-.placeholder{
-    border-radius: 50%;
-    background-color: #FFFFFF;
-    color: #FFFFFF;
-    position: relative;
-    right: 10%;
+.placeholder {
+  border-radius: 50%;
+  background-color: #ffffff;
+  color: #ffffff;
+  position: relative;
+  right: 10%;
 }
 
-.placeholder:hover{
-    cursor: pointer;
+.placeholder:hover {
+  cursor: pointer;
 }
 
 .user-profile {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    cursor: pointer;
-  }
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+}
