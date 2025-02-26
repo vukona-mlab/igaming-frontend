@@ -2,11 +2,7 @@ import React, { useState } from "react";
 import { Form, Row, Col, Container } from "react-bootstrap";
 import "./categoryPrefarances.css"; // Ensure this path is correct
 
-<<<<<<< HEAD
-const CategoryPreferences = ({ onSubmit, isUpdate }) => {
-=======
 const CategoryPreferences = ({ onSubmit, isUpdate, cancel, categoriesArr }) => {
->>>>>>> latest-dev
   const [formData, setFormData] = useState({
     categories: {
       graphicDesign:
@@ -53,25 +49,17 @@ const CategoryPreferences = ({ onSubmit, isUpdate, cancel, categoriesArr }) => {
       },
     }));
   };
-<<<<<<< HEAD
-
-=======
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit(formData); // Pass formData to parent component
   };
->>>>>>> latest-dev
   return (
     <Container>
       <Form>
         <Row className="mb-4">
           {/* First Column */}
-<<<<<<< HEAD
-          <Col xs={12} md={6} className="mb-3">
-=======
           <Col xs={12} md={4} className="mb-3">
->>>>>>> latest-dev
             <h5 className="category-header">Category Preferences</h5>
             {["graphicDesign", "uiUxDesign", "animation", "imageEditing"].map(
               (category) => (
@@ -110,8 +98,6 @@ const CategoryPreferences = ({ onSubmit, isUpdate, cancel, categoriesArr }) => {
             ))}
           </Col>
         </Row>
-<<<<<<< HEAD
-=======
         <Row className="justify-content-end mt-4">
           <Col xs={12} className="text-right">
             {isUpdate && (
@@ -126,7 +112,6 @@ const CategoryPreferences = ({ onSubmit, isUpdate, cancel, categoriesArr }) => {
             )}
           </Col>
         </Row>
->>>>>>> latest-dev
       </Form>
     </Container>
   );
