@@ -4,11 +4,10 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Eye, EyeSlash } from "react-bootstrap-icons";
-import "./AuthForm.css";
+import "./AuthForm.css"; // Make sure to add the required CSS for error state
 import { useNavigate } from "react-router";
 
-const AuthForm = ({ formData, setFormData, onSubmit }) => {
-  const [errors, setErrors] = useState({});
+const AuthForm = ({ formData, setFormData, onSubmit, errors }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
@@ -32,7 +31,7 @@ const AuthForm = ({ formData, setFormData, onSubmit }) => {
   };
 
   return (
-    <Form className="auth-form p-0 ">
+    <Form className="auth-form p-0" onSubmit={handleSubmit}>
       <Row className="mb-3">
         <Col xs={12}>
           <Form.Label>Username</Form.Label>
@@ -43,7 +42,9 @@ const AuthForm = ({ formData, setFormData, onSubmit }) => {
             value={formData.username}
             onChange={handleChange}
             isInvalid={!!errors.username}
-            className="form-control-grey"
+            className={`form-control-grey ${
+              errors.username ? "error-border" : ""
+            }`} // Fix this line
           />
           <Form.Control.Feedback type="invalid">
             {errors.username}
@@ -62,15 +63,19 @@ const AuthForm = ({ formData, setFormData, onSubmit }) => {
               value={formData.password}
               onChange={handleChange}
               isInvalid={!!errors.password}
-              className="form-control-grey"
+              className={`form-control-grey ${
+                errors.password ? "error-border" : ""
+              }`} // Fix this line
             />
-            <Button
-              variant="link"
-              className="text-secondary p-0 border-0 btn-eye"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? <EyeSlash /> : <Eye />}
-            </Button>
+            {!errors.password && (
+              <Button
+                variant="link"
+                className="text-secondary p-0 border-0 btn-eye"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <EyeSlash /> : <Eye />}
+              </Button>
+            )}
           </div>
           <Form.Control.Feedback type="invalid">
             {errors.password}
@@ -88,7 +93,9 @@ const AuthForm = ({ formData, setFormData, onSubmit }) => {
             value={formData.jobTitle}
             onChange={handleChange}
             isInvalid={!!errors.jobTitle}
-            className="form-control-grey"
+            className={`form-control-grey ${
+              errors.jobTitle ? "error-border" : ""
+            }`} // Fix this line
           />
           <Form.Control.Feedback type="invalid">
             {errors.jobTitle}
@@ -106,7 +113,9 @@ const AuthForm = ({ formData, setFormData, onSubmit }) => {
             value={formData.experience}
             onChange={handleChange}
             isInvalid={!!errors.experience}
-            className="form-control-grey"
+            className={`form-control-grey ${
+              errors.experience ? "error-border" : ""
+            }`} // Fix this line
           />
           <Form.Control.Feedback type="invalid">
             {errors.experience}

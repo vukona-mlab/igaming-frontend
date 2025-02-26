@@ -83,3 +83,7 @@ button:hover {
   border-bottom: 1px solid black !important;
   box-shadow: none !important;
 }
+.cat-client-div {
+  width: 100%;
+  float: right;
+}

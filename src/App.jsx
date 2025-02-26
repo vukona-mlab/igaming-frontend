@@ -1,4 +1,5 @@
 import "./App.css";
+import NavBar from "./components/Common/Navbar/navbar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import FreelancerRegister from "./pages/freelancer/Register-page/Register";
@@ -12,14 +13,16 @@ import LandingPage from "./pages/landingPage/LandingPage";
 import ProtectedRouteReg from "./components/Protected/ProtectedReg";
 import ProtectedRoutes from "./components/Protected/ProtectedRoutes";
 import ProtectRole from "./components/Protected/ProtectRole";
+import DiscoveryPage from "./pages/DiscoveryPage/DiscoveryPage";
+
 function App() {
-  const userRole = localStorage.getItem("role");
   return (
     <div className="App">
       <Router>
         <div className="App">
           <Routes>
             <Route exact path="/" element={<LandingPage />} />
+            <Route exact path="/discovery" element={<DiscoveryPage />} />
             <Route path="/reset-password" element={<ResetPassword />} />
 
             <Route element={<ProtectedRouteReg />}>
