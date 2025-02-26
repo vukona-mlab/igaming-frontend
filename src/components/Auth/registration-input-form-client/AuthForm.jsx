@@ -7,8 +7,7 @@ import { Eye, EyeSlash } from "react-bootstrap-icons";
 import "./AuthForm.css";
 import { useNavigate } from "react-router";
 
-const AuthForm = ({ formData, setFormData, onSubmit }) => {
-  const [errors, setErrors] = useState({});
+const AuthForm = ({ formData, setFormData, onSubmit, errors }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const jobInterests = [
@@ -38,7 +37,7 @@ const AuthForm = ({ formData, setFormData, onSubmit }) => {
   };
 
   return (
-    <Form className="auth-form p-0 ">
+    <Form className="auth-form p-0" onSubmit={handleSubmit}>
       <Row className="mb-3">
         <Col xs={12}>
           <Form.Label>Username</Form.Label>
@@ -48,8 +47,8 @@ const AuthForm = ({ formData, setFormData, onSubmit }) => {
             placeholder="Enter username"
             value={formData.username}
             onChange={handleChange}
-            isInvalid={!!errors.username}
-            className="form-control-grey"
+            isInvalid={!!errors.username}  // Apply the isInvalid property
+            className={`form-control-grey ${errors.username ? 'is-invalid' : ''}`}  // Conditionally add 'is-invalid' class
           />
           <Form.Control.Feedback type="invalid">
             {errors.username}
@@ -68,8 +67,9 @@ const AuthForm = ({ formData, setFormData, onSubmit }) => {
               value={formData.password}
               onChange={handleChange}
               isInvalid={!!errors.password}
-              className="form-control-grey"
+              className={`form-control-grey ${errors.password ? 'is-invalid' : ''}`} // Apply the isInvalid class
             />
+            {!errors.password &&
             <Button
               variant="link"
               className="text-secondary p-0 border-0 btn-eye"
@@ -77,6 +77,7 @@ const AuthForm = ({ formData, setFormData, onSubmit }) => {
             >
               {showPassword ? <EyeSlash /> : <Eye />}
             </Button>
+        }
           </div>
           <Form.Control.Feedback type="invalid">
             {errors.password}
@@ -91,9 +92,7 @@ const AuthForm = ({ formData, setFormData, onSubmit }) => {
             {jobInterests.map((interest, index) => (
               <div
                 key={index}
-                className={`job-interest-option ${
-                  formData.jobInterest === interest ? "selected" : ""
-                }`}
+                className={`job-interest-option ${formData.jobInterest === interest ? "selected" : ""}`}
                 onClick={() =>
                   setFormData({ ...formData, jobInterest: interest })
                 }
