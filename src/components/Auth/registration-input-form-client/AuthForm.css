@@ -86,3 +86,11 @@
     }
 }
 
+.form-control.is-invalid {
+  border-color: red !important;
+}
+
+.form-control.is-invalid:focus {
+  box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25) !important; 
+}
+
