@@ -43,14 +43,11 @@
 
 .profile-form button:hover {
   background-color: #333;
-<<<<<<< HEAD
-=======
 }
 
 .profile-form input:disabled {
   background-color: #333333;
   color: white;
->>>>>>> latest-dev
 }
 
 /* Responsive Design */
