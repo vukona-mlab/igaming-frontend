@@ -73,6 +73,11 @@ const UserForm = ({ formData, handleChange, handleSubmit, isUpdate }) => {
           />
         </Col>
       </Row>
+<<<<<<< HEAD
+=======
+
+      
+>>>>>>> latest-dev
     </Form>
   );
 };

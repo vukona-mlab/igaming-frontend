@@ -3,7 +3,7 @@ import { Card } from "react-bootstrap";
 import { CiCamera } from "react-icons/ci"; // Import the camera icon
 import "./PortfolioCard.css"; // Import CSS
 
-const PortfolioCard = ({ speciality, image, handleImageChange }) => {
+const PortfolioCard = ({ jobTitle, image, handleImageChange }) => {
   const [currentImage, setCurrentImage] = useState(image);
 
   useEffect(() => {
@@ -46,7 +46,7 @@ const PortfolioCard = ({ speciality, image, handleImageChange }) => {
         </Card.Text>
 
         {/* Speciality Input */}
-        <input className="text-input" type="text" value={speciality} readOnly />
+        <input className="text-input" type="text" value={jobTitle} readOnly />
       </Card.Body>
     </Card>
   );

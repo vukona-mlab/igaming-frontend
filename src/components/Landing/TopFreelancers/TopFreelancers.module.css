@@ -1,0 +1,17 @@
+.TopFreelancers {
+  width: 90%;
+  margin: 15px auto;
+}
+
+.sectionBody {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.sectionButton {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0px 15px;
+}

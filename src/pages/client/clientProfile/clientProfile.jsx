@@ -23,7 +23,6 @@ const ProfilePage = () => {
   const [isUpdate, setIsUpdate] = useState(false);
   const uid = localStorage.getItem("uid");
   const token = localStorage.getItem("token");
-  const url = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     getProfile();
@@ -51,10 +50,10 @@ const ProfilePage = () => {
 
     updateUserProfile({
       ...formData,
-      categories: selectedCategories,
+      categories: arr || [],
     });
 
-    setFormData((prev) => ({ ...prev, categories: selectedCategories }));
+    setFormData((prev) => ({ ...prev, categories: arr }));
   };
 
   const showAlert = () => {
@@ -69,18 +68,23 @@ const ProfilePage = () => {
   const getProfile = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${url}/api/auth/users/${uid}`, {
-        method: "GET",
-        headers: { Authorization: token },
-      });
+      const response = await fetch(
+        `http://localhost:8000/api/auth/users/${uid}`,
+        {
+          method: "GET",
+          headers: { Authorization: token },
+        }
+      );
       if (response.ok) {
         const data = await response.json();
+        console.log(data);
+
         setFormData({
           name: data.user.name,
           surname: data.user.surname,
           email: data.user.email,
           displayName: data.user.displayName,
-          phone: data.user.phone,
+          phone: data.user.phoneNumber,
           dateOfBirth: data.user.dateOfBirth,
           categories: data.user.categories || [],
         });
@@ -103,14 +107,17 @@ const ProfilePage = () => {
       formData.append("phoneNumber", data.phone);
       formData.append("email", data.email);
       formData.append("dateOfBirth", data.dateOfBirth);
-      formData.append("category", JSON.stringify(data.categories));
-      formData.append("profilePicture", image);
+      formData.append("categories", JSON.stringify(data.categories));
+      formData.append("profilePicture", image || "");
 
-      const response = await fetch(`${url}/api/auth/users/${uid}/update`, {
-        method: "PUT",
-        headers: { Authorization: token },
-        body: formData,
-      });
+      const response = await fetch(
+        `http://localhost:8000/api/auth/users/${uid}/update`,
+        {
+          method: "PUT",
+          headers: { Authorization: token },
+          body: formData,
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
@@ -147,7 +154,7 @@ const ProfilePage = () => {
         <Row className="my-4">
           <Col md={3}>
             <ProfileCard
-              speciality={"Recruiter"}
+              jobTitle={"Recruiter"}
               image={currImage}
               handleImageChange={handleImageChange}
             />
@@ -170,6 +177,8 @@ const ProfilePage = () => {
                 <CategoryPreferences
                   onSubmit={handleCategoriesSubmit}
                   isUpdate={isUpdate}
+                  cancel={() => setIsUpdate(false)}
+                  categoriesArr={formData.categories}
                 />
               </Col>
             </Row>
@@ -177,7 +186,7 @@ const ProfilePage = () => {
         </Row>
 
         {/* Update and Cancel buttons at the bottom right */}
-        {isUpdate && (
+        {/* {isUpdate && (
           <div className="profile-buttons-container">
             <Button
               variant="secondary"
@@ -194,7 +203,7 @@ const ProfilePage = () => {
               Update
             </Button>
           </div>
-        )}
+        )} */}
       </Container>
     </>
   );

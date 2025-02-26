@@ -101,8 +101,7 @@ const ClientRegister = () => {
         });
         const data = await res.json();
         if (res.ok) {
-          console.log({ data });
-          alert(data.message);
+          navigation("/client-signin");
           r(true);
         }
       } catch (err) {

@@ -36,13 +36,12 @@ const ClientLogin = () => {
 
   const [successMessage, setSuccessMessage] = useState("");
   const navigation = useNavigate();
-  const url = import.meta.env.VITE_API_URL;
 
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const idToken = await result.user.getIdToken();
-      const response = await fetch(`${url}/api/auth/google`, {
+      const response = await fetch("http://localhost:8000/api/auth/google", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -80,7 +79,7 @@ const ClientLogin = () => {
 
     return new Promise(async (r) => {
       try {
-        const res = await fetch(`${url}/api/auth/login`, {
+        const res = await fetch("http://localhost:8000/api/auth/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -88,7 +87,6 @@ const ClientLogin = () => {
           body: JSON.stringify({
             email: formData.username,
             password: formData.password,
-            roles: ["client"],
           }),
         });
 
