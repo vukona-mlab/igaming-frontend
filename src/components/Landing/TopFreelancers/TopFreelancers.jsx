@@ -3,11 +3,14 @@ import styles from "./TopFreelancers.module.css";
 import SectionHeader from "../section-header/SectionHeader";
 import FreelancerCard from "../../Freelancer Card/FreelancerCard";
 import SeeMoreButton from "../SeeMoreButton/SeeMoreButton";
+import SectionTitle from "../SectionTitle/SectionTitle";
+import { useNavigate } from "react-router";
 
 const TopFreelancers = () => {
   const [loading, setLoading] = useState(true);
   const [freelancers, setFreelancers] = useState([]);
   const url = "http://localhost:8000/api/freelancers/projects";
+  const navigation = useNavigate();
 
   useEffect(() => {
     getTopFreelancers();
@@ -35,6 +38,11 @@ const TopFreelancers = () => {
   return (
     <section className={styles.TopFreelancers}>
       <SectionHeader text="Top Freelancers" />
+      <SectionTitle
+        title="Our Best"
+        subtitle="Given their ability and rankings, these are the outstanding freelancers we have."
+        span="freelancers"
+      />
       <div className={styles.sectionBody}>
         {freelancers &&
           freelancers.map((freelancer, i) => (
@@ -49,7 +57,10 @@ const TopFreelancers = () => {
           ))}
       </div>
       <div className={styles.sectionButton}>
-        <SeeMoreButton text="See more" onClick={() => console.log()} />
+        <SeeMoreButton
+          text="See more"
+          onClick={() => navigation("/discovery")}
+        />
       </div>
     </section>
   );

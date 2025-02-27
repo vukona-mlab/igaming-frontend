@@ -7,7 +7,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  min-height: 550px;
+  min-height: 650px;
   flex-wrap: wrap;
 }
 .sectionButton {

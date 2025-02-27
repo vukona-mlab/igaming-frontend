@@ -62,7 +62,7 @@ const Register = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ idToken }),
+        body: JSON.stringify({ idToken, roles: ["freelancer"] }),
       });
 
       const data = await response.json();
@@ -106,14 +106,13 @@ const Register = () => {
           password: formData.password,
           jobTitle: formData.jobTitle,
           experience: formData.experience,
-          roles: ["Freelancer"],
+          roles: ["freelancer"],
         }),
       });
 
       const data = await res.json();
       if (res.ok) {
-        alert(data.message);
-        navigation("/profile");
+        navigation("/freelancer-signin");
       } else {
         alert(data.error || "Registration failed");
       }
@@ -128,7 +127,7 @@ const Register = () => {
       <div className="client-register-left">
         <button
           className="client-register-btn"
-          onClick={() => navigation("/clientSignin")}
+          onClick={() => navigation("/freelancer-signin")}
         >
           <b>
             Login <FiArrowRight className="client-register-arrow" />

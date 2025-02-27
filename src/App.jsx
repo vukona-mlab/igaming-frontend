@@ -1,8 +1,9 @@
 import "./App.css";
+import NavBar from "./components/Common/Navbar/navbar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import FreelancerRegister from "./pages/freelancer/Register-page/Register";
-import FreelancerSignIn from "./pages/freelancer/SigninForm/SignIn";
+import FreelancerSignIn from "./pages/freelancer/FreelancerSignIn/SignIn";
 import FreelancerProfile from "./pages/freelancer/freelanceProfile/frelancerProfile";
 
 import ClientProfile from "./pages/client/clientProfile/clientProfile";
@@ -12,31 +13,39 @@ import LandingPage from "./pages/landingPage/LandingPage";
 import ProtectedRouteReg from "./components/Protected/ProtectedReg";
 import ProtectedRoutes from "./components/Protected/ProtectedRoutes";
 import ProtectRole from "./components/Protected/ProtectRole";
-import FreelancerProjects from "./pages/freelancer/freelancesProjectsPage/freelancerProjectsPage"
+import DiscoveryPage from "./pages/DiscoveryPage/DiscoveryPage";
+import FreelancerProjects from "./pages/freelancer/freelancesProjectsPage/freelancerProjectsPage";
 
 function App() {
-  const userRole = localStorage.getItem("role");
   return (
     <div className="App">
       <Router>
         <div className="App">
           <Routes>
             <Route exact path="/" element={<LandingPage />} />
-            <Route path="/resetPassword" element={<ResetPassword />} />
-            <Route path="/freelancerProjects" element={<FreelancerProjects />} />
+            <Route exact path="/discovery" element={<DiscoveryPage />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route
+              path="/freelancerProjects"
+              element={<FreelancerProjects />}
+            />
 
             <Route element={<ProtectedRouteReg />}>
-              <Route exact path="clientRegister" element={<ClientRegister />} />
               <Route
                 exact
-                path="freelancerRegister"
+                path="client-register"
+                element={<ClientRegister />}
+              />
+              <Route
+                exact
+                path="freelancer-register"
                 element={<FreelancerRegister />}
               />
 
-              <Route exact path="clientSignin" element={<ClientSignIn />} />
+              <Route exact path="client-signin" element={<ClientSignIn />} />
               <Route
                 exact
-                path="freelancerSignin"
+                path="freelancer-signin"
                 element={<FreelancerSignIn />}
               />
             </Route>

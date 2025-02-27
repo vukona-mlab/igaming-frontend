@@ -33,6 +33,7 @@ button:hover {
 }
 
 .text-right {
+  width: 100%;
   text-align: right !important;
 }
 
@@ -82,4 +83,14 @@ button:hover {
 .custom-input:focus {
   border-bottom: 1px solid black !important;
   box-shadow: none !important;
+}
+.cat-client-div {
+  width: 100%;
+  float: right;
+}
+
+.clientCategoriesForm {
+  max-width: 1000px;
+  margin: auto;
+  padding: 20px;
 }
