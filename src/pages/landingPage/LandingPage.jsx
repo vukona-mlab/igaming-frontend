@@ -13,8 +13,6 @@ import SpeechBubble from "../../components/Landing/TestimonialsSection/SpeechBub
 import TestimonialsSection from "../../components/Landing/TestimonialsSection/TestimonialsSection";
 import GetStarted from "../../components/Landing/GetStartedSection/GetStarted";
 function LandingPage() {
-  const userRole = localStorage.getItem("role");
-
   return (
     <>
       <NavBar />
