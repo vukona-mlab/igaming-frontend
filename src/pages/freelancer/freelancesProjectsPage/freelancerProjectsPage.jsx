@@ -13,7 +13,7 @@ const FreelancerProjects = () => {
   });
 
   const freelancerIdToShow = "5Ei0TkC4TUblQ0NVHN46PupY3w83"; // Hardcoded freelancer ID
-////
+///////
   useEffect(() => {
     fetch("http://localhost:8000/api/freelancers/projects")
       .then((response) => response.json())
