@@ -25,10 +25,10 @@ function App() {
             <Route exact path="/" element={<LandingPage />} />
             <Route exact path="/discovery" element={<DiscoveryPage />} />
             <Route path="/reset-password" element={<ResetPassword />} />
-            <Route
+            {/* <Route
               path="/freelancerProjects"
               element={<FreelancerProjects />}
-            />
+            /> */}
 
             <Route element={<ProtectedRouteReg />}>
               <Route
