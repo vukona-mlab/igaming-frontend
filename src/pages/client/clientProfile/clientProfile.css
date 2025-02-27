@@ -57,6 +57,7 @@
     gap: 10px; /* Adds spacing between buttons */
     margin-top: 20px;
     padding: 10px;
+    border: 1px solid red;
   }
   
   .profile-edit {

@@ -31,8 +31,8 @@ const ProjectCard = ({
       <div className="project-info">
         <div className="project-details">
           <h3 className="project-name">{projectName}</h3>
-          <p className="project-likes">{formatLikes(likes)} likes</p>
-          <p className="author">Author : {authorName}</p>
+          <p className="project-p">{formatLikes(likes)} likes</p>
+          <p className="project-p">Author : {authorName}</p>
           <div className="project-footer">
             <div className="d-flex justify-content-between align-items-center">
               <img src={ThumbsUpIcon} alt="thumbs up" className="thumbs-icon" />

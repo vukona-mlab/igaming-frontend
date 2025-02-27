@@ -1,8 +1,9 @@
 import React from 'react';
 import { FaStar, FaStarHalfAlt } from 'react-icons/fa';
 import { AiOutlineStar } from 'react-icons/ai';
-import Button from '../Button/MessageButton';
-import './FreelancerCard.css';
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import "./FreelancerCard.css"
 
 const FreelancerCard = ({ 
   profilePicture, 
@@ -35,36 +36,23 @@ const FreelancerCard = ({
 
     return stars;
   };
-
+    // ths is jessy's card for landing page
   return (
-    <div className="freelancer-card">
-      <div className="freelancer-profile">
-        <img 
-          src={profilePicture} 
-          alt={`${name}'s profile`} 
-          className="profile-picture"
-        />
-      </div>
-      <div className="freelancer-info">
-        <div className="freelancer-details">
-          <h3 className="freelancer-name">{name}</h3>
-          <p className="freelancer-title">{jobTitle}</p>
-          <div className="freelancer-stats">
-            <span className="projects">{projectsCompleted} Projects Completed</span>
-            <div className="rating">
-              {renderStars()}
-            </div>
-          </div>
-        </div>
-        <Button 
-          onClick={onMessageClick}
-          className="message-btn"
-        >
+    <Card className="freelancer-card">
+      <Card.Img src={profilePicture} alt={`${name}'s profile`} className="profile-picture" />
+      <Card.Body>
+        <Card.Title className="freelancer-name">{name}</Card.Title>
+        <Card.Text className="freelancer-title">{jobTitle}</Card.Text>
+        <Card.Text className="freelancer-stats">
+          <span className="projects">{projectsCompleted} Projects Completed</span>
+          <div className="freelancer-title">{renderStars()}</div>
+        </Card.Text>
+        <Button variant="dark" onClick={onMessageClick} className="message-btn">
           Message
         </Button>
-      </div>
-    </div>
+      </Card.Body>
+    </Card>
   );
 };
 
-export default FreelancerCard; 
+export default FreelancerCard;

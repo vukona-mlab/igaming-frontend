@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+.freelancer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Ensures even spacing */
+  gap: 1rem; /* Space between cards */
+  padding: 1rem;
+  align-items: stretch; /* Makes cards equal height */
+}
+
+.freelancer-card {
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 15rem; /* Reduce card width */
+  min-height: 100%; /* Ensure equal height */
+  border: 1px solid #e0e0e0;
+  border-radius: 20px;
+  background-color: white;
+  overflow: hidden;
+  justify-content: space-between;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.freelancer-card:hover {
+  transform: scale(1.03);
+}
+
+.freelancer-profile {
+  width: 100%;
+  overflow: hidden;
+}
+
+.profile-picture {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 20px 20px 0 0;
+}
+
+.freelancer-info {
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex-grow: 1; /* Ensures even height */
+}
+
+.freelancer-name {
+  font-weight: 500;
+  font-size: 1rem;
+  color: #444;
+}
+
+.freelancer-title {
+  font-weight: 400;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.freelancer-stats {
+  font-weight: 400;
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  color: #666;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.star {
+  font-size: 1rem;
+}
+
+.star.filled {
+  color: #f6ad52;
+}
+
+.star.empty {
+  color: #d3d3d3;
+}
+
+.message-btn {
+  font-weight: 500;
+  font-size: 0.9rem;
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 15px;
+  text-align: center;
+  cursor: pointer;
+  background-color: #000;
+  color: white;
+  border: none;
+  transition: background 0.3s;
+}
+
+.message-btn:hover {
+  background-color: #333;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .freelancer-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .freelancer-card {
+    max-width: 90%; /* Allow more width for smaller screens */
+  }
+}
