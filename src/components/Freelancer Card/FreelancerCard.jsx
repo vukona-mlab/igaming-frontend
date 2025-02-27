@@ -1,16 +1,16 @@
-import React from 'react';
-import { FaStar, FaStarHalfAlt } from 'react-icons/fa';
-import { AiOutlineStar } from 'react-icons/ai';
-import Button from '../Button/MessageButton';
-import './FreelancerCard.css';
+import React from "react";
+import { FaStar, FaStarHalfAlt } from "react-icons/fa";
+import { AiOutlineStar } from "react-icons/ai";
+import Button from "../Button/MessageButton";
+import "./FreelancerCard.css";
 
-const FreelancerCard = ({ 
-  profilePicture, 
-  name, 
-  jobTitle, 
-  projectsCompleted, 
+const FreelancerCard = ({
+  profilePicture,
+  name,
+  jobTitle,
+  projectsCompleted,
   rating,
-  onMessageClick 
+  onMessageClick,
 }) => {
   const renderStars = () => {
     const stars = [];
@@ -39,9 +39,9 @@ const FreelancerCard = ({
   return (
     <div className="freelancer-card">
       <div className="freelancer-profile">
-        <img 
-          src={profilePicture} 
-          alt={`${name}'s profile`} 
+        <img
+          src={profilePicture}
+          alt={`${name}'s profile`}
           className="profile-picture"
         />
       </div>
@@ -50,16 +50,13 @@ const FreelancerCard = ({
           <h3 className="freelancer-name">{name}</h3>
           <p className="freelancer-title">{jobTitle}</p>
           <div className="freelancer-stats">
-            <span className="projects">{projectsCompleted} Projects Completed</span>
-            <div className="rating">
-              {renderStars()}
-            </div>
+            <span className="projects">
+              {projectsCompleted} Projects Completed
+            </span>
+            <div className="rating">{renderStars()}</div>
           </div>
         </div>
-        <Button 
-          onClick={onMessageClick}
-          className="message-btn"
-        >
+        <Button onClick={onMessageClick} className="message-btn">
           Message
         </Button>
       </div>
@@ -67,4 +64,4 @@ const FreelancerCard = ({
   );
 };
 
-export default FreelancerCard; 
+export default FreelancerCard;
