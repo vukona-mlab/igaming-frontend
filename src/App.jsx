@@ -23,12 +23,10 @@ function App() {
         <div className="App">
           <Routes>
             <Route exact path="/" element={<LandingPage />} />
-            <Route exact path="/discovery" element={<DiscoveryPage />} />
+            <Route exact path="/discovery" element={<DiscoveryPage />}>
+              <Route path=":freelancer_id" element={<FreelancerProjects />} />
+            </Route>
             <Route path="/reset-password" element={<ResetPassword />} />
-            {/* <Route
-              path="/freelancerProjects"
-              element={<FreelancerProjects />}
-            /> */}
 
             <Route element={<ProtectedRouteReg />}>
               <Route
