@@ -63,5 +63,21 @@
     margin-left: 10px;
     margin-right: 15px;
   }
+  .send-icon-img {
+    width: 38px;
+    height: 38px;
+    margin-left: 10px;
+    margin-right: 15px;
+  }
+  
+  .send-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .send-button:focus {
+    outline: none;
+  }
   
   
