@@ -50,14 +50,14 @@ const CategoryPreferences = ({ onSubmit, isUpdate, cancel, categoriesArr }) => {
     }));
   };
   // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
+    //  e.preventDefault();
     onSubmit(formData); // Pass formData to parent component
   };
   return (
     <Container>
-      <Form onSubmit={handleSubmit}>
-        <Row className="mb-4">
+      <Form>
+        <Row className="mb-4 frow">
           {/* First Column */}
           <Col xs={12} md={4} className="mb-3">
             <h5 className="category-header">Category Preferences</h5>
@@ -98,7 +98,8 @@ const CategoryPreferences = ({ onSubmit, isUpdate, cancel, categoriesArr }) => {
             ))}
           </Col>
         </Row>
-        <Row className="justify-content-end mt-4">
+
+        {/* <Row className="justify-content-end mt-4">
           <Col xs={12} className="text-right">
             {isUpdate && (
               <Button className="cancel-button me-4" onClick={cancel}>
@@ -111,8 +112,26 @@ const CategoryPreferences = ({ onSubmit, isUpdate, cancel, categoriesArr }) => {
               </Button>
             )}
           </Col>
-        </Row>
+        </Row> */}
       </Form>
+      {isUpdate && (
+        <div className="profile-buttons-container">
+          <Button
+            variant="secondary"
+            onClick={cancel}
+            className="cancel-button"
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="dark"
+            onClick={() => handleSubmit()}
+            className="update-button"
+          >
+            Update
+          </Button>
+        </div>
+      )}
     </Container>
   );
 };
