@@ -15,7 +15,7 @@ import ProtectedRoutes from "./components/Protected/ProtectedRoutes";
 import ProtectRole from "./components/Protected/ProtectRole";
 import DiscoveryPage from "./pages/DiscoveryPage/DiscoveryPage";
 import FreelancerProjects from "./pages/freelancer/freelancesProjectsPage/freelancerProjectsPage";
-import MessagingPage from "./pages/freelancer/MessagingPage/MessagingPage";
+import MessagingPageF from "./pages/freelancer/MessagingPage/MessagingPageF";
 function App() {
   return (
     <div className="App">
@@ -55,7 +55,7 @@ function App() {
                 element={<FreelancerProfile />}
               />
               <Route path="client-profile" element={<ClientProfile />} />
-              <Route path="messaging" element={<MessagingPage />} />
+              <Route path="messaging" element={<MessagingPageF />} />
             </Route>
           </Routes>
         </div>

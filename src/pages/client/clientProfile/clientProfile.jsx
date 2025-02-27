@@ -7,7 +7,7 @@ import Navbar from "../../../components/Common/Navbar/navbar";
 import "./clientProfile.css";
 import Swal from "sweetalert2";
 import SwitchRoleButton from "../../../components/Common/SwitchRoleButton/SwitchRoleButton";
-
+import ProfileSubNav from "../../../components/Profile/ProfileSubNav/ProfileSubNav";
 const ProfilePage = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -191,11 +191,10 @@ const ProfilePage = () => {
     }
   };
 
-  if (loading) return;
-
   return (
     <>
       <Navbar />
+      <ProfileSubNav />
       <Container style={{ minHeight: "100vh", paddingBottom: "60px" }}>
         <div className="profile-edit d-flex justify-content-between align-items-center">
           <div className="welcome-message">
@@ -206,16 +205,18 @@ const ProfilePage = () => {
             )}
             {/* Placeholder for the user's name */}
           </div>
-          <SwitchRoleButton
-            currentRole={currentRole}
-            onRoleSwitch={handleRoleSwitch}
-          />
+          <div>
+            <SwitchRoleButton
+              currentRole={currentRole}
+              onRoleSwitch={handleRoleSwitch}
+            />
 
-          {!isUpdate && (
-            <Button variant="dark" onClick={() => setIsUpdate(true)}>
-              Edit
-            </Button>
-          )}
+            {!isUpdate && (
+              <Button variant="dark" onClick={() => setIsUpdate(true)}>
+                Edit
+              </Button>
+            )}
+          </div>
         </div>
         <Row className="my-4">
           <Col md={3}>

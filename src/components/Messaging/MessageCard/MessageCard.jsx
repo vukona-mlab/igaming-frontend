@@ -2,7 +2,15 @@ import React from "react";
 import "./MessageCard.css";
 
 const MessageCard = ({ message }) => {
-  return <div className="MessageCard">{message}</div>;
+  console.log(message);
+  const uid = localStorage.getItem("uid");
+  return (
+    <div
+      className={`MessageCard ${uid !== message.senderId ? "left" : "right"}`}
+    >
+      {message.text || message.message}
+    </div>
+  );
 };
 
 export default MessageCard;

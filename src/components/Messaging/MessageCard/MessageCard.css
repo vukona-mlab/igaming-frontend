@@ -1,0 +1,18 @@
+.MessageCard {
+  width: 300px;
+  border-radius: 10px;
+  padding: 25px;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.left {
+  background-color: #e7e7e7;
+  margin-right: auto;
+}
+
+.right {
+  background-color: #333333;
+  margin-left: auto;
+  color: white;
+}

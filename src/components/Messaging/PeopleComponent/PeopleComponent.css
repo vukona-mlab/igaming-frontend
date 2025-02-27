@@ -1,0 +1,12 @@
+.PeopleComponent {
+  flex: 1;
+  width: 415px;
+  border-radius: 15px;
+  border: 2px solid #0000000d;
+  padding: 25px 10px;
+}
+
+.people-title {
+  font-size: 25px;
+  font-weight: 700;
+}
