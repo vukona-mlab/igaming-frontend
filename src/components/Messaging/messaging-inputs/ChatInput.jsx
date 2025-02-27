@@ -1,15 +1,24 @@
-import React from "react";  
-import { Form } from "react-bootstrap"; 
-import "bootstrap/dist/css/bootstrap.min.css"; 
+import React from "react";
+import { Form } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./ChatInput.css";
 
-const ChatInput = ({ file, setFile, fileIcon, setFileIcon, text, setText }) => {
+const ChatInput = ({ file, setFile, fileIcon, setFileIcon, text, setText, sendMessage }) => {
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
   };
 
   const handleImageCapture = (event) => {
     setFileIcon(URL.createObjectURL(event.target.files[0]));
+  };
+
+  const handleSendClick = () => {
+    if (text.trim() || file || fileIcon) {
+      sendMessage(text, file, fileIcon); 
+      setText(""); 
+      setFile(null); 
+      setFileIcon(null);
+    }
   };
 
   return (
@@ -35,10 +44,17 @@ const ChatInput = ({ file, setFile, fileIcon, setFileIcon, text, setText }) => {
           onChange={(e) => setText(e.target.value)}
         />
 
-        {/* Camera Icon */}
-        <label htmlFor="camera-upload" className="icon-button">
-          <img src="/images/camera-icon.svg" alt="Camera" className="camera-icon-img" />
-        </label>
+        {/* Show Camera Icon when input is empty, else show Send Icon */}
+        {text ? (
+          <button className="icon-button send-button" onClick={handleSendClick}>
+            <img src="/images/send-icon.png" alt="Send" className="send-icon-img" />
+          </button>
+        ) : (
+          <label htmlFor="camera-upload" className="icon-button">
+            <img src="/images/camera-icon.svg" alt="Camera" className="camera-icon-img" />
+          </label>
+        )}
+
         <input
           type="file"
           accept="image/*"
