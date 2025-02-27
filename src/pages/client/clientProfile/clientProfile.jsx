@@ -44,10 +44,11 @@ const ProfilePage = () => {
   };
 
   const handleCategoriesSubmit = (data) => {
-    let selectedCategories = Object.keys(data.categories).filter(
-      (key) => data.categories[key]
-    );
-
+    let arr = Object.keys(data.categories).filter((key) => {
+      if (data.categories[key] === true) {
+        return key;
+      }
+    });
     updateUserProfile({
       ...formData,
       categories: arr || [],

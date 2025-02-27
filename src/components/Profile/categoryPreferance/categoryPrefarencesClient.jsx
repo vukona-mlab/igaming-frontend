@@ -56,7 +56,7 @@ const CategoryPreferences = ({ onSubmit, isUpdate, cancel, categoriesArr }) => {
   };
   return (
     <Container>
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <Row className="mb-4">
           {/* First Column */}
           <Col xs={12} md={4} className="mb-3">
