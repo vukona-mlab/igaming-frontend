@@ -6,6 +6,7 @@ import CategoryPreferences from "../../../components/Profile/categoryPreferance/
 import Navbar from "../../../components/Common/Navbar/navbar";
 import "./clientProfile.css";
 import Swal from "sweetalert2";
+import SwitchRoleButton from "../../../components/Common/SwitchRoleButton/SwitchRoleButton";
 
 const ProfilePage = () => {
   const [formData, setFormData] = useState({
@@ -23,6 +24,8 @@ const ProfilePage = () => {
   const [isUpdate, setIsUpdate] = useState(false);
   const uid = localStorage.getItem("uid");
   const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
+  const [currentRole, setCurrentRole] = useState("client");
 
   useEffect(() => {
     getProfile();
@@ -130,6 +133,63 @@ const ProfilePage = () => {
       console.log(error);
     }
   };
+  const handleRoleSwitch = async () => {
+    try {
+      const newRole = currentRole === "client" ? "freelancer" : "client";
+
+      // Add confirmation dialog
+      const result = await Swal.fire({
+        title: "Switch Role?",
+        text: `Are you sure you want to switch to ${newRole} mode?`,
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, switch role",
+        cancelButtonText: "Cancel",
+      });
+
+      // If user confirms
+      if (result.isConfirmed) {
+        const response = await fetch(
+          `http://localhost:8000/api/auth/users/${uid}/roles`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: token,
+            },
+            body: JSON.stringify({
+              roles: [newRole],
+            }),
+          }
+        );
+
+        if (response.ok) {
+          setCurrentRole(newRole);
+          Swal.fire({
+            title: "Role Updated!",
+            text: `You are now a ${newRole}`,
+            icon: "success",
+            confirmButtonText: "OK",
+          }).then(() => {
+            window.location.href = `/${
+              newRole === "client" ? "client" : "freelancer"
+            }-profile`;
+          });
+        } else {
+          throw new Error("Failed to update role");
+        }
+      }
+    } catch (error) {
+      Swal.fire({
+        title: "Error",
+        text: "Failed to switch roles. Please try again.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+  };
 
   if (loading) return;
 
@@ -146,6 +206,11 @@ const ProfilePage = () => {
             )}
             {/* Placeholder for the user's name */}
           </div>
+          <SwitchRoleButton
+            currentRole={currentRole}
+            onRoleSwitch={handleRoleSwitch}
+          />
+
           {!isUpdate && (
             <Button variant="dark" onClick={() => setIsUpdate(true)}>
               Edit
