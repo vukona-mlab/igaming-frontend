@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 
 .project-card {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 500;
   font-size: 16px;
   display: flex;
@@ -51,7 +51,7 @@
 }
 
 .project-name {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 500;
   font-size: 16px;
   margin: 0;
@@ -60,7 +60,7 @@
 }
 
 .project-likes {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 500;
   font-size: 16px;
   margin: 0;
@@ -71,16 +71,14 @@
   gap: 0.5rem;
 }
 
-
 .project-stats {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 400;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   color: #666;
   font-size: 0.9rem;
-
 }
 
 .thumbs-icon {
@@ -108,7 +106,7 @@
 }
 
 .demo-btn {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 500;
   font-size: 16px;
   width: auto;
@@ -148,4 +146,4 @@
 .share-icon {
   width: 20px;
   height: 20px;
-} 
+}
