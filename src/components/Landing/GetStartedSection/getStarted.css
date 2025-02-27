@@ -1,9 +1,9 @@
-* {
+/* * {
   align-items: center;
   margin: auto;
-}
+} */
 
-h6 {
+.gs h6 {
   font-family: "Poppins";
   font-weight: 500 !important;
   font-size: 30px;
@@ -28,7 +28,7 @@ h6 {
   margin-top: 15px;
 }
 
-h1 {
+.gs h1 {
   text-align: center;
   font-family: "Poppins";
   font-size: 36px;
@@ -60,7 +60,7 @@ h1 {
   line-height: 30px;
 }
 
-p {
+.gs p {
   text-align: center;
   color: #808080;
   font-family: "Poppins";
@@ -69,7 +69,7 @@ p {
   line-height: 24px;
 }
 
-.cards {
+.gs .cards {
   border: solid 0.1px;
   color: #c0c0c0;
   border-radius: 21.5px;
@@ -77,14 +77,14 @@ p {
   margin-bottom: 5px;
 }
 
-.cards hr {
+.gs .cards hr {
   margin: 5px 0; /* Reduce space around the hr */
 }
 
-.cards p {
+.gs .cards p {
   margin: 5px 0;
 }
-.img-card {
+.gs .img-card {
   border: solid 0.1px;
   color: #c0c0c0;
   border-radius: 21.5px;
@@ -92,21 +92,21 @@ p {
   margin-bottom: 10px;
 }
 
-.cards img {
+.gs .cards img {
   display: block;
   margin: 0 auto;
 }
 
-.cards-containers {
+.gs .cards-containers {
   margin-top: 25px;
   padding: 50px;
 }
 
 @media (max-width: 500px) {
-  img {
+  .gs img {
     width: 200px;
   }
-  .cards {
+  .gs .cards {
     margin-bottom: 15px;
   }
 
@@ -117,7 +117,7 @@ p {
   .second-heading {
     font-size: 17px;
   }
-  h1 {
+  .gs h1 {
     font-size: 30px;
   }
 }

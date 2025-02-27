@@ -7,7 +7,7 @@ import Card from "react-bootstrap/Card";
 
 export default function GetStarted() {
   return (
-    <>
+    <div className="gs">
       <div className="get-started-box">
         <h6>
           Get Started<div className="red-line"></div>
@@ -66,6 +66,6 @@ export default function GetStarted() {
           </Row>
         </Container>
       </div>
-    </>
+    </div>
   );
 }
