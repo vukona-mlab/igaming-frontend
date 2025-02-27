@@ -1,52 +1,51 @@
 .ProfileSubNav {
   display: flex;
+  justify-content: flex-start;
   background-color: black;
-}
-
-.subnavbtn {
-  color: white;
-}
-
-.subnav .subnavbtn {
-  font-size: 16px;
-  border: none;
-  outline: none;
-  color: white;
-  padding: 14px 16px;
-  /* background-color: inherit; */
-  font-family: inherit;
-  margin: 0;
+  height: 46px;
 }
 
 /* .navbar a:hover, .subnav:hover .subnavbtn {
     background-color: red;
   } */
 
-a {
-  float: left;
-  font-size: 16px;
-  color: black;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  justify-content: center;
-}
-
 .p-subnav-content {
+  width: 90%;
   display: flex;
-  justify-content: space-evenly;
+  margin: 0px auto;
+  gap: 25px;
 }
 
-.p-subnav-content a {
+.p-subnav-content .p-subnav-link {
   float: left;
   color: white;
   text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0px 10px;
 }
 
-.p-subnav-content a:hover {
-  background-color: #eee;
-  color: black;
+.p-subnav-content .p-subnav-link:hover {
+  background-color: #333333;
+  color: white;
+  cursor: pointer;
 }
-
+.dashboard-icon {
+  height: 24px;
+  width: 24px;
+}
+.message-icon {
+  height: 24px;
+  width: 24px;
+}
+.order-icon {
+  height: 24px;
+  width: 24px;
+}
+.money-icon {
+  height: 24px;
+  width: 24px;
+}
 /* .subnav:hover .subnav-content {
   } */

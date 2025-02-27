@@ -8,6 +8,7 @@ import Navbar from "../../../components/Common/Navbar/navbar";
 import { Form, Button } from "react-bootstrap";
 import Swal from "sweetalert2";
 import SwitchRoleButton from "../../../components/Common/SwitchRoleButton/SwitchRoleButton";
+import ProfileSubNav from "../../../components/Profile/ProfileSubNav/ProfileSubNav";
 const ProfilePage = ({}) => {
   const [formData, setFormData] = useState({
     name: "",
@@ -213,11 +214,10 @@ const ProfilePage = ({}) => {
     }
   };
 
-  if (loading) return;
   return (
     <>
       <Navbar />
-
+      <ProfileSubNav />
       <Container style={{ minHeight: "100vh", paddingBottom: "60px" }}>
         <div className="profile-edit d-flex justify-content-between align-items-center">
           <div className="welcome-message">
@@ -228,15 +228,17 @@ const ProfilePage = ({}) => {
             )}
             {/* Placeholder for the user's name */}
           </div>
-          <SwitchRoleButton
-            currentRole={currentRole}
-            onRoleSwitch={handleRoleSwitch}
-          />
-          {!isUpdate && (
-            <Button variant="dark" onClick={() => setIsUpdate(true)}>
-              Edit
-            </Button>
-          )}
+          <div>
+            <SwitchRoleButton
+              currentRole={currentRole}
+              onRoleSwitch={handleRoleSwitch}
+            />
+            {!isUpdate && (
+              <Button variant="dark" onClick={() => setIsUpdate(true)}>
+                Edit
+              </Button>
+            )}
+          </div>
         </div>
 
         {/* First Row with ProfileCard and ProfileForm */}
@@ -278,26 +280,6 @@ const ProfilePage = ({}) => {
             </Row>
           </Col>
         </Row>
-
-        {/* Update and Cancel buttons at the bottom right */}
-        {/* {isUpdate && (
-          <div className="profile-buttons-container">
-            <Button
-              variant="secondary"
-              onClick={() => setIsUpdate(false)}
-              className="cancel-button"
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="dark"
-              onClick={() => handleCategoriesSubmit(formData)}
-              className="update-button"
-            >
-              Update
-            </Button>
-          </div>
-        )} */}
       </Container>
     </>
   );

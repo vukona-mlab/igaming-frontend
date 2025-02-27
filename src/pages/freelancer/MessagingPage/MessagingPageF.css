@@ -1,0 +1,14 @@
+.messagePageContainer {
+  width: calc(90%);
+  height: calc(95vh - 10px);
+  margin: 25px auto;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+/* @media (min-width: 1441px) {
+  .messagePageContainer {
+    height: calc(90vh - 50px);
+  }
+} */

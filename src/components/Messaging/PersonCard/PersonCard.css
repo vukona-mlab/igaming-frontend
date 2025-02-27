@@ -1,0 +1,45 @@
+* {
+}
+.PersonCard {
+  display: flex;
+  align-items: center;
+  padding: 15px 5px;
+  border-bottom: 1px solid #b4ababa8;
+  cursor: pointer;
+}
+
+.personCardInfo {
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.personCardInfo .person-name {
+  font-size: 15px;
+  width: 100%;
+}
+.pc-latest-message {
+  font-size: 15px;
+  width: 100%;
+  padding: 0px;
+  margin: 0px;
+}
+.personCardInfo-one {
+  flex: 3;
+}
+.personCardInfo-two {
+  flex: 1;
+}
+.PersonCard img {
+  width: 20%;
+}
+.pc-timestamp {
+  font-size: 12px;
+  font-weight: 300;
+  color: #7c7c7c;
+}
+.pc-time {
+  font-size: 10px;
+  font-weight: 300;
+  color: #7c7c7c;
+}
