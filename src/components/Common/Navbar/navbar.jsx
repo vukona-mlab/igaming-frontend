@@ -34,7 +34,6 @@ function NavBar() {
       );
       if (response.ok) {
         const data = await response.json();
-        console.log({ data });
         setProfilePicture(data.user.profilePicture);
       }
       setLoading(false);
@@ -42,6 +41,7 @@ function NavBar() {
       console.log(error);
     }
   };
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container fluid>

@@ -104,7 +104,8 @@ const ProfilePage = ({}) => {
         }));
         setFormData((prev) => ({
           ...prev,
-          speciality: data.user.specialities[0] || "",
+          speciality:
+            (data.user.specialities && data.user.specialities[0]) || "",
         }));
         setFormData((prev) => ({
           ...prev,
