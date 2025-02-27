@@ -11,6 +11,7 @@ import MadeOnRI from "../../components/Landing/MadeOnRI/MadeOnRI";
 import FAQSection from "../../components/Landing/FAQSection/FAQSection";
 import SpeechBubble from "../../components/Landing/TestimonialsSection/SpeechBubble";
 import TestimonialsSection from "../../components/Landing/TestimonialsSection/TestimonialsSection";
+import GetStarted from "../../components/Landing/GetStartedSection/GetStarted";
 function LandingPage() {
   const userRole = localStorage.getItem("role");
 
@@ -20,6 +21,7 @@ function LandingPage() {
       <SubNavBar />
       <Showcase />
       <About />
+      <GetStarted />
       <TopFreelancers />
       <PopularServices />
       <MadeOnRI />
