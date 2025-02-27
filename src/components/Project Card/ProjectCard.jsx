@@ -1,16 +1,16 @@
-import React from 'react';
-import Button from '../Button/MessageButton';
-import ThumbsUpIcon from '../../assets/mdi-light_thumb-up.svg';
-import ShareIcon from '../../assets/share.svg';
-import './ProjectCard.css';
+import React from "react";
+import Button from "../Button/MessageButton";
+import ThumbsUpIcon from "../../assets/mdi-light_thumb-up.svg";
+import ShareIcon from "../../assets/share.svg";
+import "./ProjectCard.css";
 
-const ProjectCard = ({ 
-  projectPicture, 
-  projectName, 
+const ProjectCard = ({
+  projectPicture,
+  projectName,
   likes,
   authorName,
   onDemoClick,
-  onShareClick 
+  onShareClick,
 }) => {
   const formatLikes = (number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
@@ -22,9 +22,9 @@ const ProjectCard = ({
         <button className="share-button" onClick={onShareClick}>
           <img src={ShareIcon} alt="share" className="share-icon" />
         </button>
-        <img 
-          src={projectPicture} 
-          alt={`${projectName} preview`} 
+        <img
+          src={projectPicture}
+          alt={`${projectName} preview`}
           className="project-picture"
         />
       </div>
@@ -39,10 +39,7 @@ const ProjectCard = ({
             </div>
           </div>
         </div>
-        <Button 
-          onClick={onDemoClick}
-          className="demo-btn"
-        >
+        <Button onClick={onDemoClick} className="demo-btn">
           Demo Link
         </Button>
       </div>
@@ -50,4 +47,4 @@ const ProjectCard = ({
   );
 };
 
-export default ProjectCard; 
+export default ProjectCard;
