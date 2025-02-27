@@ -73,8 +73,6 @@ const UserForm = ({ formData, handleChange, handleSubmit, isUpdate }) => {
           />
         </Col>
       </Row>
-
-      
     </Form>
   );
 };

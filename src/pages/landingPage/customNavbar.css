@@ -1,99 +1,90 @@
 .custom-navigation {
-    height: 90px;
-    position: relative;
+  height: 90px;
+  position: relative;
 }
 
 .custom-navbar {
-    justify-content: center;
-    width: 100%;
+  justify-content: center;
+  width: 100%;
 }
-
 
 /* Increased specificity for .nav-link */
 
 .custom-navigation .custom-navbar .nav-link {
-    width: 151px;
-    height: 39px;
-    text-align: center;
-    border-radius: 12px;
-    padding: 10px;
-    font-weight: 500;
-    font-size: 20px;
-    line-height: 18px;
-    font-family: "Poppins";
-    color: #000;
-    border: 1px solid transparent;
-    background-color: transparent;
-    transition: all 0.3s ease;
+  width: 151px;
+  height: 39px;
+  text-align: center;
+  border-radius: 12px;
+  padding: 10px;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 18px;
+  font-family: "Poppins";
+  color: #000;
+  border: 1px solid transparent;
+  background-color: transparent;
+  transition: all 0.3s ease;
 }
-
 
 /* Increased specificity for hover state */
 
 .custom-navigation .custom-navbar .nav-link:hover {
-    color: white !important;
-    /* Force white text on hover */
-    background-color: #020202 !important;
-    /* Force background color on hover */
-    border: 1px solid black !important;
-    /* Force border color on hover */
+  color: white !important;
+  /* Force white text on hover */
+  background-color: #020202 !important;
+  /* Force background color on hover */
+  border: 1px solid black !important;
+  /* Force border color on hover */
 }
 
-
 /* Search Container */
-
 
 /* Ensure search-container keeps icon & bar together */
 
 .search-container {
-    display: flex;
-    align-items: center;
-    position: relative;
-    /* Ensures both elements stay aligned */
+  display: flex;
+  align-items: center;
+  position: relative;
+  /* Ensures both elements stay aligned */
 }
-
 
 /* Adjust search icon */
 
 .search-icon {
-    cursor: pointer;
-    margin-right: 10px;
+  cursor: pointer;
+  margin-right: 10px;
 }
-
 
 /* Adjust search bar so it stays within the navbar */
 
 .search-bar {
-    display: none;
-    /* Hidden by default */
-    width: 180px;
-    background-color: #fff;
-    padding: 5px 8px;
-    border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: none;
+  /* Hidden by default */
+  width: 180px;
+  background-color: #fff;
+  padding: 5px 8px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-
 
 /* Show search bar when toggled */
 
 .search-container .search-bar {
-    display: flex;
+  display: flex;
 }
 
-
 /* Show search bar on hover over search icon */
-
 
 /* Hide search icon when search bar is visible */
 
 .search-container:hover .search-icon {
-    display: none;
+  display: none;
 }
 
 .search-input {
-    width: 200px;
-    border-radius: 12px;
-    padding: 5px 10px;
-    border: 1px solid #ccc;
-    transition: all 0.3s ease-in-out;
+  width: 200px;
+  border-radius: 12px;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  transition: all 0.3s ease-in-out;
 }

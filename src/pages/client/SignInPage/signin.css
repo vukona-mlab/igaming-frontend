@@ -8,7 +8,7 @@
 }
 
 .client-login-left {
-  flex: 55%; 
+  flex: 55%;
   width: 55% !important;
   background: #fff;
   padding: 50px;
@@ -23,7 +23,7 @@
 }
 
 .client-login-right {
-  flex:  45%; 
+  flex: 45%;
   width: 45% !important;
   display: flex;
   justify-content: center;
@@ -70,7 +70,6 @@
   flex-direction: column;
   align-items: center;
   width: 100% !important;
-  
 }
 
 .client-login-title {
@@ -81,18 +80,16 @@
   margin-bottom: 60px;
   width: 80%;
   margin-left: -50px;
-
 }
 
 .client-red-line {
   width: 10px;
   height: 100%;
-  background: #B90909;
+  background: #b90909;
   margin-right: 20px;
 }
 
 .client-input-group {
- 
   margin-top: 30px;
   display: flex;
   flex-direction: column;
@@ -119,7 +116,6 @@
 
   width: 80% !important;
   border-radius: 15px;
-  
 }
 
 .error-message {
@@ -129,10 +125,7 @@
   width: 100%;
   margin-top: 2px;
   font-weight: 500;
-  
 }
-
-
 
 @media screen and (max-width: 768px) {
   .client-login-right {
@@ -142,13 +135,11 @@
   .client-login-right img {
     display: none;
   }
-  
 }
-
 
 @media screen and (max-width: 768px) {
   .client-login-left {
-    flex: 100%; 
+    flex: 100%;
     width: 100% !important;
   }
 }
@@ -156,64 +147,51 @@
 @media screen and (max-width: 425px) {
   .auth-form {
     width: 95% !important;
-  
   }
   .client-login-title {
     font-size: 25px;
     font-weight: bold;
     display: flex;
     align-items: center;
-
   }
 }
 
 @media screen and (max-width: 902px) and (min-width: 770px) {
   .client-login-title {
-    font-size: 32px; 
+    font-size: 32px;
     margin-bottom: 50px;
   }
   .client-red-line {
     height: 115px;
-   
   }
 }
 
 @media screen and (max-width: 340px) and (min-width: 331px) {
- 
   .client-login-form {
     width: 95% !important;
-    
   }
 }
 
 @media screen and (max-width: 392px) and (min-width: 371px) {
- 
   .client-login-form {
     width: 83% !important;
-    
   }
 }
 @media screen and (max-width: 370px) and (min-width: 341px) {
- 
   .client-login-form {
     width: 90% !important;
-    
   }
 }
 @media screen and (max-width: 425px) and (min-width: 381px) {
- 
   .client-login-form {
     width: 75% !important;
-    
   }
 }
 
 .success-message {
-  color: #28a745; 
+  color: #28a745;
   font-size: 10px;
   font-weight: bold;
   margin-top: 10px;
   text-align: center;
 }
-
-

@@ -47,8 +47,10 @@ const AuthForm = ({ formData, setFormData, onSubmit, errors }) => {
             placeholder="Enter username"
             value={formData.username}
             onChange={handleChange}
-            isInvalid={!!errors.username}  // Apply the isInvalid property
-            className={`form-control-grey ${errors.username ? 'is-invalid' : ''}`}  // Conditionally add 'is-invalid' class
+            isInvalid={!!errors.username} // Apply the isInvalid property
+            className={`form-control-grey ${
+              errors.username ? "is-invalid" : ""
+            }`} // Conditionally add 'is-invalid' class
           />
           <Form.Control.Feedback type="invalid">
             {errors.username}
@@ -67,17 +69,19 @@ const AuthForm = ({ formData, setFormData, onSubmit, errors }) => {
               value={formData.password}
               onChange={handleChange}
               isInvalid={!!errors.password}
-              className={`form-control-grey ${errors.password ? 'is-invalid' : ''}`} // Apply the isInvalid class
+              className={`form-control-grey ${
+                errors.password ? "is-invalid" : ""
+              }`} // Apply the isInvalid class
             />
-            {!errors.password &&
-            <Button
-              variant="link"
-              className="text-secondary p-0 border-0 btn-eye"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? <EyeSlash /> : <Eye />}
-            </Button>
-        }
+            {!errors.password && (
+              <Button
+                variant="link"
+                className="text-secondary p-0 border-0 btn-eye"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <EyeSlash /> : <Eye />}
+              </Button>
+            )}
           </div>
           <Form.Control.Feedback type="invalid">
             {errors.password}
@@ -92,7 +96,9 @@ const AuthForm = ({ formData, setFormData, onSubmit, errors }) => {
             {jobInterests.map((interest, index) => (
               <div
                 key={index}
-                className={`job-interest-option ${formData.jobInterest === interest ? "selected" : ""}`}
+                className={`job-interest-option ${
+                  formData.jobInterest === interest ? "selected" : ""
+                }`}
                 onClick={() =>
                   setFormData({ ...formData, jobInterest: interest })
                 }

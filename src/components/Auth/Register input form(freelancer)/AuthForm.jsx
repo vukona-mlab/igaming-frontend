@@ -42,7 +42,9 @@ const AuthForm = ({ formData, setFormData, onSubmit, errors }) => {
             value={formData.username}
             onChange={handleChange}
             isInvalid={!!errors.username}
-            className={`form-control-grey ${errors.username ? "error-border" : ""}`} // Fix this line
+            className={`form-control-grey ${
+              errors.username ? "error-border" : ""
+            }`} // Fix this line
           />
           <Form.Control.Feedback type="invalid">
             {errors.username}
@@ -61,16 +63,19 @@ const AuthForm = ({ formData, setFormData, onSubmit, errors }) => {
               value={formData.password}
               onChange={handleChange}
               isInvalid={!!errors.password}
-              className={`form-control-grey ${errors.password ? "error-border" : ""}`} // Fix this line
-            />{!errors.password &&
-            <Button
-              variant="link"
-              className="text-secondary p-0 border-0 btn-eye"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? <EyeSlash /> : <Eye />}
-            </Button>
-          }
+              className={`form-control-grey ${
+                errors.password ? "error-border" : ""
+              }`} // Fix this line
+            />
+            {!errors.password && (
+              <Button
+                variant="link"
+                className="text-secondary p-0 border-0 btn-eye"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <EyeSlash /> : <Eye />}
+              </Button>
+            )}
           </div>
           <Form.Control.Feedback type="invalid">
             {errors.password}
@@ -88,7 +93,9 @@ const AuthForm = ({ formData, setFormData, onSubmit, errors }) => {
             value={formData.jobTitle}
             onChange={handleChange}
             isInvalid={!!errors.jobTitle}
-            className={`form-control-grey ${errors.jobTitle ? "error-border" : ""}`} // Fix this line
+            className={`form-control-grey ${
+              errors.jobTitle ? "error-border" : ""
+            }`} // Fix this line
           />
           <Form.Control.Feedback type="invalid">
             {errors.jobTitle}
@@ -106,7 +113,9 @@ const AuthForm = ({ formData, setFormData, onSubmit, errors }) => {
             value={formData.experience}
             onChange={handleChange}
             isInvalid={!!errors.experience}
-            className={`form-control-grey ${errors.experience ? "error-border" : ""}`} // Fix this line
+            className={`form-control-grey ${
+              errors.experience ? "error-border" : ""
+            }`} // Fix this line
           />
           <Form.Control.Feedback type="invalid">
             {errors.experience}
@@ -117,4 +126,4 @@ const AuthForm = ({ formData, setFormData, onSubmit, errors }) => {
   );
 };
 
-export default AuthForm;  
+export default AuthForm;
