@@ -1,0 +1,123 @@
+/* * {
+  align-items: center;
+  margin: auto;
+} */
+
+.gs h6 {
+  font-family: "Poppins";
+  font-weight: 500 !important;
+  font-size: 30px;
+  line-height: 50px;
+  color: #4d4d4d;
+}
+
+.red-line {
+  width: 3%;
+  border: none;
+  height: 35px;
+  background-color: #b90909;
+  transform: rotate(90deg);
+  position: relative;
+  right: 18%;
+}
+
+.get-started-box {
+  display: flex;
+  position: relative;
+  right: 39%;
+  margin-top: 15px;
+}
+
+.gs h1 {
+  text-align: center;
+  font-family: "Poppins";
+  font-size: 36px;
+}
+
+.ri-experts {
+  color: #b90909;
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 54px;
+  width: 569px;
+}
+
+.how,
+.works {
+  color: #808080;
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 54px;
+  width: 569px;
+}
+
+.second-heading {
+  text-align: center;
+  color: #808080;
+  font-family: "Poppins";
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 30px;
+}
+
+.gs p {
+  text-align: center;
+  color: #808080;
+  font-family: "Poppins";
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.gs .cards {
+  border: solid 0.1px;
+  color: #c0c0c0;
+  border-radius: 21.5px;
+  padding: 7px; /* Reduce padding */
+  margin-bottom: 5px;
+}
+
+.gs .cards hr {
+  margin: 5px 0; /* Reduce space around the hr */
+}
+
+.gs .cards p {
+  margin: 5px 0;
+}
+.gs .img-card {
+  border: solid 0.1px;
+  color: #c0c0c0;
+  border-radius: 21.5px;
+  margin: 0 auto;
+  margin-bottom: 10px;
+}
+
+.gs .cards img {
+  display: block;
+  margin: 0 auto;
+}
+
+.gs .cards-containers {
+  margin-top: 25px;
+  padding: 50px;
+}
+
+@media (max-width: 500px) {
+  .gs img {
+    width: 200px;
+  }
+  .gs .cards {
+    margin-bottom: 15px;
+  }
+
+  .get-started-box {
+    position: relative;
+    right: 27%;
+  }
+  .second-heading {
+    font-size: 17px;
+  }
+  .gs h1 {
+    font-size: 30px;
+  }
+}
