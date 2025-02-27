@@ -20,7 +20,7 @@ const ProfilePage = () => {
   });
   const [image, setImage] = useState();
   const [currImage, setCurrImage] = useState();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [isUpdate, setIsUpdate] = useState(false);
   const uid = localStorage.getItem("uid");
   const token = localStorage.getItem("token");
@@ -190,7 +190,7 @@ const ProfilePage = () => {
       });
     }
   };
-
+  if (loading) return <div></div>;
   return (
     <>
       <Navbar />
