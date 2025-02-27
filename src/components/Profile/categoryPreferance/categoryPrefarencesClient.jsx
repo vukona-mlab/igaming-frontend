@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Row, Col, Container } from "react-bootstrap";
+import { Form, Row, Col, Button, Container } from "react-bootstrap";
 import "./categoryPrefarances.css"; // Ensure this path is correct
 
 const CategoryPreferences = ({ onSubmit, isUpdate, cancel, categoriesArr }) => {
