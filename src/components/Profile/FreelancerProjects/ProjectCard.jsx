@@ -18,34 +18,38 @@ const ProjectCard = ({
   };
 
   return (
-    <div className="project-card">
-      {/* <div className="project-image">
-        <button className="share-button" onClick={onShareClick}>
-          <img src={ShareIcon} alt="share" className="share-icon-first" />
+    <div className="fp-project-card">
+      <div className="fp-project-image">
+        <button className="fp-share-button" onClick={onShareClick}>
+          <img src={ShareIcon} alt="share" className="fp-share-icon-first" />
         </button>
         <img
           src={projectPicture}
           alt={`${projectName} preview`}
-          className="project-picture"
+          className="fp-project-picture"
         />
       </div>
-      <div className="project-info">
-        <div className="project-details">
-          <h3 className="project-name">{projectName}</h3>
-          <p className="project-p">{formatLikes(likes)} likes</p>
-          <p className="project-p">Author : {authorName}</p>
-          <div className="project-footer">
+      <div className="fp-project-info">
+        <div className="fp-project-details">
+          <h3 className="fp-project-name">{projectName}</h3>
+          <p className="fp-project-p">{formatLikes(likes)} likes</p>
+          <p className="fp-project-p">Author : {authorName}</p>
+          <div className="fp-project-footer">
             <div className="d-flex justify-content-between align-items-center">
-              <img src={ThumbsUpIcon} alt="thumbs up" className="thumbs-icon" />
+              <img
+                src={ThumbsUpIcon}
+                alt="thumbs up"
+                className="fp-thumbs-icon"
+              />
               <LuMessageSquareShare
                 size={24}
-                className="share-icon"
+                className="fp-share-icon"
                 onClick={onShareClick}
               />
             </div>
           </div>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 };

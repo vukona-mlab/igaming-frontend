@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import Navbar from "../../../components/Common/Navbar/navbar";
 import ProjectCard from "../../../components/Profile/FreelancerProjects/ProjectCard";
@@ -11,8 +12,8 @@ const FreelancerProjects = () => {
     profilePicture: "https://www.example.com/default-image.jpg", // Default Image
     specialities: [],
   });
-
-  const freelancerIdToShow = "5Ei0TkC4TUblQ0NVHN46PupY3w83"; // Hardcoded freelancer ID
+  const { freelancer_id } = useParams();
+  const freelancerIdToShow = freelancer_id || "5Ei0TkC4TUblQ0NVHN46PupY3w83"; // Hardcoded freelancer ID
   ///////
   useEffect(() => {
     fetch("http://localhost:8000/api/freelancers/projects")
