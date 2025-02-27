@@ -52,6 +52,11 @@ function App() {
 
             <Route element={<ProtectedRoutes />}>
               <Route path="profile" element={<ProtectRole />} />
+              <Route
+                path="freelancer-profile"
+                element={<FreelancerProfile />}
+              />
+              <Route path="client-profile" element={<ClientProfile />} />
             </Route>
           </Routes>
         </div>

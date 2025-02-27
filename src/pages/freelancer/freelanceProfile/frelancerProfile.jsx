@@ -7,7 +7,7 @@ import CategoryPreferences from "../../../components/Profile/categoryPreferance/
 import Navbar from "../../../components/Common/Navbar/navbar";
 import { Form, Button } from "react-bootstrap";
 import Swal from "sweetalert2";
-
+import SwitchRoleButton from "../../../components/Common/SwitchRoleButton/SwitchRoleButton";
 const ProfilePage = ({}) => {
   const [formData, setFormData] = useState({
     name: "",
@@ -28,7 +28,10 @@ const ProfilePage = ({}) => {
 
   const uid = localStorage.getItem("uid");
   const token = localStorage.getItem("token");
+
   const url = import.meta.env.VITE_API_URL;
+  const role = localStorage.getItem("role");
+  const [currentRole, setCurrentRole] = useState("freelancer");
 
   useEffect(() => {
     getProfile();
@@ -169,6 +172,47 @@ const ProfilePage = ({}) => {
     }
   };
 
+  const handleRoleSwitch = async (newRole) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8000/api/auth/users/${uid}/roles`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+          body: JSON.stringify({
+            roles: [newRole],
+          }),
+        }
+      );
+
+      if (response.ok) {
+        setCurrentRole(newRole);
+        Swal.fire({
+          title: "Role Updated!",
+          text: `You are now a ${newRole}`,
+          icon: "success",
+          confirmButtonText: "OK",
+        }).then(() => {
+          window.location.href = `/${
+            newRole === "client" ? "client" : "freelancer"
+          }-profile`;
+        });
+      } else {
+        throw new Error("Failed to update role");
+      }
+    } catch (error) {
+      Swal.fire({
+        title: "Error",
+        text: "Failed to switch roles. Please try again.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+  };
+
   if (loading) return;
   return (
     <>
@@ -184,6 +228,10 @@ const ProfilePage = ({}) => {
             )}
             {/* Placeholder for the user's name */}
           </div>
+          <SwitchRoleButton
+            currentRole={currentRole}
+            onRoleSwitch={handleRoleSwitch}
+          />
           {!isUpdate && (
             <Button variant="dark" onClick={() => setIsUpdate(true)}>
               Edit
