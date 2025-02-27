@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import Navbar from "../../../components/Common/Navbar/navbar";
-import ProjectCard from "../../../components/Project Card/ProjectCard";
+import ProjectCard from "../../../components/Profile/FreelancerProjects/ProjectCard";
 import FreelancerProjectCards from "../../../components/Profile/freelancerCardsProjects/freelancerCardProjects";
 
 const FreelancerProjects = () => {
@@ -64,7 +64,7 @@ const FreelancerProjects = () => {
         <h1 className="text-center my-4">Freelancer</h1>
         <Row>
   {/* Freelancer Profile Section - Always on Top */}
-  <Col md={3} className="" style={{ border: "1px solid red" }}>
+  <Col md={3} className="" >
     <FreelancerProjectCards
       image={freelancerData.profilePicture}
       specialities={freelancerData.specialities}
@@ -72,7 +72,7 @@ const FreelancerProjects = () => {
   </Col>
 
   {/* Projects Section - Below Profile on Small Screens */}
-  <Col md={9} className="" style={{ border: "1px solid yellow" }}>
+  <Col md={9} className="">
     <Row className="g-2">
       {projects.slice(0, visibleProjects).map((project) => (
         <Col key={project.id} md={4}>

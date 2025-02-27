@@ -1,7 +1,8 @@
 import React from 'react';
 import { LuMessageSquareShare } from 'react-icons/lu'; // Import the LuMessageSquareShare icon
-import ThumbsUpIcon from '../../assets/mdi-light_thumb-up.svg';
-import ShareIcon from '../../assets/share.svg';
+import ThumbsUpIcon from '../../../assets/mdi-light_thumb-up.svg';
+import ShareIcon from '../../../assets/share.svg';
+//import ShareIcon from '../../../assets/share.svg';
 import './ProjectCard.css';
 
 const ProjectCard = ({ 
@@ -15,6 +16,7 @@ const ProjectCard = ({
   const formatLikes = (number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   };
+
 
   return (
     <div className="project-card">
