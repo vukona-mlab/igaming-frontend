@@ -1,53 +1,79 @@
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import './navbar.css';
-import SearchBar from '../../SearchBar/SearchBar';
-import { FaSearch } from 'react-icons/fa';
+import React from "react";
+import "./navbar.css";
+import { FaSearch } from "react-icons/fa";
 
 
+export default function NavBar(){
+    const [profilePicture, setProfilePicture] = useState("");
+   const [loading, setLoading] = useState(false);
+   const location = useLocation();
+   const uid = localStorage.getItem("uid");
+   const token = localStorage.getItem("token");
+   const navigation = useNavigate();
 
+   useEffect(() => {
+         if (uid !== "") {
+          getProfile();
+        }
+       }, [uid]);
+       const getProfile = async () => {
+         setLoading(true);
+         try {
+           const response = await fetch(
+             `http://localhost:8000/api/auth/users/${uid}`,
+             {
+               method: "GET",
+               headers: { Authorization: token },
+             }
+           );
+           if (response.ok) {
+             const data = await response.json();
+             console.log({ data });
+             setProfilePicture(data.user.profilePicture);
+           }
+           setLoading(false);
+         } catch (error) {
+           console.log(error);
+         }
+       };
+    
 
-function NavBar() {
-  const user = {
-    profileImage: '', 
-  };
-  return (
-    <Navbar expand="lg" className="bg-body-tertiary">
-      <Container fluid>
-        <Navbar.Brand href="#"><div className="nav-logo"><img src="/images/logo-ri-express.png" alt="logo" width="125" height="58px"></img></div></Navbar.Brand>
-        <Navbar.Toggle aria-controls="navbarScroll" />
-        <Navbar.Collapse id="navbarScroll">
-          <Nav
-            className="me-auto my-2 my-lg-0"
-            style={{ maxHeight: '100px' }}
-            navbarScroll
-          >
-            <Nav.Link href="#action1" className="nav-link"><div className="text">Home</div></Nav.Link>
-            <Nav.Link href="#action2" className="nav-link"><div className="text">About</div></Nav.Link>
-            <Nav.Link href="#">
-            <div className="text">Contact</div>
-            </Nav.Link>
-            <Nav.Link className="nav-link" href="#pricing"><div className="text">FAQ</div></Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-        <div className="placeholder">
-          {user ? (
-            <img src={user.profileImage} alt="User" className="user-profile" />
-          ) : (
-            <FaSearch className="search-icon" />
-          )}
+  return(
+    <>
+    <div className="container">
+      <div className="left-container"> <img
+               src="/images/logo-ri-express.png"
+               alt="logo"
+               width="125"
+               height="58px"
+             ></img></div>
+      <div className="right-container">
+        <ul>
+          <div className="list-items">
+          <li className="nav-item">Home</li>
+          <li className="nav-item">About</li>
+          <li className="nav-item">Contact</li>
+          <li className="nav-item">FAQ</li>
+          </div>
+        </ul>
         </div>
-      </Container>
-    </Navbar>
-  );
+        <div className="placeholder">
+           {profilePicture !== "" ? (
+             <div style={{ display: "flex", gap: "15px" }}>
+               {location.pathname === "/profile" && <LogoutButton />}
+               <img
+                 src={profilePicture}
+                 alt="User"
+                 className="user-profile"
+                 onClick={() => navigation("/profile")}
+               />
+             </div>
+           ) : (
+             <FaSearch className="search-icon" />
+           )}
+         </div>
+
+    </div>
+    </>
+  )
 }
-
-
-
-
-
-
-
-
-export default NavBar;
