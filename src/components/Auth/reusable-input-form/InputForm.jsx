@@ -1,8 +1,8 @@
-import React, { useState } from "react"; 
+import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { Eye, EyeSlash } from "react-bootstrap-icons";
-import './InputForm.css';
+import "./InputForm.css";
 
 const InputForm = ({ formData, handleFormDataChange }) => {
   const [showPassword, setShowPassword] = useState(false);
