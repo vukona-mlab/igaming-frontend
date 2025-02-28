@@ -15,9 +15,11 @@
 .f-messages-container {
   flex: 4;
 }
-
-.f-messages-wrapper {
+.f-messages-container {
   height: calc(500px - 70px);
+}
+.f-messages-wrapper {
+  height: 100%;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
