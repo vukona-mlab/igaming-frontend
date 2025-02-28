@@ -19,6 +19,7 @@ li{
 
 .nav-item{
     display: inline-block;
+    margin-top: 10px;
     margin-right: 10px;
     /* width: 151px; */
     width: 135px;
@@ -54,5 +55,10 @@ li{
 
 
 .placeholder{
+    background-color: #ffffff;
+}
+
+.search-icon{
+    margin-top: 20px;
     background-color: #ffffff;
 }

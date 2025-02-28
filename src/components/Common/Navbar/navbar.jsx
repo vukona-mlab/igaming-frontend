@@ -1,15 +1,17 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import "./navbar.css";
 import { FaSearch } from "react-icons/fa";
+// import { useNavigate } from "react-router";
+// import { useLocation } from "react-router";
 
 
 export default function NavBar(){
     const [profilePicture, setProfilePicture] = useState("");
    const [loading, setLoading] = useState(false);
-   const location = useLocation();
+  //  const location = useLocation();
    const uid = localStorage.getItem("uid");
    const token = localStorage.getItem("token");
-   const navigation = useNavigate();
+  //  const navigation = useNavigate();
 
    useEffect(() => {
          if (uid !== "") {
@@ -57,7 +59,7 @@ export default function NavBar(){
           </div>
         </ul>
         </div>
-        <div className="placeholder">
+        <div className="img-icon-placeholder">
            {profilePicture !== "" ? (
              <div style={{ display: "flex", gap: "15px" }}>
                {location.pathname === "/profile" && <LogoutButton />}
