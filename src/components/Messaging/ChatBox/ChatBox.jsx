@@ -44,7 +44,7 @@ const ChatBox = ({ chatId, currentClientId, currentClientName }) => {
       }
 
       const data = await response.json();
-      console.log(data);
+      console.log("meesagines", { data });
       setMessages(data.messages);
     } catch (error) {
       console.error("Error fetching messages:", error);
@@ -53,7 +53,12 @@ const ChatBox = ({ chatId, currentClientId, currentClientName }) => {
     }
   };
   const sendMessage = async (text, file, fileIcon) => {
-    console.log(text, file, fileIcon);
+    console.log("sendmessage", {
+      freelancerId: uid,
+      clientId: currentClientId,
+      senderId: uid,
+      message: text,
+    });
     try {
       const response = await fetch(
         "http://localhost:8000/api/freelancer/create-chat",
@@ -77,6 +82,7 @@ const ChatBox = ({ chatId, currentClientId, currentClientName }) => {
       }
 
       const data = await response.json();
+      console.log("response dta", { data });
       fetchMessages();
     } catch (error) {
       console.error("Error fetching messages:", error);
@@ -85,6 +91,7 @@ const ChatBox = ({ chatId, currentClientId, currentClientName }) => {
     }
   };
   console.log(messages);
+  if (loading) return;
   return (
     <div className="f-chat-box">
       <div className="f-chat-header">

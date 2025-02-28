@@ -12,17 +12,20 @@ const PeopleComponent = ({
     <div className="PeopleComponent">
       <div className="people-title">People</div>
       {people.map((person, i) => (
-        <PersonCard
-          key={i}
-          chatId={person.chatId}
-          otherId={person.otherId}
-          name={person.name}
-          lastMessage={person.lastMessage}
-          timestamp={person.timestamp}
-          setcurrentChatId={setcurrentChatId}
-          setCurrentClientId={setCurrentClientId}
-          setCurrentClientName={setCurrentClientName}
-        />
+        <>
+          <div>{console.log(person)}</div>
+          <PersonCard
+            key={i}
+            chatId={person.chatId}
+            otherId={person.otherId}
+            name={person.name}
+            lastMessage={person.lastMessage.text}
+            timestamp={person.timestamp}
+            setcurrentChatId={setcurrentChatId}
+            setCurrentClientId={setCurrentClientId}
+            setCurrentClientName={setCurrentClientName}
+          />
+        </>
       ))}
     </div>
   );

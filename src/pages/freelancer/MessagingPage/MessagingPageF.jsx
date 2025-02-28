@@ -35,12 +35,11 @@ const MessagingPage = ({}) => {
       );
       if (response.ok) {
         const data = await response.json();
+        console.log({ data });
         if (data.chats && data.chats.length > 0) {
-          console.log(data.chats);
-
           setChats(data.chats);
-          setcurrentChatId(data.chats[0].chatId);
-          setCurrentClientName(data.chats[0].name);
+          setcurrentChatId((data.chats && data.chats[0].chatId) || "");
+          setCurrentClientName((data.chats && data.chats[0].name) || "");
         }
       }
     } catch (error) {}
