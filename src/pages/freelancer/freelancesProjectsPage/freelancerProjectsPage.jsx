@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom"; // Import for navigation
 import Navbar from "../../../components/Common/Navbar/navbar";
-import ProjectCard from "../../../components/Profile/FreelancerProjects/ProjectCard";
+import ProjectCard from "../../../components/Profile/FreelancerProjects/Project-Card";
 import FreelancerProjectCards from "../../../components/Profile/freelancerCardsProjects/freelancerCardProjects";
-
+import SectionHeader from '../../../components/Landing/section-header/SectionHeader';
+import './freelancerProjectsPage.css';
 const FreelancerProjects = () => {
   const [projects, setProjects] = useState([]);
   const [visibleProjects, setVisibleProjects] = useState(6); // Show 6 projects initially
@@ -13,7 +15,8 @@ const FreelancerProjects = () => {
   });
 
   const freelancerIdToShow = "5Ei0TkC4TUblQ0NVHN46PupY3w83"; // Hardcoded freelancer ID
-///////
+  const navigate = useNavigate(); // Hook for navigation
+
   useEffect(() => {
     fetch("http://localhost:8000/api/freelancers/projects")
       .then((response) => response.json())
@@ -57,46 +60,59 @@ const FreelancerProjects = () => {
     setVisibleProjects((prev) => prev + 6);
   };
 
+  const handleMessageClick = () => {
+    navigate("/messages"); // Navigate to message page when clicked
+  };
+
   return (
     <>
       <Navbar />
       <Container>
-        <h1 className="text-center my-4">Freelancer</h1>
+        {/* Profile section with message button */}
+        <div className="profile-edit d-flex justify-content-between align-items-center border-bottom mb-3">
+          <div className="welcome-message">
+            <h4 className="wellcome-user">{freelancerData.displayName || "User"}, Profile</h4>
+          </div>
+          <Button variant="dark" className="sms-btn" onClick={handleMessageClick}>
+            Message
+          </Button>
+        </div>
+
         <Row>
-  {/* Freelancer Profile Section - Always on Top */}
-  <Col md={3} className="" >
-    <FreelancerProjectCards
-      image={freelancerData.profilePicture}
-      specialities={freelancerData.specialities}
-    />
-  </Col>
+          {/* Freelancer Profile Section - Always on Top */}
+          <Col md={3}>
+            <FreelancerProjectCards
+              image={freelancerData.profilePicture}
+              specialities={freelancerData.specialities}
+            />
+          </Col>
 
-  {/* Projects Section - Below Profile on Small Screens */}
-  <Col md={9} className="">
-    <Row className="g-2">
-      {projects.slice(0, visibleProjects).map((project) => (
-        <Col key={project.id} md={4}>
-          <ProjectCard
-            projectPicture={project.projectPicture}
-            projectName={project.projectName}
-            likes={project.likes}
-            authorName={project.author}
-            onDemoClick={() => window.open(project.demoLink, "_blank")}
-            onShareClick={() => alert(`Sharing ${project.projectName}`)}
-          />
-        </Col>
-      ))}
-    </Row>
-    {visibleProjects < projects.length && (
-      <div className="text-center mt-4">
-        <Button variant="dark" onClick={handleSeeMore}>
-          See More
-        </Button>
-      </div>
-    )}
-  </Col>
-</Row>
-
+          {/* Projects Section - Below Profile on Small Screens */}
+          <Col md={9}>
+            <Row className="g-2">
+              <SectionHeader text="Projects" />
+              {projects.slice(0, visibleProjects).map((project) => (
+                <Col key={project.id} md={4}>
+                  <ProjectCard
+                    projectPicture={project.projectPicture}
+                    projectName={project.projectName}
+                    likes={project.likes}
+                    authorName={project.author}
+                    onDemoClick={() => window.open(project.demoLink, "_blank")}
+                    onShareClick={() => alert(`Sharing ${project.projectName}`)} // Fixed syntax
+                  />
+                </Col>
+              ))}
+            </Row>
+            {visibleProjects < projects.length && (
+              <div className="text-center mt-4">
+                <Button variant="dark" onClick={handleSeeMore}>
+                  See More
+                </Button>
+              </div>
+            )}
+          </Col>
+        </Row>
       </Container>
     </>
   );
