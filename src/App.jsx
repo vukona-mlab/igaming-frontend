@@ -26,7 +26,7 @@ function App() {
             <Route exact path="/discovery" element={<DiscoveryPage />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route
-              path="/freelancerProjects"
+              path="/freelancerProjects/:freelancerId"
               element={<FreelancerProjects />}
             />
 
