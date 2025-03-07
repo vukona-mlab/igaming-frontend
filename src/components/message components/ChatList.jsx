@@ -11,8 +11,10 @@ const ChatList = ({ setCurrentChat }) => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (!token) {
-      console.log('No token found, skipping chat list load');
+    const userId = localStorage.getItem('uid');
+    
+    if (!token || !userId) {
+      console.log('No token or userId found, skipping chat list load');
       setLoading(false);
       return;
     }
@@ -35,7 +37,7 @@ const ChatList = ({ setCurrentChat }) => {
         
         // Transform the chat data to include participant details
         const transformedChats = data.chats.map(chat => {
-          const otherParticipant = chat.participants.find(p => p.uid !== localStorage.getItem('userId'));
+          const otherParticipant = chat.participants.find(p => p.uid !== userId);
           
           // Handle lastMessage that might be an object
           let lastMessageText = 'No messages';
