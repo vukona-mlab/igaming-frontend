@@ -15,8 +15,8 @@ const DiscoveryPage = () => {
     return <Outlet />;
   }
   return (
-    <div className="discovery-page">
-      <div className="navigation-container">
+    <div className="discovery-page" >
+      <div className="navigation-container" >
         <NavBar />
         <SubNavBar />
       </div>

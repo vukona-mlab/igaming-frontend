@@ -1,9 +1,8 @@
 .freelancer-discovery {
-  width: 130%;
+  width: 140%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1 1rem;
 }
 
 .freelancer-row {
@@ -22,11 +21,16 @@
   max-width: 280px;
   position: relative; /* For positioning hover message */
   cursor: pointer;
+  transition: transform 0.3s ease-in-out; /* Add transition for scaling */
+}
+
+.freelancer-card-wrapper:hover {
+  transform: scale(1.05); /* Slightly increase the size on hover */
 }
 
 .freelancer-card-wrapper:hover .hover-message {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0); /* Show message when card is hovered */
 }
 
 .hover-message {
@@ -40,8 +44,19 @@
   border-radius: 5px;
   font-size: 1rem;
   opacity: 0;
-  transition: opacity 0.3s ease, transform 0.3s ease;
- white-space: nowrap;
+  transition: opacity 0.3s ease, transform 0.3s ease; /* Fade in the message */
+  white-space: nowrap;
 }
 
-/* Additional media queries as needed... */
+/* Additional media queries for responsiveness as needed */
+@media (max-width: 768px) {
+  .freelancer-card-wrapper {
+    flex: 0 0 calc(50% - 2.5rem); /* 2 cards per row for medium screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .freelancer-card-wrapper {
+    flex: 0 0 100%; /* Full width on very small screens */
+  }
+}
