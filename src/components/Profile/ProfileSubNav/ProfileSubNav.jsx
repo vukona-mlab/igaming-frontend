@@ -11,6 +11,11 @@ import { useNavigate } from "react-router";
 
 export default function ProfileSubNav() {
   const navigation = useNavigate();
+  console.log(
+    localStorage.getItem("role") === "freelancer"
+      ? "/messaging-freelancer"
+      : "/messaging-client"
+  );
   return (
     <>
       <div className="ProfileSubNav">
@@ -21,7 +26,14 @@ export default function ProfileSubNav() {
           </div>
           <div
             className="p-subnav-link"
-            onClick={() => navigation("/messaging")}
+            onClick={() => {
+              console.log("testt");
+              navigation(
+                localStorage.getItem("role") === "freelancer"
+                  ? "/messaging-freelancer"
+                  : "/messaging-client"
+              );
+            }}
           >
             <img src={Message} className="message-icon" />
 

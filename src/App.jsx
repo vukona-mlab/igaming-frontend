@@ -16,6 +16,8 @@ import ProtectRole from "./components/Protected/ProtectRole";
 import DiscoveryPage from "./pages/DiscoveryPage/DiscoveryPage";
 import FreelancerProjects from "./pages/freelancer/freelancesProjectsPage/freelancerProjectsPage";
 import MessagingPageF from "./pages/freelancer/MessagingPage/MessagingPageF";
+import MessagingPageC from "./pages/client/MessagingPage/MessagingPageC";
+
 function App() {
   return (
     <div className="App">
@@ -55,7 +57,8 @@ function App() {
                 element={<FreelancerProfile />}
               />
               <Route path="client-profile" element={<ClientProfile />} />
-              <Route path="messaging" element={<MessagingPageF />} />
+              <Route path="messaging-freelancer" element={<MessagingPageF />} />
+              <Route path="messaging-client" element={<MessagingPageC />} />
             </Route>
           </Routes>
         </div>

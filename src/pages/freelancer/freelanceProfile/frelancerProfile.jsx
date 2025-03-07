@@ -191,6 +191,8 @@ const ProfilePage = ({}) => {
 
       if (response.ok) {
         setCurrentRole(newRole);
+        localStorage.setItem("role", newRole);
+
         Swal.fire({
           title: "Role Updated!",
           text: `You are now a ${newRole}`,
