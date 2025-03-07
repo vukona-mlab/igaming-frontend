@@ -33,7 +33,7 @@ const analytics = getAnalytics(app);
 const auth = getAuth(app);
 await setPersistence(auth, inMemoryPersistence);
 const db = getFirestore(app);
-//const storage = getStorage(app);
+const storage = getStorage(app);
 const googleProvider = new GoogleAuthProvider();
 
 // Add logout function
@@ -41,9 +41,9 @@ const handleLogout = async () => {
   try {
     await signOut(auth);
     // Clear all authentication-related items from localStorage
-    localStorage.removeItem('token');
-    localStorage.removeItem('uid');
-    localStorage.removeItem('role');
+    localStorage.removeItem("token");
+    localStorage.removeItem("uid");
+    localStorage.removeItem("role");
     return true;
   } catch (error) {
     console.error("Error logging out:", error);
@@ -51,4 +51,4 @@ const handleLogout = async () => {
   }
 };
 
-export { auth, db, googleProvider, handleLogout };
+export { auth, db, storage, googleProvider, handleLogout };

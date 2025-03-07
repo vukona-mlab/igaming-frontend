@@ -24,22 +24,18 @@ const MessagingPage = ({}) => {
   }, []);
   const getAllChats = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:8000/api/chats/${uid}/allChats`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
+      const response = await fetch(`http://localhost:8000/api/chats`, {
+        method: "GET",
+        headers: {
+          Authorization: token,
+        },
+      });
       if (response.ok) {
         const data = await response.json();
-        console.log({ data });
         if (data.chats && data.chats.length > 0) {
           setChats(data.chats);
-          setcurrentChatId((data.chats && data.chats[0].chatId) || "");
-          setCurrentClientName((data.chats && data.chats[0].name) || "");
+          setcurrentChatId((data.chats && data.chats[0].id) || "");
+          setCurrentClientName((data.chats && data.chats[0].name) || "test");
         }
       }
     } catch (error) {}

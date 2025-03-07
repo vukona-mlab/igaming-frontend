@@ -3,9 +3,17 @@ import { Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./ChatInput.css";
 
-const ChatInput = ({ file, setFile, fileIcon, setFileIcon, text, setText, sendMessage }) => {
+const ChatInput = ({
+  files,
+  setFiles,
+  fileIcon,
+  setFileIcon,
+  text,
+  setText,
+  sendMessage,
+}) => {
   const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
+    setFiles(event.target.files);
   };
 
   const handleImageCapture = (event) => {
@@ -13,10 +21,10 @@ const ChatInput = ({ file, setFile, fileIcon, setFileIcon, text, setText, sendMe
   };
 
   const handleSendClick = () => {
-    if (text.trim() || file || fileIcon) {
-      sendMessage(text, file, fileIcon); 
-      setText(""); 
-      setFile(null); 
+    if (text.trim() || files || fileIcon) {
+      sendMessage(text, files, fileIcon);
+      setText("");
+      setFiles(null);
       setFileIcon(null);
     }
   };
@@ -26,11 +34,17 @@ const ChatInput = ({ file, setFile, fileIcon, setFileIcon, text, setText, sendMe
       <div className="chat-input">
         {/* File Icon */}
         <label htmlFor="file-upload" className="icon-button">
-          <img src="/images/file-icon.svg" alt="Attach File" className="file-icon-img" />
+          <img
+            src="/images/file-icon.svg"
+            alt="Attach File"
+            className="file-icon-img"
+          />
         </label>
         <input
           type="file"
           id="file-upload"
+          multiple
+          accept="image/*,.pdf,.doc,.docx"
           style={{ display: "none" }}
           onChange={handleFileChange}
         />
@@ -45,13 +59,21 @@ const ChatInput = ({ file, setFile, fileIcon, setFileIcon, text, setText, sendMe
         />
 
         {/* Show Camera Icon when input is empty, else show Send Icon */}
-        {text ? (
+        {text || files ? (
           <button className="icon-button send-button" onClick={handleSendClick}>
-            <img src="/images/send-icon.png" alt="Send" className="send-icon-img" />
+            <img
+              src="/images/send-icon.png"
+              alt="Send"
+              className="send-icon-img"
+            />
           </button>
         ) : (
           <label htmlFor="camera-upload" className="icon-button">
-            <img src="/images/camera-icon.svg" alt="Camera" className="camera-icon-img" />
+            <img
+              src="/images/camera-icon.svg"
+              alt="Camera"
+              className="camera-icon-img"
+            />
           </label>
         )}
 
@@ -66,8 +88,14 @@ const ChatInput = ({ file, setFile, fileIcon, setFileIcon, text, setText, sendMe
       </div>
 
       {/* Display Selected File */}
-      {file && <p>File selected: {file.name}</p>}
-      {fileIcon && <img src={fileIcon} alt="Captured" style={{ width: "100px", marginTop: "10px" }} />}
+      {files && <p>File selected: {files[0].name}</p>}
+      {fileIcon && (
+        <img
+          src={fileIcon}
+          alt="Captured"
+          style={{ width: "100px", marginTop: "10px" }}
+        />
+      )}
     </div>
   );
 };
