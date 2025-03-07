@@ -8,8 +8,9 @@
   flex-direction: column;
 }
 
-.f-chat-box img {
-  width: 70px;
+.f-chat-header-user img {
+  width: 50px;
+  border-radius: 50%;
 }
 
 .f-messages-container {
@@ -29,6 +30,8 @@
 .f-chat-header-user {
   display: flex;
   align-items: center;
+  gap: 15px;
+  padding: 15px;
 }
 .f-chat-header-info h2 {
   font-size: 24px;

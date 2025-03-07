@@ -2,22 +2,23 @@ import React, { useEffect, useRef, useState } from "react";
 import MessageCard from "../MessageCard/MessageCard";
 import ChatInput from "../messaging-inputs/ChatInput";
 import "./ChatBox.css";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { auth, db, storage } from "../../../config/firebase";
+
 const ChatBox = ({ chatId, currentClientId, currentClientName }) => {
   const [messages, setMessages] = useState([]);
+  const [photoUrl, setPhotoUrl] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
+
   const [loading, setLoading] = useState(true);
-  const [file, setFile] = useState();
+  const [files, setFiles] = useState();
   const [fileIcon, setFileIcon] = useState();
 
   const [isTyping, setIsTyping] = useState({});
   const [text, setText] = useState("");
-  console.log({ chatId });
   const uid = localStorage.getItem("uid");
   const token = localStorage.getItem("token");
   const bottomRef = useRef();
-  // Find the other participant in the chat
-  // const otherParticipant = chat?.participants?.find(
-  //   (p) => p.uid !== auth.currentUser.uid
-  // );
 
   useEffect(() => {
     if (chatId !== "") {
@@ -31,10 +32,10 @@ const ChatBox = ({ chatId, currentClientId, currentClientName }) => {
   const fetchMessages = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8000/api/chats/${chatId}/messages`,
+        `http://localhost:8000/api/chats/${chatId}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `${localStorage.getItem("token")}`,
           },
         }
       );
@@ -44,24 +45,30 @@ const ChatBox = ({ chatId, currentClientId, currentClientName }) => {
       }
 
       const data = await response.json();
-      console.log("meesagines", { data });
-      setMessages(data.messages);
+      const url =
+        (data.chat &&
+          data.chat?.participants &&
+          data.chat?.participants.filter(
+            (part) => part.uid !== localStorage.getItem("uid")
+          )[0].photoURL) ||
+        "";
+      setMessages(data.chat.messages);
+      setPhotoUrl(url);
     } catch (error) {
       console.error("Error fetching messages:", error);
     } finally {
       setLoading(false);
     }
   };
-  const sendMessage = async (text, file, fileIcon) => {
-    console.log("sendmessage", {
-      freelancerId: uid,
-      clientId: currentClientId,
-      senderId: uid,
-      message: text,
-    });
+  const sendMessage = async (text, files, fileIcon) => {
     try {
+      let attachments = [];
+      if (files) {
+        attachments = await handleFileUpload(files || []);
+      }
+      console.log(attachments);
       const response = await fetch(
-        "http://localhost:8000/api/freelancer/create-chat",
+        `http://localhost:8000/api/chats/${chatId}/messages`,
         {
           method: "POST",
           headers: {
@@ -69,10 +76,9 @@ const ChatBox = ({ chatId, currentClientId, currentClientName }) => {
             Authorization: token,
           },
           body: JSON.stringify({
-            freelancerId: uid,
-            clientId: currentClientId,
             senderId: uid,
-            message: text,
+            message: text || "",
+            attachments: attachments || [],
           }),
         }
       );
@@ -82,7 +88,6 @@ const ChatBox = ({ chatId, currentClientId, currentClientName }) => {
       }
 
       const data = await response.json();
-      console.log("response dta", { data });
       fetchMessages();
     } catch (error) {
       console.error("Error fetching messages:", error);
@@ -90,42 +95,84 @@ const ChatBox = ({ chatId, currentClientId, currentClientName }) => {
       setLoading(false);
     }
   };
-  console.log(messages);
+
+  const handleFileUpload = async (files) => {
+    if (!files.length) return [];
+    setIsUploading(true);
+
+    try {
+      console.log("Starting file upload for chat:", chatId);
+      const uploadPromises = Array.from(files).map(async (file) => {
+        const storageRef = ref(
+          storage,
+          `chat-attachments/${chatId}/${Date.now()}-${file.name}`
+        );
+        await uploadBytes(storageRef, file);
+        const url = await getDownloadURL(storageRef);
+        return {
+          name: file.name,
+          type: file.type,
+          url: url,
+        };
+      });
+
+      return await Promise.all(uploadPromises);
+    } catch (error) {
+      console.error("Error uploading files:", error);
+      return [];
+    } finally {
+      setIsUploading(false);
+    }
+  };
   if (loading) return;
+
   return (
     <div className="f-chat-box">
-      <div className="f-chat-header">
-        <div className="f-chat-header-user">
-          <img src={"/images/profile_icon.png"} alt="Profile" />
-          <div className="f-chat-header-info">
-            <h2>{currentClientName}</h2>
+      {chatId === "" ? (
+        <div>No messages</div>
+      ) : (
+        <>
+          <div className="f-chat-header">
+            <div className="f-chat-header-user">
+              <img
+                src={
+                  photoUrl && photoUrl !== ""
+                    ? photoUrl
+                    : "/images/profile_icon.png"
+                }
+                alt="Profile"
+              />
+              <div className="f-chat-header-info">
+                <h2>{currentClientName}</h2>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-
-      <div className="f-messages-container">
-        {loading ? (
-          <div className="loading">Loading messages...</div>
-        ) : (
-          <div className="f-messages-wrapper">
-            {messages &&
-              messages.map((msg, i) => <MessageCard key={i} message={msg} />)}
-            <div ref={bottomRef}></div>
+          <div className="f-messages-container">
+            {loading ? (
+              <div className="loading">Loading messages...</div>
+            ) : (
+              <div className="f-messages-wrapper">
+                {messages &&
+                  messages.map((msg, i) => (
+                    <MessageCard key={i} message={msg} />
+                  ))}
+                <div ref={bottomRef}></div>
+              </div>
+            )}
           </div>
-        )}
-      </div>
-
-      <div className="chat-input-container">
-        <ChatInput
-          file={file}
-          setFile={setFile}
-          fileIcon={fileIcon}
-          setFileIcon={setFileIcon}
-          text={text}
-          setText={setText}
-          sendMessage={sendMessage}
-        />
-      </div>
+          <div className="chat-input-container">
+            <ChatInput
+              files={files}
+              setFiles={setFiles}
+              fileIcon={fileIcon}
+              setFileIcon={setFileIcon}
+              text={text}
+              setText={setText}
+              sendMessage={sendMessage}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 };

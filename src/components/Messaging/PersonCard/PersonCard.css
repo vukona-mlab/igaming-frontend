@@ -6,6 +6,7 @@
   padding: 15px 5px;
   border-bottom: 1px solid #b4ababa8;
   cursor: pointer;
+  gap: 15px;
 }
 
 .personCardInfo {
@@ -31,7 +32,8 @@
   flex: 1;
 }
 .PersonCard img {
-  width: 20%;
+  width: 50px;
+  border-radius: 50%;
 }
 .pc-timestamp {
   font-size: 12px;

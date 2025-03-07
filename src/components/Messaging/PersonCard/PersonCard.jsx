@@ -7,12 +7,12 @@ const PersonCard = ({
   name,
   lastMessage,
   timestamp,
+  photoUrl,
   setcurrentChatId,
   setCurrentClientId,
   setCurrentClientName,
 }) => {
-  console.log({ otherId });
-  let a = new Date(timestamp._seconds * 1000);
+  let a = new Date(timestamp * 1000);
   let days = [
     "Sunday",
     "Monday",
@@ -22,8 +22,8 @@ const PersonCard = ({
     "Friday",
     "Saturday",
   ];
-  let h = new Date(timestamp._seconds).getHours();
-  let m = new Date(timestamp._seconds).getMinutes();
+  let h = new Date(timestamp).getHours();
+  let m = new Date(timestamp).getMinutes();
 
   h = h < 10 ? "0" + h : h;
   m = m < 10 ? "0" + m : m;
@@ -36,7 +36,11 @@ const PersonCard = ({
         setCurrentClientName(name);
       }}
     >
-      <img src="/images/profile_icon.png" />
+      <img
+        src={
+          photoUrl && photoUrl !== "" ? photoUrl : "/images/profile_icon.png"
+        }
+      />
       <div className="personCardInfo">
         <div className="personCardInfo-one">
           <div className="person-name">{name}</div>

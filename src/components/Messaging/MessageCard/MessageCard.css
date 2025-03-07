@@ -16,3 +16,12 @@
   margin-left: auto;
   color: white;
 }
+
+.MessageCard a {
+  text-decoration: none;
+  color: grey;
+}
+
+.MessageCard img {
+  width: 250px;
+}
