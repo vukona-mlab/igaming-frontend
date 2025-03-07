@@ -1,43 +1,44 @@
-import React, { useState, useRef, useEffect } from "react";
-import { auth, db, storage } from "../../config/firebase";
-import { doc, updateDoc, arrayUnion } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { onAuthStateChanged } from "firebase/auth";
+import React, { useState, useRef } from "react";
 
 const SendMessage = ({ chatId }) => {
   const [message, setMessage] = useState("");
   const [isUploading, setIsUploading] = useState(false);
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
   const fileInputRef = useRef();
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      setLoading(false);
-    });
+  // Get user info from localStorage
+  const userId = localStorage.getItem('uid');
+  const token = localStorage.getItem('token');
 
-    return () => unsubscribe();
-  }, []);
+  console.log('SendMessage auth info:', { 
+    userId, 
+    token,
+    allKeys: Object.keys(localStorage)
+  });
 
   const handleFileUpload = async (files) => {
     if (!files.length) return [];
     setIsUploading(true);
 
     try {
-      console.log('Starting file upload for chat:', chatId);
-      const uploadPromises = Array.from(files).map(async (file) => {
-        const storageRef = ref(storage, `chat-attachments/${chatId}/${Date.now()}-${file.name}`);
-        await uploadBytes(storageRef, file);
-        const url = await getDownloadURL(storageRef);
-        return {
-          name: file.name,
-          type: file.type,
-          url: url
-        };
+      const formData = new FormData();
+      Array.from(files).forEach(file => {
+        formData.append('files', file);
       });
 
-      return await Promise.all(uploadPromises);
+      const response = await fetch(`http://localhost:8000/api/chats/${chatId}/upload`, {
+        method: 'POST',
+        headers: {
+          'Authorization': token
+        },
+        body: formData
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data.attachments;
     } catch (error) {
       console.error('Error uploading files:', error);
       return [];
@@ -49,43 +50,34 @@ const SendMessage = ({ chatId }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (loading || !chatId) {
-      console.log('Cannot send: loading or no chatId', { loading, chatId });
-      return;
-    }
-    
-    if (!user) {
-      console.error("User not authenticated");
+    if (!chatId || !userId || !token) {
+      console.error("Cannot send: missing chatId, userId, or token");
       return;
     }
 
     if (message.trim() === '' && !fileInputRef.current?.files?.length) {
-      console.log('No message or files to send');
       return;
     }
 
     try {
       const attachments = await handleFileUpload(fileInputRef.current?.files || []);
-      const timestamp = new Date().toLocaleString('en-US', {
-        weekday: 'short',
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: true
+      
+      const response = await fetch(`http://localhost:8000/api/chats/${chatId}/messages`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        },
+        body: JSON.stringify({
+          message: message.trim(),
+          senderId: userId,
+          attachments
+        })
       });
 
-      const newMessage = {
-        message: message.trim(),
-        senderId: user.uid,
-        timestamp: timestamp,
-        attachments: attachments
-      };
-
-      const chatRef = doc(db, 'chats', chatId);
-      await updateDoc(chatRef, {
-        messages: arrayUnion(newMessage),
-        lastMessage: message.trim(),
-        updatedAt: new Date()
-      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
       setMessage('');
       if (fileInputRef.current) {
@@ -96,11 +88,8 @@ const SendMessage = ({ chatId }) => {
     }
   };
 
-  if (loading) {
-    return <div className="send-message loading">Loading...</div>;
-  }
-
-  if (!user) {
+  if (!userId || !localStorage.getItem('token')) {
+    console.error('Missing auth:', { userId, token: localStorage.getItem('token') });
     return <div className="send-message error">Please sign in to send messages</div>;
   }
 
@@ -112,8 +101,8 @@ const SendMessage = ({ chatId }) => {
     <div className="send-message">
       <form onSubmit={handleSubmit} className="message-input-container">
         <button 
-          type="button" 
-          className="attachment-button"
+          type="button"
+          className="attach-button"
           onClick={() => fileInputRef.current?.click()}
           disabled={isUploading}
         >
@@ -128,6 +117,25 @@ const SendMessage = ({ chatId }) => {
           multiple
           accept="image/*,.pdf,.doc,.docx"
           style={{ display: 'none' }}
+          onChange={(e) => {
+            if (e.target.files.length > 0) {
+              // Validate file types
+              const validFiles = Array.from(e.target.files).every(file => {
+                const isImage = file.type.startsWith('image/');
+                const isDocument = ['.pdf', '.doc', '.docx'].some(ext => 
+                  file.name.toLowerCase().endsWith(ext)
+                );
+                return isImage || isDocument;
+              });
+
+              if (!validFiles) {
+                alert('Only images and documents (PDF, DOC, DOCX) are allowed');
+                e.target.value = '';
+                return;
+              }
+              handleSubmit(new Event('submit'));
+            }
+          }}
         />
         <div className="message-input-wrapper">
           <input
@@ -149,6 +157,65 @@ const SendMessage = ({ chatId }) => {
           </svg>
         </button>
       </form>
+
+      <style jsx>{`
+        .send-message {
+          padding: 10px;
+          background: #fff;
+          border-top: 1px solid #e0e0e0;
+        }
+
+        .message-input-container {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .message-input-wrapper {
+          flex: 1;
+          background: #f0f2f5;
+          border-radius: 20px;
+          padding: 0 12px;
+        }
+
+        .message-input {
+          width: 100%;
+          padding: 10px 0;
+          border: none;
+          background: transparent;
+          outline: none;
+          font-size: 15px;
+        }
+
+        .attach-button,
+        .send-button {
+          background: none;
+          border: none;
+          padding: 8px;
+          cursor: pointer;
+          color: #54656f;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: background-color 0.2s;
+        }
+
+        .attach-button:hover,
+        .send-button:hover {
+          background-color: #f0f2f5;
+        }
+
+        .attach-button:disabled,
+        .send-button:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+
+        .file-input {
+          display: none;
+        }
+      `}</style>
     </div>
   );
 };

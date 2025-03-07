@@ -63,15 +63,15 @@ const MessagingPage = () => {
     loadChat();
   }, [chatId, authChecked]);
 
-  const handleEscrow = () => {
-    const escrowData = {
-      freelancerId: currentChat.participants[0].uid,
-      clientId: currentChat.participants[1].uid,
-      freelancerEmail: currentChat.participants[0].email,
-      clientEmail: currentChat.participants[1].email,
-    };
-    navigate('/escrow', { state: { escrowData } });
-  };
+  // const handleEscrow = () => {
+  //   const escrowData = {
+  //     freelancerId: currentChat.participants[0].uid,
+  //     clientId: currentChat.participants[1].uid,
+  //     freelancerEmail: currentChat.participants[0].email,
+  //     clientEmail: currentChat.participants[1].email,
+  //   };
+  //   navigate('/escrow', { state: { escrowData } });
+  // };
 
   if (!authChecked) {
     console.log('Rendering auth check loading');
@@ -98,7 +98,6 @@ const MessagingPage = () => {
           ) : chatId ? (
             <>
               <ChatBox chatId={chatId} chat={currentChat} />
-              <button onClick={handleEscrow}>Create Escrow</button>
             </>
           ) : (
             <div className="no-chat-selected">

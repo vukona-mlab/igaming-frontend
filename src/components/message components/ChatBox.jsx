@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Message from "./Message";
 import SendMessage from "./SendMessage";
+import { format, isToday, isYesterday, isSameDay } from 'date-fns';
 
 const ChatBox = ({ chatId, chat }) => {
   const [messages, setMessages] = useState([]);
@@ -11,11 +12,73 @@ const ChatBox = ({ chatId, chat }) => {
 
   console.log('ChatBox Render:', { chatId, chat });
 
-  // Find the other participant in the chat
-  const currentUserId = localStorage.getItem('userId');
+  // Find the other participant in the chat - using uid instead of userId
+  const currentUserId = localStorage.getItem('uid');
   const otherParticipant = chat?.participants?.find(
     p => p.uid !== currentUserId
   );
+
+  // Parse timestamp to Date object
+  const parseTimestamp = (timestamp) => {
+    if (!timestamp) return new Date();
+    
+    try {
+      if (typeof timestamp === 'string') {
+        // For string timestamps, try to parse or return current date
+        const parsed = new Date(timestamp);
+        return isNaN(parsed.getTime()) ? new Date() : parsed;
+      } else if (timestamp._seconds) {
+        return new Date(timestamp._seconds * 1000);
+      } else if (timestamp.toDate) {
+        return timestamp.toDate();
+      } else if (timestamp instanceof Date) {
+        return timestamp;
+      }
+      return new Date(timestamp);
+    } catch (error) {
+      console.error('Error parsing timestamp:', error);
+      return new Date();
+    }
+  };
+
+  // Group messages by date
+  const groupMessagesByDate = (messages) => {
+    const groups = [];
+    let currentGroup = null;
+
+    messages.forEach((message) => {
+      if (!message) return; // Skip null/undefined messages
+      
+      const timestamp = message.createdAt || message.timestamp;
+      const messageDate = parseTimestamp(timestamp);
+
+      if (!currentGroup || !isSameDay(currentGroup.date, messageDate)) {
+        currentGroup = {
+          date: messageDate,
+          messages: []
+        };
+        groups.push(currentGroup);
+      }
+      currentGroup.messages.push(message);
+    });
+
+    return groups;
+  };
+
+  const formatDateHeader = (date) => {
+    try {
+      if (isToday(date)) {
+        return 'Today';
+      }
+      if (isYesterday(date)) {
+        return 'Yesterday';
+      }
+      return format(date, 'MMMM d, yyyy');
+    } catch (error) {
+      console.error('Error formatting date header:', error);
+      return 'Unknown Date';
+    }
+  };
 
   useEffect(() => {
     if (!chatId || !localStorage.getItem('token')) {
@@ -44,8 +107,10 @@ const ChatBox = ({ chatId, chat }) => {
         const transformedMessages = data.messages.map(msg => ({
           id: msg.id || Math.random().toString(),
           message: msg.text,
+          text: msg.text,
           senderId: msg.senderId,
           timestamp: msg.timestamp,
+          createdAt: msg.createdAt,
           displayName: msg.displayName,
           photoURL: msg.photoURL,
           attachments: msg.attachments
@@ -95,15 +160,22 @@ const ChatBox = ({ chatId, chat }) => {
           <div className="no-messages">No messages yet</div>
         ) : (
           <div className="messages-wrapper">
-            {messages.map((msg, idx) => (
-              <Message 
-                key={msg.id} 
-                message={msg}
-                showAvatar={
-                  idx === 0 || 
-                  messages[idx - 1]?.senderId !== msg.senderId
-                }
-              />
+            {groupMessagesByDate(messages).map((group) => (
+              <div key={`date-${group.date.getTime()}`} className="message-group">
+                <div className="date-separator">
+                  <span className="date-text">{formatDateHeader(group.date)}</span>
+                </div>
+                {group.messages.map((msg, msgIndex) => (
+                  <Message 
+                    key={msg.id || `${msg.senderId}-${msg.timestamp?._seconds || Date.now()}-${msgIndex}`}
+                    message={msg}
+                    showAvatar={
+                      msgIndex === 0 || 
+                      group.messages[msgIndex - 1]?.senderId !== msg.senderId
+                    }
+                  />
+                ))}
+              </div>
             ))}
             <div ref={bottomRef}></div>
           </div>
@@ -111,6 +183,72 @@ const ChatBox = ({ chatId, chat }) => {
       </div>
       
       <SendMessage chatId={chatId} />
+
+      <style jsx>{`
+        .messages-wrapper {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          padding: 16px;
+        }
+
+        .date-separator {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 16px 0;
+          position: relative;
+        }
+
+        .date-separator::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 50%;
+          height: 1px;
+          background-color: #e0e0e0;
+          z-index: 1;
+        }
+
+        .date-text {
+          background-color: #f5f5f5;
+          padding: 4px 12px;
+          border-radius: 16px;
+          font-size: 12px;
+          color: #666;
+          position: relative;
+          z-index: 2;
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .message-group {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+        }
+
+        .messages-container {
+          flex: 1;
+          overflow-y: auto;
+          background-color: #fff;
+        }
+
+        .loading,
+        .error,
+        .no-messages {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 100%;
+          color: #666;
+          font-size: 14px;
+        }
+
+        .error {
+          color: #e53935;
+        }
+      `}</style>
     </div>
   );
 };

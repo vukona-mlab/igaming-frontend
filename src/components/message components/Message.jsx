@@ -1,15 +1,60 @@
 import React from "react";
+import { formatDistanceToNow, format } from 'date-fns';
 
 const Message = ({ message, showAvatar }) => {
-  const { message: messageText = message.text, senderId, timestamp, attachments } = message;
-  // Get current user ID from localStorage instead of Firebase auth
-  const currentUserId = localStorage.getItem('userId');
+  // Handle different message formats
+  const messageText = message.text || message.message;
+  const { senderId, attachments, id } = message;
+  const timestamp = message.createdAt || message.timestamp;
+  
+  const currentUserId = localStorage.getItem('uid');
   const isCurrentUser = senderId === currentUserId;
 
-  console.log('Rendering message:', { messageText, senderId, isCurrentUser, timestamp });
+  // Use a unique message ID for the key
+  const messageKey = id || `${senderId}-${timestamp?._seconds || Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
+  console.log('Message data:', { messageText, senderId, timestamp, isCurrentUser });
+
+  // Format timestamp
+  const formatMessageTime = (timestamp) => {
+    if (!timestamp) return '';
+    
+    try {
+      let date;
+      if (typeof timestamp === 'string') {
+        // Handle string timestamp format (e.g., 'Fri, 8:52 AM')
+        return timestamp;
+      } else if (timestamp._seconds) {
+        // Handle Firestore timestamp
+        date = new Date(timestamp._seconds * 1000);
+      } else if (timestamp.toDate) {
+        // Handle Firebase timestamp
+        date = timestamp.toDate();
+      } else {
+        // Handle regular Date object or timestamp
+        date = new Date(timestamp);
+      }
+
+      // If message is from today, show time only
+      if (new Date().toDateString() === date.toDateString()) {
+        return format(date, 'HH:mm');
+      }
+      
+      // If message is from this week, show day and time
+      if (Date.now() - date.getTime() < 7 * 24 * 60 * 60 * 1000) {
+        return format(date, 'EEE HH:mm');
+      }
+      
+      // Otherwise show full date
+      return format(date, 'dd MMM yyyy HH:mm');
+    } catch (error) {
+      console.error('Error formatting timestamp:', error, timestamp);
+      return typeof timestamp === 'string' ? timestamp : '';
+    }
+  };
 
   return (
-    <div className={`message ${isCurrentUser ? 'sent' : 'received'}`}>
+    <div className={`message ${isCurrentUser ? 'sent' : 'received'}`} key={messageKey}>
       {!isCurrentUser && showAvatar && (
         <div className="message-avatar-wrapper">
           <img 
@@ -29,18 +74,18 @@ const Message = ({ message, showAvatar }) => {
         <div className="message-content">
           {messageText}
           {attachments && attachments.map((attachment, index) => (
-            <div key={index} className="message-attachment">
-              {attachment.type.startsWith('image/') ? (
+            <div key={`${messageKey}-attachment-${index}`} className="message-attachment">
+              {attachment.type?.startsWith('image/') ? (
                 <div style={{ position: 'relative', display: 'inline-block' }}>
                   <img 
                     src={attachment.url} 
                     alt="attachment"
-                    style={{ width: '150%', height: 'auto' }}
+                    style={{ maxWidth: '200px', height: 'auto' }}
                     onError={(e) => {
                       console.error('Image failed to load:', attachment.url);
                     }}
                   />
-                  <a href={attachment.url} download className="download-attachment" style={{ position: 'absolute', bottom: '5px', right: '5px', background: 'rgba(255, 255, 255, 0.7)', borderRadius: '3px', padding: '2px' }}>
+                  <a href={attachment.url} download className="download-attachment">
                     <svg viewBox="0 0 24 24" width="16" height="16">
                       <path fill="currentColor" d="M7 14l5 5 5-5H7zm0-2h10V4H7v8z"/>
                     </svg>
@@ -62,7 +107,20 @@ const Message = ({ message, showAvatar }) => {
             </div>
           ))}
           <div className="message-meta">
-            <span className="message-time">{timestamp}</span>
+            <span className="message-time" title={formatMessageTime(timestamp)}>
+              {timestamp ? (
+                typeof timestamp === 'string' ? 
+                  timestamp : 
+                  formatDistanceToNow(
+                    timestamp._seconds ? 
+                      new Date(timestamp._seconds * 1000) : 
+                      timestamp.toDate ? 
+                        timestamp.toDate() : 
+                        new Date(timestamp),
+                    { addSuffix: true }
+                  )
+              ) : ''}
+            </span>
             {isCurrentUser && (
               <span className="message-status">
                 <svg viewBox="0 0 24 24" width="16" height="16">
@@ -73,6 +131,40 @@ const Message = ({ message, showAvatar }) => {
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        .message-meta {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          margin-top: 4px;
+          font-size: 12px;
+          color: #666;
+        }
+
+        .message-time {
+          opacity: 0.7;
+          cursor: default;
+        }
+
+        .message-time:hover {
+          opacity: 1;
+        }
+
+        .message.sent .message-meta {
+          justify-content: flex-end;
+        }
+
+        .message.received .message-meta {
+          justify-content: flex-start;
+        }
+
+        .message-status {
+          display: flex;
+          align-items: center;
+          color: #0084ff;
+        }
+      `}</style>
     </div>
   );
 };
