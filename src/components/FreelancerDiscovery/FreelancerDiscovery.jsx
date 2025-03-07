@@ -142,6 +142,8 @@ const FreelancerDiscovery = ({ searchQuery }) => {
                 messageIcon={messageIcon}
                 onMessageClick={() => handleMessageClick(freelancer.id)}
               />
+               {/* Hover message */}
+            <div className="hover-message">Click image to view more</div>
             </div>
           ))}
         </div>
