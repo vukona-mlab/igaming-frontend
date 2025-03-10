@@ -16,8 +16,8 @@ import ProtectRole from "./components/Protected/ProtectRole";
 import DiscoveryPage from "./pages/DiscoveryPage/DiscoveryPage";
 import FreelancerProjects from "./pages/freelancer/freelancesProjectsPage/freelancerProjectsPage";
 import MessagingPageF from "./pages/freelancer/MessagingPage/MessagingPageF";
-import MessagingPageC from "./pages/client/MessagingPage/MessagingPageC";
 import EscrowPage from "./pages/EscrowPage/EscrowPage";
+import MessagingPageC from "./pages/client/MessagingPage/MessagingPageC";
 
 function App() {
   return (
