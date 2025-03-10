@@ -18,7 +18,6 @@ import FreelancerProjects from "./pages/freelancer/freelancesProjectsPage/freela
 import MessagingPageF from "./pages/freelancer/MessagingPage/MessagingPageF";
 import EscrowPage from "./pages/EscrowPage/EscrowPage";
 import MessagingPageC from "./pages/client/MessagingPage/MessagingPageC";
-
 function App() {
   return (
     <div className="App">
@@ -58,8 +57,14 @@ function App() {
                 element={<FreelancerProfile />}
               />
               <Route path="client-profile" element={<ClientProfile />} />
-              <Route path="messaging-freelancer/:chatId?" element={<MessagingPageF />} />
-              <Route path="messaging-client/:chatId?" element={<MessagingPageC />} />
+              <Route
+                path="messaging-freelancer/:chatId?"
+                element={<MessagingPageF />}
+              />
+              <Route
+                path="messaging-client/:chatId?"
+                element={<MessagingPageC />}
+              />
               <Route path="escrow" element={<EscrowPage />} />
             </Route>
           </Routes>

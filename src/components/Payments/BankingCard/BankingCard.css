@@ -1,0 +1,56 @@
+.BankingCard {
+  width: 480px;
+  height: 163px;
+  padding: 20px;
+  border: 2px solid #0000000d;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  font-family: "Poppins";
+}
+
+.bc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bc-bank-name {
+  font-size: 24px;
+  font-weight: 500;
+  color: #0000004d;
+  text-transform: uppercase;
+}
+
+.bc-acc-num {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bc-edit {
+  width: 78px;
+  height: 34px;
+  background-color: #000000;
+  font-size: 16px;
+  font-weight: 500;
+  color: white;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+}
+.bc-edit:hover {
+  background-color: #181818;
+}
+.bc-acc-num-name {
+  font-size: 16px;
+  font-weight: 400;
+  color: #0000004d;
+}
+
+.bc-acc-num-val {
+  font-size: 16px;
+  font-weight: 400;
+  color: #0000004d;
+}
