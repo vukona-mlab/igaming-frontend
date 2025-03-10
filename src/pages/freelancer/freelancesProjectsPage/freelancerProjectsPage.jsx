@@ -1,60 +1,63 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Container, Row, Col, Button } from "react-bootstrap";
+import { Container, Row, Col, Button, Alert } from "react-bootstrap";
 import Navbar from "../../../components/Common/Navbar/navbar";
 import ProjectCard from "../../../components/Profile/FreelancerProjects/ProjectCard";
 import FreelancerProjectCards from "../../../components/Profile/freelancerCardsProjects/freelancerCardProjects";
-
+import SectionHeader from "../../../components/Landing/section-header/SectionHeader";
+import './freelancerProjectPage.css'
 const FreelancerProjects = () => {
-  const [projects, setProjects] = useState([]);
-  const [visibleProjects, setVisibleProjects] = useState(6); // Show 6 projects initially
-  const [freelancerData, setFreelancerData] = useState({
-    profilePicture: "https://www.example.com/default-image.jpg", // Default Image
-    specialities: [],
-  });
   const { freelancer_id } = useParams();
-  const freelancerIdToShow = freelancer_id || "5Ei0TkC4TUblQ0NVHN46PupY3w83"; // Hardcoded freelancer ID
+  const [projects, setProjects] = useState([]);
+  const [visibleProjects, setVisibleProjects] = useState(6);
+  const [freelancerData, setFreelancerData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/freelancers/projects")
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Fetched data:", data);
+    if (!freelancer_id) {
+      setError("Freelancer ID is missing.");
+      setLoading(false);
+      return;
+    }
 
-        if (data && data.freelancers && Array.isArray(data.freelancers)) {
-          const freelancer = data.freelancers.find(
-            (freelancer) => freelancer.id === freelancerIdToShow
-          );
+    const fetchProjects = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/api/freelancers/projects/");
 
-          if (freelancer) {
-            setFreelancerData({
-              profilePicture:
-                freelancer.profilePicture ||
-                "https://www.example.com/default-image.jpg",
-              specialities: freelancer.specialities || [],
-            });
+        if (!response.ok) throw new Error("Failed to fetch freelancer data");
 
-            const filteredProjects = Array.isArray(freelancer.projects)
-              ? freelancer.projects.filter(
-                  (project) => project.freelancerId === freelancerIdToShow
-                )
-              : [];
+        const data = await response.json();
+        console.log("Fetched Data:", data);
 
-            setProjects(filteredProjects);
-          } else {
-            console.error("No freelancer found with the specified ID.");
-            setProjects([]);
-          }
-        } else {
-          console.error("Expected freelancers array but received:", data);
-          setProjects([]);
+        if (!data || !data.freelancers) {
+          throw new Error("Freelancer not found");
         }
-      })
-      .catch((error) => {
-        console.error("Error fetching projects:", error);
-        setProjects([]);
-      });
-  }, []);
+
+        // Filter projects based on freelancer_id
+        const freelancer = data.freelancers.find(f => f.id.toString() === freelancer_id);
+
+        if (!freelancer) {
+          throw new Error("Freelancer not found");
+        }
+
+        setFreelancerData({
+          displayName:freelancer.displayName || "",
+          profilePicture: freelancer.profilePicture || "https://www.example.com/default-image.jpg",
+          specialities: freelancer.specialities || [],
+        });
+
+        setProjects(Array.isArray(freelancer.projects) ? freelancer.projects : []);
+      } catch (err) {
+        console.error("Error fetching projects:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, [freelancer_id]);
 
   const handleSeeMore = () => {
     setVisibleProjects((prev) => prev + 6);
@@ -63,49 +66,62 @@ const FreelancerProjects = () => {
   return (
     <>
       <Navbar />
-      {projects.length === 0 ? (
-        <div className="text-center my-4">
-          <h3>Oops! Freelancer currently does not have projects to display.</h3>
-        </div>
-      ) : (
-        <Container>
-          <h1 className="text-center my-4">Freelancer</h1>
+      <Container>
+      <div className="d-flex justify-content-between align-items-center my-4 name-free">
+  <h1 className="m-0">{freelancerData?.displayName}'s Profile</h1>
+  <Button variant="dark" className="buttona-message">Message</Button>
+</div>
+
+        {loading && <Alert variant="info">Loading projects...</Alert>}
+        {error && <Alert variant="danger">{error}</Alert>}
+
+        {!loading && !error && (
           <Row>
-            {/* Freelancer Profile Section - Always on Top */}
             <Col md={3}>
-              <FreelancerProjectCards
-                image={freelancerData.profilePicture}
-                specialities={freelancerData.specialities}
-              />
+              {freelancerData && (
+                <FreelancerProjectCards
+                  image={freelancerData.profilePicture}
+                  specialities={freelancerData.specialities}
+                />
+              )}
             </Col>
 
-            {/* Projects Section - Below Profile on Small Screens */}
-            <Col md={9}>
-              <Row className="g-2">
-                {projects.slice(0, visibleProjects).map((project) => (
-                  <Col key={project.id} md={4}>
-                    <ProjectCard
-                      projectPicture={project.projectPicture}
-                      projectName={project.projectName}
-                      likes={project.likes}
-                      authorName={project.author}
-                      onDemoClick={() => window.open(project.demoLink, "_blank")}
-                      onShareClick={() => alert(`Sharing ${project.projectName}`)}
-                    />
-                  </Col>
-                ))}
-              </Row>
-              {visibleProjects < projects.length && (
-                <div className="text-center mt-4">
-                  <Button variant="dark" onClick={handleSeeMore}>
-                    See More
-                  </Button>
+            <Col md={9} style={{border:"1px solid blue"}}>
+              <SectionHeader text="Projects" />
+              {projects.length === 0 ? (
+                <div className="text-center my-4">
+                  <h3>Oops! Freelancer currently does not have projects to display.</h3>
                 </div>
+              ) : (
+                <>
+                  <Row className="g-2">
+                    {projects.slice(0, visibleProjects).map((project) => (
+                      <Col key={project.id} md={4}>
+                        <ProjectCard
+                          projectPicture={project.projectPicture}
+                          projectName={project.projectName}
+                          likes={project.likes}
+                          authorName={project.author}
+                          onDemoClick={() => window.open(project.demoLink, "_blank")}
+                          onShareClick={() => alert(`Sharing ${project.projectName}`)}
+                        />
+                      </Col>
+                    ))}
+                  </Row>
+
+                  {visibleProjects < projects.length && (
+                    <div className="text-center mt-4">
+                      <Button variant="dark" onClick={handleSeeMore}>
+                        See More
+                      </Button>
+                    </div>
+                  )}
+                </>
               )}
             </Col>
           </Row>
-        </Container>
-      )}
+        )}
+      </Container>
     </>
   );
 };
