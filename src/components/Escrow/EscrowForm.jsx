@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Form } from 'react-bootstrap';
-import './EscrowForm.css';
-import { createEscrowTransaction } from '../../services/escrow';
+import React, { useState, useEffect } from "react";
+import { Button, Form } from "react-bootstrap";
+import "./EscrowForm.css";
 
 const EscrowForm = ({ onSubmit, freelancerId, clientId }) => {
-  const [amount, setAmount] = useState('');
-  const [description, setDescription] = useState('');
-  const [milestones, setMilestones] = useState('');
-  const [clientEmail, setClientEmail] = useState('');
-  const [freelancerEmail, setFreelancerEmail] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState('wire');
+  const [amount, setAmount] = useState("");
+  const [description, setDescription] = useState("");
+  const [milestones, setMilestones] = useState("");
+  const [clientEmail, setClientEmail] = useState("");
+  const [freelancerEmail, setFreelancerEmail] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("wire");
 
   useEffect(() => {
     const fetchUserDetails = async (userId, setEmail) => {
@@ -28,7 +27,7 @@ const EscrowForm = ({ onSubmit, freelancerId, clientId }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
       const escrowData = {
         description: description,
@@ -42,26 +41,26 @@ const EscrowForm = ({ onSubmit, freelancerId, clientId }) => {
           // Add other required seller details
         },
         payment_method: paymentMethod,
-        items: [{
-          description: description,
-          schedule: milestones,
-          price: amount,
-          quantity: 1
-        }]
+        items: [
+          {
+            description: description,
+            schedule: milestones,
+            price: amount,
+            quantity: 1,
+          },
+        ],
       };
 
       // Call Escrow.com API
-      const transaction = await createEscrowTransaction(escrowData);
-      
+
       // Handle successful creation
       onSubmit({
         ...escrowData,
         transactionId: transaction.id,
-        escrowStatus: transaction.status
+        escrowStatus: transaction.status,
       });
-
     } catch (error) {
-      console.error('Error creating escrow transaction:', error);
+      console.error("Error creating escrow transaction:", error);
       // Handle error appropriately
     }
   };
@@ -70,7 +69,10 @@ const EscrowForm = ({ onSubmit, freelancerId, clientId }) => {
     <Form onSubmit={handleSubmit} className="escrow-form">
       <div className="form-header">
         <h2>ESCROW AGREEMENT</h2>
-        <p>This agreement is made and entered into on {new Date().toLocaleDateString()}</p>
+        <p>
+          This agreement is made and entered into on{" "}
+          {new Date().toLocaleDateString()}
+        </p>
       </div>
 
       <div className="form-section">
