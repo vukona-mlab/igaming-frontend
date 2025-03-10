@@ -5,6 +5,7 @@ import ProfileSubNav from "../../../components/Profile/ProfileSubNav/ProfileSubN
 import PeopleComponent from "../../../components/Messaging/PeopleComponent/PeopleComponent";
 import ChatBox from "../../../components/Messaging/ChatBox/ChatBox";
 
+
 const MessagingPageC = () => {
   const [loading, setLoading] = useState(false);
   const [chats, setChats] = useState([]);
@@ -37,6 +38,16 @@ const MessagingPageC = () => {
       }
     }
   }, [currentChatId, chats]);
+
+  const handleEscrow = () => {
+    const escrowData = {
+      freelancerId: currentChat.participants[0].uid,
+      clientId: currentChat.participants[1].uid,
+      freelancerEmail: currentChat.participants[0].email,
+      clientEmail: currentChat.participants[1].email,
+    };
+    navigate('/escrow', { state: { escrowData } });
+};
 
   const getAllChats = async () => {
     try {
@@ -82,6 +93,7 @@ const MessagingPageC = () => {
     <div className="MessagingPageC">
       <Navbar />
       <ProfileSubNav />
+      <button onClick={handleEscrow}>Escrow</button>
       <div className="messagePageContainer">
         <PeopleComponent
           people={chats}
@@ -97,6 +109,7 @@ const MessagingPageC = () => {
             currentClientName={currentFreelancerName}
           />
         )}
+        <button onClick={handleEscrow}>Escrow</button>
       </div>
     </div>
   );

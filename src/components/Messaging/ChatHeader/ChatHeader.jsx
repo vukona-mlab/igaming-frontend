@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./ChatHeader.css";
 import { BsThreeDotsVertical, BsPersonCircle } from 'react-icons/bs';
 
@@ -6,10 +7,20 @@ const ChatHeader = ({ currentChat }) => {
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
+  const navigate = useNavigate();
 
-  // Find the other participant (not the current user)
+  // Get user role and ID from localStorage
+  const userRole = localStorage.getItem("role");
+  const currentUserId = localStorage.getItem("uid");
+  const isFreelancer = userRole === "freelancer";
+
+  // Find the current user and other participant
+  const currentUser = currentChat?.participants?.find(
+    part => part.uid === currentUserId
+  );
+  
   const otherParticipant = currentChat?.participants?.find(
-    part => part.uid !== localStorage.getItem("uid")
+    part => part.uid !== currentUserId
   );
 
   useEffect(() => {
@@ -25,7 +36,22 @@ const ChatHeader = ({ currentChat }) => {
   }, []);
 
   const handleCreateAgreement = () => {
-    // TODO: Implement create agreement logic
+    if (!currentUser || !otherParticipant) {
+      console.error("Missing participant information");
+      return;
+    }
+
+    const escrowData = {
+      freelancerId: isFreelancer ? currentUser.uid : otherParticipant.uid,
+      clientId: isFreelancer ? otherParticipant.uid : currentUser.uid,
+      freelancerEmail: isFreelancer ? currentUser.email : otherParticipant.email,
+      clientEmail: isFreelancer ? otherParticipant.email : currentUser.email,
+    };
+
+    // Log the data being passed
+    console.log("Creating agreement with data:", escrowData);
+
+    navigate('/escrow', { state: { escrowData } });
     setShowMenu(false);
   };
 
@@ -74,7 +100,9 @@ const ChatHeader = ({ currentChat }) => {
         </button>
         {showMenu && (
           <div className="context-menu" ref={menuRef}>
-            <button onClick={handleCreateAgreement}>Create Agreement</button>
+            {isFreelancer && (
+              <button onClick={handleCreateAgreement}>Create Agreement</button>
+            )}
             <button onClick={handleEndChat}>End Chat</button>
             <button onClick={handleDeleteChat}>Delete Chat</button>
           </div>
