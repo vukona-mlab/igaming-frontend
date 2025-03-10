@@ -12,19 +12,28 @@
   gap: 15px;
 }
 
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 1.2rem;
+  color: #666;
+}
+
 @media (max-width: 768px) {
   .messagePageContainer {
     flex-direction: column;
     height: auto;
   }
-  
+
   .PeopleComponent {
     width: 100% !important;
     margin-bottom: 15px;
   }
-  
+
   .f-chat-box {
     width: 100%;
     height: calc(70vh - 10px);
   }
-} 
+}

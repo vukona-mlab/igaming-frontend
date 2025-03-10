@@ -4,8 +4,9 @@ import ChatInput from "../messaging-inputs/ChatInput";
 import "./ChatBox.css";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { auth, db, storage } from "../../../config/firebase";
+import ChatHeader from "../ChatHeader/ChatHeader";
 
-const ChatBox = ({ chatId, currentClientId, currentClientName }) => {
+const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName }) => {
   const [messages, setMessages] = useState([]);
   const [photoUrl, setPhotoUrl] = useState("");
   const [isUploading, setIsUploading] = useState(false);
@@ -132,21 +133,7 @@ const ChatBox = ({ chatId, currentClientId, currentClientName }) => {
         <div>No messages</div>
       ) : (
         <>
-          <div className="f-chat-header">
-            <div className="f-chat-header-user">
-              <img
-                src={
-                  photoUrl && photoUrl !== ""
-                    ? photoUrl
-                    : "/images/profile_icon.png"
-                }
-                alt="Profile"
-              />
-              <div className="f-chat-header-info">
-                <h2>{currentClientName}</h2>
-              </div>
-            </div>
-          </div>
+          <ChatHeader currentChat={currentChat} />
           <div className="f-messages-container">
             {loading ? (
               <div className="loading">Loading messages...</div>
