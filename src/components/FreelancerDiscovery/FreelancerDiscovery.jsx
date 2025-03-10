@@ -82,8 +82,60 @@ const FreelancerDiscovery = ({ searchQuery }) => {
     }
   };
 
-  const handleMessageClick = (freelancerId) => {
-    console.log(`Message clicked for freelancer: ${freelancerId}`);
+  const handleMessageClick = async (freelancerId) => {
+    try {
+      console.log("Freelancer data received:", { freelancerId });
+
+      if (!freelancerId) {
+        console.error("FreelancerId is missing");
+        return;
+      }
+
+      let token = localStorage.getItem("token");
+      if (!token) {
+        alert("Please sign in to send messages");
+        navigation("/client-signin");
+        return;
+      }
+
+      if (!token.startsWith("Bearer ")) {
+        token = `Bearer ${token}`;
+      }
+
+      const uid = localStorage.getItem("uid");
+
+      const requestData = {
+        freelancerId: freelancerId,
+        clientId: uid,
+        senderId: uid,
+        message: "Hello! I'm interested in working with you.", // Add initial message
+      };
+
+      console.log("Sending chat request with data:", requestData);
+      console.log("Using authorization token:", token);
+
+      const response = await fetch("http://localhost:8000/api/create-chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        body: JSON.stringify(requestData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create chat");
+      }
+
+      const data = await response.json();
+      console.log("Chat created successfully:", data);
+
+      // Navigate to messaging page with the new chat ID
+      navigation(`/messaging-client/${data.chatId}`);
+    } catch (error) {
+      console.error("Error creating chat:", error);
+      alert("Failed to create chat. Please try again.");
+    }
   };
 
   const filteredFreelancers = freelancers.filter((freelancer) => {

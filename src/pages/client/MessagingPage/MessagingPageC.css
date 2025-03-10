@@ -1,0 +1,30 @@
+.MessagingPageC {
+  min-height: 100vh;
+  background: #fff;
+}
+
+.messagePageContainer {
+  width: calc(90%);
+  height: calc(95vh - 10px);
+  margin: 25px auto;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+@media (max-width: 768px) {
+  .messagePageContainer {
+    flex-direction: column;
+    height: auto;
+  }
+  
+  .PeopleComponent {
+    width: 100% !important;
+    margin-bottom: 15px;
+  }
+  
+  .f-chat-box {
+    width: 100%;
+    height: calc(70vh - 10px);
+  }
+} 
