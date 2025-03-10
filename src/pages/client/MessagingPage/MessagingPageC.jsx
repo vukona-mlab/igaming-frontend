@@ -1,113 +1,76 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import ChatBox from '../../../components/message components/ChatBox';
-import ChatList from '../../../components/message components/ChatList';
-import './MessagingPageC.css';
+import React, { useEffect, useState } from "react";
+import "./MessagingPageC.css";
+import Navbar from "../../../components/Common/Navbar/navbar";
+import ProfileSubNav from "../../../components/Profile/ProfileSubNav/ProfileSubNav";
+import PeopleComponent from "../../../components/Messaging/PeopleComponent/PeopleComponent";
+import ChatBox from "../../../components/Messaging/ChatBox/ChatBox";
 
-const MessagingPage = () => {
-  const { chatId } = useParams();
-  const [currentChat, setCurrentChat] = useState(null);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [authChecked, setAuthChecked] = useState(false);
-  const navigate = useNavigate();
+const MessagingPageC = () => {
+  const [loading, setLoading] = useState(false);
+  const [chats, setChats] = useState([]);
+  const [currentChatId, setcurrentChatId] = useState("");
+  const [currentFreelancerId, setCurrentFreelancerId] = useState("");
+  const [currentFreelancerName, setCurrentFreelancerName] = useState("");
 
-  console.log('MessagingPage Render:', { chatId, currentChat, authChecked });
+  const token = localStorage.getItem("token");
+  const url = import.meta.env.VITE_API_URL;
 
-  // Check authentication
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const userRole = localStorage.getItem('role');
-    
-    console.log('Checking auth:', { token, userRole });
-    
-    if (!token || userRole !== 'client') {
-      console.log('No token or not a client, redirecting to signin');
-      navigate('/client-signin');
-      return;
-    }
+    getAllChats();
+  }, []);
 
-    setAuthChecked(true);
-  }, [navigate]);
-
-  // Load chat data
-  useEffect(() => {
-    if (!authChecked || !chatId) {
-      return;
-    }
-
-    const loadChat = async () => {
-      try {
-        console.log('Starting chat load for:', chatId);
-        const response = await fetch(`http://localhost:8000/api/chats/${chatId}`, {
-          headers: {
-            'Authorization': localStorage.getItem('token')
-          }
-        });
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
+  const getAllChats = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${url || 'http://localhost:8000'}/api/chats`, {
+        method: "GET",
+        headers: {
+          Authorization: token,
+        },
+      });
+      
+      if (response.ok) {
         const data = await response.json();
-        console.log('Chat loaded:', data);
-        setCurrentChat(data.chat);
-        setLoading(false);
-      } catch (err) {
-        console.error('Error loading chat:', err);
-        setError('Failed to load chat');
-        setLoading(false);
+        if (data.chats && data.chats.length > 0) {
+          setChats(data.chats);
+          // Set initial chat if available
+          setcurrentChatId(data.chats[0].id || "");
+          // Get the freelancer's name from the first chat
+          const freelancer = data.chats[0].participants?.find(
+            part => part.uid !== localStorage.getItem("uid")
+          );
+          setCurrentFreelancerName(freelancer?.name || "");
+          setCurrentFreelancerId(freelancer?.uid || "");
+        }
       }
-    };
+    } catch (error) {
+      console.error("Error fetching chats:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    loadChat();
-  }, [chatId, authChecked]);
-
-  // const handleEscrow = () => {
-  //   const escrowData = {
-  //     freelancerId: currentChat.participants[0].uid,
-  //     clientId: currentChat.participants[1].uid,
-  //     freelancerEmail: currentChat.participants[0].email,
-  //     clientEmail: currentChat.participants[1].email,
-  //   };
-  //   navigate('/escrow', { state: { escrowData } });
-  // };
-
-  if (!authChecked) {
-    console.log('Rendering auth check loading');
-    return <div className="loading-message">Checking authentication...</div>;
-  }
-
-  console.log('Rendering main component:', { loading, error, chatId, currentChat });
+  if (loading) return null;
 
   return (
-    <div className="messaging-page">
-      <div className="messaging-container">
-        <div className="chat-sidebar">
-          <ChatList setCurrentChat={(chat) => {
-            console.log('Chat selected:', chat);
-            setCurrentChat(chat);
-            navigate(`/messaging-client/${chat.id}`);
-          }} />
-        </div>
-        <div className="chat-main">
-          {loading ? (
-            <div className="loading-message">Loading chat...</div>
-          ) : error ? (
-            <div className="error-message">{error}</div>
-          ) : chatId ? (
-            <>
-              <ChatBox chatId={chatId} chat={currentChat} />
-            </>
-          ) : (
-            <div className="no-chat-selected">
-              Select a chat or start a new conversation
-            </div>
-          )}
-        </div>
+    <div className="MessagingPageC">
+      <Navbar />
+      <ProfileSubNav />
+      <div className="messagePageContainer">
+        <PeopleComponent
+          people={chats}
+          setcurrentChatId={setcurrentChatId}
+          setCurrentClientId={setCurrentFreelancerId}
+          setCurrentClientName={setCurrentFreelancerName}
+        />
+        <ChatBox
+          chatId={currentChatId}
+          currentClientId={currentFreelancerId}
+          currentClientName={currentFreelancerName}
+        />
       </div>
     </div>
   );
 };
 
-export default MessagingPage; 
+export default MessagingPageC; 
