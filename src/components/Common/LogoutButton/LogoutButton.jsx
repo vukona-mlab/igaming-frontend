@@ -15,11 +15,11 @@ const LogoutButton = ({ className, customStyle }) => {
       activeStatus: false,
     });
 
-    //const success = await handleLogout();
+    const success = await handleLogout();
     //update active status
-    // if (success) {
-    //   navigate("/client-signin");
-    // }
+    if (success) {
+      navigate("/client-signin");
+    }
   };
 
   return (
