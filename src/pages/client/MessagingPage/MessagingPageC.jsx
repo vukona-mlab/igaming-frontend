@@ -8,7 +8,8 @@ import ChatBox from "../../../components/Messaging/ChatBox/ChatBox";
 const MessagingPageC = () => {
   const [loading, setLoading] = useState(false);
   const [chats, setChats] = useState([]);
-  const [currentChatId, setcurrentChatId] = useState("");
+  const [currentChatId, setCurrentChatId] = useState("");
+  const [currentChat, setCurrentChat] = useState(null);
   const [currentFreelancerId, setCurrentFreelancerId] = useState("");
   const [currentFreelancerName, setCurrentFreelancerName] = useState("");
 
@@ -19,28 +20,65 @@ const MessagingPageC = () => {
     getAllChats();
   }, []);
 
+  useEffect(() => {
+    // Update current chat when currentChatId changes
+    if (currentChatId && chats.length > 0) {
+      const chat = chats.find((chat) => chat.id === currentChatId);
+      setCurrentChat(chat);
+
+      // Find the freelancer participant
+      const freelancer = chat?.participants?.find(
+        (part) => part.uid !== localStorage.getItem("uid")
+      );
+
+      if (freelancer) {
+        setCurrentFreelancerName(freelancer.name || "");
+        setCurrentFreelancerId(freelancer.uid || "");
+      }
+    }
+  }, [currentChatId, chats]);
+
+  const handleEscrow = () => {
+    const escrowData = {
+      freelancerId: currentChat.participants[0].uid,
+      clientId: currentChat.participants[1].uid,
+      freelancerEmail: currentChat.participants[0].email,
+      clientEmail: currentChat.participants[1].email,
+    };
+    navigate("/escrow", { state: { escrowData } });
+  };
+
   const getAllChats = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${url || 'http://localhost:8000'}/api/chats`, {
-        method: "GET",
-        headers: {
-          Authorization: token,
-        },
-      });
-      
+      const response = await fetch(
+        `${url || "http://localhost:8000"}/api/chats`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+
       if (response.ok) {
         const data = await response.json();
         if (data.chats && data.chats.length > 0) {
-          setChats(data.chats);
+          // Process the chats to ensure lastMessage is a string
+          const processedChats = data.chats.map((chat) => ({
+            ...chat,
+            lastMessage:
+              typeof chat.lastMessage === "object"
+                ? chat.lastMessage.text
+                : chat.lastMessage || "No messages",
+          }));
+
+          setChats(processedChats);
+
           // Set initial chat if available
-          setcurrentChatId(data.chats[0].id || "");
-          // Get the freelancer's name from the first chat
-          const freelancer = data.chats[0].participants?.find(
-            part => part.uid !== localStorage.getItem("uid")
-          );
-          setCurrentFreelancerName(freelancer?.name || "");
-          setCurrentFreelancerId(freelancer?.uid || "");
+          if (processedChats.length > 0) {
+            setCurrentChatId(processedChats[0].id);
+          }
         }
       }
     } catch (error) {
@@ -50,27 +88,34 @@ const MessagingPageC = () => {
     }
   };
 
-  if (loading) return null;
+  if (loading) {
+    return <div className="loading">Loading...</div>;
+  }
 
   return (
     <div className="MessagingPageC">
       <Navbar />
       <ProfileSubNav />
+      <button onClick={handleEscrow}>Escrow</button>
       <div className="messagePageContainer">
         <PeopleComponent
           people={chats}
-          setcurrentChatId={setcurrentChatId}
+          setcurrentChatId={setCurrentChatId}
           setCurrentClientId={setCurrentFreelancerId}
           setCurrentClientName={setCurrentFreelancerName}
         />
-        <ChatBox
-          chatId={currentChatId}
-          currentClientId={currentFreelancerId}
-          currentClientName={currentFreelancerName}
-        />
+        {currentChatId && (
+          <ChatBox
+            chatId={currentChatId}
+            currentChat={currentChat}
+            currentClientId={currentFreelancerId}
+            currentClientName={currentFreelancerName}
+          />
+        )}
+        <button onClick={handleEscrow}>Escrow</button>
       </div>
     </div>
   );
 };
 
-export default MessagingPageC; 
+export default MessagingPageC;

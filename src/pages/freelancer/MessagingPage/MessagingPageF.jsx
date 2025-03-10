@@ -4,43 +4,80 @@ import Navbar from "../../../components/Common/Navbar/navbar";
 import ProfileSubNav from "../../../components/Profile/ProfileSubNav/ProfileSubNav";
 import PeopleComponent from "../../../components/Messaging/PeopleComponent/PeopleComponent";
 import ChatBox from "../../../components/Messaging/ChatBox/ChatBox";
-const MessagingPage = ({}) => {
+
+const MessagingPage = () => {
   const [loading, setLoading] = useState(false);
   const [chats, setChats] = useState([]);
-  const [currentChatId, setcurrentChatId] = useState("");
+  const [currentChatId, setCurrentChatId] = useState("");
+  const [currentChat, setCurrentChat] = useState(null);
   const [currentClientId, setCurrentClientId] = useState("");
   const [currentClientName, setCurrentClientName] = useState("");
 
-  const [people, setPeople] = useState([]);
-
-  const uid = localStorage.getItem("uid");
   const token = localStorage.getItem("token");
-
   const url = import.meta.env.VITE_API_URL;
-  const role = localStorage.getItem("role");
 
   useEffect(() => {
     getAllChats();
   }, []);
+
+  useEffect(() => {
+    // Update current chat when currentChatId changes
+    if (currentChatId && chats.length > 0) {
+      const chat = chats.find(chat => chat.id === currentChatId);
+      setCurrentChat(chat);
+      
+      // Find the client participant
+      const client = chat?.participants?.find(
+        part => part.uid !== localStorage.getItem("uid")
+      );
+      
+      if (client) {
+        setCurrentClientName(client.name || "");
+        setCurrentClientId(client.uid || "");
+      }
+    }
+  }, [currentChatId, chats]);
+
   const getAllChats = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/chats`, {
+      setLoading(true);
+      const response = await fetch(`${url || 'http://localhost:8000'}/api/chats`, {
         method: "GET",
         headers: {
           Authorization: token,
         },
       });
+      
       if (response.ok) {
         const data = await response.json();
         if (data.chats && data.chats.length > 0) {
-          setChats(data.chats);
-          setcurrentChatId((data.chats && data.chats[0].id) || "");
-          setCurrentClientName((data.chats && data.chats[0].name) || "test");
+          // Process the chats to ensure lastMessage is a string
+          const processedChats = data.chats.map(chat => ({
+            ...chat,
+            lastMessage: typeof chat.lastMessage === 'object' 
+              ? chat.lastMessage.text 
+              : chat.lastMessage || 'No messages'
+          }));
+          
+          setChats(processedChats);
+          
+          // Set initial chat if available
+          if (processedChats.length > 0) {
+            setCurrentChatId(processedChats[0].id);
+          }
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("Error fetching chats:", error);
+    } finally {
+      setLoading(false);
+    }
   };
-  if (loading) return;
+
+  if (loading) {
+    return <div className="loading">Loading...</div>;
+  }
+
   return (
     <div className="MessagingPageF">
       <Navbar />
@@ -48,15 +85,18 @@ const MessagingPage = ({}) => {
       <div className="messagePageContainer">
         <PeopleComponent
           people={chats}
-          setcurrentChatId={setcurrentChatId}
+          setcurrentChatId={setCurrentChatId}
           setCurrentClientId={setCurrentClientId}
           setCurrentClientName={setCurrentClientName}
         />
-        <ChatBox
-          chatId={currentChatId}
-          currentClientId={currentClientId}
-          currentClientName={currentClientName}
-        />
+        {currentChatId && (
+          <ChatBox
+            chatId={currentChatId}
+            currentChat={currentChat}
+            currentClientId={currentClientId}
+            currentClientName={currentClientName}
+          />
+        )}
       </div>
     </div>
   );
