@@ -1,0 +1,91 @@
+h2 {
+  color: #000000 30% !important;
+  font-size: 24px;
+  margin-bottom: 16px;
+  font-weight: 500;
+  height: 30px;
+  left: 101px;
+
+}
+
+form {
+  width: 387.25px;
+}
+
+select, input {
+  width: 387.25px;
+  height: 33px;
+  border: none;
+  border-bottom: 1px solid #9e9e9e;
+  outline: none;
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+
+button {
+  width: 192.5px;
+  height: 57px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  margin-top: 20px !important;
+  border-radius: 15px !important;
+}
+
+.cancel {
+  color: #ff6666;
+  background: none;
+}
+
+.submit {
+  background-color: #000;
+  color: #fff;
+}
+
+input::placeholder {
+  color: black;
+}
+
+.custom-dropdown {
+  padding-right: 30px; 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #9e9e9e; 
+  position: relative;
+}
+
+.custom-dropdown  img {
+  position: absolute;
+  right: 0;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+}
+
+.custom-dropdown span {
+  padding-left: 8px;
+  font-size: 16px;
+}
+
+.custom-dropdown div {
+  padding: 8px;
+  font-size: 16px;
+  border-bottom: 1px solid #ddd;
+}
+
+.custom-dropdown div:hover {
+  background-color: #f1f1f1;
+}
+
+.custom-dropdown + div {
+  position: absolute;
+  width: 100%;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-top: none;
+  z-index: 10;
+}
