@@ -1,0 +1,20 @@
+.TabsHeader {
+  display: flex;
+  gap: 25px;
+  padding-top: 5px;
+  border-bottom: 1px solid #333333b2;
+}
+
+.tbh-tab {
+  font-size: 16px;
+  font-weight: 500;
+  color: #00000080;
+  padding-bottom: 15px;
+  cursor: pointer;
+}
+.TabsHeader .currentTab {
+  font-size: 16px;
+  font-weight: 500;
+  color: #000000;
+  border-bottom: 3px solid #b90909;
+}
