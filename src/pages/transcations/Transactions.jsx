@@ -5,18 +5,18 @@ import ProfileSubNav from "../../components/Profile/ProfileSubNav/ProfileSubNav"
 import TransactionsSection from "../../components/Payments/TransactionsSection/TransactionsSection";
 import TabsHeader from "../../components/Payments/TabsHeader/TabsHeader";
 const Transactions = () => {
-  const [tab, setTab] = useState("Banking Details");
+  const [tab, setTab] = useState("Bank Details");
   return (
     <div className="Transactions">
       <Navbar />
       <ProfileSubNav />
       <div className="transaction-page-sections">
         <TabsHeader
-          fieldOne="Banking Details"
+          fieldOne="Bank Details"
           fieldTwo="Transactions"
           handleTabChange={setTab}
         />
-        {tab === "Banking Details" ? <div></div> : <TransactionsSection />}
+        {tab === "Bank Details" ? <div></div> : <TransactionsSection />}
       </div>
     </div>
   );
