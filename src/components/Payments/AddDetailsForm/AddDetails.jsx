@@ -9,6 +9,8 @@ const AddBankDetailsForm = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedBank, setSelectedBank] = useState(initialBank);
+  const [branchCode, setBranchCode] = useState("");  
+  const [accountNumber, setAccountNumber] = useState("");  
 
   const handleDropdownClick = () => {
     setIsOpen(!isOpen);
@@ -19,14 +21,16 @@ const AddBankDetailsForm = ({
     setIsOpen(false);
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit({ selectedBank, branchCode, accountNumber });
+  };
+
   return (
     <div className="flex flex-col items-center w-full max-w-[400px] mx-auto">
       {/* Form heading */}
       <h2 className="text-gray-500 text-lg mb-4">Add Bank Details</h2>
-      <form className="w-[387.25px]" onSubmit={(e) => { 
-        e.preventDefault(); 
-        onSubmit({ selectedBank }); 
-      }}>
+      <form className="w-[387.25px]" onSubmit={handleSubmit}>
 
         <div className="relative">
           <div 
@@ -42,8 +46,8 @@ const AddBankDetailsForm = ({
         
           {isOpen && (
             <div className="absolute w-full bg-white border border-gray-400 mt-1 rounded-md z-10">
-              <div className="p-2 cursor-pointer" onClick={() => handleOptionClick("Bank A")}>mabohlale1</div>
-              <div className="p-2 cursor-pointer" onClick={() => handleOptionClick("Bank B")}>mabohlale2</div>
+              <div className="p-2 cursor-pointer" onClick={() => handleOptionClick("Bank A")}>bank1</div>
+              <div className="p-2 cursor-pointer" onClick={() => handleOptionClick("Bank B")}>bank2</div>
             </div>
           )}
         </div>
@@ -53,6 +57,8 @@ const AddBankDetailsForm = ({
           type="text" 
           placeholder="Branch code" 
           className="w-full h-[33px] border-b border-gray-400 outline-none mb-4" 
+          value={branchCode}
+          onChange={(e) => setBranchCode(e.target.value)}  
         />
 
         {/* Account Number Input */}
@@ -60,6 +66,8 @@ const AddBankDetailsForm = ({
           type="text" 
           placeholder="Account number" 
           className="w-full h-[33px] border-b border-gray-400 outline-none mb-6" 
+          value={accountNumber}
+          onChange={(e) => setAccountNumber(e.target.value)}  
         />
 
         {/* Buttons */}
