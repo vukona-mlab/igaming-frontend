@@ -1,0 +1,25 @@
+.FuturePaymentsSection {
+  padding: 15px 0px;
+  font-family: "Poppins";
+}
+
+.fps-title {
+  font-size: 16px;
+  font-weight: 400;
+  color: #000000b2;
+  margin: 20px 0px;
+}
+.fps-value-div {
+  border: 2px solid #0000000d;
+  border-radius: 12px;
+  width: 337px;
+  height: 89px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fps-value {
+  font-size: 32px;
+  font-weight: 400;
+  color: #000000b2;
+}
