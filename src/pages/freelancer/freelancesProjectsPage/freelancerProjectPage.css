@@ -1,0 +1,13 @@
+
+.name-free{
+    width: 100%;
+    border-bottom: 1px solid black;
+    padding-bottom: 5px;
+}
+
+.buttona-message{
+    background-color: black;
+    color: white;
+    border-radius: 29px;
+    padding: 10px;
+}
