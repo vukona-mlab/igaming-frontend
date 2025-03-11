@@ -7,6 +7,9 @@ import AuthForm from "../../../components/Auth/reusable-input-form/InputForm";
 import "./signin.css";
 import { auth, googleProvider } from "../../../config/firebase";
 import { signInWithPopup } from "firebase/auth";
+import { io } from "socket.io-client";
+const url = "http://localhost:8000";
+const socket = io(url, { transports: ["websocket"] });
 
 // Validation functions
 export const validatePassword = (password) => {
@@ -51,6 +54,11 @@ const ClientLogin = () => {
 
       const data = await response.json();
       if (response.ok) {
+        socket.emit("active-status-update", {
+          uid: data.user.uid,
+          activeStatus: true,
+        });
+
         localStorage.setItem("token", data.token);
         localStorage.setItem("uid", data.user.uid);
         localStorage.setItem("role", data.user.roles[0]);
@@ -95,6 +103,11 @@ const ClientLogin = () => {
           console.log({ data });
           setSuccessMessage("Login successful! Redirecting...");
           setTimeout(() => {
+            socket.emit("active-status-update", {
+              uid: data.user.uid,
+              activeStatus: true,
+            });
+
             localStorage.setItem("token", data.token);
             localStorage.setItem("uid", data.user.uid);
             localStorage.setItem("role", data.user.roles[0]);

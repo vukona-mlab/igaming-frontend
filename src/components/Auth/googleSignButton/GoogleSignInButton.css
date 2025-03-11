@@ -1,0 +1,18 @@
+/* GoogleSignInButton.css */
+.google-sign-in-btn {
+    border: 1px solid #4e3629 !important; /* Dark Brown Border */
+    border-radius: 15px !important; /* Rounded corners */
+    width: 80% !important; /* Full width */
+    height: 50px !important; /* Fixed height */
+    min-width: 270px;
+    display: flex;
+    justify-content: center; /* Centers text and icon inside */
+    align-items: center;
+    font-weight: bold;
+  }
+  
+  /* Optional: Button hover effect */
+  .google-sign-in-btn:hover {
+    border-color: tomato !important;
+  }
+  
