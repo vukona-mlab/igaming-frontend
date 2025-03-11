@@ -1,10 +1,11 @@
 h2 {
-  color: #000000 30% !important;
+  color: #0000004D !important;
   font-size: 24px;
   margin-bottom: 16px;
   font-weight: 500;
-  height: 30px;
+  height: 35px;
   left: 101px;
+  margin-bottom: 25px !important;
 
 }
 
@@ -67,9 +68,11 @@ input::placeholder {
 }
 
 .custom-dropdown span {
-  padding-left: 8px;
+  padding-left: 0; 
   font-size: 16px;
+  color: black; 
 }
+
 
 .custom-dropdown div {
   padding: 8px;
