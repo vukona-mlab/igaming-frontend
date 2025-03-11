@@ -44,7 +44,12 @@ export default function ProfileSubNav() {
 
             <div>Projects</div>
           </div>
-          <div className="p-subnav-link">
+          <div
+            className="p-subnav-link"
+            onClick={() => {
+              navigation("/transactions");
+            }}
+          >
             <img src={Money} className="money-icon" />
 
             <div>Transactions</div>
