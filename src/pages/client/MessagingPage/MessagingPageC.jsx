@@ -112,7 +112,7 @@ const MessagingPageC = () => {
             currentClientName={currentFreelancerName}
           />
         )}
-        <button onClick={handleEscrow}>Escrow</button>
+        {/* <button onClick={handleEscrow}>Escrow</button> */}
       </div>
     </div>
   );

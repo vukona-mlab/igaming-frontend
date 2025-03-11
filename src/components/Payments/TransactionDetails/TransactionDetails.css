@@ -1,0 +1,42 @@
+.TransactionDetails {
+  width: 100%;
+  min-height: 141px;
+  padding: 20px;
+  font-family: "Poppins";
+  border: 2px solid #0000000d;
+  border-radius: 12px;
+}
+
+.td-message {
+  font-weight: 300;
+  font-size: 16px;
+  color: #00000080;
+}
+.td-ref {
+  font-weight: 400;
+  color: #00000080;
+}
+
+.td-date-delete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 5px 0px;
+}
+
+.td-date {
+  font-weight: 300;
+  font-size: 16px;
+  color: #0000004d;
+}
+
+.td-delete-btn {
+  width: 114px;
+  height: 49px;
+  background-color: #b90909;
+  color: white;
+  padding: 10px;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+}
