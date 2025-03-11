@@ -30,9 +30,8 @@ const AddBankDetailsForm = () => {
           </div>
           {isOpen && (
             <div className="absolute w-full bg-white border border-gray-400 mt-1 rounded-md z-10">
-              <div className="p-2 cursor-pointer" onClick={() => handleOptionClick("Bank A")}>Bank A</div>
-              <div className="p-2 cursor-pointer" onClick={() => handleOptionClick("Bank B")}>Bank B</div>
-              <div className="p-2 cursor-pointer" onClick={() => handleOptionClick("Bank C")}>Bank C</div>
+              <div className="p-2 cursor-pointer" onClick={() => handleOptionClick("Bank A")}>mabohlale1</div>
+              <div className="p-2 cursor-pointer" onClick={() => handleOptionClick("Bank B")}>mabohlale2</div>
            
             </div>
           )}
