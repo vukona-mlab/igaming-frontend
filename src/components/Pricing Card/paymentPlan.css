@@ -1,0 +1,154 @@
+.payment-card {
+    width: 450px;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    font-family: Arial, sans-serif;
+    text-align: center;
+    border: 1px solid #ddd;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.pricing-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.plan-selector {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+}
+
+.plan-button {
+    background: none;
+    border: none;
+    font-size: 14px;
+    padding: 8px 12px;
+    cursor: pointer;
+    color: #999;
+}
+
+.plan-button.active {
+    border-bottom: 2px solid red;
+    color: black;
+    font-weight: bold;
+}
+
+/* Dynamic Plan Text */
+.plan-text {
+    font-weight: bold;
+    font-size: 16px;
+    color: #333;
+    margin-top: 10px;
+    text-align: left;
+}
+
+.plan-details {
+    font-size: 12px;
+    color: #777;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+/* Delivery Section */
+.delivery-section {
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.delivery-label {
+    font-weight: bold;
+    font-size: 14px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.delivery-dropdown {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.delivery-dropdown:focus {
+    border-color: black;
+    outline: none;
+}
+
+/* Features */
+.feature-list {
+    text-align: left;
+    font-size: 14px;
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.feature-list p {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Pricing Details */
+.pricing-details {
+    text-align: left;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.pricing-details p {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.strikethrough {
+    text-decoration: line-through;
+    color: gray;
+}
+
+.final-price {
+    color: green;
+    font-weight: bold;
+}
+
+/* Buttons */
+.buttons-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.cancel-button {
+    background: none;
+    border: none;
+    color: red;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.pay-button {
+    background: black;
+    color: white;
+    font-size: 14px;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    width: 130px;
+    font-weight: bold;
+}
