@@ -1,0 +1,42 @@
+.details-text{
+    font-family: 'Poppins';
+    font-weight: 500;
+    font-size: 24px;
+    color: #b2b2b2;
+    line-height: 100%;
+}
+.bank-details{
+    border: solid #b2b2b2;
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    padding:35px;
+    width: 40%;
+    border-radius: 15px;
+}
+
+.bank-name{
+    font-family: 'Poppins';
+    color:#b2b2b2;
+    font-weight: 500;
+    line-height: 100%;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.edit-button{
+    display: block;
+    margin-bottom: 20px;
+    background-color: black;
+    color: white;
+    padding: 7px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.text, .number{
+    font-family: 'Poppins';
+    font-weight: 400;
+    font-size: 16px;
+    color:#b2b2b2;
+}
