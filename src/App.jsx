@@ -1,28 +1,30 @@
 import "./App.css";
-import NavBar from "./components/Common/Navbar/navbar";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import ResetPassword from "./pages/ResetPassword/ResetPassword";
-import FreelancerRegister from "./pages/freelancer/Register-page/Register";
-import FreelancerSignIn from "./pages/freelancer/FreelancerSignIn/SignIn";
-import FreelancerProfile from "./pages/freelancer/freelanceProfile/frelancerProfile";
+import BankingDetailsSection from "./components/Payments/BankingDetailsSection/BankingDetailsSection";
+// import NavBar from "./components/Common/Navbar/navbar";
+// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+// import ResetPassword from "./pages/ResetPassword/ResetPassword";
+// import FreelancerRegister from "./pages/freelancer/Register-page/Register";
+// import FreelancerSignIn from "./pages/freelancer/FreelancerSignIn/SignIn";
+// import FreelancerProfile from "./pages/freelancer/freelanceProfile/frelancerProfile";
 
-import ClientProfile from "./pages/client/clientProfile/clientProfile";
-import ClientRegister from "./pages/client/Register-page/ClientRegister";
-import ClientSignIn from "./pages/client/SignInPage/SignIn";
-import LandingPage from "./pages/landingPage/LandingPage";
-import ProtectedRouteReg from "./components/Protected/ProtectedReg";
-import ProtectedRoutes from "./components/Protected/ProtectedRoutes";
-import ProtectRole from "./components/Protected/ProtectRole";
-import DiscoveryPage from "./pages/DiscoveryPage/DiscoveryPage";
-import FreelancerProjects from "./pages/freelancer/freelancesProjectsPage/freelancerProjectsPage";
-import MessagingPageF from "./pages/freelancer/MessagingPage/MessagingPageF";
-import EscrowPage from "./pages/EscrowPage/EscrowPage";
-import MessagingPageC from "./pages/client/MessagingPage/MessagingPageC";
+// import ClientProfile from "./pages/client/clientProfile/clientProfile";
+// import ClientRegister from "./pages/client/Register-page/ClientRegister";
+// import ClientSignIn from "./pages/client/SignInPage/SignIn";
+// import LandingPage from "./pages/landingPage/LandingPage";
+// import ProtectedRouteReg from "./components/Protected/ProtectedReg";
+// import ProtectedRoutes from "./components/Protected/ProtectedRoutes";
+// import ProtectRole from "./components/Protected/ProtectRole";
+// import DiscoveryPage from "./pages/DiscoveryPage/DiscoveryPage";
+// import FreelancerProjects from "./pages/freelancer/freelancesProjectsPage/freelancerProjectsPage";
+// import MessagingPageF from "./pages/freelancer/MessagingPage/MessagingPageF";
+// import EscrowPage from "./pages/EscrowPage/EscrowPage";
+// import MessagingPageC from "./pages/client/MessagingPage/MessagingPageC";
 
 function App() {
   return (
     <div className="App">
-      <Router>
+      <BankingDetailsSection/>
+      {/* <Router>
         <div className="App">
           <Routes>
             <Route exact path="/" element={<LandingPage />} />
@@ -64,7 +66,7 @@ function App() {
             </Route>
           </Routes>
         </div>
-      </Router>
+      </Router> */}
     </div>
   );
 }
