@@ -18,7 +18,7 @@ import FreelancerProjects from "./pages/freelancer/freelancesProjectsPage/freela
 import MessagingPageF from "./pages/freelancer/MessagingPage/MessagingPageF";
 import EscrowPage from "./pages/EscrowPage/EscrowPage";
 import MessagingPageC from "./pages/client/MessagingPage/MessagingPageC";
-
+import Transactions from "./pages/transcations/Transactions";
 function App() {
   return (
     <div className="App">
@@ -67,6 +67,7 @@ function App() {
                 element={<MessagingPageC />}
               />
               <Route path="escrow" element={<EscrowPage />} />
+              <Route path="transactions" element={<Transactions />} />
             </Route>
           </Routes>
         </div>

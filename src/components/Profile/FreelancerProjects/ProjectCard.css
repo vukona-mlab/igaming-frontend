@@ -13,6 +13,7 @@
   background-color: white;
   overflow: hidden;
   margin: 5px;
+  padding: 4px;
 }
 
 .fp-project-image {
@@ -97,8 +98,8 @@
   transition: background-color 0.2s;
   border: 1px solid #e0e0e0;
   margin-top: 0rem;
-  margin-bottom: 0.5rem;
-  margin-left: 0.5rem;
+
+
 }
 
 .fp-thumbs-icon:hover {

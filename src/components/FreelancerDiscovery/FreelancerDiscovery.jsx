@@ -177,28 +177,30 @@ const FreelancerDiscovery = ({ searchQuery }) => {
 
   return (
     <div className="freelancer-discovery">
-      {rows.map((row, rowIndex) => (
-        <div key={rowIndex} className="freelancer-row">
-          {row.map((freelancer) => (
-            <div
-              key={freelancer.id}
-              className="freelancer-card-wrapper"
-              onClick={() => navigation(`/discovery/${freelancer.id}`)}
-            >
-              <FreelancerCard
-                profilePicture={freelancer.profilePicture || defaultProfile}
-                name={freelancer.displayName || "Anonymous Freelancer"}
-                jobTitle={freelancer.jobTitle || "Freelancer"}
-                projectsCompleted={freelancer.projects?.length || 0}
-                rating={4.5}
-                messageIcon={messageIcon}
-                onMessageClick={() => handleMessageClick(freelancer.id)}
-              />
-            </div>
-          ))}
-        </div>
-      ))}
-    </div>
+    {rows.map((row, rowIndex) => (
+      <div key={rowIndex} className="freelancer-row">
+        {row.map((freelancer) => (
+          <div
+            key={freelancer.id}
+            className="freelancer-card-wrapper"
+            onClick={() => navigation(`/discovery/${freelancer.id}`)}
+          >
+            <FreelancerCard
+              profilePicture={freelancer.profilePicture || defaultProfile}
+              name={freelancer.displayName || "Anonymous Freelancer"}
+              jobTitle={freelancer.jobTitle || "Freelancer"}
+              projectsCompleted={freelancer.projects?.length || 0}
+              rating={4.5}
+              messageIcon={messageIcon}
+              onMessageClick={() => handleMessageClick(freelancer.id)}
+            />
+             {/* Hover message */}
+          <div className="hover-message">Click image to view more</div>
+          </div>
+        ))}
+      </div>
+    ))}
+  </div>
   );
 };
 
