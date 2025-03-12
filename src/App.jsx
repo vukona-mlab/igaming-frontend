@@ -20,6 +20,7 @@ import EscrowPage from "./pages/EscrowPage/EscrowPage";
 import MessagingPageC from "./pages/client/MessagingPage/MessagingPageC";
 import Transactions from "./pages/transcations/Transactions";
 function App() {
+  
   return (
     <div className="App">
        <Router>
