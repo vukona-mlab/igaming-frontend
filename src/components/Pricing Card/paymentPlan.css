@@ -35,7 +35,9 @@
     font-size: 14px;
     padding: 8px 12px;
     cursor: pointer;
-    color: #999;
+    color: #666;
+    /* Darker shade */
+    transition: all 0.3s ease-in-out;
 }
 
 .plan-button.active {
@@ -44,7 +46,17 @@
     font-weight: bold;
 }
 
+.plan-button:hover {
+    color: black;
+    transform: scale(1.1);
+}
+
+
+/* Dropdown Interaction */
+
+
 /* Dynamic Plan Text */
+
 .plan-text {
     font-weight: bold;
     font-size: 16px;
@@ -60,7 +72,9 @@
     text-align: left;
 }
 
+
 /* Delivery Section */
+
 .delivery-section {
     text-align: left;
     margin-bottom: 15px;
@@ -88,7 +102,9 @@
     outline: none;
 }
 
+
 /* Features */
+
 .feature-list {
     text-align: left;
     font-size: 14px;
@@ -102,7 +118,9 @@
     align-items: center;
 }
 
+
 /* Pricing Details */
+
 .pricing-details {
     text-align: left;
     font-size: 14px;
@@ -126,7 +144,9 @@
     font-weight: bold;
 }
 
+
 /* Buttons */
+
 .buttons-container {
     display: flex;
     justify-content: space-between;

@@ -1,17 +1,34 @@
-import { useState } from "react";
-import "./PaymentPlan.css"; // Import updated CSS
+import { useState, useEffect } from "react";
+import "./PaymentPlan.css"; // Updated CSS
 import { FaDollarSign } from "react-icons/fa"; // Only keep dollar sign
 
 const PaymentPlan = () => {
   const [selectedPlan, setSelectedPlan] = useState("R1500");
+  const [plans, setPlans] = useState([]);
+  const [deliveryDays, setDeliveryDays] = useState("3 Days");
 
-  const plans = [
-    { name: "Ultimate", price: "R2000", details: "All Features + Exclusive Perks" },
-    { name: "Premium", price: "R1500", details: "Free Logo Design + 15% Discount + Free Advertisement" },
-    { name: "Standard", price: "R1000", details: "Includes Basic Features + Some Premium Perks" },
-    { name: "Basic", price: "R500", details: "Essential Features Only" }
-  ];
+  // Simulating API call to fetch plans dynamically
+  useEffect(() => {
+    const fetchPlans = async () => {
+      try {
+        const response = await fetch("/api/plans"); // Replace with actual API URL
+        const data = await response.json();
+        setPlans(data);
+      } catch (error) {
+        console.error("Error fetching plans:", error);
+        // Fallback to hardcoded plans if API fails
+        setPlans([
+          { name: "Ultimate", price: "R2000", details: "All Features + Exclusive Perks" },
+          { name: "Premium", price: "R1500", details: "Free Logo Design + 15% Discount + Free Advertisement" },
+          { name: "Standard", price: "R1000", details: "Includes Basic Features + Some Premium Perks" },
+          { name: "Basic", price: "R500", details: "Essential Features Only" }
+        ]);
+      }
+    };
+    fetchPlans();
+  }, []);
 
+  // Find the selected plan
   const currentPlan = plans.find(plan => plan.price === selectedPlan) || plans[1];
 
   return (
@@ -32,13 +49,17 @@ const PaymentPlan = () => {
       </div>
 
       {/* Dynamic Plan Title */}
-      <p className="plan-text">{currentPlan.name}</p>
-      <p className="plan-details">{currentPlan.details}</p>
+      <p className="plan-text">{currentPlan?.name}</p>
+      <p className="plan-details">{currentPlan?.details}</p>
 
       {/* Delivery Days (Dropdown) */}
       <div className="delivery-section">
         <label className="delivery-label">Delivery Days</label>
-        <select className="delivery-dropdown">
+        <select
+          className="delivery-dropdown"
+          value={deliveryDays}
+          onChange={(e) => setDeliveryDays(e.target.value)}
+        >
           <option>3 Days</option>
           <option>5 Days</option>
           <option>7 Days</option>
