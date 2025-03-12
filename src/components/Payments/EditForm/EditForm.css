@@ -1,4 +1,4 @@
-h2 {
+.m-head{
     color: #0000004D !important;
     font-size: 24px;
     margin-bottom: 16px;
@@ -9,11 +9,11 @@ h2 {
   
   }
   
-  form {
+  .edit-form {
     width: 387.25px;
-  }
+    }
   
-  select, input {
+    .form-input {
     width: 387.25px;
     height: 33px;
     border: none;
@@ -23,7 +23,7 @@ h2 {
     margin-bottom: 16px;
   }
   
-  button {
+  .edit-form .edit-form-button  {
     width: 192.5px;
     height: 57px;
     font-size: 16px;
@@ -33,21 +33,21 @@ h2 {
     border-radius: 15px !important;
   }
   
-  .cancel {
+  .cancel-butt {
     color: #ff6666;
     background: none;
   }
   
-  .submit {
+  .submit-butt {
     background-color: #000;
     color: #fff;
   }
   
-  input::placeholder {
+  .form-input::placeholder {
     color: #00000080;
   }
   
-  .custom-dropdown {
+  .m-custom-dropdown {
     padding-right: 30px; 
     display: flex;
     justify-content: space-between;
@@ -56,7 +56,7 @@ h2 {
     position: relative;
   }
   
-  .custom-dropdown  img {
+  .m-custom-dropdown  img {
     position: absolute;
     right: 0;
     right: 10px;
@@ -67,20 +67,20 @@ h2 {
     cursor: pointer;
   }
   
-  .custom-dropdown span {
+  .m-custom-dropdown span {
     padding-left: 0; 
     font-size: 16px;
     color: #00000080; 
   }
   
   
-  .custom-dropdown div {
+  .m-custom-dropdown div {
     padding: 8px;
     font-size: 16px;
     border-bottom: 1px solid #ddd;
   }
   
-  .custom-dropdown div:hover {
+  .m-custom-dropdown div:hover {
     background-color: #f1f1f1;
   }
   
@@ -91,20 +91,20 @@ h2 {
     z-index: 10;
   }
 
-  input {
+  .form-input {
     border-bottom: 2px solid #333333B2 !important;
   }
   input::placeholder {
     color: #00000080; 
 
 }
-input:disabled {
+.form-input:disabled {
     background: transparent !important; 
     color: #00000080 !important; 
     border: none; 
     opacity: 1; 
 }
-label {
+.update-number {
     margin-top: 0px !important; 
     color: #000000;
     font-weight: 400 !important;
