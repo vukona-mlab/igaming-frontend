@@ -22,7 +22,7 @@ import Transactions from "./pages/transcations/Transactions";
 function App() {
   return (
     <div className="App">
-      <Router>
+       <Router>
         <div className="App">
           <Routes>
             <Route exact path="/" element={<LandingPage />} />
@@ -71,7 +71,7 @@ function App() {
             </Route>
           </Routes>
         </div>
-      </Router>
+      </Router> 
     </div>
   );
 }
