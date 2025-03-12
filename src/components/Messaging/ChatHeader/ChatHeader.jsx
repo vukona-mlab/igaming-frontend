@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./ChatHeader.css";
 import { BsThreeDotsVertical, BsPersonCircle } from "react-icons/bs";
 import { io } from "socket.io-client";
+import ProjectModal from '../ProjectModal/ProjectModal';
 const url = "http://localhost:8000";
 const socket = io(url, { transports: ["websocket"] });
 const ChatHeader = ({ currentChat }) => {
@@ -11,6 +12,7 @@ const ChatHeader = ({ currentChat }) => {
   const buttonRef = useRef(null);
   const navigate = useNavigate();
   const [activeStatus, setActiveStatus] = useState(false);
+  const [showProjectModal, setShowProjectModal] = useState(false);
 
   // Get user role and ID from localStorage
   const userRole = localStorage.getItem("role");
@@ -62,16 +64,11 @@ const ChatHeader = ({ currentChat }) => {
     const escrowData = {
       freelancerId: isFreelancer ? currentUser.uid : otherParticipant.uid,
       clientId: isFreelancer ? otherParticipant.uid : currentUser.uid,
-      freelancerEmail: isFreelancer
-        ? currentUser.email
-        : otherParticipant.email,
+      freelancerEmail: isFreelancer ? currentUser.email : otherParticipant.email,
       clientEmail: isFreelancer ? otherParticipant.email : currentUser.email,
     };
 
-    // Log the data being passed
-    console.log("Creating agreement with data:", escrowData);
-
-    navigate("/escrow", { state: { escrowData } });
+    setShowProjectModal(true);
     setShowMenu(false);
   };
 
@@ -86,52 +83,66 @@ const ChatHeader = ({ currentChat }) => {
   };
   console.log({ otherParticipant });
   return (
-    <div className="chat-header">
-      <div className="chat-header-left">
-        <div className="avatar-wrapper">
-          {otherParticipant?.photoURL ? (
-            <img
-              src={otherParticipant.photoURL}
-              alt={otherParticipant?.name || "User"}
-              className="user-avatar"
-            />
-          ) : (
-            <BsPersonCircle className="default-avatar" />
-          )}
-          <span className="online-status"></span>
-        </div>
-        <div className="user-info">
-          <h3 className="user-name">{otherParticipant?.name || "User"}</h3>
-          <span className="user-status">
-            {!activeStatus
-              ? `Last seen ${new Date(
-                  otherParticipant.lastSeen._seconds ||
-                    otherParticipant.lastSeen
-                ).toLocaleString()}`
-              : "Online"}
-          </span>
-        </div>
-      </div>
-
-      <div className="chat-header-right">
-        <button
-          className="options-button"
-          onClick={() => setShowMenu(!showMenu)}
-          ref={buttonRef}
-        >
-          <BsThreeDotsVertical />
-        </button>
-        {showMenu && (
-          <div className="context-menu" ref={menuRef}>
-            {isFreelancer && (
-              <button onClick={handleCreateAgreement}>Create Agreement</button>
+    <>
+      <div className="chat-header">
+        <div className="chat-header-left">
+          <div className="avatar-wrapper">
+            {otherParticipant?.photoURL ? (
+              <img
+                src={otherParticipant.photoURL}
+                alt={otherParticipant?.name || "User"}
+                className="user-avatar"
+              />
+            ) : (
+              <BsPersonCircle className="default-avatar" />
             )}
-            <button onClick={handleEndChat}>End Chat</button>
-            <button onClick={handleDeleteChat}>Delete Chat</button>
+            <span className="online-status"></span>
           </div>
-        )}
+          <div className="user-info">
+            <h3 className="user-name">{otherParticipant?.name || "User"}</h3>
+            <span className="user-status">
+              {!activeStatus
+                ? `Last seen ${new Date(
+                    otherParticipant.lastSeen._seconds ||
+                      otherParticipant.lastSeen
+                  ).toLocaleString()}`
+                : "Online"}
+            </span>
+          </div>
+        </div>
+
+        <div className="chat-header-right">
+          <button
+            className="options-button"
+            onClick={() => setShowMenu(!showMenu)}
+            ref={buttonRef}
+          >
+            <BsThreeDotsVertical />
+          </button>
+          {showMenu && (
+            <div className="context-menu" ref={menuRef}>
+              {isFreelancer && (
+                <button onClick={handleCreateAgreement}>Create Agreement</button>
+              )}
+              <button onClick={handleEndChat}>End Chat</button>
+              <button onClick={handleDeleteChat}>Delete Chat</button>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+      
+      <ProjectModal 
+        isOpen={showProjectModal}
+        onClose={() => setShowProjectModal(false)}
+        chatId={currentChat?.id}
+        escrowData={currentUser && otherParticipant ? {
+          freelancerId: isFreelancer ? currentUser.uid : otherParticipant.uid,
+          clientId: isFreelancer ? otherParticipant.uid : currentUser.uid,
+          freelancerEmail: isFreelancer ? currentUser.email : otherParticipant.email,
+          clientEmail: isFreelancer ? otherParticipant.email : currentUser.email,
+        } : null}
+      />
+    </>
   );
 };
 

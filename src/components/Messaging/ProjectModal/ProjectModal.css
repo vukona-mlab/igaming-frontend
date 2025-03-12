@@ -1,0 +1,194 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.form-group select {
+  background-color: white;
+  cursor: pointer;
+}
+
+.form-group textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.modal-actions button {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+  font-size: 1rem;
+}
+
+.modal-actions button[type="submit"] {
+  background-color: #007bff;
+  color: white;
+}
+
+.modal-actions button[type="button"] {
+  background-color: #6c757d;
+  color: white;
+}
+
+.modal-actions button:hover {
+  opacity: 0.9;
+}
+
+.project-details {
+  padding: 1rem;
+}
+
+.details-container {
+  margin: 1.5rem 0;
+}
+
+.detail-item {
+  margin-bottom: 1.5rem;
+}
+
+.detail-item label {
+  font-weight: bold;
+  color: #666;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.detail-item p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.detail-item ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.detail-item li {
+  margin-bottom: 0.5rem;
+}
+
+.primary-button {
+  background-color: #28a745 !important;
+}
+
+.modal-content {
+  max-width: 600px;
+}
+
+.project-details h2 {
+  color: #28a745;
+  margin-bottom: 1.5rem;
+}
+
+.modal-content.escrow-mode {
+  max-width: 800px;
+  width: 95%;
+}
+
+.escrow-step {
+  width: 100%;
+}
+
+.escrow-step h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Override some EscrowForm styles when inside modal */
+.escrow-step .escrow-form {
+  margin: 0;
+  padding: 0;
+  box-shadow: none;
+  border: none;
+}
+
+.modal-content.escrow-mode .form-section {
+  margin-bottom: 20px;
+}
+
+.modal-content.escrow-mode .modal-actions {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+/* Stepper indication */
+.modal-stepper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.step-indicator {
+  display: flex;
+  align-items: center;
+  margin: 0 1rem;
+}
+
+.step-indicator.active {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.step-number {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.5rem;
+}
+
+.active .step-number {
+  background-color: #28a745;
+  color: white;
+}
