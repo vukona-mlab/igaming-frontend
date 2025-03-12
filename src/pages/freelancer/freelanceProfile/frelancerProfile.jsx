@@ -19,7 +19,7 @@ const ProfilePage = ({}) => {
     dateOfBirth: "",
     speciality: "",
     categories: [],
-    extraAmount: {},
+    packages: {},
   });
   const [image, setImage] = useState();
   const [currImage, setCurrImage] = useState();
@@ -63,11 +63,11 @@ const ProfilePage = ({}) => {
     updateUserProfile({
       ...formData,
       categories: arr || [],
-      extraAmount: data.prices || {},
+      packages: data.prices || {},
     });
 
     setFormData((prev) => ({ ...prev, categories: arr }));
-    setFormData((prev) => ({ ...prev, extraAmount: data.prices }));
+    setFormData((prev) => ({ ...prev, packages: data.prices }));
   };
   const showAlert = () => {
     Swal.fire({
@@ -111,7 +111,7 @@ const ProfilePage = ({}) => {
         }));
         setFormData((prev) => ({
           ...prev,
-          extraAmount: data.user.extraAmount || {},
+          packages: data.user.packages || {},
         }));
         setFormData((prev) => ({
           ...prev,
@@ -144,7 +144,7 @@ const ProfilePage = ({}) => {
       // formData.append("bio", formData.bio);
       formData.append("speciality", JSON.stringify([data.speciality || ""]));
       formData.append("categories", JSON.stringify(data.categories));
-      formData.append("extraAmount", JSON.stringify(data.extraAmount || {}));
+      formData.append("packages", JSON.stringify(data.packages || {}));
       // formData.append("jobTitle", formData.jobTitle);
       formData.append("profilePicture", image || "");
       const response = await fetch(
@@ -276,7 +276,7 @@ const ProfilePage = ({}) => {
                   isUpdate={isUpdate}
                   cancel={() => setIsUpdate(false)}
                   categoriesArr={formData.categories}
-                  extraAmountObj={formData.extraAmount}
+                  packagesObj={formData.packages}
                 />
               </Col>
             </Row>
