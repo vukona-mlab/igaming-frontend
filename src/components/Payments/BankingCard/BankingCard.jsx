@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
+import EditForm from "../EditForm/EditForm"; // Import EditForm
 import "./BankingCard.css";
 
 const BankingCard = () => {
   const [cards, setCards] = useState([]);
-  const [editCard, setEditCard] = useState(null);
-  const [updatedCard, setUpdatedCard] = useState({ cardHolderName: "", expiryDate: "" });
+  const [editCardId, setEditCardId] = useState(null); // Track which card is being edited
   const token = localStorage.getItem("token") || "";
 
   useEffect(() => {
     const fetchCards = async () => {
       try {
         console.log("Fetching cards...");
-  
+
         const response = await fetch("http://localhost:8000/api/cards", {
           method: "GET",
           headers: {
@@ -19,14 +19,14 @@ const BankingCard = () => {
             Authorization: token,
           },
         });
-  
+
         if (!response.ok) {
           throw new Error(`HTTP Error: ${response.status}`);
         }
-  
+
         const data = await response.json();
         console.log("Full API Response:", data);
-  
+
         if (data.cards) {
           setCards(data.cards);
         } else if (data.card) {
@@ -38,9 +38,9 @@ const BankingCard = () => {
         console.error("Error fetching cards:", error);
       }
     };
-  
+
     fetchCards();
-  }, []);
+  }, [token]);
 
   const handleDelete = async (cardId) => {
     try {
@@ -63,15 +63,10 @@ const BankingCard = () => {
     }
   };
 
-  const handleEdit = (card) => {
-    setEditCard(card.id);
-    setUpdatedCard({ cardHolderName: card.cardHolderName, expiryDate: card.expiryDate });
-  };
-
-  const handleUpdate = async (cardId) => {
+  const handleUpdate = async (updatedCard) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/cards/${cardId}`, {
-        method: "PATCH",
+      const response = await fetch(`http://localhost:8000/api/cards/${updatedCard.id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: token,
@@ -83,9 +78,8 @@ const BankingCard = () => {
         throw new Error("Failed to update card");
       }
 
-      setCards(cards.map((card) => (card.id === cardId ? { ...card, ...updatedCard } : card)));
-      setEditCard(null);
-      console.log(`Card ${cardId} updated successfully`);
+      setCards(cards.map((card) => (card.id === updatedCard.id ? updatedCard : card)));
+      setEditCardId(null); // Exit edit mode
     } catch (error) {
       console.error("Error updating card:", error);
     }
@@ -93,51 +87,30 @@ const BankingCard = () => {
 
   return (
     <div className="BankingCardContainer">
-      {cards.length === 0 ? (
-        <p>No cards found.</p>
+      {editCardId ? (
+        <EditForm
+          card={cards.find((card) => card.id === editCardId)}
+          onCancel={() => setEditCardId(null)} // Cancel editing
+          onUpdate={handleUpdate} // Handle card update
+        />
       ) : (
-        cards.map((card) => (
-          <div className="BankingCard" key={card.id}>
-            <div className="bc-header">
-              <div className="bc-bank-name">{card.cardType || "Unknown Type"}</div>
-              <button className="bc-edit" onClick={() => handleEdit(card)}>Edit</button>
-              <button className="bc-delete" onClick={() => handleDelete(card.id)}>Delete</button>
-            </div>
-            {editCard === card.id ? (
-              <div className="edit-form">
-                <input
-                  type="text"
-                  value={updatedCard.cardHolderName}
-                  onChange={(e) => setUpdatedCard({ ...updatedCard, cardHolderName: e.target.value })}
-                  placeholder="Cardholder Name"
-                />
-                <input
-                  type="text"
-                  value={updatedCard.expiryDate}
-                  onChange={(e) => setUpdatedCard({ ...updatedCard, expiryDate: e.target.value })}
-                  placeholder="Expiry Date (MM/YY)"
-                />
-                <button className="bc-save" onClick={() => handleUpdate(card.id)}>Save</button>
-                <button className="bc-cancel" onClick={() => setEditCard(null)}>Cancel</button>
+        cards.length === 0 ? (
+          <p>No cards found.</p>
+        ) : (
+          cards.map((card) => (
+            <div className="BankingCard" key={card.id}>
+              <div className="bc-header">
+                <div className="bc-bank-name">{card.cardType || "Unknown Type"}</div>
+                <button className="bc-edit" onClick={() => setEditCardId(card.id)}>Edit</button>
+                <button className="bc-delete" onClick={() => handleDelete(card.id)}>Delete</button>
               </div>
-            ) : (
-              <>
-                <div className="bc-acc-num">
-                  <div className="bc-acc-num-name">Card Number:</div>
-                  <div className="bc-acc-num-val">{card.maskedCardNumber || "****-****-****-XXXX"}</div>
-                </div>
-                <div className="bc-acc-num">
-                  <div className="bc-acc-num-name">Cardholder Name:</div>
-                  <div className="bc-acc-num-val">{card.cardHolderName}</div>
-                </div>
-                <div className="bc-acc-num">
-                  <div className="bc-acc-num-name">Expiry Date:</div>
-                  <div className="bc-acc-num-val">{card.expiryDate}</div>
-                </div>
-              </>
-            )}
-          </div>
-        ))
+              <div className="bc-acc-num">
+                <div className="bc-acc-num-name">Card Number:</div>
+                <div className="bc-acc-num-val">{card.maskedCardNumber || "****-****-****-XXXX"}</div>
+              </div>
+            </div>
+          ))
+        )
       )}
     </div>
   );

@@ -60,7 +60,7 @@ const EditForm = ({
   };
 
   return (
-    <div className="flex flex-col items-center w-full max-w-[400px] mx-auto container">
+    <div className="flex flex-col items-center w-full max-w-[400px] mx-auto" style={{border:"1px solid red"}}>
       <h2 className="text-gray-500 text-lg mb-4 m-head">Edit Card Details</h2>
       <form className="w-[387.25px] edit-form" onSubmit={handleSubmit}>
         
