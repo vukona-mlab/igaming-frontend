@@ -32,11 +32,12 @@ const ChatHeader = ({ currentChat }) => {
   }, [otherParticipant]);
   useEffect(() => {
     socket.on("get-active-status", (data) => {
+      console.log("getactive", { otherParticipant, data });
       if (otherParticipant.uid === data.uid) {
         setActiveStatus(data.activeStatus);
       }
     });
-  }, []);
+  }, [otherParticipant]);
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -84,7 +85,6 @@ const ChatHeader = ({ currentChat }) => {
     // TODO: Implement delete chat logic
     setShowMenu(false);
   };
-  console.log({ otherParticipant });
   return (
     <div className="chat-header">
       <div className="chat-header-left">

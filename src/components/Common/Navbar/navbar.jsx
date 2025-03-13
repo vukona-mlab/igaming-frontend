@@ -18,7 +18,7 @@ function NavBar() {
   const navigation = useNavigate();
 
   useEffect(() => {
-    if (uid !== "") {
+    if (uid !== "" && uid !== null) {
       getProfile();
     }
   }, [uid]);
