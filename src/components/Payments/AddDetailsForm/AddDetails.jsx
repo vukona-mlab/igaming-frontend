@@ -1,93 +1,194 @@
-import React, { useState } from "react"; 
-import "./AddDetails.css"; 
-import arrowDropDown from "../../../../public/images/arrow_drop_down.png"; 
+import React, { useState } from "react";
+import { Form, Button } from "react-bootstrap";
+import Swal from 'sweetalert2';
+import "./AddDetails.css";
 
-const AddBankDetailsForm = ({ 
-  initialBank = "Choose bank", 
-  onSubmit,
-  onCancel 
-}) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedBank, setSelectedBank] = useState(initialBank);
-  const [branchCode, setBranchCode] = useState("");  
-  const [accountNumber, setAccountNumber] = useState("");  
+const AddBankDetailsForm = () => {
+  const [cardNumber, setCardNumber] = useState("");
+  const [expiryDate, setExpiryDate] = useState("");
+  const [cardHolderName, setCardHolderName] = useState("");
+  const [addressLine1, setAddressLine1] = useState("");
+  const [addressLine2, setAddressLine2] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [countryCode, setCountryCode] = useState("ZA");
+  const [showForm, setShowForm] = useState(false);
 
-  const handleDropdownClick = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const handleOptionClick = (bank) => {
-    setSelectedBank(bank);
-    setIsOpen(false);
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit({ selectedBank, branchCode, accountNumber });
+
+    // Retrieve token from localStorage
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No authentication token found. Please log in again.',
+      });
+      return;
+    }
+
+    console.log("Token:", token); // Check if token is available
+
+    // Use the hardcoded API URL
+    const apiUrl = "http://localhost:8000/api/cards"; // Replace with your localhost URL
+
+    // Prepare the data to send
+    const bankDetails = {
+      cardNumber,
+      expiryDate,
+      cardHolderName,
+      addressLine1,
+      addressLine2,
+      city,
+      state,
+      postalCode,
+      countryCode,
+    };
+
+    try {
+      // Send the data to the API using a POST request
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+           Authorization: token 
+        },
+        body: JSON.stringify(bankDetails),
+      });
+        
+      const data = await response.json();
+      if (response.ok) {
+        
+        console.log("Data submitted successfully:", data);
+      
+        setShowForm(false);
+
+        // Show success alert with SweetAlert
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Banking details have been added successfully.',
+          confirmButtonText: 'Okay',
+        });
+      } else {
+        
+        console.error("Error submitting data:", response.statusText,data.error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: `Submission failed with status: ${response.statusText,data.error}`,
+        });
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: `Network error: ${error.message}`,
+      });
+    }
   };
 
   return (
-    <div className="flex flex-col items-center w-full max-w-[400px] mx-auto">
-      {/* Form heading */}
-      <h2 className="text-gray-500 text-lg mb-4">Add Bank Details</h2>
-      <form className="w-[387.25px]" onSubmit={handleSubmit}>
+    <div className="outer-diving">
+      <div className="btn-adit-me">
+        <h2 className="text-gray-500 text-lg mb-4">Bank Details</h2>
+        <Button variant="dark" onClick={() => setShowForm(!showForm)}>
+          {showForm ? "Close Form" : "Edit Card"}
+        </Button>
+      </div>
 
-        <div className="relative">
-          <div 
-            className="w-full h-[33px] border-b border-gray-400 outline-none mb-4 custom-dropdown" 
-            onClick={handleDropdownClick}>
-            <span>{selectedBank}</span> 
-            <img
-              src={arrowDropDown}
-              alt="dropdown arrow"
-              className={`absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 ${isOpen ? 'rotate-180' : ''}`}
+      {showForm && (
+        <div className="bank-form">
+          <Form onSubmit={handleSubmit}>
+            {/* Form Fields */}
+            <Form.Control
+              type="text"
+              placeholder="Card Number"
+              className="input-field mb-3"
+              value={cardNumber}
+              onChange={(e) => setCardNumber(e.target.value)}
             />
-          </div>
-        
-          {isOpen && (
-            <div className="absolute w-full bg-white border border-gray-400 mt-1 rounded-md z-10">
-              <div className="p-2 cursor-pointer" onClick={() => handleOptionClick("Bank A")}>bank1</div>
-              <div className="p-2 cursor-pointer" onClick={() => handleOptionClick("Bank B")}>bank2</div>
+
+            <Form.Control
+              type="text"
+              placeholder="Expiry Date (MM/YY)"
+              className="input-field mb-3"
+              value={expiryDate}
+              onChange={(e) => setExpiryDate(e.target.value)}
+            />
+
+            <Form.Control
+              type="text"
+              placeholder="Cardholder Name"
+              className="input-field mb-3"
+              value={cardHolderName}
+              onChange={(e) => setCardHolderName(e.target.value)}
+            />
+
+            <Form.Control
+              type="text"
+              placeholder="Address Line 1"
+              className="input-field mb-3"
+              value={addressLine1}
+              onChange={(e) => setAddressLine1(e.target.value)}
+            />
+
+            <Form.Control
+              type="text"
+              placeholder="Address Line 2"
+              className="input-field mb-3"
+              value={addressLine2}
+              onChange={(e) => setAddressLine2(e.target.value)}
+            />
+
+            <Form.Control
+              type="text"
+              placeholder="City"
+              className="input-field mb-3"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+            />
+
+            <Form.Control
+              type="text"
+              placeholder="State"
+              className="input-field mb-3"
+              value={state}
+              onChange={(e) => setState(e.target.value)}
+            />
+
+            <Form.Control
+              type="text"
+              placeholder="Postal Code"
+              className="input-field mb-3"
+              value={postalCode}
+              onChange={(e) => setPostalCode(e.target.value)}
+            />
+
+            <Form.Control
+              type="text"
+              placeholder="Country Code"
+              className="input-field mb-3"
+              value={countryCode}
+              readOnly // Keeps the default as "ZA"
+            />
+
+            {/* Buttons */}
+            <div className="button-group">
+              <Button variant="light" className="cancel-btn" onClick={() => setShowForm(false)}>
+                Cancel
+              </Button>
+              <Button variant="dark" type="submit" className="submit-btn">
+                Submit
+              </Button>
             </div>
-          )}
+          </Form>
         </div>
-
-        {/* Branch Code Input */}
-        <input 
-          type="text" 
-          placeholder="Branch code" 
-          className="w-full h-[33px] border-b border-gray-400 outline-none mb-4" 
-          value={branchCode}
-          onChange={(e) => setBranchCode(e.target.value)}  
-        />
-
-        {/* Account Number Input */}
-        <input 
-          type="text" 
-          placeholder="Account number" 
-          className="w-full h-[33px] border-b border-gray-400 outline-none mb-6" 
-          value={accountNumber}
-          onChange={(e) => setAccountNumber(e.target.value)}  
-        />
-
-        {/* Buttons */}
-        <div className="flex justify-between">
-          <button 
-            type="button" 
-            className="w-[192.5px] h-[57px] text-red-400 cancel" 
-            onClick={onCancel} 
-          >
-            Cancel
-          </button>
-        
-          <button 
-            type="submit" 
-            className="w-[192.5px] h-[57px] bg-black text-white submit"
-          >
-            Submit
-          </button>
-        </div>
-      </form>
+      )}
     </div>
   );
 };
