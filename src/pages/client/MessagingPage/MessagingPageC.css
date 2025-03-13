@@ -37,3 +37,9 @@
     height: calc(70vh - 10px);
   }
 }
+
+.MessagingPageC .search-container{
+  width: 100%; 
+  max-width: 537px; 
+  margin-left: 1% !important; 
+}
