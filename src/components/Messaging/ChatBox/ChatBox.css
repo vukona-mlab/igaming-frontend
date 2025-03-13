@@ -17,7 +17,7 @@
   flex: 4;
 }
 .f-messages-container {
-  height: calc(500px - 70px);
+  height: calc(500px - 70px - 80px);
 }
 .f-messages-wrapper {
   height: 100%;
@@ -45,3 +45,58 @@
     height: 800px;
   }
 } */
+
+.project-status-container {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+  padding: 15px 20px;
+}
+
+.project-status-header {
+  margin-bottom: 10px;
+}
+
+.project-status-header h3 {
+  font-size: 16px;
+  color: #495057;
+  margin: 0;
+}
+
+.project-status-details {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-label {
+  font-weight: 600;
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.status-value {
+  font-size: 14px;
+  color: #212529;
+}
+
+.status-value.pending {
+  color: #ffc107;
+}
+
+.status-value.approved {
+  color: #28a745;
+}
+
+.status-value.rejected {
+  color: #dc3545;
+}
+
+.status-value.completed {
+  color: #17a2b8;
+}

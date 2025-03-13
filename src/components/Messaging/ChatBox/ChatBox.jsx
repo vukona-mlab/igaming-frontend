@@ -26,10 +26,12 @@ const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName }) =>
   const [showProjectModal, setShowProjectModal] = useState(false);
   const [projectData, setProjectData] = useState(null);
   const userRole = localStorage.getItem("role");
+  const [projectStatus, setProjectStatus] = useState(null);
 
   useEffect(() => {
-    if (chatId !== "") {
+    if (chatId) {
       fetchMessages();
+      fetchProjectStatus();
     }
   }, [chatId]);
 
@@ -102,6 +104,25 @@ const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName }) =>
     }
   };
 
+  const fetchProjectStatus = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/projects/chat/${chatId}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      const data = await response.json();
+      if (data.project) {
+        setProjectStatus(data.project);
+      }
+    } catch (error) {
+      console.error("Error fetching project status:", error);
+    }
+  };
+
   const sendMessage = async (text, files, fileIcon) => {
     try {
       let attachments = [];
@@ -168,11 +189,34 @@ const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName }) =>
 
   return (
     <div className="f-chat-box">
-      {chatId === "" ? (
+      {!currentChat ? (
         <div>No messages</div>
       ) : (
         <>
           <ChatHeader currentChat={currentChat} />
+          {projectStatus && (
+            <div className="project-status-container">
+              <div className="project-status-header">
+                <h3>Project Status</h3>
+              </div>
+              <div className="project-status-details">
+                <div className="status-item">
+                  <span className="status-label">Status:</span>
+                  <span className={`status-value ${projectStatus.status}`}>
+                    {projectStatus.status.charAt(0).toUpperCase() + projectStatus.status.slice(1)}
+                  </span>
+                </div>
+                <div className="status-item">
+                  <span className="status-label">Title:</span>
+                  <span className="status-value">{projectStatus.title}</span>
+                </div>
+                <div className="status-item">
+                  <span className="status-label">Budget:</span>
+                  <span className="status-value">R{projectStatus.budget}</span>
+                </div>
+              </div>
+            </div>
+          )}
           <div className="f-messages-container">
             {loading ? (
               <div className="loading">Loading messages...</div>

@@ -8,7 +8,7 @@ const ProjectModal = ({ isOpen, onClose, chatId, isClientView, projectData }) =>
     description: "",
     budget: "",
     deadline: "",
-    category: "Game Development", // Default category
+    category: "Game Development",
     requirements: "",
   });
 
@@ -65,6 +65,68 @@ const ProjectModal = ({ isOpen, onClose, chatId, isClientView, projectData }) =>
     }
   };
 
+  const handleApprove = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/projects/${projectData.id}/status`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        body: JSON.stringify({
+          status: "approved"
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to approve project');
+      }
+
+      // Send socket notification
+      const socket = io(import.meta.env.VITE_API_URL);
+      socket.emit("project-status-update", {
+        chatId,
+        projectId: projectData.id,
+        status: "approved"
+      });
+
+      onClose();
+    } catch (error) {
+      console.error("Error approving project:", error);
+    }
+  };
+
+  const handleReject = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/projects/${projectData.id}/status`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        body: JSON.stringify({
+          status: "rejected"
+        }),
+      });
+
+      if (response.ok) {
+        // Emit socket event for real-time update
+        const socket = io(import.meta.env.VITE_API_URL);
+        socket.emit("project-status-updated", {
+          chatId,
+          projectId: projectData.id,
+          status: "rejected"
+        });
+        onClose();
+      }
+    } catch (error) {
+      console.error("Error rejecting project:", error);
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -74,44 +136,49 @@ const ProjectModal = ({ isOpen, onClose, chatId, isClientView, projectData }) =>
           <h2>{isClientView ? "Project Details" : "Create Project Agreement"}</h2>
           <button className="close-button" onClick={onClose}>&times;</button>
         </div>
-
         <div className="project-modal-content">
           {isClientView ? (
-            // View mode for client
-            projectData && (
-              <div className="project-details">
-                <div className="project-detail">
-                  <label>Title:</label>
-                  <p>{projectData.title}</p>
-                </div>
-                <div className="project-detail">
-                  <label>Description:</label>
-                  <p>{projectData.description}</p>
-                </div>
-                <div className="project-detail">
-                  <label>Budget:</label>
-                  <p>${projectData.budget}</p>
-                </div>
-                <div className="project-detail">
-                  <label>Deadline (days):</label>
-                  <p>{projectData.deadline}</p>
-                </div>
-                <div className="project-detail">
-                  <label>Category:</label>
-                  <p>{projectData.category}</p>
-                </div>
-                <div className="project-detail">
-                  <label>Requirements:</label>
-                  <ul>
-                    {projectData.requirements.map((req, index) => (
-                      <li key={index}>{req}</li>
-                    ))}
-                  </ul>
-                </div>
+            // Client View - Show Project Details and Approval Buttons
+            <div className="project-details">
+              <div className="project-detail">
+                <label>Title:</label>
+                <p>{projectData.title}</p>
               </div>
-            )
+              <div className="project-detail">
+                <label>Description:</label>
+                <p>{projectData.description}</p>
+              </div>
+              <div className="project-detail">
+                <label>Budget:</label>
+                <p>${projectData.budget}</p>
+              </div>
+              <div className="project-detail">
+                <label>Deadline:</label>
+                <p>{projectData.deadline} days</p>
+              </div>
+              <div className="project-detail">
+                <label>Category:</label>
+                <p>{projectData.category}</p>
+              </div>
+              <div className="project-detail">
+                <label>Requirements:</label>
+                <ul>
+                  {projectData.requirements?.map((req, index) => (
+                    <li key={index}>{req}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="project-actions">
+                <button className="approve-button" onClick={handleApprove}>
+                  Approve Project
+                </button>
+                <button className="reject-button" onClick={handleReject}>
+                  Reject Project
+                </button>
+              </div>
+            </div>
           ) : (
-            // Form mode for freelancer
+            // Freelancer View - Show Project Creation Form
             <form onSubmit={handleSubmit} className="project-form">
               <div className="form-group">
                 <label>Title:</label>
@@ -201,4 +268,4 @@ const ProjectModal = ({ isOpen, onClose, chatId, isClientView, projectData }) =>
   );
 };
 
-export default ProjectModal; 
+export default ProjectModal;
