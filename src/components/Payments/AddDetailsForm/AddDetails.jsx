@@ -103,11 +103,11 @@ const AddBankDetailsForm = () => {
   };
 
   return (
-    <div className="outer-diving" style={{border:"1px solid blue"}}>
-      <div className="btn-adit-me" style={{border:"1px solid yellow"}}>
-        <h2 className="text-gray-500 text-lg mb-4">Bank Details</h2>
+    <div className="outer-diving">
+      <div className="btn-adit-me">
+        {/*<h2 className="text-gray-500 text-lg mb-4">Bank Details</h2>*/}
         <Button variant="dark" onClick={() => setShowForm(!showForm)}>
-          {showForm ? "Close Form" : "Edit Card"}
+          {showForm ? "Close Form" : "Add Card"}
         </Button>
       </div>
 
