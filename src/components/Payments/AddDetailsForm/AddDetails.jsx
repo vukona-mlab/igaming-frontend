@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import Swal from 'sweetalert2';
 import "./AddDetails.css";
+//import Bankingdetails from"../../../components/Payments/BankingDetailsSection/BankingDetailsSection"
 
 const AddBankDetailsForm = () => {
   const [cardNumber, setCardNumber] = useState("");
@@ -54,16 +55,26 @@ const AddBankDetailsForm = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-           Authorization: token 
+          Authorization: token,
         },
         body: JSON.stringify(bankDetails),
       });
-        
+
       const data = await response.json();
       if (response.ok) {
-        
         console.log("Data submitted successfully:", data);
-      
+
+        // Clear the form fields
+        setCardNumber("");
+        setExpiryDate("");
+        setCardHolderName("");
+        setAddressLine1("");
+        setAddressLine2("");
+        setCity("");
+        setState("");
+        setPostalCode("");
+        setCountryCode("ZA");
+
         setShowForm(false);
 
         // Show success alert with SweetAlert
@@ -74,12 +85,11 @@ const AddBankDetailsForm = () => {
           confirmButtonText: 'Okay',
         });
       } else {
-        
-        console.error("Error submitting data:", response.statusText,data.error);
+        console.error("Error submitting data:", response.statusText, data.error);
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: `Submission failed with status: ${response.statusText,data.error}`,
+          text: `Submission failed with status: ${response.statusText}, ${data.error}`,
         });
       }
     } catch (error) {
@@ -93,8 +103,8 @@ const AddBankDetailsForm = () => {
   };
 
   return (
-    <div className="outer-diving">
-      <div className="btn-adit-me">
+    <div className="outer-diving" style={{border:"1px solid blue"}}>
+      <div className="btn-adit-me" style={{border:"1px solid yellow"}}>
         <h2 className="text-gray-500 text-lg mb-4">Bank Details</h2>
         <Button variant="dark" onClick={() => setShowForm(!showForm)}>
           {showForm ? "Close Form" : "Edit Card"}
@@ -189,6 +199,7 @@ const AddBankDetailsForm = () => {
           </Form>
         </div>
       )}
+    
     </div>
   );
 };

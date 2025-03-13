@@ -4,7 +4,7 @@ import "./Transactions.css";
 import Navbar from "../../components/Common/Navbar/navbar";
 import ProfileSubNav from "../../components/Profile/ProfileSubNav/ProfileSubNav";
 import TransactionsSection from "../../components/Payments/TransactionsSection/TransactionsSection";
-import AddDetailsForm from "../../components/Payments/AddDetailsForm/AddDetails"
+import BankingDetailsSection from "../../components/Payments/BankingDetailsSection/BankingDetailsSection"
 import TabsHeader from "../../components/Payments/TabsHeader/TabsHeader";
 const Transactions = () => {
   const [tab, setTab] = useState("Bank Details");
@@ -19,7 +19,7 @@ const Transactions = () => {
           handleTabChange={setTab}
         />
        
-        {tab === "Bank Details" ? <AddDetailsForm/> : <TransactionsSection />}
+        {tab === "Bank Details" ? <BankingDetailsSection/> : <TransactionsSection />}
       </div>
     </div>
   );
