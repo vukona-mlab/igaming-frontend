@@ -26,17 +26,18 @@ const ChatHeader = ({ currentChat }) => {
     (part) => part.uid !== currentUserId
   );
   useEffect(() => {
-    if (otherParticipant && otherParticipant.activeStatus) {
-      setActiveStatus(otherParticipant.activeStatus);
-    }
-  }, [otherParticipant]);
+    setActiveStatus(otherParticipant.activeStatus);
+  }, [otherParticipant.uid]);
   useEffect(() => {
-    socket.on("get-active-status", (data) => {
-      console.log("getactive", { otherParticipant, data });
+    const updateActiveStatus = (data) => {
       if (otherParticipant.uid === data.uid) {
         setActiveStatus(data.activeStatus);
       }
-    });
+    };
+    socket.on("get-active-status", updateActiveStatus);
+    return () => {
+      socket.off("get-active-status", updateActiveStatus);
+    };
   }, [otherParticipant]);
   useEffect(() => {
     const handleClickOutside = (event) => {
