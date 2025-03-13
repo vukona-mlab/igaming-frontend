@@ -17,36 +17,36 @@ const EditForm = ({
   // Validate form inputs
   const validateForm = () => {
     const newErrors = {};
-    
-    // Card Holder validation (string check)
-    if (!cardHolder) {
+
+    // Card Holder validation (string check, no numbers)
+    if (!cardHolder.trim()) {
       newErrors.cardHolder = "Card holder name is required";
+    } else if (/\d/.test(cardHolder)) {
+      newErrors.cardHolder = "Card holder name cannot contain numbers";
     }
-    
+
     // Expiry Date validation
-    const expiryDatePattern = /^(0[1-9]|1[0-2])\/(\d{2})$/; // MM/YY format
+    const expiryDatePattern = /^(0[1-9]|1[0-2])\/(\d{2})$/; 
     if (!expiryDate) {
       newErrors.expiryDate = "Expiry date is required";
     } else if (!expiryDatePattern.test(expiryDate)) {
       newErrors.expiryDate = "Invalid expiry date format. Use MM/YY (01-12/YY)";
     }
-    
+
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // Returns true if no errors
+    return Object.keys(newErrors).length === 0; 
   };
 
   // Handle expiry date input and formatting
   const handleExpiryDateChange = (e) => {
-    let value = e.target.value.replace(/\D/g, ""); // Remove non-digit characters
+    let value = e.target.value.replace(/\D/g, "");
 
-    // Handle MM part (01-12)
     if (value.length > 2) {
-      value = value.slice(0, 2) + "/" + value.slice(2, 4); // Add slash after MM
+      value = value.slice(0, 2) + "/" + value.slice(2, 4); 
     }
 
-    // Format YY (last 2 digits of year)
     if (value.length > 5) {
-      value = value.slice(0, 5); // Limit to MM/YY format
+      value = value.slice(0, 5); 
     }
 
     setExpiryDate(value);
@@ -73,7 +73,7 @@ const EditForm = ({
           onChange={(e) => setCardHolder(e.target.value)}
           placeholder="Enter Card Holder Name"
         />
-        {errors.cardHolder && <p className="text-red-500 text-sm">{errors.cardHolder}</p>}
+        {errors.cardHolder && <p className="error-message">{errors.cardHolder}</p>}
 
         {/* Expiry Date */}
         <label className="text-sm mb-1 block update-label">Expiry Date</label>
@@ -84,7 +84,7 @@ const EditForm = ({
           onChange={handleExpiryDateChange}
           placeholder="MM/YY"
         />
-        {errors.expiryDate && <p className="text-red-500 text-sm">{errors.expiryDate}</p>}
+        {errors.expiryDate && <p className="error-message">{errors.expiryDate}</p>}
 
         {/* Buttons */}
         <div className="flex justify-between buttonss">
