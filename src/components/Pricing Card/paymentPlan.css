@@ -161,6 +161,12 @@
     cursor: pointer;
 }
 
+.clickable-feature {
+    margin-left: 10px;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
 .pay-button {
     background: black;
     color: white;

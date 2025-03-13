@@ -1,3 +1,4 @@
+
 import "./App.css";
 import NavBar from "./components/Common/Navbar/navbar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -20,6 +21,7 @@ import EscrowPage from "./pages/EscrowPage/EscrowPage";
 import MessagingPageC from "./pages/client/MessagingPage/MessagingPageC";
 import Transactions from "./pages/transcations/Transactions";
 function App() {
+  
   return (
     <div className="App">
        <Router>
