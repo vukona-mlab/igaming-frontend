@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import "./MessagingPageC.css";
 import Navbar from "../../../components/Common/Navbar/navbar";
 import ProfileSubNav from "../../../components/Profile/ProfileSubNav/ProfileSubNav";
+import SearchBar from "../../../components/SearchBar/SearchBar";
 import PeopleComponent from "../../../components/Messaging/PeopleComponent/PeopleComponent";
 import ChatBox from "../../../components/Messaging/ChatBox/ChatBox";
 
 const MessagingPageC = () => {
   const [loading, setLoading] = useState(false);
   const [chats, setChats] = useState([]);
+  const [filteredChats, setFilteredChats] = useState([]);
   const [currentChatId, setCurrentChatId] = useState("");
   const [currentChat, setCurrentChat] = useState(null);
   const [currentFreelancerId, setCurrentFreelancerId] = useState("");
@@ -21,12 +23,10 @@ const MessagingPageC = () => {
   }, []);
 
   useEffect(() => {
-    // Update current chat when currentChatId changes
     if (currentChatId && chats.length > 0) {
       const chat = chats.find((chat) => chat.id === currentChatId);
       setCurrentChat(chat);
 
-      // Find the freelancer participant
       const freelancer = chat?.participants?.find(
         (part) => part.uid !== localStorage.getItem("uid")
       );
@@ -37,16 +37,6 @@ const MessagingPageC = () => {
       }
     }
   }, [currentChatId, chats]);
-
-  const handleEscrow = () => {
-    const escrowData = {
-      freelancerId: currentChat.participants[0].uid,
-      clientId: currentChat.participants[1].uid,
-      freelancerEmail: currentChat.participants[0].email,
-      clientEmail: currentChat.participants[1].email,
-    };
-    navigate("/escrow", { state: { escrowData } });
-  };
 
   const getAllChats = async () => {
     try {
@@ -64,7 +54,6 @@ const MessagingPageC = () => {
       if (response.ok) {
         const data = await response.json();
         if (data.chats && data.chats.length > 0) {
-          // Process the chats to ensure lastMessage is a string
           const processedChats = data.chats.map((chat) => ({
             ...chat,
             lastMessage:
@@ -74,8 +63,8 @@ const MessagingPageC = () => {
           }));
 
           setChats(processedChats);
+          setFilteredChats(processedChats);
 
-          // Set initial chat if available
           if (processedChats.length > 0) {
             setCurrentChatId(processedChats[0].id);
           }
@@ -88,6 +77,22 @@ const MessagingPageC = () => {
     }
   };
 
+  const handleSearch = (query) => {
+    if (!query) {
+      setFilteredChats(chats);
+    } else {
+      const lowerCaseQuery = query.toLowerCase();
+      setFilteredChats(
+        chats.filter((chat) =>
+          chat.participants.some((part) =>
+            part.name && part.name.toLowerCase().includes(lowerCaseQuery)
+          )
+        )
+      );
+    }
+  };
+  
+
   if (loading) {
     return <div className="loading">Loading...</div>;
   }
@@ -96,10 +101,11 @@ const MessagingPageC = () => {
     <div className="MessagingPageC">
       <Navbar />
       <ProfileSubNav />
-      <button onClick={handleEscrow}>Escrow</button>
+      <SearchBar placeholder="Search people..." onSearch={handleSearch} />
+
       <div className="messagePageContainer">
         <PeopleComponent
-          people={chats}
+          people={filteredChats}
           setcurrentChatId={setCurrentChatId}
           setCurrentClientId={setCurrentFreelancerId}
           setCurrentClientName={setCurrentFreelancerName}
@@ -112,7 +118,6 @@ const MessagingPageC = () => {
             currentClientName={currentFreelancerName}
           />
         )}
-        {/* <button onClick={handleEscrow}>Escrow</button> */}
       </div>
     </div>
   );
