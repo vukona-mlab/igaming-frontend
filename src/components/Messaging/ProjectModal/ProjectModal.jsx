@@ -5,7 +5,7 @@ import { io } from "socket.io-client";
 
 const socket = io(import.meta.env.VITE_API_URL || "http://localhost:8000", { transports: ["websocket"] });
 
-const ProjectModal = ({ isOpen, onClose, escrowData, chatId }) => {
+const ProjectModal = ({ isOpen, onClose, projectData, chatId, isClientView }) => {
   const [createdProject, setCreatedProject] = useState(null);
   const [showEscrow, setShowEscrow] = useState(false);
   
@@ -40,8 +40,8 @@ const ProjectModal = ({ isOpen, onClose, escrowData, chatId }) => {
         },
         body: JSON.stringify({
           ...formData,
-          clientId: escrowData.clientId,
-          freelancerId: escrowData.freelancerId,
+          clientId: projectData.clientId,
+          freelancerId: projectData.freelancerId,
           requirements: formData.requirements.split(',').map(req => req.trim()),
         }),
       });
@@ -53,7 +53,7 @@ const ProjectModal = ({ isOpen, onClose, escrowData, chatId }) => {
         // Create a more detailed project notification message
         const projectMessage = {
           chatId: chatId,
-          senderId: escrowData.freelancerId,
+          senderId: projectData.freelancerId,
           text: `🎮 New Project Created!\n\n` +
                 `Title: ${formData.title}\n` +
                 `Budget: $${formData.budget}\n` +
@@ -77,7 +77,7 @@ const ProjectModal = ({ isOpen, onClose, escrowData, chatId }) => {
         // Emit the message through socket for real-time update
         socket.emit('send-message', {
           ...projectMessage,
-          receiverId: escrowData.clientId
+          receiverId: projectData.clientId
         });
 
       } else {
@@ -102,6 +102,25 @@ const ProjectModal = ({ isOpen, onClose, escrowData, chatId }) => {
     }
   };
 
+  const handleAccept = async () => {
+    try {
+      // Implement project acceptance logic here
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/projects/${projectData.id}/accept`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': localStorage.getItem('token'),
+        },
+      });
+
+      if (response.ok) {
+        onClose();
+      }
+    } catch (error) {
+      console.error('Error accepting project:', error);
+    }
+  };
+
   const renderStep = () => {
     if (showEscrow) {
       return (
@@ -109,8 +128,8 @@ const ProjectModal = ({ isOpen, onClose, escrowData, chatId }) => {
           <h2>Create Escrow Agreement</h2>
           <EscrowForm 
             onSubmit={handleEscrowSubmit}
-            freelancerId={escrowData.freelancerId}
-            clientId={escrowData.clientId}
+            freelancerId={projectData.freelancerId}
+            clientId={projectData.clientId}
             projectDetails={createdProject}
           />
           <div className="modal-actions">
@@ -240,9 +259,53 @@ const ProjectModal = ({ isOpen, onClose, escrowData, chatId }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay">
-      <div className={`modal-content ${showEscrow ? 'escrow-mode' : ''}`}>
-        {renderStep()}
+    <div className="project-modal-overlay">
+      <div className="project-modal">
+        <div className="project-modal-header">
+          <h2>{isClientView ? 'New Project Proposal' : 'Creating Project'}</h2>
+          <button className="close-button" onClick={onClose}>&times;</button>
+        </div>
+        
+        <div className="project-modal-content">
+          {projectData && (
+            <>
+              <div className="project-detail">
+                <label>Project Title:</label>
+                <p>{projectData.title}</p>
+              </div>
+              <div className="project-detail">
+                <label>Description:</label>
+                <p>{projectData.description}</p>
+              </div>
+              <div className="project-detail">
+                <label>Budget:</label>
+                <p>${projectData.budget}</p>
+              </div>
+              <div className="project-detail">
+                <label>Timeline:</label>
+                <p>{projectData.timeline} days</p>
+              </div>
+            </>
+          )}
+        </div>
+
+        <div className="project-modal-footer">
+          {isClientView && (
+            <>
+              <button className="accept-button" onClick={handleAccept}>
+                Accept Project
+              </button>
+              <button className="reject-button" onClick={onClose}>
+                Reject
+              </button>
+            </>
+          )}
+          {!isClientView && (
+            <button className="close-button" onClick={onClose}>
+              Close
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

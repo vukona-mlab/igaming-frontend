@@ -5,6 +5,8 @@ import "./ChatBox.css";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { auth, db, storage } from "../../../config/firebase";
 import ChatHeader from "../ChatHeader/ChatHeader";
+import { io } from "socket.io-client";
+import ProjectModal from "../ProjectModal/ProjectModal";
 
 const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName }) => {
   const [messages, setMessages] = useState([]);
@@ -20,6 +22,10 @@ const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName }) =>
   const uid = localStorage.getItem("uid");
   const token = localStorage.getItem("token");
   const bottomRef = useRef();
+  const socketRef = useRef();
+  const [showProjectModal, setShowProjectModal] = useState(false);
+  const [projectData, setProjectData] = useState(null);
+  const userRole = localStorage.getItem("role");
 
   useEffect(() => {
     if (chatId !== "") {
@@ -30,6 +36,40 @@ const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName }) =>
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  useEffect(() => {
+    // Initialize socket connection
+    socketRef.current = io("http://localhost:8000");
+
+    // Join the chat room when component mounts
+    if (chatId) {
+      socketRef.current.emit("join-chat", chatId);
+    }
+
+    // Listen for new messages
+    socketRef.current.on("new-message", (data) => {
+      if (data.chatId === chatId) {
+        setMessages(prev => [...prev, data.message]);
+      }
+    });
+
+    // Listen for new project notifications
+    socketRef.current.on("new-project", (data) => {
+      if (data.chatId === chatId && userRole === "client") {
+        setProjectData(data.projectData);
+        setShowProjectModal(true);
+      }
+    });
+
+    // Cleanup on unmount
+    return () => {
+      if (chatId) {
+        socketRef.current.emit("leave-chat", chatId);
+      }
+      socketRef.current.disconnect();
+    };
+  }, [chatId, userRole]);
+
   const fetchMessages = async () => {
     try {
       const response = await fetch(
@@ -61,13 +101,14 @@ const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName }) =>
       setLoading(false);
     }
   };
+
   const sendMessage = async (text, files, fileIcon) => {
     try {
       let attachments = [];
       if (files) {
         attachments = await handleFileUpload(files || []);
       }
-      console.log(attachments);
+
       const response = await fetch(
         `http://localhost:8000/api/chats/${chatId}/messages`,
         {
@@ -85,15 +126,12 @@ const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName }) =>
       );
 
       if (!response.ok) {
-        throw new Error("Failed to fetch messages");
+        throw new Error("Failed to send message");
       }
 
-      const data = await response.json();
-      fetchMessages();
+      // No need to fetch messages here as we'll receive the update via socket
     } catch (error) {
-      console.error("Error fetching messages:", error);
-    } finally {
-      setLoading(false);
+      console.error("Error sending message:", error);
     }
   };
 
@@ -125,6 +163,7 @@ const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName }) =>
       setIsUploading(false);
     }
   };
+
   if (loading) return;
 
   return (
@@ -158,6 +197,17 @@ const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName }) =>
               sendMessage={sendMessage}
             />
           </div>
+
+          {/* Project Modal */}
+          {showProjectModal && (
+            <ProjectModal
+              isOpen={showProjectModal}
+              onClose={() => setShowProjectModal(false)}
+              projectData={projectData}
+              chatId={chatId}
+              isClientView={userRole === "client"}
+            />
+          )}
         </>
       )}
     </div>
