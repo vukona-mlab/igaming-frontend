@@ -4,8 +4,10 @@ import "./ChatHeader.css";
 import { BsThreeDotsVertical, BsPersonCircle } from "react-icons/bs";
 import { io } from "socket.io-client";
 import ProjectModal from '../ProjectModal/ProjectModal';
+
 const url = "http://localhost:8000";
 const socket = io(url, { transports: ["websocket"] });
+
 const ChatHeader = ({ currentChat }) => {
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef(null);
@@ -55,19 +57,7 @@ const ChatHeader = ({ currentChat }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleCreateAgreement = () => {
-    if (!currentUser || !otherParticipant) {
-      console.error("Missing participant information");
-      return;
-    }
-
-    const escrowData = {
-      freelancerId: isFreelancer ? currentUser.uid : otherParticipant.uid,
-      clientId: isFreelancer ? otherParticipant.uid : currentUser.uid,
-      freelancerEmail: isFreelancer ? currentUser.email : otherParticipant.email,
-      clientEmail: isFreelancer ? otherParticipant.email : currentUser.email,
-    };
-
+  const handleCreateProject = () => {
     setShowProjectModal(true);
     setShowMenu(false);
   };
@@ -122,7 +112,9 @@ const ChatHeader = ({ currentChat }) => {
           {showMenu && (
             <div className="context-menu" ref={menuRef}>
               {isFreelancer && (
-                <button onClick={handleCreateAgreement}>Create Agreement</button>
+                <button onClick={handleCreateProject}>
+                  Create Project Agreement
+                </button>
               )}
               <button onClick={handleEndChat}>End Chat</button>
               <button onClick={handleDeleteChat}>Delete Chat</button>
@@ -135,12 +127,13 @@ const ChatHeader = ({ currentChat }) => {
         isOpen={showProjectModal}
         onClose={() => setShowProjectModal(false)}
         chatId={currentChat?.id}
-        escrowData={currentUser && otherParticipant ? {
-          freelancerId: isFreelancer ? currentUser.uid : otherParticipant.uid,
-          clientId: isFreelancer ? otherParticipant.uid : currentUser.uid,
-          freelancerEmail: isFreelancer ? currentUser.email : otherParticipant.email,
-          clientEmail: isFreelancer ? otherParticipant.email : currentUser.email,
-        } : null}
+        isClientView={!isFreelancer}
+        projectData={{
+          clientId: isFreelancer ? otherParticipant?.uid : currentUserId,
+          freelancerId: isFreelancer ? currentUserId : otherParticipant?.uid,
+          clientEmail: isFreelancer ? otherParticipant?.email : currentUser?.email,
+          freelancerEmail: isFreelancer ? currentUser?.email : otherParticipant?.email,
+        }}
       />
     </>
   );
