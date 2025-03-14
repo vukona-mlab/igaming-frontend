@@ -4,11 +4,12 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Eye, EyeSlash } from "react-bootstrap-icons";
-import "./AuthForm.css"; // Make sure to add the required CSS for error state
+import "./AuthForm.css"; 
 import { useNavigate } from "react-router";
 
 const AuthForm = ({ formData, setFormData, onSubmit, errors }) => {
   const [showPassword, setShowPassword] = useState(false);
+  const validJobTitles = ["Game Developer", "Design & Creative", "Quality Assurance"];
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -19,6 +20,11 @@ const AuthForm = ({ formData, setFormData, onSubmit, errors }) => {
     if (!formData.username) newErrors.username = "Username is required";
     if (!formData.password) newErrors.password = "Password is required";
     if (!formData.jobTitle) newErrors.jobTitle = "Job Title is required";
+    if (!formData.jobTitle) {
+      newErrors.jobTitle = "Job Title is required";
+    } else if (!validJobTitles.includes(formData.jobTitle)) {
+      newErrors.jobTitle = "Invalid Job Title. Please select from the dropdown.";
+    }
     if (!formData.experience) newErrors.experience = "Experience is required";
 
     setErrors(newErrors);
@@ -83,20 +89,24 @@ const AuthForm = ({ formData, setFormData, onSubmit, errors }) => {
         </Col>
       </Row>
 
-      <Row className="mb-3">
+       {/* Job Title (Dropdown) */}
+       <Row className="mb-3">
         <Col xs={12}>
           <Form.Label>Job Title</Form.Label>
-          <Form.Control
-            type="text"
+          <Form.Select
             name="jobTitle"
-            placeholder="Enter job title"
             value={formData.jobTitle}
             onChange={handleChange}
             isInvalid={!!errors.jobTitle}
-            className={`form-control-grey ${
-              errors.jobTitle ? "error-border" : ""
-            }`} // Fix this line
-          />
+            className={`form-control-grey ${errors.jobTitle ? "error-border" : ""}`}
+          >
+            <option value="">Select a job title</option>
+            {validJobTitles.map((title, index) => (
+              <option key={index} value={title}>
+                {title}
+              </option>
+            ))}
+          </Form.Select>
           <Form.Control.Feedback type="invalid">
             {errors.jobTitle}
           </Form.Control.Feedback>
