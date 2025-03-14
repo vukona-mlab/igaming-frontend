@@ -1,6 +1,7 @@
 import React from 'react';
 import './bankingDetails.css';
-
+import AddDetails from "../../Payments/AddDetailsForm/AddDetails"
+import BankingCard from "../../Payments/BankingCard/BankingCard"
 
 export default function BankingDetailsSection(){
     const bankDetails =[ {
@@ -9,8 +10,10 @@ export default function BankingDetailsSection(){
       }]
     return(
         <div>
-        <h3 className="details-text">Bank Details</h3>
-        {bankDetails.map((bank, index) => (
+        <h3 className="details-text mt-3">Bank Details</h3>
+        <AddDetails/>
+        <BankingCard/>
+       {/*  {bankDetails.map((bank, index) => (
           <div className="bank-details" key={index}>
             <div className="left">
               <div className="bank-name">{bank.bankName}</div>
@@ -21,7 +24,7 @@ export default function BankingDetailsSection(){
               <div className="number">{bank.accountNumber}</div>
             </div>
           </div>
-        ))}
+        ))}*/}
       </div>
     )
 }
