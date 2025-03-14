@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import EditForm from "../EditForm/EditForm"; // Import EditForm
 import "./BankingCard.css";
-
+import { useNavigate } from "react-router";
 const BankingCard = () => {
   const [cards, setCards] = useState([]);
   const [editCardId, setEditCardId] = useState(null); // Track which card is being edited
   const token = localStorage.getItem("token") || "";
-
+  const navigation = useNavigate();
   useEffect(() => {
     const fetchCards = async () => {
       try {
@@ -80,6 +80,8 @@ const BankingCard = () => {
 
       setCards(cards.map((card) => (card.id === updatedCard.id ? updatedCard : card)));
       setEditCardId(null); // Exit edit mode
+      navigation(0);
+
     } catch (error) {
       console.error("Error updating card:", error);
     }
@@ -91,7 +93,7 @@ const BankingCard = () => {
         <EditForm
           card={cards.find((card) => card.id === editCardId)}
           onCancel={() => setEditCardId(null)} // Cancel editing
-          onUpdate={handleUpdate} // Handle card update
+          onUpdate={handleUpdate} // Handle card update/pass update function to EditForm
         />
       ) : (
         cards.length === 0 ? (
@@ -101,8 +103,10 @@ const BankingCard = () => {
             <div className="BankingCard" key={card.id}>
               <div className="bc-header">
                 <div className="bc-bank-name">{card.cardType || "Unknown Type"}</div>
-                <button className="bc-edit" onClick={() => setEditCardId(card.id)}>Edit</button>
+                <div className="for-eding"> 
+                  <button className="bc-edit" onClick={() => setEditCardId(card.id)}>Edit</button>
                 <button className="bc-delete" onClick={() => handleDelete(card.id)}>Delete</button>
+                </div>
               </div>
               <div className="bc-acc-num">
                 <div className="bc-acc-num-name">Card Number:</div>

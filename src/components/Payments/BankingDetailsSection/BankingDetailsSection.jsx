@@ -10,7 +10,7 @@ export default function BankingDetailsSection(){
       }]
     return(
         <div>
-        <h3 className="details-text">Bank Details</h3>
+        <h3 className="details-text mt-3">Bank Details</h3>
         <AddDetails/>
         <BankingCard/>
        {/*  {bankDetails.map((bank, index) => (

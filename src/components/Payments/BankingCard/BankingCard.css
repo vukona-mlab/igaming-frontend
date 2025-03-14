@@ -70,3 +70,7 @@
   font-weight: 400;
   color: #0000004d;
 }
+.for-eding{
+  gap: 3px;
+  display: flex;
+}
