@@ -1,66 +1,53 @@
+/* SubNavBar Styles */
 .subnav {
-    float: left;
-    overflow: hidden;
-    justify-content: center;
-  }
+  width: 100%;
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .subnavbtn{
-    background-color: black;
-    color: white;
-  }
+/* Navigation Content */
+.subnav-content {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  padding: 10px 0;
+  background-color: black;
+}
 
-  .subnav .subnavbtn {
-    font-size: 16px;
-    border: none;
-    outline: none;
-    color: white;
-    padding: 14px 16px;
-    /* background-color: inherit; */
-    font-family: inherit;
-    margin: 0;
-  }
+/* Navigation Links */
+.subnav-content a {
+  color: white;
+  text-decoration: none;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  padding: 12px 16px;
+  transition: all 0.3s ease;
+}
 
-  /* .navbar a:hover, .subnav:hover .subnavbtn {
-    background-color: red;
-  } */
+/* Hover Effect */
+.subnav-content a:hover {
+  background-color: white;
+  color: black;
+  border-radius: 4px;
+}
 
-  a{
-    float: left;
-    font-size: 16px;
-    color: black;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    justify-content: center;
-  }
-
+/* Responsive Design */
+@media screen and (max-width: 768px) {
   .subnav-content {
-    /* display: none; */
-    position: absolute;
-    
-    background-color: black;
-    width: 100%;
-    height: 46px;
-    z-index: 1;
-    font-family: 'Poppins';
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 24px;
-    display: flex;
-    justify-content: space-evenly;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
   }
-
+  
   .subnav-content a {
-    float: left;
-    color: white;
-    text-decoration: none;
-    
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
   }
-
-  .subnav-content a:hover {
-    background-color: #eee;
-    color: black;
-  }
-
-  /* .subnav:hover .subnav-content {
-  } */
+}

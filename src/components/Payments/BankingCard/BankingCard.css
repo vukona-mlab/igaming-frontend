@@ -8,6 +8,7 @@
   flex-direction: column;
   justify-content: space-around;
   font-family: "Poppins";
+  margin-bottom: 10px;
 }
 
 .bc-header {
@@ -43,6 +44,21 @@
 .bc-edit:hover {
   background-color: #181818;
 }
+.bc-delete {
+  width: 78px;
+  height: 34px;
+  background-color: red;
+  font-size: 16px;
+  font-weight: 500;
+  color: white;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+
+}
+.bc-delete:hover {
+  background-color: tomato;
+}
 .bc-acc-num-name {
   font-size: 16px;
   font-weight: 400;
@@ -53,4 +69,8 @@
   font-size: 16px;
   font-weight: 400;
   color: #0000004d;
+}
+.for-eding{
+  gap: 3px;
+  display: flex;
 }

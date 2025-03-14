@@ -1,94 +1,75 @@
-h2 {
-  color: #0000004D !important;
-  font-size: 24px;
-  margin-bottom: 16px;
-  font-weight: 500;
-  height: 35px;
-  left: 101px;
-  margin-bottom: 25px !important;
-
+.bank-form {
+  padding: 20px;
+  border-radius: 8px;
+  background: #fff;
+  width: 30%;
+  min-width: 300px;
+  text-align: left;
+  margin-left: 0;
 }
 
-form {
-  width: 387.25px;
+/* Style inputs and dropdown */
+.input-field,
+.custom-dropdown .dropdown-toggle {
+  width: 100%;
+  height: 40px;
+  border: none; /* Remove all borders */
+  border-bottom: 1px solid black; /* Add only bottom border */
+  border-radius: 0; /* Remove rounded corners */
+  background-color: white;
+  padding: 8px;
+  outline: none; /* Remove focus outline */
 }
 
-select, input {
-  width: 387.25px;
-  height: 33px;
-  border: none;
-  border-bottom: 1px solid #9e9e9e;
-  outline: none;
-  font-size: 16px;
-  margin-bottom: 16px;
-}
-
-button {
-  width: 192.5px;
-  height: 57px;
-  font-size: 16px;
-  border: none;
-  cursor: pointer;
-  margin-top: 20px !important;
-  border-radius: 15px !important;
-}
-
-.cancel {
-  color: #ff6666;
-  background: none;
-}
-
-.submit {
-  background-color: #000;
-  color: #fff;
-}
-
-input::placeholder {
-  color: black;
-}
-
-.custom-dropdown {
-  padding-right: 30px; 
+/* Dropdown styling */
+.custom-dropdown .dropdown-toggle {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #9e9e9e; 
-  position: relative;
-}
-
-.custom-dropdown  img {
-  position: absolute;
-  right: 0;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 35px;
-  height: 35px;
   cursor: pointer;
 }
 
-.custom-dropdown span {
-  padding-left: 0; 
-  font-size: 16px;
-  color: black; 
-}
-
-
-.custom-dropdown div {
-  padding: 8px;
-  font-size: 16px;
-  border-bottom: 1px solid #ddd;
-}
-
-.custom-dropdown div:hover {
-  background-color: #f1f1f1;
-}
-
-.custom-dropdown + div {
-  position: absolute;
+.custom-dropdown .dropdown-menu {
   width: 100%;
+}
+
+/* Remove default dropdown arrow */
+.dropdown-toggle::after {
+  display: none !important;
+}
+
+/* Dropdown icon */
+.arrow-icon {
+  width: 15px;
+  height: 15px;
+}
+
+/* Button Group - Align buttons to the right with spacing */
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+}
+.cancel-btn{
+  border: none;
+  color: red;
   background-color: white;
-  border: 1px solid #ccc;
-  border-top: none;
-  z-index: 10;
+}
+.submit-btn{
+  border-radius: 12px;
+  padding-left: 20px !important;
+  padding-right: 20px;
+  background-color: #000000;
+  gap: 10px;
+}
+
+.btn-adit-me{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.outer-diving{
+  width: 100%;
+
 }
