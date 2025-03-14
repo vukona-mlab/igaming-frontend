@@ -8,8 +8,9 @@ import ChatHeader from "../ChatHeader/ChatHeader";
 import { io } from "socket.io-client";
 import ProjectModal from "../ProjectModal/ProjectModal";
 import ProjectDetails from "../ProjectDetails/ProjectDetails";
+import EscrowForm from "../../Escrow/EscrowForm";
 
-const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName }) => {
+const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName, currentClientEmail, currentFreelancerEmail, onEscrowClick }) => {
   const [messages, setMessages] = useState([]);
   const [photoUrl, setPhotoUrl] = useState("");
   const [isUploading, setIsUploading] = useState(false);
@@ -29,6 +30,8 @@ const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName }) =>
   const userRole = localStorage.getItem("role");
   const [projectStatus, setProjectStatus] = useState(null);
   const [showProjectDetails, setShowProjectDetails] = useState(false);
+  const [showEscrowModal, setShowEscrowModal] = useState(false);
+  const [escrowData, setEscrowData] = useState(null);
 
   useEffect(() => {
     if (chatId) {
@@ -187,6 +190,15 @@ const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName }) =>
     }
   };
 
+  const handleEscrowClick = () => {
+    setShowEscrowModal(true);
+  };
+
+  const handleEscrowOpen = (data) => {
+    setEscrowData(data);
+    setShowEscrowModal(true);
+  };
+
   if (loading) return;
 
   return (
@@ -200,12 +212,22 @@ const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName }) =>
             <div className="project-status-container">
               <div className="project-status-header">
                 <h3>Project Status</h3>
-                <button 
-                  className="view-project-btn"
-                  onClick={() => setShowProjectDetails(true)}
-                >
-                  View Project
-                </button>
+                <div className="project-status-actions">
+                  <button 
+                    className="view-project-btn"
+                    onClick={() => setShowProjectDetails(true)}
+                  >
+                    View Project
+                  </button>
+                  {userRole === "freelancer" && projectStatus.status === "approved" && (
+                    <button 
+                      className="create-escrow-btn"
+                      onClick={handleEscrowClick}
+                    >
+                      Create Escrow
+                    </button>
+                  )}
+                </div>
               </div>
               <div className="project-status-details">
                 <div className="status-item">
@@ -252,10 +274,11 @@ const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName }) =>
 
           {/* Project Details Modal */}
           {showProjectDetails && projectStatus && (
-            <ProjectDetails 
+            <ProjectDetails
               project={projectStatus}
               onClose={() => setShowProjectDetails(false)}
               isClient={userRole === "client"}
+              onEscrowOpen={handleEscrowOpen}
             />
           )}
 
@@ -268,6 +291,39 @@ const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName }) =>
               chatId={chatId}
               isClientView={userRole === "client"}
             />
+          )}
+
+          {showEscrowModal && (
+            <div className="escrow-modal-overlay">
+              <div className="escrow-modal">
+                <div className="escrow-modal-header">
+                  <h2>Update Escrow Agreement</h2>
+                  <button 
+                    className="close-button"
+                    onClick={() => setShowEscrowModal(false)}
+                  >
+                    ×
+                  </button>
+                </div>
+                <EscrowForm
+                  onSubmit={async (escrowData) => {
+                    try {
+                      // Handle escrow submission
+                      await handleEscrowSubmit(escrowData);
+                      setShowEscrowModal(false);
+                    } catch (error) {
+                      console.error('Error creating escrow:', error);
+                    }
+                  }}
+                  freelancerId={escrowData.freelancerId}
+                  clientId={escrowData.clientId}
+                  existingEscrow={escrowData.escrowId}
+                  project={escrowData.project}
+                  isModal={true}
+                  onClose={() => setShowEscrowModal(false)}
+                />
+              </div>
+            </div>
           )}
         </>
       )}

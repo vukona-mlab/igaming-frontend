@@ -6,6 +6,8 @@
   border: 2px solid #0000000d;
   display: flex;
   flex-direction: column;
+  position: relative;
+  z-index: 1;
 }
 
 .f-chat-header-user img {
@@ -118,4 +120,36 @@
 
 .status-value.completed {
   color: #17a2b8;
+}
+
+.project-status-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.create-escrow-btn {
+  padding: 8px 16px;
+  background-color: #1dbf73;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.create-escrow-btn:hover {
+  background-color: #19a463;
+}
+
+/* Modal overlay styles */
+.modal-backdrop {
+  z-index: 1050;
+}
+
+.modal {
+  z-index: 1055;
 }

@@ -33,6 +33,13 @@ const ProjectModal = ({ isOpen, onClose, chatId, isClientView, projectData }) =>
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
+      
+      // Ensure we have the required IDs
+      if (!projectData.clientId || !projectData.freelancerId) {
+        console.error("Missing required IDs:", { projectData });
+        return;
+      }
+
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/projects`, {
         method: "POST",
         headers: {
@@ -56,7 +63,11 @@ const ProjectModal = ({ isOpen, onClose, chatId, isClientView, projectData }) =>
         const socket = io(import.meta.env.VITE_API_URL);
         socket.emit("project-created", {
           chatId,
-          projectData: data.project
+          projectData: {
+            ...data.project,
+            clientId: projectData.clientId,
+            freelancerId: projectData.freelancerId
+          }
         });
 
         onClose();

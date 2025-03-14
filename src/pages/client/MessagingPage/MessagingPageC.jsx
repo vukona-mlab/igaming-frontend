@@ -4,6 +4,7 @@ import Navbar from "../../../components/Common/Navbar/navbar";
 import ProfileSubNav from "../../../components/Profile/ProfileSubNav/ProfileSubNav";
 import PeopleComponent from "../../../components/Messaging/PeopleComponent/PeopleComponent";
 import ChatBox from "../../../components/Messaging/ChatBox/ChatBox";
+import EscrowForm from "../../../components/Escrow/EscrowForm";
 
 const MessagingPageC = () => {
   const [loading, setLoading] = useState(false);
@@ -12,6 +13,8 @@ const MessagingPageC = () => {
   const [currentChat, setCurrentChat] = useState(null);
   const [currentFreelancerId, setCurrentFreelancerId] = useState("");
   const [currentFreelancerName, setCurrentFreelancerName] = useState("");
+  const [showEscrowModal, setShowEscrowModal] = useState(false);
+  const [escrowData, setEscrowData] = useState(null);
 
   const token = localStorage.getItem("token");
   const url = import.meta.env.VITE_API_URL;
@@ -45,7 +48,28 @@ const MessagingPageC = () => {
       freelancerEmail: currentChat.participants[0].email,
       clientEmail: currentChat.participants[1].email,
     };
-    navigate("/escrow", { state: { escrowData } });
+    setEscrowData(escrowData);
+    setShowEscrowModal(true);
+  };
+
+  const handleEscrowSubmit = async (data) => {
+    try {
+      const response = await fetch(`${url}/api/escrow`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        setShowEscrowModal(false);
+        // Optionally refresh chat or show success message
+      }
+    } catch (error) {
+      console.error("Error creating escrow:", error);
+    }
   };
 
   const getAllChats = async () => {
@@ -96,7 +120,6 @@ const MessagingPageC = () => {
     <div className="MessagingPageC">
       <Navbar />
       <ProfileSubNav />
-      <button onClick={handleEscrow}>Escrow</button>
       <div className="messagePageContainer">
         <PeopleComponent
           people={chats}
@@ -110,10 +133,21 @@ const MessagingPageC = () => {
             currentChat={currentChat}
             currentClientId={currentFreelancerId}
             currentClientName={currentFreelancerName}
+            onEscrowClick={handleEscrow}
           />
         )}
-        {/* <button onClick={handleEscrow}>Escrow</button> */}
       </div>
+
+      {showEscrowModal && escrowData && (
+        <EscrowForm
+          onSubmit={handleEscrowSubmit}
+          freelancerId={escrowData.freelancerId}
+          clientId={escrowData.clientId}
+          project={currentChat?.project}
+          isModal={true}
+          onClose={() => setShowEscrowModal(false)}
+        />
+      )}
     </div>
   );
 };
