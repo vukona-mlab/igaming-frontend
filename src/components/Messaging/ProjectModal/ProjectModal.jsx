@@ -44,7 +44,8 @@ const ProjectModal = ({ isOpen, onClose, chatId, isClientView, projectData }) =>
           clientId: projectData.clientId,
           freelancerId: projectData.freelancerId,
           requirements: formData.requirements.split(',').map(req => req.trim()),
-          deadline: parseInt(formData.deadline)
+          deadline: parseInt(formData.deadline),
+          chatId,
         }),
       });
 
