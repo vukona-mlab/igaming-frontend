@@ -83,6 +83,7 @@ function NavBar() {
         <div className="placeholder">
           {profilePicture !== "" ? (
             <div style={{ display: "flex", gap: "15px" }}>
+              {location.pathname === "/profile" && <LogoutButton />}
               <img
                 src={profilePicture}
                 alt="User"
