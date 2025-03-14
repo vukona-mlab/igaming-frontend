@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 //import Swal from "sweetalert2"; // Make sure to import SweetAlert
 import "./EditForm.css";
 
-const EditForm = ({ card, onCancel,onUpdate }) => {
-  
-
+const EditForm = ({ card, onCancel, onUpdate }) => {
   // State for card details and errors
   const [cardHolder, setCardHolder] = useState(card.cardHolder || "");
   const [expiryDate, setExpiryDate] = useState(card.expiryDate || "");
@@ -14,8 +12,8 @@ const EditForm = ({ card, onCancel,onUpdate }) => {
   // Fetch card data when the component mounts from bancking component
   useEffect(() => {
     setCardHolder(card.cardHolder || "");
-    setExpiryDate(card.expiryDate|| "");
-  },[card]); //run card again
+    setExpiryDate(card.expiryDate || "");
+  }, [card]); //run card again
 
   // Validate form inputs
   const validateForm = () => {
@@ -59,16 +57,18 @@ const EditForm = ({ card, onCancel,onUpdate }) => {
     e.preventDefault();
     if (validateForm()) {
       //pass this data to update function on bankingCard componet
-       onUpdate({id:card.id,cardHolder,expiryDate});
+      onUpdate({ id: card.id, cardHolder, expiryDate });
     }
   };
 
   return (
-    <div className="flex flex-col items-center w-full max-w-[400px] mx-auto" style={{ border: "1px solid red" }}>
+    <div className="flex flex-col items-center w-full max-w-[400px] mx-auto">
       <h2 className="text-gray-500 text-lg mb-4 m-head">Edit Card Details</h2>
       <form className="w-[387.25px] edit-form" onSubmit={handleSubmit}>
         {/* Card Holder Name */}
-        <label className="text-sm mb-1 block update-label">Card Holder Name</label>
+        <label className="text-sm mb-1 block update-label">
+          Card Holder Name
+        </label>
         <input
           type="text"
           value={cardHolder}
@@ -76,7 +76,9 @@ const EditForm = ({ card, onCancel,onUpdate }) => {
           onChange={(e) => setCardHolder(e.target.value)}
           placeholder="Enter Card Holder Name"
         />
-        {errors.cardHolder && <p className="error-message">{errors.cardHolder}</p>}
+        {errors.cardHolder && (
+          <p className="error-message">{errors.cardHolder}</p>
+        )}
 
         {/* Expiry Date */}
         <label className="text-sm mb-1 block update-label">Expiry Date</label>
@@ -87,7 +89,9 @@ const EditForm = ({ card, onCancel,onUpdate }) => {
           onChange={handleExpiryDateChange}
           placeholder="MM/YY"
         />
-        {errors.expiryDate && <p className="error-message">{errors.expiryDate}</p>}
+        {errors.expiryDate && (
+          <p className="error-message">{errors.expiryDate}</p>
+        )}
 
         {/* Buttons */}
         <div className="flex justify-between buttonss">
