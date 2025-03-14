@@ -5,7 +5,7 @@ export default function SubNavBar(){
   return(
     <>
       <div className="subnav">
-    <div class="subnav-content">
+    <div className="subnav-content">
       <a href="#company">Game Development</a>
       <a href="#team">Creative and Design</a>
       <a href="#careers">Audio and Music</a>

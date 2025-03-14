@@ -1,42 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom"; // Import useParams hook from react-router-dom
-import Swal from "sweetalert2"; // Make sure to import SweetAlert
+//import Swal from "sweetalert2"; // Make sure to import SweetAlert
 import "./EditForm.css";
 
-const EditForm = ({ onSubmit, onCancel }) => {
-  // Get cardId from URL parameters
-  const { cardId } = useParams(); // cardId will be read from the URL
+const EditForm = ({ card, onCancel,onUpdate }) => {
+  
 
   // State for card details and errors
-  const [cardHolder, setCardHolder] = useState("");
-  const [expiryDate, setExpiryDate] = useState("");
-  const [errors, setErrors] = useState({
-    cardHolder: "",
-    expiryDate: "",
-  });
+  const [cardHolder, setCardHolder] = useState(card.cardHolder || "");
+  const [expiryDate, setExpiryDate] = useState(card.expiryDate || "");
+  const [errors, setErrors] = useState({});
 
   ///
-  // Fetch card data when the component mounts
+  // Fetch card data when the component mounts from bancking component
   useEffect(() => {
-    const fetchCardData = async () => {
-      try {
-        const response = await fetch(`http://localhost:8000/api/cards/${cardId}`);
-        const data = await response.json();
-        if (response.ok) {
-          setCardHolder(data.cardHolder || "");
-          setExpiryDate(data.expiryDate || "");
-        } else {
-          console.error("Failed to fetch card data:", data);
-        }
-      } catch (error) {
-        console.error("Error fetching card data:", error);
-      }
-    };
-
-    if (cardId) {
-      fetchCardData();
-    }
-  }, [cardId]);
+    setCardHolder(card.cardHolder || "");
+    setExpiryDate(card.expiryDate|| "");
+  },[card]); //run card again
 
   // Validate form inputs
   const validateForm = () => {
@@ -79,32 +58,8 @@ const EditForm = ({ onSubmit, onCancel }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      try {
-        // Get token from localStorage
-        const token = localStorage.getItem("token");
-
-        const response = await fetch(`http://localhost:8000/api/cards/${cardId}`, {
-          method: "PUT", // or PATCH based on the server's requirement
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token, // Send token without "Bearer" prefix
-          },
-          body: JSON.stringify({ cardHolder, expiryDate }),
-        });
-
-        const data = await response.json();
-        if (response.ok) {
-          onSubmit(data); // Call onSubmit with the updated card data
-        } else {
-          // Handle server error
-          const errorMessage = data.error || "Failed to update card. Please try again.";
-          Swal.fire("Error", errorMessage, "error"); // Show SweetAlert with error message
-          console.error("Failed to update card:", data); // Log the error
-        }
-      } catch (error) {
-        console.error("Error updating card:", error);
-        Swal.fire("Error", "There was an issue updating the card.", "error"); // Show SweetAlert on error
-      }
+      //pass this data to update function on bankingCard componet
+       onUpdate({id:card.id,cardHolder,expiryDate});
     }
   };
 
