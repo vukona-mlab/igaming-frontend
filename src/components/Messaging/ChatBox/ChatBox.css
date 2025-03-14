@@ -53,13 +53,32 @@
 }
 
 .project-status-header {
-  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.view-project-btn {
+  padding: 6px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.view-project-btn:hover {
+  background-color: #0056b3;
 }
 
 .project-status-header h3 {
-  font-size: 16px;
-  color: #495057;
   margin: 0;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .project-status-details {

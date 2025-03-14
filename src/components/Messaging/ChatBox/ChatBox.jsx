@@ -7,6 +7,7 @@ import { auth, db, storage } from "../../../config/firebase";
 import ChatHeader from "../ChatHeader/ChatHeader";
 import { io } from "socket.io-client";
 import ProjectModal from "../ProjectModal/ProjectModal";
+import ProjectDetails from "../ProjectDetails/ProjectDetails";
 
 const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName }) => {
   const [messages, setMessages] = useState([]);
@@ -27,6 +28,7 @@ const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName }) =>
   const [projectData, setProjectData] = useState(null);
   const userRole = localStorage.getItem("role");
   const [projectStatus, setProjectStatus] = useState(null);
+  const [showProjectDetails, setShowProjectDetails] = useState(false);
 
   useEffect(() => {
     if (chatId) {
@@ -198,6 +200,12 @@ const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName }) =>
             <div className="project-status-container">
               <div className="project-status-header">
                 <h3>Project Status</h3>
+                <button 
+                  className="view-project-btn"
+                  onClick={() => setShowProjectDetails(true)}
+                >
+                  View Project
+                </button>
               </div>
               <div className="project-status-details">
                 <div className="status-item">
@@ -242,7 +250,16 @@ const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName }) =>
             />
           </div>
 
-          {/* Project Modal */}
+          {/* Project Details Modal */}
+          {showProjectDetails && projectStatus && (
+            <ProjectDetails 
+              project={projectStatus}
+              onClose={() => setShowProjectDetails(false)}
+              isClient={userRole === "client"}
+            />
+          )}
+
+          {/* Existing Project Modal */}
           {showProjectModal && (
             <ProjectModal
               isOpen={showProjectModal}

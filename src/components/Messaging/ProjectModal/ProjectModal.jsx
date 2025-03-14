@@ -139,7 +139,6 @@ const ProjectModal = ({ isOpen, onClose, chatId, isClientView, projectData }) =>
         </div>
         <div className="project-modal-content">
           {isClientView ? (
-            // Client View - Show Project Details and Approval Buttons
             <div className="project-details">
               <div className="project-detail">
                 <label>Title:</label>
