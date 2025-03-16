@@ -40,6 +40,12 @@
   }
 }
 
+.MessagingPageC .search-container {
+  width: 100%;
+  max-width: 537px;
+  margin-left: 1% !important;
+}
+
 /* Modal overlay styles */
 .escrow-modal-overlay {
   position: fixed;

@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { Button } from "react-bootstrap";
 import "./Transactions.css";
 import Navbar from "../../components/Common/Navbar/navbar";
 import ProfileSubNav from "../../components/Profile/ProfileSubNav/ProfileSubNav";
 import TransactionsSection from "../../components/Payments/TransactionsSection/TransactionsSection";
+import BankingDetailsSection from "../../components/Payments/BankingDetailsSection/BankingDetailsSection"
 import TabsHeader from "../../components/Payments/TabsHeader/TabsHeader";
 const Transactions = () => {
   const [tab, setTab] = useState("Bank Details");
@@ -16,7 +18,8 @@ const Transactions = () => {
           fieldTwo="Transactions"
           handleTabChange={setTab}
         />
-        {tab === "Bank Details" ? <div></div> : <TransactionsSection />}
+       
+        {tab === "Bank Details" ? <BankingDetailsSection/> : <TransactionsSection />}
       </div>
     </div>
   );
