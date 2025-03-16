@@ -10,7 +10,15 @@ import ProjectModal from "../ProjectModal/ProjectModal";
 import ProjectDetails from "../ProjectDetails/ProjectDetails";
 import EscrowForm from "../../Escrow/EscrowForm";
 
-const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName, currentClientEmail, currentFreelancerEmail, onEscrowClick }) => {
+const ChatBox = ({
+  chatId,
+  currentChat,
+  currentClientId,
+  currentClientName,
+  currentClientEmail,
+  currentFreelancerEmail,
+  onEscrowClick,
+}) => {
   const [messages, setMessages] = useState([]);
   const [photoUrl, setPhotoUrl] = useState("");
   const [isUploading, setIsUploading] = useState(false);
@@ -56,7 +64,7 @@ const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName, curr
     // Listen for new messages
     socketRef.current.on("new-message", (data) => {
       if (data.chatId === chatId) {
-        setMessages(prev => [...prev, data.message]);
+        setMessages((prev) => [...prev, data.message]);
       }
     });
 
@@ -200,7 +208,7 @@ const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName, curr
   };
 
   if (loading) return;
-
+  console.log({ projectStatus });
   return (
     <div className="f-chat-box">
       {!currentChat ? (
@@ -213,27 +221,29 @@ const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName, curr
               <div className="project-status-header">
                 <h3>Project Status</h3>
                 <div className="project-status-actions">
-                  <button 
+                  <button
                     className="view-project-btn"
                     onClick={() => setShowProjectDetails(true)}
                   >
                     View Project
                   </button>
-                  {userRole === "freelancer" && projectStatus.status === "approved" && (
-                    <button 
-                      className="create-escrow-btn"
-                      onClick={handleEscrowClick}
-                    >
-                      Create Escrow
-                    </button>
-                  )}
+                  {userRole === "freelancer" &&
+                    projectStatus.status === "approved" && (
+                      <button
+                        className="create-escrow-btn"
+                        onClick={handleEscrowClick}
+                      >
+                        Create Escrow
+                      </button>
+                    )}
                 </div>
               </div>
               <div className="project-status-details">
                 <div className="status-item">
                   <span className="status-label">Status:</span>
                   <span className={`status-value ${projectStatus.status}`}>
-                    {projectStatus.status.charAt(0).toUpperCase() + projectStatus.status.slice(1)}
+                    {projectStatus.status.charAt(0).toUpperCase() +
+                      projectStatus.status.slice(1)}
                   </span>
                 </div>
                 <div className="status-item">
@@ -298,7 +308,7 @@ const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName, curr
               <div className="escrow-modal">
                 <div className="escrow-modal-header">
                   <h2>Update Escrow Agreement</h2>
-                  <button 
+                  <button
                     className="close-button"
                     onClick={() => setShowEscrowModal(false)}
                   >
@@ -312,7 +322,7 @@ const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName, curr
                       await handleEscrowSubmit(escrowData);
                       setShowEscrowModal(false);
                     } catch (error) {
-                      console.error('Error creating escrow:', error);
+                      console.error("Error creating escrow:", error);
                     }
                   }}
                   freelancerId={escrowData.freelancerId}

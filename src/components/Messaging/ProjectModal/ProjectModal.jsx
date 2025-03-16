@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import "./ProjectModal.css";
 import { io } from "socket.io-client";
 
-const ProjectModal = ({ isOpen, onClose, chatId, isClientView, projectData }) => {
+const ProjectModal = ({
+  isOpen,
+  onClose,
+  chatId,
+  isClientView,
+  projectData,
+}) => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -33,32 +39,37 @@ const ProjectModal = ({ isOpen, onClose, chatId, isClientView, projectData }) =>
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      
+
       // Ensure we have the required IDs
       if (!projectData.clientId || !projectData.freelancerId) {
         console.error("Missing required IDs:", { projectData });
         return;
       }
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/projects`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-        body: JSON.stringify({
-          ...formData,
-          clientId: projectData.clientId,
-          freelancerId: projectData.freelancerId,
-          requirements: formData.requirements.split(',').map(req => req.trim()),
-          deadline: parseInt(formData.deadline),
-          chatId,
-        }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/projects`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+          body: JSON.stringify({
+            ...formData,
+            clientId: projectData.clientId,
+            freelancerId: projectData.freelancerId,
+            requirements: formData.requirements
+              .split(",")
+              .map((req) => req.trim()),
+            deadline: parseInt(formData.deadline),
+            chatId,
+          }),
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
-        
+
         // Emit socket event for real-time update
         const socket = io(import.meta.env.VITE_API_URL);
         socket.emit("project-created", {
@@ -66,8 +77,8 @@ const ProjectModal = ({ isOpen, onClose, chatId, isClientView, projectData }) =>
           projectData: {
             ...data.project,
             clientId: projectData.clientId,
-            freelancerId: projectData.freelancerId
-          }
+            freelancerId: projectData.freelancerId,
+          },
         });
 
         onClose();
@@ -80,20 +91,23 @@ const ProjectModal = ({ isOpen, onClose, chatId, isClientView, projectData }) =>
   const handleApprove = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/projects/${projectData.id}/status`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-        body: JSON.stringify({
-          status: "approved"
-        })
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/projects/${projectData.id}/status`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+          body: JSON.stringify({
+            status: "approved",
+          }),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to approve project');
+        throw new Error(errorData.error || "Failed to approve project");
       }
 
       // Send socket notification
@@ -101,7 +115,7 @@ const ProjectModal = ({ isOpen, onClose, chatId, isClientView, projectData }) =>
       socket.emit("project-status-update", {
         chatId,
         projectId: projectData.id,
-        status: "approved"
+        status: "approved",
       });
 
       onClose();
@@ -113,16 +127,19 @@ const ProjectModal = ({ isOpen, onClose, chatId, isClientView, projectData }) =>
   const handleReject = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/projects/${projectData.id}/status`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-        body: JSON.stringify({
-          status: "rejected"
-        }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/projects/${projectData.id}/status`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+          body: JSON.stringify({
+            status: "rejected",
+          }),
+        }
+      );
 
       if (response.ok) {
         // Emit socket event for real-time update
@@ -130,7 +147,7 @@ const ProjectModal = ({ isOpen, onClose, chatId, isClientView, projectData }) =>
         socket.emit("project-status-updated", {
           chatId,
           projectId: projectData.id,
-          status: "rejected"
+          status: "rejected",
         });
         onClose();
       }
@@ -145,8 +162,12 @@ const ProjectModal = ({ isOpen, onClose, chatId, isClientView, projectData }) =>
     <div className="project-modal-overlay">
       <div className="project-modal">
         <div className="project-modal-header">
-          <h2>{isClientView ? "Project Details" : "Create Project Agreement"}</h2>
-          <button className="close-button" onClick={onClose}>&times;</button>
+          <h2>
+            {isClientView ? "Project Details" : "Create Project Agreement"}
+          </h2>
+          <button className="close-button" onClick={onClose}>
+            &times;
+          </button>
         </div>
         <div className="project-modal-content">
           {isClientView ? (
@@ -267,7 +288,11 @@ const ProjectModal = ({ isOpen, onClose, chatId, isClientView, projectData }) =>
                 <button type="submit" className="submit-button">
                   Create Project
                 </button>
-                <button type="button" className="cancel-button" onClick={onClose}>
+                <button
+                  type="button"
+                  className="cancel-button"
+                  onClick={onClose}
+                >
                   Cancel
                 </button>
               </div>
