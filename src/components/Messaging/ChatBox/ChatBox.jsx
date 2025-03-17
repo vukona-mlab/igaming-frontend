@@ -123,7 +123,7 @@ const ChatBox = ({
         `${import.meta.env.VITE_API_URL}/api/projects/chat/${chatId}`,
         {
           headers: {
-            Authorization: token,
+            'Authorization': token,
           },
         }
       );
@@ -207,6 +207,48 @@ const ChatBox = ({
     setShowEscrowModal(true);
   };
 
+  const handleDeleteProject = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error('No authentication token found');
+      }
+
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/projects/${projectStatus.id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Authorization': token,
+            'Content-Type': 'application/json'
+          },
+        }
+      );
+
+      if (response.status === 401) {
+        throw new Error('Unauthorized - Please log in again');
+      }
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to delete project');
+      }
+
+      // Clear project status and close modal if open
+      setProjectStatus(null);
+      setShowProjectDetails(false);
+
+      // Notify socket about project deletion
+      socketRef.current.emit('project-deleted', {
+        chatId,
+        projectId: projectStatus.id
+      });
+
+    } catch (error) {
+      console.error('Error deleting project:', error.message);
+    }
+  };
+
   if (loading) return;
   console.log({ projectStatus });
   return (
@@ -227,6 +269,14 @@ const ChatBox = ({
                   >
                     View Project
                   </button>
+                  {userRole === "client" && projectStatus?.status === "pending" && (
+                    <button
+                      className="delete-project-btn"
+                      onClick={handleDeleteProject}
+                    >
+                      Delete Project
+                    </button>
+                  )}
                   {userRole === "freelancer" &&
                     projectStatus.status === "approved" && (
                       <button

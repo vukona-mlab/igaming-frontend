@@ -463,4 +463,110 @@
 .release-escrow-button:hover {
   background-color: #1e88e5;
   transform: translateY(-1px);
-} 
+}
+
+.pay-now-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.pay-now-button:hover {
+  background-color: #45a049;
+}
+
+.legal-section {
+  background-color: #f8f9fa;
+  padding: 2rem;
+  border-radius: 8px;
+  margin-top: 2rem;
+}
+
+.terms-checkbox {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.submit-section {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.submit-section button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.transaction-container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.transaction-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-label {
+  font-weight: 600;
+  color: #666;
+}
+
+.status-value {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.status-value.completed {
+  background-color: #e6f4ea;
+  color: #1e7e34;
+}
+
+.status-value.pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-value.released {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.release-button {
+  background-color: #2196F3;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.release-button:hover {
+  background-color: #1e88e5;
+  transform: translateY(-1px);
+}
+
+.release-button.released {
+  background-color: #90a4ae;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.release-button.released:hover {
+  background-color: #90a4ae;
+  transform: none;
+}
