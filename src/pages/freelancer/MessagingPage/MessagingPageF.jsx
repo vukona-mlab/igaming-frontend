@@ -4,6 +4,7 @@ import Navbar from "../../../components/Common/Navbar/navbar";
 import ProfileSubNav from "../../../components/Profile/ProfileSubNav/ProfileSubNav";
 import PeopleComponent from "../../../components/Messaging/PeopleComponent/PeopleComponent";
 import ChatBox from "../../../components/Messaging/ChatBox/ChatBox";
+import SearchBar from "../../../components/SearchBar/SearchBar";
 
 const MessagingPage = () => {
   const [loading, setLoading] = useState(false);
@@ -12,6 +13,18 @@ const MessagingPage = () => {
   const [currentChat, setCurrentChat] = useState(null);
   const [currentClientId, setCurrentClientId] = useState("");
   const [currentClientName, setCurrentClientName] = useState("");
+
+  const [query, setQuery] = useState("");
+
+   const search = (data) => {
+    return data.filter((item) => 
+      item.name.toLowerCase().includes(query.toLowerCase())
+    );
+  };
+
+  const filteredChats = chats.filter((chat) =>
+    chat.name.toLowerCase().includes(query.toLowerCase())
+  );
 
   const token = localStorage.getItem("token");
   const url = import.meta.env.VITE_API_URL;
@@ -82,6 +95,10 @@ const MessagingPage = () => {
     <div className="MessagingPageF">
       <Navbar />
       <ProfileSubNav />
+       <SearchBar 
+        placeholder="Search..." 
+        onSearch={setQuery}
+      />
       <div className="messagePageContainer">
         <PeopleComponent
           people={chats}
