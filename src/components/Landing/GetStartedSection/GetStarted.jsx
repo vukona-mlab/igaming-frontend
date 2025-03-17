@@ -19,7 +19,7 @@ export default function GetStarted() {
         <span className="works">Works</span>
       </h1>
       <div className="second-heading">
-        Undertand the process before you hire your guy
+        Understand the process before you hire your guy
       </div>
       <div className="cards-containers">
         <Container>
@@ -32,7 +32,7 @@ export default function GetStarted() {
                     width="300"
                   ></img>
                 </div>
-                <hr />
+                
                 <p>Access a pool of top talent across gaming categories.</p>
               </div>
             </Col>
@@ -41,7 +41,6 @@ export default function GetStarted() {
                 <div className="img-card">
                   <img src="/public/images/green-red-img.png" width="300"></img>
                 </div>
-                <hr />
                 <p>
                   Get quality done quickly and within <br />
                   budget.
@@ -56,7 +55,6 @@ export default function GetStarted() {
                     width="300"
                   ></img>
                 </div>
-                <hr />
                 <p>
                   Only pay when you're happy with the <br />
                   services.
