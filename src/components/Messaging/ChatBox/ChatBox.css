@@ -6,6 +6,8 @@
   border: 2px solid #0000000d;
   display: flex;
   flex-direction: column;
+  position: relative;
+  z-index: 1;
 }
 
 .f-chat-header-user img {
@@ -17,7 +19,7 @@
   flex: 4;
 }
 .f-messages-container {
-  height: calc(500px - 70px);
+  height: calc(500px - 70px - 80px);
 }
 .f-messages-wrapper {
   height: 100%;
@@ -45,3 +47,121 @@
     height: 800px;
   }
 } */
+
+.project-status-container {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+  padding: 15px 20px;
+}
+
+.project-status-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.view-project-btn,
+.delete-project-btn {
+  padding: 6px 12px;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.view-project-btn {
+  background-color: #212529;
+}
+
+.view-project-btn:hover {
+  background-color: #212529a8;
+}
+
+.delete-project-btn {
+  background-color: #dc3545;
+}
+
+.delete-project-btn:hover {
+  background-color: #c82333;
+}
+
+.project-status-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.project-status-details {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-label {
+  font-weight: 600;
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.status-value {
+  font-size: 14px;
+  color: #212529;
+}
+
+.status-value.pending {
+  color: #ffc107;
+}
+
+.status-value.approved {
+  color: #28a745;
+}
+
+.status-value.rejected {
+  color: #dc3545;
+}
+
+.status-value.completed {
+  color: #17a2b8;
+}
+
+.project-status-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.create-escrow-btn {
+  padding: 8px 16px;
+  background-color: #1dbf73;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.create-escrow-btn:hover {
+  background-color: #19a463;
+}
+
+/* Modal overlay styles */
+.modal-backdrop {
+  z-index: 1050;
+}
+
+.modal {
+  z-index: 1055;
+}

@@ -1,21 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 import "./AddDetails.css";
 //import Bankingdetails from"../../../components/Payments/BankingDetailsSection/BankingDetailsSection"
-
+//type, bank_code, account_number, name
 const AddBankDetailsForm = () => {
-  const [cardNumber, setCardNumber] = useState("");
-  const [expiryDate, setExpiryDate] = useState("");
-  const [cardHolderName, setCardHolderName] = useState("");
-  const [addressLine1, setAddressLine1] = useState("");
-  const [addressLine2, setAddressLine2] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [postalCode, setPostalCode] = useState("");
-  const [countryCode, setCountryCode] = useState("ZA");
+  const [accountNumber, setAccountNumber] = useState("");
+  const [name, setName] = useState("");
+  const [type, setType] = useState("basa");
+  const [bankCode, setBankCode] = useState("");
   const [showForm, setShowForm] = useState(false);
+  const [banks, setBanks] = useState([]);
 
+  const token = localStorage.getItem("token") || "";
+
+  useEffect(() => {
+    const fetchBanks = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/api/banks", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log(data);
+        if (data) {
+          setBanks(data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching cards:", error);
+      }
+    };
+
+    fetchBanks();
+  }, [token]);
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -24,9 +49,9 @@ const AddBankDetailsForm = () => {
 
     if (!token) {
       Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'No authentication token found. Please log in again.',
+        icon: "error",
+        title: "Error",
+        text: "No authentication token found. Please log in again.",
       });
       return;
     }
@@ -34,21 +59,18 @@ const AddBankDetailsForm = () => {
     console.log("Token:", token); // Check if token is available
 
     // Use the hardcoded API URL
-    const apiUrl = "http://localhost:8000/api/cards"; // Replace with your localhost URL
+    const apiUrl = "http://localhost:8000/api/bank-accounts"; // Replace with your localhost URL
 
     // Prepare the data to send
     const bankDetails = {
-      cardNumber,
-      expiryDate,
-      cardHolderName,
-      addressLine1,
-      addressLine2,
-      city,
-      state,
-      postalCode,
-      countryCode,
+      userId: localStorage.getItem("uid"),
+      account_number: accountNumber,
+      name,
+      type,
+      bank_code: bankCode,
     };
 
+    console.log({ bankDetails });
     try {
       // Send the data to the API using a POST request
       const response = await fetch(apiUrl, {
@@ -65,38 +87,37 @@ const AddBankDetailsForm = () => {
         console.log("Data submitted successfully:", data);
 
         // Clear the form fields
-        setCardNumber("");
-        setExpiryDate("");
-        setCardHolderName("");
-        setAddressLine1("");
-        setAddressLine2("");
-        setCity("");
-        setState("");
-        setPostalCode("");
-        setCountryCode("ZA");
+        setBankCode("");
+        setAccountNumber("");
+        setName("");
+        setType("");
 
         setShowForm(false);
 
         // Show success alert with SweetAlert
         Swal.fire({
-          icon: 'success',
-          title: 'Success!',
-          text: 'Banking details have been added successfully.',
-          confirmButtonText: 'Okay',
+          icon: "success",
+          title: "Success!",
+          text: "Banking details have been added successfully.",
+          confirmButtonText: "Okay",
         });
       } else {
-        console.error("Error submitting data:", response.statusText, data.error);
+        console.error(
+          "Error submitting data:",
+          response.statusText,
+          data.error
+        );
         Swal.fire({
-          icon: 'error',
-          title: 'Error',
+          icon: "error",
+          title: "Error",
           text: `Submission failed with status: ${response.statusText}, ${data.error}`,
         });
       }
     } catch (error) {
       console.error("Network error:", error);
       Swal.fire({
-        icon: 'error',
-        title: 'Error',
+        icon: "error",
+        title: "Error",
         text: `Network error: ${error.message}`,
       });
     }
@@ -117,79 +138,51 @@ const AddBankDetailsForm = () => {
             {/* Form Fields */}
             <Form.Control
               type="text"
-              placeholder="Card Number"
+              placeholder="Account Number"
               className="input-field mb-3"
-              value={cardNumber}
-              onChange={(e) => setCardNumber(e.target.value)}
+              value={accountNumber}
+              onChange={(e) => setAccountNumber(e.target.value)}
             />
 
             <Form.Control
               type="text"
-              placeholder="Expiry Date (MM/YY)"
+              placeholder="Account holder name"
               className="input-field mb-3"
-              value={expiryDate}
-              onChange={(e) => setExpiryDate(e.target.value)}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
 
+            <Form.Group className="mb-3">
+              <Form.Label>Select Bank</Form.Label>
+              <Form.Control
+                as="select"
+                onChange={(e) => setBankCode(e.target.value)}
+              >
+                <option value="">Select a Bank</option>
+                {banks &&
+                  banks.length > 0 &&
+                  banks.map((bank) => (
+                    <option key={bank.id} value={bank.code}>
+                      {bank.name}
+                    </option>
+                  ))}
+              </Form.Control>
+            </Form.Group>
             <Form.Control
               type="text"
-              placeholder="Cardholder Name"
+              placeholder="Type"
               className="input-field mb-3"
-              value={cardHolderName}
-              onChange={(e) => setCardHolderName(e.target.value)}
-            />
-
-            <Form.Control
-              type="text"
-              placeholder="Address Line 1"
-              className="input-field mb-3"
-              value={addressLine1}
-              onChange={(e) => setAddressLine1(e.target.value)}
-            />
-
-            <Form.Control
-              type="text"
-              placeholder="Address Line 2"
-              className="input-field mb-3"
-              value={addressLine2}
-              onChange={(e) => setAddressLine2(e.target.value)}
-            />
-
-            <Form.Control
-              type="text"
-              placeholder="City"
-              className="input-field mb-3"
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-            />
-
-            <Form.Control
-              type="text"
-              placeholder="State"
-              className="input-field mb-3"
-              value={state}
-              onChange={(e) => setState(e.target.value)}
-            />
-
-            <Form.Control
-              type="text"
-              placeholder="Postal Code"
-              className="input-field mb-3"
-              value={postalCode}
-              onChange={(e) => setPostalCode(e.target.value)}
-            />
-
-            <Form.Control
-              type="text"
-              placeholder="Country Code"
-              className="input-field mb-3"
-              value={countryCode}
+              value={type}
               readOnly // Keeps the default as "ZA"
             />
 
             {/* Buttons */}
             <div className="button-group">
-              <Button variant="light" className="cancel-btn" onClick={() => setShowForm(false)}>
+              <Button
+                variant="light"
+                className="cancel-btn"
+                onClick={() => setShowForm(false)}
+              >
                 Cancel
               </Button>
               <Button variant="dark" type="submit" className="submit-btn">
@@ -199,7 +192,6 @@ const AddBankDetailsForm = () => {
           </Form>
         </div>
       )}
-    
     </div>
   );
 };
