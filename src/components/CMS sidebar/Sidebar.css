@@ -1,0 +1,102 @@
+/* Sidebar.css */
+
+.sidebar {
+    height: 100vh;
+    background-color: black;
+    width: 30%;
+    transition: width 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.sidebar-closed {
+    width: 4rem;
+    /* 16px */
+}
+
+.sidebar-open {
+    width: 8rem;
+    /* 64px */
+}
+
+.sidebar-button {
+    color: white;
+    font-size: 1.9rem;
+    padding: 1rem;
+    padding-left: 40px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    /* Ensure no background */
+    outline: none;
+}
+
+
+/* Sidebar item alignment */
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    border-radius: 0.5rem;
+    transition: background 0.2s, color 0.2s;
+}
+
+
+/* Shift items slightly to the left */
+
+.sidebar-item:hover,
+.sidebar-item.active {
+    background-color: red;
+    color: white;
+}
+
+.sidebar-item {
+    padding-left: 0.75rem;
+    /* Adjust padding to shift left */
+}
+
+
+/* Sidebar Profile */
+
+.sidebar-profile {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background-color: red;
+    color: white;
+    border-radius: 0.5rem;
+    margin: 0 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.profile-img {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+}
+
+.profile-details {
+    font-size: 0.8rem;
+}
+
+.profile-details p {
+    margin: 0;
+}
+
+.hidden {
+    display: none;
+}

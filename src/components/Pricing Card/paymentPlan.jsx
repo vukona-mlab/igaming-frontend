@@ -42,7 +42,7 @@ const PaymentPlan = ({ projectId }) => {
 
     const fetchProjectName = async () => {
       try {
-        const response = await axios.get(`https://your-backend-url.com/api/projects/${projectId}`);
+        const response = await axios.get(`http://localhost:8000/api/projects/${projectId}`);
         setProjectName(response.data.name || "Unknown Project");
       } catch (error) {
         console.error("Error fetching project name:", error);
@@ -83,7 +83,7 @@ const PaymentPlan = ({ projectId }) => {
         price: currentPlan.price,
         deliveryDays,
       };
-      const response = await axios.post("https://your-backend-url.com/api/payments", paymentData);
+      const response = await axios.post("http://localhost:8000/api/payments", paymentData);
       alert(`Payment Successful! Transaction ID: ${response.data.transactionId}`);
     } catch (error) {
       console.error("Payment failed:", error);

@@ -1,0 +1,65 @@
+/* Package label positioning */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+.package-label {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px 25px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 15px;
+    text-align: center;
+    min-width: 80px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Background colors for each label */
+
+.basic-bg {
+    background-color: #e6f9e6;
+    color: #28a745;
+}
+
+.standard-bg {
+    background-color: #f2e6ff;
+    color: #6f42c1;
+}
+
+.premium-bg {
+    background-color: #e6f2ff;
+    color: #007bff;
+}
+
+.ultimate-bg {
+    background-color: #e6fffa;
+    color: #20c997;
+}
+
+
+/* Card styles */
+
+.card {
+    overflow: hidden;
+    padding-top: 80px;
+}
+
+.card-body {
+    border-radius: 40px;
+}
+
+.card-body ul {
+    padding: 0;
+    margin: 15px 0;
+}
+
+.card-body ul li {
+    font-size: 14px;
+    color: #666;
+}
+
+.card-title {
+    font-family: 'Poppins', sans-serif;
+}
