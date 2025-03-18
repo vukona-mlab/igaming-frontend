@@ -34,11 +34,11 @@ const Sidebar = () => {
       {/* Bottom Profile Section */}
       <div className="mb-4">
         <div className="flex items-center space-x-3 p-4 bg-red-600 text-white rounded-lg mx-2 cursor-pointer">
-          <img
-            src="https://randomuser.me/api/portraits/women/44.jpg"
-            alt="User"
-            className="w-10 h-10 rounded-full"
-          />
+        <img
+  src="https://randomuser.me/api/portraits/women/44.jpg"
+  alt="User"
+  className="profile-img"
+/>
           {isOpen && (
             <div>
               <p className="font-semibold">Anita Cruz</p>

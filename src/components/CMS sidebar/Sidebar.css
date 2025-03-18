@@ -2,22 +2,29 @@
 
 .sidebar {
     height: 100vh;
+    /* Keep full height */
     background-color: black;
-    width: 30%;
+    width: 18%;
+    /* Adjust width to about a quarter */
     transition: width 0.3s ease-in-out;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-}
-
-.sidebar-closed {
-    width: 4rem;
-    /* 16px */
+    position: fixed;
+    /* Fix it to the side */
+    left: 0;
+    top: 0;
+    bottom: 0;
 }
 
 .sidebar-open {
-    width: 8rem;
-    /* 64px */
+    width: 22%;
+    /* Slightly wider when opened */
+}
+
+.sidebar-closed {
+    width: 6%;
+    /* Shrinks when collapsed */
 }
 
 .sidebar-button {
@@ -84,9 +91,14 @@
 }
 
 .profile-img {
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
+    /* Ensures it's circular */
+    object-fit: cover;
+    /* Ensures the image fills the circle without distortion */
+    border: 2px solid white;
+    /* Optional: adds a border for visibility */
 }
 
 .profile-details {
