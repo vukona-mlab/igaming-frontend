@@ -84,6 +84,29 @@
   background-color: #2478DB;
 }
 
+.invitation-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.decline-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.decline-button:hover {
+  background-color: #c82333;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .zoom-modal {

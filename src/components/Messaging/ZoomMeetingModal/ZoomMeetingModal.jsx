@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './ZoomMeetingModal.css';
 
-const ZoomMeetingModal = ({ isOpen, onClose, meetingDetails }) => {
+const ZoomMeetingModal = ({ isOpen, onClose, meetingDetails, isInvitation, onResponse }) => {
   const [zoomWindow, setZoomWindow] = useState(null);
 
-  if (!isOpen || !meetingDetails) return null;
+  if (!isOpen) return null;
 
   const getMeetingNumber = (url) => {
-    const match = url.match(/j\/(\d+)/);
+    const match = url?.match(/j\/(\d+)/);
     return match ? match[1] : null;
   };
 
@@ -43,23 +43,50 @@ const ZoomMeetingModal = ({ isOpen, onClose, meetingDetails }) => {
         }
       }, 1000);
     }
+
+    if (onResponse) {
+      onResponse('accepted');
+    }
+  };
+
+  const handleDecline = () => {
+    if (onResponse) {
+      onResponse('declined');
+    }
+    onClose();
   };
 
   return (
     <div className="zoom-modal-overlay">
       <div className="zoom-modal">
         <div className="zoom-modal-header">
-          <h2>Video Call</h2>
+          <h2>{isInvitation ? 'Meeting Invitation' : 'Video Call'}</h2>
           <button onClick={onClose} className="close-button">×</button>
         </div>
         <div className="zoom-modal-content">
           <div className="meeting-info">
-            <h3>Meeting Details</h3>
-            <p>Meeting ID: {getMeetingNumber(meetingDetails.join_url)}</p>
-            <p>Password: {meetingDetails.password}</p>
-            <button className="join-button" onClick={handleJoinMeeting}>
-              Join Meeting
-            </button>
+            {isInvitation ? (
+              <>
+                <h3>{meetingDetails.initiatorName} is inviting you to join a meeting</h3>
+                <div className="invitation-buttons">
+                  <button className="join-button" onClick={handleJoinMeeting}>
+                    Accept & Join
+                  </button>
+                  <button className="decline-button" onClick={handleDecline}>
+                    Decline
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <h3>Meeting Details</h3>
+                <p>Meeting ID: {getMeetingNumber(meetingDetails?.join_url)}</p>
+                <p>Password: {meetingDetails?.password}</p>
+                <button className="join-button" onClick={handleJoinMeeting}>
+                  Join Meeting
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>

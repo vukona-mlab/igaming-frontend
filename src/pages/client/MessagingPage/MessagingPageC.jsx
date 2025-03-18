@@ -6,6 +6,8 @@ import SearchBar from "../../../components/SearchBar/SearchBar";
 import PeopleComponent from "../../../components/Messaging/PeopleComponent/PeopleComponent";
 import ChatBox from "../../../components/Messaging/ChatBox/ChatBox";
 import EscrowForm from "../../../components/Escrow/EscrowForm";
+import io from "socket.io-client";
+import ZoomMeetingModal from "../../../components/Messaging/ZoomMeetingModal/ZoomMeetingModal";
 
 const MessagingPageC = () => {
   const [loading, setLoading] = useState(false);
@@ -17,6 +19,9 @@ const MessagingPageC = () => {
   const [currentFreelancerName, setCurrentFreelancerName] = useState("");
   const [showEscrowModal, setShowEscrowModal] = useState(false);
   const [escrowData, setEscrowData] = useState(null);
+  const [showZoomModal, setShowZoomModal] = useState(false);
+  const [meetingDetails, setMeetingDetails] = useState(null);
+  const [isInvitation, setIsInvitation] = useState(false);
 
   const token = localStorage.getItem("token");
   const url = import.meta.env.VITE_API_URL;
@@ -41,6 +46,19 @@ const MessagingPageC = () => {
     }
   }, [currentChatId, chats]);
 
+  useEffect(() => {
+    const socket = io(url);
+    
+    socket.on('video-call-invitation', (data) => {
+      if (data.recipientId === localStorage.getItem('uid') && data.initiatorRole === 'freelancer') {
+        setMeetingDetails(data.meetingDetails);
+        setIsInvitation(true);
+        setShowZoomModal(true);
+      }
+    });
+
+    return () => socket.disconnect();
+  }, []);
   const handleEscrow = () => {
     const escrowData = {
       freelancerId: currentChat.participants[0].uid,
@@ -163,6 +181,14 @@ const MessagingPageC = () => {
           project={currentChat?.project}
           isModal={true}
           onClose={() => setShowEscrowModal(false)}
+        />
+      )}
+      {showZoomModal && (
+        <ZoomMeetingModal
+          isOpen={showZoomModal}
+          onClose={() => setShowZoomModal(false)}
+          meetingDetails={meetingDetails}
+          isInvitation={isInvitation}
         />
       )}
     </div>
