@@ -13,20 +13,14 @@ const ChatInput = ({
   sendMessage,
 }) => {
   const handleFileChange = (event) => {
-    // If the user selects a file manually, we handle it
     setFiles(event.target.files);
   };
 
   const handleImageCapture = (event) => {
-    // If the user captures an image, set the image icon preview
-    const capturedFile = event.target.files[0];
-    if (capturedFile) {
-      setFileIcon(URL.createObjectURL(capturedFile));
-    }
+    setFileIcon(URL.createObjectURL(event.target.files[0]));
   };
 
   const handleSendClick = () => {
-    // If there's text, files, or a captured image, send the message
     if (text.trim() || files || fileIcon) {
       sendMessage(text, files, fileIcon);
       setText("");
@@ -64,8 +58,8 @@ const ChatInput = ({
           onChange={(e) => setText(e.target.value)}
         />
 
-        {/* Show Send Icon when input is not empty, otherwise show Camera Icon */}
-        {text || files || fileIcon ? (
+        {/* Show Camera Icon when input is empty, else show Send Icon */}
+        {text || files ? (
           <button className="icon-button send-button" onClick={handleSendClick}>
             <img
               src="/images/send-icon.png"
