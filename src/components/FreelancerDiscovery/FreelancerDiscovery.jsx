@@ -9,13 +9,18 @@ const FreelancerDiscovery = ({ searchQuery }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [columns, setColumns] = useState(4);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [pageSize, setPageSize] = useState(30);
+
   const navigation = useNavigate();
+
   useEffect(() => {
     fetchFreelancers();
     updateColumns();
     window.addEventListener("resize", updateColumns);
     return () => window.removeEventListener("resize", updateColumns);
-  }, []);
+  }, [currentPage, pageSize]);
 
   const updateColumns = () => {
     const width = window.innerWidth;
@@ -61,7 +66,7 @@ const FreelancerDiscovery = ({ searchQuery }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "http://localhost:8000/api/freelancers/projects",
+        `http://localhost:8000/api/freelancers/projects?page=${currentPage}&pageSize=${pageSize}`,
         {
           headers: {
             Authorization: token,
@@ -175,32 +180,56 @@ const FreelancerDiscovery = ({ searchQuery }) => {
     rows.push(filteredFreelancers.slice(i, i + columns));
   }
 
+  const handleNext = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   return (
     <div className="freelancer-discovery">
-    {rows.map((row, rowIndex) => (
-      <div key={rowIndex} className="freelancer-row">
-        {row.map((freelancer) => (
-          <div
-            key={freelancer.id}
-            className="freelancer-card-wrapper"
-            onClick={() => navigation(`/discovery/${freelancer.id}`)}
-          >
-            <FreelancerCard
-              profilePicture={freelancer.profilePicture || defaultProfile}
-              name={freelancer.displayName || "Anonymous Freelancer"}
-              jobTitle={freelancer.jobTitle || "Freelancer"}
-              projectsCompleted={freelancer.projects?.length || 0}
-              rating={4.5}
-              messageIcon={messageIcon}
-              onMessageClick={() => handleMessageClick(freelancer.id)}
-            />
-             {/* Hover message */}
-          <div className="hover-message">Click image to view more</div>
-          </div>
-        ))}
+      {rows.map((row, rowIndex) => (
+        <div key={rowIndex} className="freelancer-row">
+          {row.map((freelancer) => (
+            <div
+              key={freelancer.id}
+              className="freelancer-card-wrapper"
+              onClick={() => navigation(`/discovery/${freelancer.id}`)}
+            >
+              <FreelancerCard
+                profilePicture={freelancer.profilePicture || defaultProfile}
+                name={freelancer.displayName || "Anonymous Freelancer"}
+                jobTitle={freelancer.jobTitle || "Freelancer"}
+                projectsCompleted={freelancer.projects?.length || 0}
+                rating={4.5}
+                messageIcon={messageIcon}
+                onMessageClick={() => handleMessageClick(freelancer.id)}
+              />
+              {/* Hover message */}
+              <div className="hover-message">Click image to view more</div>
+            </div>
+          ))}
+        </div>
+      ))}
+      {/* Pagination Controls */}
+      <div className="pagination">
+        <button onClick={handlePrevious} disabled={currentPage === 1}>
+          Previous
+        </button>
+        <span>
+          Page {currentPage} of {totalPages}
+        </span>
+        <button onClick={handleNext} disabled={currentPage === totalPages}>
+          Next
+        </button>
       </div>
-    ))}
-  </div>
+    </div>
   );
 };
 
