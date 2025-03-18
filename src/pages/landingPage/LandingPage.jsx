@@ -20,7 +20,6 @@ function LandingPage() {
       <Showcase />
       <About />
       <GetStarted />
-      <TopFreelancers />
       <PopularServices />
       <MadeOnRI />
       <TestimonialsSection />

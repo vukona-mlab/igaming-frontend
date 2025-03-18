@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ChatHeader.css";
-import { BsThreeDotsVertical, BsPersonCircle } from "react-icons/bs";
+import { BsThreeDotsVertical, BsPersonCircle, BsCameraVideo } from "react-icons/bs";
 import { io } from "socket.io-client";
 import ProjectModal from "../ProjectModal/ProjectModal";
+import ZoomMeetingModal from '../ZoomMeetingModal/ZoomMeetingModal';
 
 const url = "http://localhost:8000";
 const socket = io(url, { transports: ["websocket"] });
@@ -15,6 +16,8 @@ const ChatHeader = ({ currentChat }) => {
   const navigate = useNavigate();
   const [activeStatus, setActiveStatus] = useState(false);
   const [showProjectModal, setShowProjectModal] = useState(false);
+  const [showZoomModal, setShowZoomModal] = useState(false);
+  const [meetingDetails, setMeetingDetails] = useState(null);
 
   // Get user role and ID from localStorage
   const userRole = localStorage.getItem("role");
@@ -71,6 +74,45 @@ const ChatHeader = ({ currentChat }) => {
     // TODO: Implement delete chat logic
     setShowMenu(false);
   };
+  const handleVideoCall = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${url}/api/zoom/meetings`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        },
+        body: JSON.stringify({
+          topic: `Meeting with ${otherParticipant?.name}`,
+          type: 1, // Instant meeting
+          duration: 60,
+          start_time: new Date().toISOString(),
+          agenda: `Video call between ${currentUser?.name} and ${otherParticipant?.name}`,
+          settings: {
+            join_before_host: true,
+            waiting_room: false,
+            meeting_authentication: false,
+            host_video: true,
+            participant_video: true,
+            auto_recording: 'none'
+          }
+        })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setMeetingDetails(data);
+        setShowZoomModal(true);
+      } else {
+        console.error('Failed to create Zoom meeting');
+      }
+    } catch (error) {
+      console.error('Error creating Zoom meeting:', error);
+    }
+    setShowMenu(false);
+  };
+
   return (
     <>
       <div className="chat-header">
@@ -101,6 +143,9 @@ const ChatHeader = ({ currentChat }) => {
         </div>
 
         <div className="chat-header-right">
+          <button className="video-call-button">
+            <BsCameraVideo size={24} onClick={handleVideoCall} />
+          </button>
           <button
             className="options-button"
             onClick={() => setShowMenu(!showMenu)}
@@ -137,6 +182,11 @@ const ChatHeader = ({ currentChat }) => {
             ? currentUser?.email
             : otherParticipant?.email,
         }}
+      />
+      <ZoomMeetingModal 
+        isOpen={showZoomModal}
+        onClose={() => setShowZoomModal(false)}
+        meetingDetails={meetingDetails}
       />
     </>
   );

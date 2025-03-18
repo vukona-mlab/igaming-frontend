@@ -9,7 +9,6 @@ import { useNavigate } from "react-router";
 const TopFreelancers = () => {
   const [loading, setLoading] = useState(true);
   const [freelancers, setFreelancers] = useState([]);
-  const url = "http://localhost:8000/api/freelancers/projects";
   const navigation = useNavigate();
 
   useEffect(() => {
@@ -18,9 +17,12 @@ const TopFreelancers = () => {
 
   const getTopFreelancers = async () => {
     try {
-      const response = await fetch(url, {
-        method: "GET",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/freelancers`,
+        {
+          method: "GET",
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
