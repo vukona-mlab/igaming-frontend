@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./DocumentsHeader.module.css";
+import styles from "./DocumentsHeaderTabs.module.css";
 
 const DocumentsHeader = ({ tabOne, tabTwo, tabThree, handleTabChange }) => {
   const [currentTab, setCurrentTab] = useState(tabOne);
