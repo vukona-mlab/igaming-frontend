@@ -1,4 +1,5 @@
 import "./App.css";
+import DocumentsTable from "./components/Documents/DocumentsTable/DocumentsTable";
 import NavBar from "./components/Common/Navbar/navbar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
