@@ -44,10 +44,31 @@ const MessagingPage = () => {
   }, [currentChatId, chats]);
 
   useEffect(() => {
+    // Request notification permission when component mounts
+    if (Notification.permission !== 'granted') {
+      Notification.requestPermission();
+    }
+
     const socket = io(url);
     
     socket.on('video-call-invitation', (data) => {
       if (data.recipientId === localStorage.getItem('uid') && data.initiatorRole === 'client') {
+        // Show browser notification
+        if (Notification.permission === 'granted') {
+          const notification = new Notification('Video Call Invitation', {
+            body: `${data.initiatorName} is inviting you to a video call`,
+            icon: '/path/to/notification-icon.png' // Add your notification icon
+          });
+
+          notification.onclick = () => {
+            window.focus();
+            setMeetingDetails(data.meetingDetails);
+            setIsInvitation(true);
+            setShowZoomModal(true);
+          };
+        }
+
+        // Show modal
         setMeetingDetails(data.meetingDetails);
         setIsInvitation(true);
         setShowZoomModal(true);

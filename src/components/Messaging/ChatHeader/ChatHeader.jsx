@@ -109,17 +109,36 @@ const ChatHeader = ({ currentChat }) => {
 
       if (response.ok) {
         const data = await response.json();
+        
         // Emit socket event for notification
         socket.emit('video-call-invitation', {
           chatId: currentChat?.id,
           meetingDetails: data,
           initiatorName: currentUser?.name,
           recipientId: otherParticipant?.uid,
-          initiatorRole: userRole
+          initiatorRole: userRole,
+          initiatorId: currentUserId
         });
+
+        // Show success notification to initiator
+        if (Notification.permission === 'granted') {
+          new Notification('Video Call Initiated', {
+            body: `Invitation sent to ${otherParticipant?.name}`,
+            icon: '/path/to/notification-icon.png'
+          });
+        }
+
         setMeetingDetails(data);
         setShowZoomModal(true);
       } else {
+        // Show error notification
+        if (Notification.permission === 'granted') {
+          new Notification('Video Call Error', {
+            body: 'Failed to create video call. Please try again.',
+            icon: '/path/to/notification-icon.png'
+          });
+        }
+        
         const errorData = await response.json();
         console.error('Failed to create meeting:', errorData);
         alert('Failed to create video call. Please try again.');

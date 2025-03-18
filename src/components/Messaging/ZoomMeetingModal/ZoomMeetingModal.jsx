@@ -44,12 +44,26 @@ const ZoomMeetingModal = ({ isOpen, onClose, meetingDetails, isInvitation, onRes
       }, 1000);
     }
 
+    if (Notification.permission === 'granted') {
+      new Notification('Joining Meeting', {
+        body: 'Opening Zoom meeting in a new window',
+        icon: '/path/to/notification-icon.png'
+      });
+    }
+
     if (onResponse) {
       onResponse('accepted');
     }
   };
 
   const handleDecline = () => {
+    if (Notification.permission === 'granted') {
+      new Notification('Meeting Declined', {
+        body: 'You declined the video call invitation',
+        icon: '/path/to/notification-icon.png'
+      });
+    }
+
     if (onResponse) {
       onResponse('declined');
     }
