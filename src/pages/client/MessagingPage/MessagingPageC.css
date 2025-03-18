@@ -10,6 +10,8 @@
   display: flex;
   justify-content: center;
   gap: 15px;
+  position: relative;
+  z-index: 1;
 }
 
 .loading {
@@ -38,8 +40,29 @@
   }
 }
 
-.MessagingPageC .search-container{
-  width: 100%; 
-  max-width: 537px; 
-  margin-left: 1% !important; 
+.MessagingPageC .search-container {
+  width: 100%;
+  max-width: 537px;
+  margin-left: 1% !important;
+}
+
+/* Modal overlay styles */
+.escrow-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1100;
+}
+
+/* Adjust modal width for messaging page */
+.escrow-modal {
+  width: 90%;
+  max-width: 1000px;
+  margin: 20px auto;
 }
