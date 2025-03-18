@@ -4,24 +4,24 @@ import { Container, Button, Form, Table } from "react-bootstrap";
 import axios from "axios";
 
 const DocumentUpload = () => {
-  // Predefined document types
-  const documentTypes = [
-    "Identity Document",
-    "Proof of Residence",
-    "Professional Certificate",
-    "Driver's Licence",
-    "Passport",
-    "Bank Statement",
-  ];
+  // Predefined document types as an object
+  const documentTypes = {
+    identity: "Identity Document",
+    residence: "Proof of Residence",
+    certificate: "Professional Certificate",
+    license: "Driver's Licence",
+    passport: "Passport",
+    bank: "Bank Statement",
+  };
 
   // Function to get the current date in YYYY-MM-DD format
   const getCurrentDate = () => new Date().toISOString().split("T")[0];
 
   // State to store documents
   const [documents, setDocuments] = useState(
-    documentTypes.map((type, index) => ({
-      id: index, // Using index-based ID to ensure consistency
-      type, // Assigning predefined document type
+    Object.entries(documentTypes).map(([key, type], index) => ({
+      id: key,
+      type,
       date: "",
       file: null,
       url: "",
@@ -35,12 +35,7 @@ const DocumentUpload = () => {
       setDocuments((prevDocs) =>
         prevDocs.map((doc) =>
           doc.id === id
-            ? {
-                ...doc,
-                file,
-                url: URL.createObjectURL(file),
-                date: getCurrentDate(), // Auto-assign current date
-              }
+            ? { ...doc, file, url: URL.createObjectURL(file), date: getCurrentDate() }
             : doc
         )
       );
@@ -59,12 +54,7 @@ const DocumentUpload = () => {
   // Reset all fields when canceling
   const handleCancel = () => {
     setDocuments((prevDocs) =>
-      prevDocs.map((doc) => ({
-        ...doc,
-        file: null,
-        url: "",
-        date: "",
-      }))
+      prevDocs.map((doc) => ({ ...doc, file: null, url: "", date: "" }))
     );
   };
 
@@ -80,12 +70,12 @@ const DocumentUpload = () => {
         formData.append("documents", doc.file);
         formData.append(
           "documentsArr[]",
-          JSON.stringify({documentName:doc.file.name, documentType: doc.type, dateAdded: doc.date })
+          JSON.stringify({ documentName: doc.file.name, documentType: doc.type, dateAdded: doc.date })
         );
       }
     });
 
-    console.log("Submitting Documents:", documents); // Debugging output
+    console.log("Submitting Documents:", documents);
 
     try {
       const response = await axios.put(
@@ -143,20 +133,10 @@ const DocumentUpload = () => {
               <td>
                 {doc.file && (
                   <>
-                    <Button
-                      variant="success"
-                      size="sm"
-                      className="me-2"
-                      href={doc.url}
-                      target="_blank"
-                    >
+                    <Button variant="success" size="sm" className="me-2" href={doc.url} target="_blank">
                       <FaEye /> View
                     </Button>
-                    <Button
-                      variant="danger"
-                      size="sm"
-                      onClick={() => handleDelete(doc.id)}
-                    >
+                    <Button variant="danger" size="sm" onClick={() => handleDelete(doc.id)}>
                       <FaTrash /> Remove
                     </Button>
                   </>
