@@ -19,6 +19,7 @@ import MessagingPageF from "./pages/freelancer/MessagingPage/MessagingPageF";
 import EscrowPage from "./pages/EscrowPage/EscrowPage";
 import MessagingPageC from "./pages/client/MessagingPage/MessagingPageC";
 import Transactions from "./pages/transcations/Transactions";
+import Document from "./pages/freelancer/DocumentsPage/DocumentUpload/documentUpload"
 function App() {
   
   return (
@@ -69,6 +70,7 @@ function App() {
               />
               <Route path="escrow" element={<EscrowPage />} />
               <Route path="transactions" element={<Transactions />} />
+              <Route path="add-document" element={<Document />} />
             </Route>
           </Routes>
         </div>
