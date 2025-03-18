@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./MessagingPageF.css";
-import Navbar from "../../../components/Common/Navbar/navbar";
-import ProfileSubNav from "../../../components/Profile/ProfileSubNav/ProfileSubNav";
+import FreelancerNavBar from "../../../components/FreelancerNavBar/freelancerNavBar";
 import PeopleComponent from "../../../components/Messaging/PeopleComponent/PeopleComponent";
 import ChatBox from "../../../components/Messaging/ChatBox/ChatBox";
 
@@ -23,14 +22,14 @@ const MessagingPage = () => {
   useEffect(() => {
     // Update current chat when currentChatId changes
     if (currentChatId && chats.length > 0) {
-      const chat = chats.find(chat => chat.id === currentChatId);
+      const chat = chats.find((chat) => chat.id === currentChatId);
       setCurrentChat(chat);
-      
+
       // Find the client participant
       const client = chat?.participants?.find(
-        part => part.uid !== localStorage.getItem("uid")
+        (part) => part.uid !== localStorage.getItem("uid")
       );
-      
+
       if (client) {
         setCurrentClientName(client.name || "");
         setCurrentClientId(client.uid || "");
@@ -41,26 +40,30 @@ const MessagingPage = () => {
   const getAllChats = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${url || 'http://localhost:8000'}/api/chats`, {
-        method: "GET",
-        headers: {
-          Authorization: token,
-        },
-      });
-      
+      const response = await fetch(
+        `${url || "http://localhost:8000"}/api/chats`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+
       if (response.ok) {
         const data = await response.json();
         if (data.chats && data.chats.length > 0) {
           // Process the chats to ensure lastMessage is a string
-          const processedChats = data.chats.map(chat => ({
+          const processedChats = data.chats.map((chat) => ({
             ...chat,
-            lastMessage: typeof chat.lastMessage === 'object' 
-              ? chat.lastMessage.text 
-              : chat.lastMessage || 'No messages'
+            lastMessage:
+              typeof chat.lastMessage === "object"
+                ? chat.lastMessage.text
+                : chat.lastMessage || "No messages",
           }));
-          
+
           setChats(processedChats);
-          
+
           // Set initial chat if available
           if (processedChats.length > 0) {
             setCurrentChatId(processedChats[0].id);
@@ -80,8 +83,8 @@ const MessagingPage = () => {
 
   return (
     <div className="MessagingPageF">
-      <Navbar />
-      <ProfileSubNav />
+      <FreelancerNavBar />
+
       <div className="messagePageContainer">
         <PeopleComponent
           people={chats}

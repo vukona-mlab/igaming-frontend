@@ -19,11 +19,11 @@ import MessagingPageF from "./pages/freelancer/MessagingPage/MessagingPageF";
 import EscrowPage from "./pages/EscrowPage/EscrowPage";
 import MessagingPageC from "./pages/client/MessagingPage/MessagingPageC";
 import Transactions from "./pages/transcations/Transactions";
+import FreelancerNavBar from "./components/FreelancerNavBar/freelancerNavBar";
 function App() {
-  
   return (
     <div className="App">
-       <Router>
+      <Router>
         <div className="App">
           <Routes>
             <Route exact path="/" element={<LandingPage />} />
@@ -72,7 +72,7 @@ function App() {
             </Route>
           </Routes>
         </div>
-      </Router> 
+      </Router>
     </div>
   );
 }

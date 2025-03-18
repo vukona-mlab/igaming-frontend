@@ -8,7 +8,8 @@ import Navbar from "../../../components/Common/Navbar/navbar";
 import { Form, Button } from "react-bootstrap";
 import Swal from "sweetalert2";
 import SwitchRoleButton from "../../../components/Common/SwitchRoleButton/SwitchRoleButton";
-import ProfileSubNav from "../../../components/Profile/ProfileSubNav/ProfileSubNav";
+
+import FreelancerNavBar from "../../../components/FreelancerNavBar/freelancerNavBar";
 const ProfilePage = ({}) => {
   const [formData, setFormData] = useState({
     name: "",
@@ -218,8 +219,8 @@ const ProfilePage = ({}) => {
   if (loading) return <div></div>;
   return (
     <>
-      <Navbar />
-      <ProfileSubNav />
+      <FreelancerNavBar />
+
       <Container style={{ minHeight: "100vh", paddingBottom: "60px" }}>
         <div className="profile-edit d-flex justify-content-between align-items-center">
           <div className="welcome-message">
