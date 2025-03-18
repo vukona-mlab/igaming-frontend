@@ -1,18 +1,52 @@
 import React, { useState, useEffect } from "react";
 //import Swal from "sweetalert2"; // Make sure to import SweetAlert
 import "./EditForm.css";
+import { Form, Button } from "react-bootstrap";
 
 const EditForm = ({ card, onCancel, onUpdate }) => {
   // State for card details and errors
-  const [cardHolder, setCardHolder] = useState(card.cardHolder || "");
-  const [expiryDate, setExpiryDate] = useState(card.expiryDate || "");
+  const [accountNumber, setAccountNumber] = useState("");
+  const [name, setName] = useState("");
+  const [type, setType] = useState("basa");
+  const [bankCode, setBankCode] = useState("");
+  const [showForm, setShowForm] = useState(false);
+  const [banks, setBanks] = useState([]);
   const [errors, setErrors] = useState({});
 
-  ///
+  const token = localStorage.getItem("token") || "";
+
+  useEffect(() => {
+    const fetchBanks = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/api/banks", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log(data);
+        if (data) {
+          setBanks(data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching cards:", error);
+      }
+    };
+
+    fetchBanks();
+  }, [token]);
   // Fetch card data when the component mounts from bancking component
   useEffect(() => {
-    setCardHolder(card.cardHolder || "");
-    setExpiryDate(card.expiryDate || "");
+    setAccountNumber(card.account_number || "");
+    setBankCode(card.bak_code || "");
+    setName(card.name || "");
   }, [card]); //run card again
 
   // Validate form inputs
@@ -20,19 +54,19 @@ const EditForm = ({ card, onCancel, onUpdate }) => {
     const newErrors = {};
 
     // Card Holder validation (string check, no numbers)
-    if (!cardHolder.trim()) {
-      newErrors.cardHolder = "Card holder name is required";
-    } else if (/\d/.test(cardHolder)) {
-      newErrors.cardHolder = "Card holder name cannot contain numbers";
+    if (!name.trim()) {
+      newErrors.name = "Account holder name is required";
+    } else if (/\d/.test(name)) {
+      newErrors.name = "Account holder name cannot contain numbers";
     }
 
     // Expiry Date validation
-    const expiryDatePattern = /^(0[1-9]|1[0-2])\/(\d{2})$/;
-    if (!expiryDate) {
-      newErrors.expiryDate = "Expiry date is required";
-    } else if (!expiryDatePattern.test(expiryDate)) {
-      newErrors.expiryDate = "Invalid expiry date format. Use MM/YY (01-12/YY)";
-    }
+    // const expiryDatePattern = /^(0[1-9]|1[0-2])\/(\d{2})$/;
+    // if (!expiryDate) {
+    //   newErrors.expiryDate = "Expiry date is required";
+    // } else if (!expiryDatePattern.test(expiryDate)) {
+    //   newErrors.expiryDate = "Invalid expiry date format. Use MM/YY (01-12/YY)";
+    // }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -57,7 +91,13 @@ const EditForm = ({ card, onCancel, onUpdate }) => {
     e.preventDefault();
     if (validateForm()) {
       //pass this data to update function on bankingCard componet
-      onUpdate({ id: card.id, cardHolder, expiryDate });
+      onUpdate({
+        id: card.id,
+        account_number: accountNumber,
+        name,
+        type,
+        bank_code: bankCode,
+      });
     }
   };
 
@@ -67,32 +107,45 @@ const EditForm = ({ card, onCancel, onUpdate }) => {
       <form className="w-[387.25px] edit-form" onSubmit={handleSubmit}>
         {/* Card Holder Name */}
         <label className="text-sm mb-1 block update-label">
-          Card Holder Name
+          Account Holder Name
         </label>
         <input
           type="text"
-          value={cardHolder}
+          value={name}
           className="w-full h-[33px] border-b border-gray-400 outline-none mb-4 form-input"
-          onChange={(e) => setCardHolder(e.target.value)}
-          placeholder="Enter Card Holder Name"
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Enter Account Holder Name"
         />
-        {errors.cardHolder && (
-          <p className="error-message">{errors.cardHolder}</p>
-        )}
-
-        {/* Expiry Date */}
-        <label className="text-sm mb-1 block update-label">Expiry Date</label>
+        {errors.name && <p className="error-message">{errors.name}</p>}
+        <label className="text-sm mb-1 block update-label">
+          Account Number
+        </label>
         <input
           type="text"
-          value={expiryDate}
+          value={accountNumber}
           className="w-full h-[33px] border-b border-gray-400 outline-none mb-4 form-input"
-          onChange={handleExpiryDateChange}
-          placeholder="MM/YY"
+          onChange={(e) => setAccountNumber(e.target.value)}
+          placeholder="Enter Account Number"
         />
-        {errors.expiryDate && (
-          <p className="error-message">{errors.expiryDate}</p>
+        {errors.accountNumber && (
+          <p className="error-message">{errors.accountNumber}</p>
         )}
-
+        <Form.Group className="mb-3">
+          <Form.Label>Select Bank</Form.Label>
+          <Form.Control
+            as="select"
+            onChange={(e) => setBankCode(e.target.value)}
+          >
+            <option value="">Select a Bank</option>
+            {banks &&
+              banks.length > 0 &&
+              banks.map((bank) => (
+                <option key={bank.id} value={bank.code}>
+                  {bank.name}
+                </option>
+              ))}
+          </Form.Control>
+        </Form.Group>
         {/* Buttons */}
         <div className="flex justify-between buttonss">
           <button

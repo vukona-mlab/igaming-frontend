@@ -4,6 +4,8 @@ import "./BankingCard.css";
 import { useNavigate } from "react-router";
 const BankingCard = () => {
   const [cards, setCards] = useState([]);
+  const [banks, setBanks] = useState([]);
+
   const [editCardId, setEditCardId] = useState(null); // Track which card is being edited
   const token = localStorage.getItem("token") || "";
   const navigation = useNavigate();
@@ -12,7 +14,38 @@ const BankingCard = () => {
       try {
         console.log("Fetching cards...");
 
-        const response = await fetch("http://localhost:8000/api/cards", {
+        const response = await fetch(
+          "http://localhost:8000/api/bank-accounts",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: token,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("Full API Response:", data);
+
+        if (data.bankAccounts) {
+          setCards(data.bankAccounts);
+        } else if (data.bankAccount) {
+          setCards([data.bankAccount]);
+        } else {
+          throw new Error("Unexpected response format");
+        }
+      } catch (error) {
+        console.error("Error fetching cards:", error);
+      }
+    };
+    const fetchBanks = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/api/banks", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -25,14 +58,8 @@ const BankingCard = () => {
         }
 
         const data = await response.json();
-        console.log("Full API Response:", data);
-
-        if (data.cards) {
-          setCards(data.cards);
-        } else if (data.card) {
-          setCards([data.card]);
-        } else {
-          throw new Error("Unexpected response format");
+        if (data) {
+          setBanks(data);
         }
       } catch (error) {
         console.error("Error fetching cards:", error);
@@ -40,17 +67,21 @@ const BankingCard = () => {
     };
 
     fetchCards();
+    fetchBanks();
   }, [token]);
 
   const handleDelete = async (cardId) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/cards/${cardId}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-      });
+      const response = await fetch(
+        `http://localhost:8000/api/bank-accounts/${cardId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to delete card");
@@ -65,23 +96,27 @@ const BankingCard = () => {
 
   const handleUpdate = async (updatedCard) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/cards/${updatedCard.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-        body: JSON.stringify(updatedCard),
-      });
+      const response = await fetch(
+        `http://localhost:8000/api/bank-accounts/${updatedCard.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+          body: JSON.stringify(updatedCard),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to update card");
       }
 
-      setCards(cards.map((card) => (card.id === updatedCard.id ? updatedCard : card)));
+      setCards(
+        cards.map((card) => (card.id === updatedCard.id ? updatedCard : card))
+      );
       setEditCardId(null); // Exit edit mode
       navigation(0);
-
     } catch (error) {
       console.error("Error updating card:", error);
     }
@@ -95,26 +130,38 @@ const BankingCard = () => {
           onCancel={() => setEditCardId(null)} // Cancel editing
           onUpdate={handleUpdate} // Handle card update/pass update function to EditForm
         />
+      ) : cards.length === 0 ? (
+        <p>No cards found.</p>
       ) : (
-        cards.length === 0 ? (
-          <p>No cards found.</p>
-        ) : (
-          cards.map((card) => (
-            <div className="BankingCard" key={card.id}>
-              <div className="bc-header">
-                <div className="bc-bank-name">{card.cardType || "Unknown Type"}</div>
-                <div className="for-eding"> 
-                  <button className="bc-edit" onClick={() => setEditCardId(card.id)}>Edit</button>
-                <button className="bc-delete" onClick={() => handleDelete(card.id)}>Delete</button>
-                </div>
+        cards.map((card) => (
+          <div className="BankingCard" key={card.id}>
+            <div className="bc-header">
+              <div className="bc-bank-name">
+                {card.bank_name || "Unknown Type"}
               </div>
-              <div className="bc-acc-num">
-                <div className="bc-acc-num-name">Card Number:</div>
-                <div className="bc-acc-num-val">{card.maskedCardNumber || "****-****-****-XXXX"}</div>
+              <div className="for-eding">
+                <button
+                  className="bc-edit"
+                  onClick={() => setEditCardId(card.id)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="bc-delete"
+                  onClick={() => handleDelete(card.id)}
+                >
+                  Delete
+                </button>
               </div>
             </div>
-          ))
-        )
+            <div className="bc-acc-num">
+              <div className="bc-acc-num-name">Account Number:</div>
+              <div className="bc-acc-num-val">
+                {card.account_number || "****-****-****-XXXX"}
+              </div>
+            </div>
+          </div>
+        ))
       )}
     </div>
   );
