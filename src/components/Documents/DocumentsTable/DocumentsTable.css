@@ -1,4 +1,26 @@
-th{
+.overlord{
+  border: solid 2px #e6e6e6;
+  border-radius: 12px;
+  overflow: hidden;
+
+}
+
+.table-container{
+  width:100%;
+  text-align: center;
+  padding-left: 30px;
+}
+
+.table-heading{
+  background-color: #F7F7F7;
+  border-radius: 12px !important;
+  padding-left: 10px;
+  width: 100%;
+
+  
+}
+
+.t-heading{
     font-family: 'Poppins';
     font-weight: 600;
     font-size: 15px;
@@ -6,7 +28,7 @@ th{
     color: #7c7c7c;
 }
 
-td{
+.t-data{
     font-family: 'Poppins';
     font-weight: 500;
     font-size: 15px;
@@ -14,16 +36,10 @@ td{
     color: #b2b2b2;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
-
-  th, td {
+  .t-heading, .t-data {
     padding: 12px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
+    /* border-bottom: 1px solid #ddd; */
   }
 
   .action-buttons{
