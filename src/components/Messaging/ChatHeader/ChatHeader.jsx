@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./ChatHeader.css";
 import { BsThreeDotsVertical, BsPersonCircle } from "react-icons/bs";
 import { io } from "socket.io-client";
-import ProjectModal from '../ProjectModal/ProjectModal';
+import ProjectModal from "../ProjectModal/ProjectModal";
 
 const url = "http://localhost:8000";
 const socket = io(url, { transports: ["websocket"] });
@@ -71,7 +71,6 @@ const ChatHeader = ({ currentChat }) => {
     // TODO: Implement delete chat logic
     setShowMenu(false);
   };
-  console.log({ otherParticipant });
   return (
     <>
       <div className="chat-header">
@@ -122,8 +121,8 @@ const ChatHeader = ({ currentChat }) => {
           )}
         </div>
       </div>
-      
-      <ProjectModal 
+
+      <ProjectModal
         isOpen={showProjectModal}
         onClose={() => setShowProjectModal(false)}
         chatId={currentChat?.id}
@@ -131,8 +130,12 @@ const ChatHeader = ({ currentChat }) => {
         projectData={{
           clientId: isFreelancer ? otherParticipant?.uid : currentUserId,
           freelancerId: isFreelancer ? currentUserId : otherParticipant?.uid,
-          clientEmail: isFreelancer ? otherParticipant?.email : currentUser?.email,
-          freelancerEmail: isFreelancer ? currentUser?.email : otherParticipant?.email,
+          clientEmail: isFreelancer
+            ? otherParticipant?.email
+            : currentUser?.email,
+          freelancerEmail: isFreelancer
+            ? currentUser?.email
+            : otherParticipant?.email,
         }}
       />
     </>

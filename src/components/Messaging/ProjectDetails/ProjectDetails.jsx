@@ -3,8 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./ProjectDetails.css";
 import { io } from "socket.io-client";
 import PaystackPop from "@paystack/inline-js";
-import TermsModal from '../../Escrow/TermsModal';
-
+import TermsModal from "../../Escrow/TermsModal";
 
 const ProjectDetails = ({ project, onClose, isClient }) => {
   const navigate = useNavigate();
@@ -174,7 +173,9 @@ const ProjectDetails = ({ project, onClose, isClient }) => {
                   // Refresh the project details to show updated payment status
                   window.location.reload();
                 } else {
-                  alert(`Payment verification failed: ${verificationData.error}`);
+                  alert(
+                    `Payment verification failed: ${verificationData.error}`
+                  );
                 }
               } catch (verifyError) {
                 alert("Error verifying payment. Please contact support.");
@@ -230,7 +231,9 @@ const ProjectDetails = ({ project, onClose, isClient }) => {
         window.location.reload();
       } else {
         if (data.needsBankAccount) {
-          alert("The freelancer needs to set up their bank account before funds can be released. Please ask them to update their payment details.");
+          alert(
+            "The freelancer needs to set up their bank account before funds can be released. Please ask them to update their payment details."
+          );
         } else {
           alert(data.error || "Error releasing funds");
         }
@@ -246,20 +249,22 @@ const ProjectDetails = ({ project, onClose, isClient }) => {
       if (project.payments && project.payments.length > 0) {
         try {
           const response = await fetch(
-            `${import.meta.env.VITE_API_URL}/api/transaction/${project.payments[0].transactionId}/status?clientId=${clientId}`,
+            `${import.meta.env.VITE_API_URL}/api/transaction/${
+              project.payments[0].transactionId
+            }/status?clientId=${clientId}`,
             {
               headers: {
                 Authorization: token,
               },
             }
           );
-          
+
           const data = await response.json();
           if (response.ok && data.status === "released") {
             // Update local state to reflect released status
-            setProject(prev => ({
+            setProject((prev) => ({
               ...prev,
-              paymentStatus: "released"
+              paymentStatus: "released",
             }));
           }
         } catch (error) {
@@ -276,7 +281,7 @@ const ProjectDetails = ({ project, onClose, isClient }) => {
     <div className="project-details-modal-overlay">
       <div className="project-details-modal">
         <div className="project-details-header">
-          <h2>Project Details</h2>
+          <h2>Project Agreement</h2>
           <div className="header-actions">
             <button className="close-button" onClick={onClose}>
               ×
@@ -384,16 +389,20 @@ const ProjectDetails = ({ project, onClose, isClient }) => {
                     <div className="transaction-status">
                       <span className="status-label">Payment Status:</span>
                       <span className={`status-value ${project.paymentStatus}`}>
-                        {project.paymentStatus.charAt(0).toUpperCase() + 
-                         project.paymentStatus.slice(1)}
+                        {project.paymentStatus.charAt(0).toUpperCase() +
+                          project.paymentStatus.slice(1)}
                       </span>
                     </div>
                     <button
-                      className={`release-button ${project.paymentStatus === 'released' ? 'released' : ''}`}
+                      className={`release-button ${
+                        project.paymentStatus === "released" ? "released" : ""
+                      }`}
                       onClick={() => handleReleaseFunds()}
-                      disabled={project.paymentStatus === 'released'}
+                      disabled={project.paymentStatus === "released"}
                     >
-                      {project.paymentStatus === 'released' ? 'Funds Released' : 'Release funds'}
+                      {project.paymentStatus === "released"
+                        ? "Funds Released"
+                        : "Release funds"}
                     </button>
                   </>
                 )}

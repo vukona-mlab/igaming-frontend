@@ -150,7 +150,7 @@
   background-color: #f8f9fa;
   padding: 1rem;
   border-radius: 6px;
-  border-left: 4px solid #1dbf73;
+  border-left: 4px solid #b90909;
 }
 
 .requirements-list {
@@ -167,7 +167,7 @@
 
 .requirements-list li::before {
   content: "•";
-  color: #1dbf73;
+  color: #212529;
   font-weight: bold;
   position: absolute;
   left: -1rem;
@@ -193,12 +193,12 @@
 }
 
 .approve-button {
-  background-color: #1dbf73;
+  background-color: #212529;
   color: white;
 }
 
 .approve-button:hover {
-  background-color: #18a164;
+  background-color: #212529a8;
   transform: translateY(-1px);
 }
 
@@ -399,7 +399,7 @@
     height: 95vh;
     margin: 10px;
   }
-  
+
   .project-details-content .milestone-inputs {
     grid-template-columns: 1fr;
   }
@@ -434,7 +434,7 @@
 }
 
 .fund-escrow-button {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -450,7 +450,7 @@
 }
 
 .release-escrow-button {
-  background-color: #2196F3;
+  background-color: #2196f3;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -466,7 +466,7 @@
 }
 
 .pay-now-button {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -545,7 +545,7 @@
 }
 
 .release-button {
-  background-color: #2196F3;
+  background-color: #2196f3;
   color: white;
   padding: 10px 20px;
   border: none;

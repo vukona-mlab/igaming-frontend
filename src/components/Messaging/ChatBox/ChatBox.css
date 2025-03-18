@@ -74,11 +74,11 @@
 }
 
 .view-project-btn {
-  background-color: #007bff;
+  background-color: #212529;
 }
 
 .view-project-btn:hover {
-  background-color: #0056b3;
+  background-color: #212529a8;
 }
 
 .delete-project-btn {

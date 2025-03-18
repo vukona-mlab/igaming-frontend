@@ -40,7 +40,9 @@ const ChatBox = ({
   const [showProjectDetails, setShowProjectDetails] = useState(false);
   const [showEscrowModal, setShowEscrowModal] = useState(false);
   const [escrowData, setEscrowData] = useState(null);
-
+  const otherParticipant = currentChat?.participants?.find(
+    (part) => part.uid !== uid
+  );
   useEffect(() => {
     if (chatId) {
       fetchMessages();
@@ -123,7 +125,7 @@ const ChatBox = ({
         `${import.meta.env.VITE_API_URL}/api/projects/chat/${chatId}`,
         {
           headers: {
-            'Authorization': token,
+            Authorization: token,
           },
         }
       );
@@ -211,27 +213,27 @@ const ChatBox = ({
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        throw new Error('No authentication token found');
+        throw new Error("No authentication token found");
       }
 
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/api/projects/${projectStatus.id}`,
         {
-          method: 'DELETE',
+          method: "DELETE",
           headers: {
-            'Authorization': token,
-            'Content-Type': 'application/json'
+            Authorization: token,
+            "Content-Type": "application/json",
           },
         }
       );
 
       if (response.status === 401) {
-        throw new Error('Unauthorized - Please log in again');
+        throw new Error("Unauthorized - Please log in again");
       }
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to delete project');
+        throw new Error(errorData.error || "Failed to delete project");
       }
 
       // Clear project status and close modal if open
@@ -239,18 +241,17 @@ const ChatBox = ({
       setShowProjectDetails(false);
 
       // Notify socket about project deletion
-      socketRef.current.emit('project-deleted', {
+      socketRef.current.emit("project-deleted", {
         chatId,
-        projectId: projectStatus.id
+        projectId: projectStatus.id,
       });
-
     } catch (error) {
-      console.error('Error deleting project:', error.message);
+      console.error("Error deleting project:", error.message);
     }
   };
 
   if (loading) return;
-  console.log({ projectStatus });
+  console.log({ otherParticipant, projectStatus });
   return (
     <div className="f-chat-box">
       {!currentChat ? (
@@ -258,55 +259,61 @@ const ChatBox = ({
       ) : (
         <>
           <ChatHeader currentChat={currentChat} />
-          {projectStatus && (
-            <div className="project-status-container">
-              <div className="project-status-header">
-                <h3>Project Status</h3>
-                <div className="project-status-actions">
-                  <button
-                    className="view-project-btn"
-                    onClick={() => setShowProjectDetails(true)}
-                  >
-                    View Project
-                  </button>
-                  {userRole === "client" && projectStatus?.status === "pending" && (
+          {projectStatus &&
+            (otherParticipant.uid === projectStatus.clientId ||
+              otherParticipant.uid === projectStatus.freelancerId) && (
+              <div className="project-status-container">
+                <div className="project-status-header">
+                  <h3>Project Status</h3>
+                  <div className="project-status-actions">
                     <button
-                      className="delete-project-btn"
-                      onClick={handleDeleteProject}
+                      className="view-project-btn"
+                      onClick={() => setShowProjectDetails(true)}
                     >
-                      Delete Project
+                      View Project
                     </button>
-                  )}
-                  {userRole === "freelancer" &&
-                    projectStatus.status === "approved" && (
-                      <button
-                        className="create-escrow-btn"
-                        onClick={handleEscrowClick}
-                      >
-                        Create Escrow
-                      </button>
-                    )}
+                    {userRole === "client" &&
+                      projectStatus?.status === "pending" && (
+                        <button
+                          className="delete-project-btn"
+                          onClick={handleDeleteProject}
+                        >
+                          Delete Project
+                        </button>
+                      )}
+                    {/* {userRole === "freelancer" &&
+                      projectStatus.status === "approved" && (
+                        <button
+                          className="create-escrow-btn"
+                          onClick={handleEscrowClick}
+                        >
+                          Create Escrow
+                        </button>
+                      )} */}
+                  </div>
+                </div>
+
+                <div className="project-status-details">
+                  <div className="status-item">
+                    <span className="status-label">Status:</span>
+                    <span className={`status-value ${projectStatus.status}`}>
+                      {projectStatus.status.charAt(0).toUpperCase() +
+                        projectStatus.status.slice(1)}
+                    </span>
+                  </div>
+                  <div className="status-item">
+                    <span className="status-label">Title:</span>
+                    <span className="status-value">{projectStatus.title}</span>
+                  </div>
+                  <div className="status-item">
+                    <span className="status-label">Budget:</span>
+                    <span className="status-value">
+                      R{projectStatus.budget}
+                    </span>
+                  </div>
                 </div>
               </div>
-              <div className="project-status-details">
-                <div className="status-item">
-                  <span className="status-label">Status:</span>
-                  <span className={`status-value ${projectStatus.status}`}>
-                    {projectStatus.status.charAt(0).toUpperCase() +
-                      projectStatus.status.slice(1)}
-                  </span>
-                </div>
-                <div className="status-item">
-                  <span className="status-label">Title:</span>
-                  <span className="status-value">{projectStatus.title}</span>
-                </div>
-                <div className="status-item">
-                  <span className="status-label">Budget:</span>
-                  <span className="status-value">R{projectStatus.budget}</span>
-                </div>
-              </div>
-            </div>
-          )}
+            )}
           <div className="f-messages-container">
             {loading ? (
               <div className="loading">Loading messages...</div>
@@ -333,14 +340,17 @@ const ChatBox = ({
           </div>
 
           {/* Project Details Modal */}
-          {showProjectDetails && projectStatus && (
-            <ProjectDetails
-              project={projectStatus}
-              onClose={() => setShowProjectDetails(false)}
-              isClient={userRole === "client"}
-              onEscrowOpen={handleEscrowOpen}
-            />
-          )}
+          {showProjectDetails &&
+            projectStatus &&
+            (otherParticipant.uid === projectStatus.clientId ||
+              otherParticipant.uid === projectStatus.freelancerId) && (
+              <ProjectDetails
+                project={projectStatus}
+                onClose={() => setShowProjectDetails(false)}
+                isClient={userRole === "client"}
+                onEscrowOpen={handleEscrowOpen}
+              />
+            )}
 
           {/* Existing Project Modal */}
           {showProjectModal && (
