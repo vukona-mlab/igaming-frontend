@@ -19,7 +19,11 @@ export default function GetStarted() {
         <span className="works">Works</span>
       </h1>
       <div className="second-heading">
+<<<<<<< HEAD
         Undertand the process before you hire your guy
+=======
+        Understand the process before you hire your guy
+>>>>>>> 88ccef9b6aa48dc1833a7fd7cc6f7cb1941722be
       </div>
       <div className="cards-containers">
         <Container>
@@ -32,7 +36,11 @@ export default function GetStarted() {
                     width="300"
                   ></img>
                 </div>
+<<<<<<< HEAD
                 <hr />
+=======
+                
+>>>>>>> 88ccef9b6aa48dc1833a7fd7cc6f7cb1941722be
                 <p>Access a pool of top talent across gaming categories.</p>
               </div>
             </Col>
@@ -41,7 +49,10 @@ export default function GetStarted() {
                 <div className="img-card">
                   <img src="/public/images/green-red-img.png" width="300"></img>
                 </div>
+<<<<<<< HEAD
                 <hr />
+=======
+>>>>>>> 88ccef9b6aa48dc1833a7fd7cc6f7cb1941722be
                 <p>
                   Get quality done quickly and within <br />
                   budget.
@@ -56,7 +67,10 @@ export default function GetStarted() {
                     width="300"
                   ></img>
                 </div>
+<<<<<<< HEAD
                 <hr />
+=======
+>>>>>>> 88ccef9b6aa48dc1833a7fd7cc6f7cb1941722be
                 <p>
                   Only pay when you're happy with the <br />
                   services.
