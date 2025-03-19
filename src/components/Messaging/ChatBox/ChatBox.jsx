@@ -43,6 +43,13 @@ const ChatBox = ({
   const otherParticipant = currentChat?.participants?.find(
     (part) => part.uid !== uid
   );
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const messagesContainerRef = useRef(null);
+  const MESSAGES_PER_PAGE = 20;
+  const typingTimeoutRef = useRef(null);
+
   useEffect(() => {
     if (chatId) {
       fetchMessages();
@@ -78,6 +85,13 @@ const ChatBox = ({
       }
     });
 
+    // Listen for typing status
+    socketRef.current.on("user-typing", ({ userId, isTyping }) => {
+      if (userId === otherParticipant?.uid) {
+        setIsTyping(isTyping);
+      }
+    });
+
     // Cleanup on unmount
     return () => {
       if (chatId) {
@@ -87,10 +101,11 @@ const ChatBox = ({
     };
   }, [chatId, userRole]);
 
-  const fetchMessages = async () => {
+  const fetchMessages = async (pageNum = 1, isInitial = true) => {
     try {
+      setIsLoadingMore(true);
       const response = await fetch(
-        `http://localhost:8000/api/chats/${chatId}`,
+        `http://localhost:8000/api/chats/${chatId}?page=${pageNum}&limit=${MESSAGES_PER_PAGE}`,
         {
           headers: {
             Authorization: `${localStorage.getItem("token")}`,
@@ -103,18 +118,24 @@ const ChatBox = ({
       }
 
       const data = await response.json();
-      const url =
-        (data.chat &&
-          data.chat?.participants &&
-          data.chat?.participants.filter(
-            (part) => part.uid !== localStorage.getItem("uid")
-          )[0].photoURL) ||
-        "";
-      setMessages(data.chat.messages);
+      const url = (data.chat?.participants?.filter(
+        (part) => part.uid !== localStorage.getItem("uid")
+      )[0]?.photoURL) || "";
+
       setPhotoUrl(url);
+      
+      // Update messages based on whether this is initial load or loading more
+      if (isInitial) {
+        setMessages(data.chat.messages);
+      } else {
+        setMessages(prev => [...data.chat.messages, ...prev]);
+      }
+      
+      setHasMore(data.chat.messages.length === MESSAGES_PER_PAGE);
     } catch (error) {
       console.error("Error fetching messages:", error);
     } finally {
+      setIsLoadingMore(false);
       setLoading(false);
     }
   };
@@ -250,6 +271,22 @@ const ChatBox = ({
     }
   };
 
+  const groupMessagesByDate = (messages) => {
+    const groups = {};
+    
+    messages.forEach(message => {
+      const date = new Date(message.createdAt?._seconds ? message.createdAt._seconds * 1000 : message.createdAt);
+      const dateStr = date.toDateString();
+      
+      if (!groups[dateStr]) {
+        groups[dateStr] = [];
+      }
+      groups[dateStr].push(message);
+    });
+    
+    return groups;
+  };
+
   if (loading) return;
   console.log({ otherParticipant, projectStatus });
   return (
@@ -319,10 +356,23 @@ const ChatBox = ({
               <div className="loading">Loading messages...</div>
             ) : (
               <div className="f-messages-wrapper">
-                {messages &&
-                  messages.map((msg, i) => (
-                    <MessageCard key={i} message={msg} />
-                  ))}
+                {Object.entries(groupMessagesByDate(messages)).map(([date, dateMessages]) => (
+                  <div key={date} className="message-date-group">
+                    <div className="date-divider">
+                      <span className="date-label">
+                        {new Date(date).toLocaleDateString(undefined, {
+                          weekday: 'long',
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
+                        })}
+                      </span>
+                    </div>
+                    {dateMessages.map((msg, i) => (
+                      <MessageCard key={i} message={msg} />
+                    ))}
+                  </div>
+                ))}
                 <div ref={bottomRef}></div>
               </div>
             )}

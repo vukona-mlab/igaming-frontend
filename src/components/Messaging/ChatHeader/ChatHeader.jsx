@@ -18,6 +18,7 @@ const ChatHeader = ({ currentChat }) => {
   const [showProjectModal, setShowProjectModal] = useState(false);
   const [showZoomModal, setShowZoomModal] = useState(false);
   const [meetingDetails, setMeetingDetails] = useState(null);
+  const socketRef = useRef();
 
   // Get user role and ID from localStorage
   const userRole = localStorage.getItem("role");
@@ -38,12 +39,18 @@ const ChatHeader = ({ currentChat }) => {
     }
   }, [otherParticipant]);
   useEffect(() => {
-    socket.on("get-active-status", (data) => {
-      if (otherParticipant.uid === data.uid) {
+    socketRef.current = io(url, { transports: ["websocket"] });
+    
+    socketRef.current.on("get-active-status", (data) => {
+      if (otherParticipant?.uid === data.uid) {
         setActiveStatus(data.activeStatus);
       }
     });
-  }, []);
+
+    return () => {
+      socketRef.current.off("get-active-status");
+    };
+  }, [otherParticipant]);
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -79,15 +86,16 @@ const ChatHeader = ({ currentChat }) => {
       const token = localStorage.getItem('token');
       const userRole = localStorage.getItem('role');
       const currentUserId = localStorage.getItem('uid');
+      const initiatorName = currentUser?.name || "User"; // Get the current user's name
 
-      // Create meeting request with all required fields
+      // First create the Zoom meeting
       const meetingRequest = {
         topic: `Meeting with ${otherParticipant?.name}`,
-        type: 2, // Scheduled meeting
-        start_time: new Date().toISOString(), // Current time
-        duration: 60, // 60 minutes
-        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone, // User's timezone
-        agenda: `Video call between ${currentUser?.name} and ${otherParticipant?.name}`,
+        type: 2,
+        start_time: new Date().toISOString(),
+        duration: 60,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        agenda: `Video call initiated by ${initiatorName}`,
         settings: {
           host_video: true,
           participant_video: true,
@@ -102,7 +110,7 @@ const ChatHeader = ({ currentChat }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': token
+          'Authorization': `${token}`
         },
         body: JSON.stringify(meetingRequest)
       });
@@ -110,41 +118,54 @@ const ChatHeader = ({ currentChat }) => {
       if (response.ok) {
         const data = await response.json();
         
-        // Emit socket event for notification
+        // Send meeting details as a message in the chat
+        const messageResponse = await fetch(`${url}/api/chats/${currentChat.id}/messages`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `${token}`
+          },
+          body: JSON.stringify({
+            message: `Video call initiated by ${initiatorName}`,
+            senderId: currentUserId,
+            type: 'zoom-meeting',
+            meetingDetails: {
+              join_url: data.join_url,
+              password: data.password,
+              meeting_id: data.meeting_id,
+              host_name: initiatorName, // Set the host name as the initiator
+              initiator_id: currentUserId // Store the initiator's ID
+            }
+          })
+        });
+
+        if (!messageResponse.ok) {
+          throw new Error('Failed to send meeting details message');
+        }
+
+        // Socket emission for real-time notification
         socket.emit('video-call-invitation', {
           chatId: currentChat?.id,
-          meetingDetails: data,
-          initiatorName: currentUser?.name,
+          meetingDetails: {
+            ...data,
+            host_name: initiatorName // Include host name in socket emission
+          },
+          initiatorName: initiatorName,
           recipientId: otherParticipant?.uid,
           initiatorRole: userRole,
           initiatorId: currentUserId
         });
 
-        // Show success notification to initiator
-        if (Notification.permission === 'granted') {
-          new Notification('Video Call Initiated', {
-            body: `Invitation sent to ${otherParticipant?.name}`,
-            icon: '/path/to/notification-icon.png'
-          });
-        }
-
-        setMeetingDetails(data);
+        setMeetingDetails({
+          ...data,
+          host_name: initiatorName // Include host name in modal data
+        });
         setShowZoomModal(true);
       } else {
-        // Show error notification
-        if (Notification.permission === 'granted') {
-          new Notification('Video Call Error', {
-            body: 'Failed to create video call. Please try again.',
-            icon: '/path/to/notification-icon.png'
-          });
-        }
-        
-        const errorData = await response.json();
-        console.error('Failed to create meeting:', errorData);
-        alert('Failed to create video call. Please try again.');
+        throw new Error('Failed to create Zoom meeting');
       }
     } catch (error) {
-      console.error('Error creating Zoom meeting:', error);
+      console.error('Error in video call:', error);
       alert('Error creating video call. Please try again.');
     }
     setShowMenu(false);

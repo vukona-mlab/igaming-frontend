@@ -8,6 +8,30 @@
   flex-direction: column;
   position: relative;
   z-index: 1;
+
+  /* For Webkit browsers (Chrome, Safari, newer Edge) */
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+  }
+
+  /* For Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #c1c1c1 #f1f1f1;
 }
 
 .f-chat-header-user img {
@@ -16,32 +40,64 @@
 }
 
 .f-messages-container {
-  flex: 4;
+  flex: 1;
+  overflow-y: auto;
+  background-color: #ffffff;
+  height: calc(100vh - 200px); /* Adjust based on your header/footer heights */
+  position: relative;
+
+  /* For Webkit browsers (Chrome, Safari, newer Edge) */
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+  }
+
+  /* For Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #c1c1c1 #f1f1f1;
 }
+
 .f-messages-container {
   height: calc(500px - 70px - 80px);
 }
+
 .f-messages-wrapper {
-  height: 100%;
+  padding: 16px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  padding: 15px;
 }
+
 .f-chat-header-user {
   display: flex;
   align-items: center;
   gap: 15px;
   padding: 15px;
 }
+
 .f-chat-header-info h2 {
   font-size: 24px;
   font-weight: 600px;
 }
+
 .chat-input-container {
   align-self: flex-end;
 }
+
 /* @media (min-width: 1441px) {
   .f-chat-box {
     height: 800px;
@@ -164,4 +220,37 @@
 
 .modal {
   z-index: 1055;
+}
+
+/* Add these styles to your existing CSS */
+.message-date-group {
+  margin: 8px 0;
+  position: relative;
+}
+
+.date-divider {
+  text-align: center;
+  position: relative;
+  margin: 24px 0 16px 0;
+  opacity: 0.7;
+}
+
+.date-label {
+  background-color: #E1E1E1;
+  color: #666666;
+  font-size: 11px;
+  padding: 4px 12px;
+  border-radius: 16px;
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.loading-more {
+  text-align: center;
+  padding: 10px;
+  color: #666;
+  font-size: 14px;
 }
