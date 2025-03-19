@@ -63,13 +63,71 @@ const FreelancerProjects = () => {
     setVisibleProjects((prev) => prev + 6);
   };
 
+  const handleMessageClick = async (freelancerId) => {
+    try {
+      console.log("Freelancer data received:", { freelancerId });
+
+      if (!freelancerId) {
+        console.error("FreelancerId is missing");
+        return;
+      }
+
+      let token = localStorage.getItem("token");
+      if (!token) {
+        alert("Please sign in to send messages");
+        navigation("/client-signin");
+        return;
+      }
+
+      if (!token.startsWith("Bearer ")) {
+        token = `Bearer ${token}`;
+      }
+
+      const uid = localStorage.getItem("uid");
+
+      const requestData = {
+        freelancerId: freelancerId,
+        clientId: uid,
+        senderId: uid,
+        message: "Hello! I'm interested in working with you.", // Add initial message
+      };
+
+      console.log("Sending chat request with data:", requestData);
+      console.log("Using authorization token:", token);
+
+      const response = await fetch("http://localhost:8000/api/create-chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        body: JSON.stringify(requestData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create chat");
+      }
+
+      const data = await response.json();
+      console.log("Chat created successfully:", data);
+
+      // Navigate to messaging page with the new chat ID
+      navigation(`/messaging-client/${data.chatId}`);
+    } catch (error) {
+      console.error("Error creating chat:", error);
+      alert("Failed to create chat. Please try again.");
+    }
+  };
+
+  console.log(projects);
+
   return (
     <>
       <Navbar />
       <Container>
       <div className="d-flex justify-content-between align-items-center my-4 name-free">
   <h1 className="m-0">{freelancerData?.displayName}'s Profile</h1>
-  <Button variant="dark" className="buttona-message">Message</Button>
+  <Button variant="dark" className="buttona-message" onClick={() => handleMessageClick(freelancerData.id)}>Message</Button>
 </div>
 
         {loading && <Alert variant="info">Loading projects...</Alert>}

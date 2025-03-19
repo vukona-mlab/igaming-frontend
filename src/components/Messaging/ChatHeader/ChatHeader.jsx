@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ChatHeader.css";
-import { BsThreeDotsVertical, BsPersonCircle } from "react-icons/bs";
+import { BsThreeDotsVertical, BsPersonCircle, BsCameraVideo } from "react-icons/bs";
 import { io } from "socket.io-client";
 import ProjectModal from "../ProjectModal/ProjectModal";
+import ZoomMeetingModal from '../ZoomMeetingModal/ZoomMeetingModal';
 
 const url = "http://localhost:8000";
 const socket = io(url, { transports: ["websocket"] });
@@ -15,6 +16,8 @@ const ChatHeader = ({ currentChat }) => {
   const navigate = useNavigate();
   const [activeStatus, setActiveStatus] = useState(false);
   const [showProjectModal, setShowProjectModal] = useState(false);
+  const [showZoomModal, setShowZoomModal] = useState(false);
+  const [meetingDetails, setMeetingDetails] = useState(null);
 
   // Get user role and ID from localStorage
   const userRole = localStorage.getItem("role");
@@ -71,6 +74,82 @@ const ChatHeader = ({ currentChat }) => {
     // TODO: Implement delete chat logic
     setShowMenu(false);
   };
+  const handleVideoCall = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const userRole = localStorage.getItem('role');
+      const currentUserId = localStorage.getItem('uid');
+
+      // Create meeting request with all required fields
+      const meetingRequest = {
+        topic: `Meeting with ${otherParticipant?.name}`,
+        type: 2, // Scheduled meeting
+        start_time: new Date().toISOString(), // Current time
+        duration: 60, // 60 minutes
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone, // User's timezone
+        agenda: `Video call between ${currentUser?.name} and ${otherParticipant?.name}`,
+        settings: {
+          host_video: true,
+          participant_video: true,
+          join_before_host: true,
+          mute_upon_entry: false,
+          waiting_room: false,
+          meeting_authentication: false
+        }
+      };
+
+      const response = await fetch(`${url}/api/zoom/meetings`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        },
+        body: JSON.stringify(meetingRequest)
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        
+        // Emit socket event for notification
+        socket.emit('video-call-invitation', {
+          chatId: currentChat?.id,
+          meetingDetails: data,
+          initiatorName: currentUser?.name,
+          recipientId: otherParticipant?.uid,
+          initiatorRole: userRole,
+          initiatorId: currentUserId
+        });
+
+        // Show success notification to initiator
+        if (Notification.permission === 'granted') {
+          new Notification('Video Call Initiated', {
+            body: `Invitation sent to ${otherParticipant?.name}`,
+            icon: '/path/to/notification-icon.png'
+          });
+        }
+
+        setMeetingDetails(data);
+        setShowZoomModal(true);
+      } else {
+        // Show error notification
+        if (Notification.permission === 'granted') {
+          new Notification('Video Call Error', {
+            body: 'Failed to create video call. Please try again.',
+            icon: '/path/to/notification-icon.png'
+          });
+        }
+        
+        const errorData = await response.json();
+        console.error('Failed to create meeting:', errorData);
+        alert('Failed to create video call. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error creating Zoom meeting:', error);
+      alert('Error creating video call. Please try again.');
+    }
+    setShowMenu(false);
+  };
+
   return (
     <>
       <div className="chat-header">
@@ -101,6 +180,9 @@ const ChatHeader = ({ currentChat }) => {
         </div>
 
         <div className="chat-header-right">
+          <button className="video-call-button">
+            <BsCameraVideo size={24} onClick={handleVideoCall} />
+          </button>
           <button
             className="options-button"
             onClick={() => setShowMenu(!showMenu)}
@@ -137,6 +219,11 @@ const ChatHeader = ({ currentChat }) => {
             ? currentUser?.email
             : otherParticipant?.email,
         }}
+      />
+      <ZoomMeetingModal 
+        isOpen={showZoomModal}
+        onClose={() => setShowZoomModal(false)}
+        meetingDetails={meetingDetails}
       />
     </>
   );
