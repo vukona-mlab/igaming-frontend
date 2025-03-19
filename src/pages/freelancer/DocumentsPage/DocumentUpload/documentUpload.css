@@ -1,0 +1,81 @@
+/* Remove borders from the date input */
+.madate {
+    border: none;
+    background-color: transparent;
+    box-shadow: none;
+  }
+  
+  /* Set a light background color for the table header */
+  .table thead th {
+    background-color: #f8f9fa !important; /* Light background */
+    padding: 5px;
+    color: lightgray;
+  }
+
+  .hed-doc{
+    color: lightgray;
+  }
+
+  .doc-table{
+    border: 2px solid lightgray; /* Outer light gray border */
+  border-radius: 24px !important; /* Apply rounded corners */
+  border-collapse: separate; /* Ensure border-radius works */
+  overflow: hidden; /* Prevent content from overflowing rounded corners */
+  color: gray
+;
+  }
+
+  .p-btn-cancel{
+    border: none;
+    color: red;
+    background-color: white;
+  }
+
+  .p-btn-submit{
+   margin-left: 6px;
+  }
+
+  .label-up{
+    border: 2px dotted lightgray; /* Light gray dotted border */
+    padding: 8px 16px; /* Add some padding for better spacing */
+    border-radius: 5px; /* Optional: add rounded corners to the label */
+    display: inline-flex; /* Align the content inline */
+    align-items: center; /* Center the content vertically */
+    cursor: pointer; /* Make it look clickable */
+    background-color: transparent; /* No background */
+
+  }
+  .label-up:hover{
+    border: 2px dotted lightblue;
+  }
+  .top-pro-nav{
+    width: 100%;
+    justify-content: flex-end;
+    margin-top: -20px;
+  }
+
+  .d-backButton {
+    background: none;
+    border: none;
+    font-size: 24px;
+    font-weight: 500;
+    color: #00000080;
+    margin-left:0px;
+    padding: 0;
+    text-decoration: none !important; 
+   
+  }
+  .d-backButton:hover {
+    color: #9c9a9a;
+    
+  }
+  .d-arrowIcon {
+    color: #00000080 !important;
+    margin-right: 7px;
+ 
+}
+.d-top-back{
+ width: 100%;
+}
+  
+   
