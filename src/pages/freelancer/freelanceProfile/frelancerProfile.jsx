@@ -178,7 +178,7 @@ const ProfilePage = ({}) => {
   };
    
   const handleDocument = ()=>{
-    navigate("/add-document");
+    navigate("/view-document");
   }
   const handleRoleSwitch = async (newRole) => {
     try {

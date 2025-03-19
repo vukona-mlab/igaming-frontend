@@ -35,11 +35,38 @@ export default function DocumentsTable({ statusFilter }) {
     fetchDocuments();
   }, [userId, token]);
 
+  // Handle document deletion
+  const handleDelete = async (documentName) => {
+    try {
+      const response = await fetch(`http://localhost:8000/api/auth/users/${userId}/documents/delete`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: token,
+          'Content-Type': 'application/json',  // Specify the content type as JSON
+        },
+        body:JSON.stringify({documentName})
+      });
+      const data = await response.json(); 
+      console.log("delete response",data);
+      console.log("doc name",documentName)
+       
+      if (response.ok) {
+        // If delete was successful, update the state by removing the document from the list
+        setDocuments((prevDocuments) =>
+          prevDocuments.filter((doc) => doc.documentName !== documentName)
+        );
+        console.log(`Document with ID ${documentName} was deleted`);
+      } else {
+        console.error('Error deleting document:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error deleting document:', error);
+    }
+  };
+
   return (
     <div className="overlord">
-      {/* Display User Email */}
-      <h3 className="user-email">User Email: {email}</h3>
-
+      
       {/* Documents Table */}
       <table className="table-container">
         <thead>
@@ -65,7 +92,7 @@ export default function DocumentsTable({ statusFilter }) {
                 <td className="t-data">
                   <div className="action-buttons">
                     <button className="view-button" onClick={() => window.open(doc.url, '_blank')}>View</button>
-                    <button className="delete-button" onClick={() => handleDelete(doc.id)}>Delete</button>
+                    <button className="delete-button" onClick={() => handleDelete(doc.documentName)}>Delete</button>
                   </div>
                 </td>
               </tr>
@@ -75,10 +102,3 @@ export default function DocumentsTable({ statusFilter }) {
     </div>
   );
 }
-//
-// Handle document deletion
-const handleDelete = (docId) => {
-  // You would perform a delete request to your API here
-  console.log(`Document with ID ${docId} is being deleted`);
-  // For now, just log the ID of the document that is being deleted
-};

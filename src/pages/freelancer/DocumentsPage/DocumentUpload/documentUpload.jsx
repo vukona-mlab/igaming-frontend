@@ -103,6 +103,10 @@ const DocumentUpload = () => {
     }
   };
 
+  const handleBack=()=>{
+    navigation("/view-document")
+  }
+
   return (
     <Container className="mt-1">
         <div className="top-pro-nav">
@@ -110,8 +114,14 @@ const DocumentUpload = () => {
         </div>
         
     
+      
+      <div className=" d-flex justify-content-between align-items-center mt-3 d-top-back">
       <h3 className="hed-doc">Upload Documents</h3>
-      <div className=""></div>
+         <button variant="dark" className="d-backButton" onClick={handleBack}>
+                    <img src="/images/arrow_back.png" alt="Back" className="d-arrowIcon" />
+                    Back
+                  </button>
+      </div>
       <Table className="table-borderless mt-4 doc-table" hover>
         <thead className="bg-light">
           <tr>
