@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { FaFileUpload, FaEye, FaTrash } from "react-icons/fa";
 import { Container, Button, Form, Table } from "react-bootstrap";
+import ProfileSubNav from "../../../../components/Profile/ProfileSubNav/ProfileSubNav";
 import axios from "axios";
+import  "./documentUpload.css"
+import {useNavigate} from "react-router-dom"
 
 const DocumentUpload = () => {
+
+  const navigation= useNavigate();
   // Predefined document types as an object
   const documentTypes = {
     identity: "Identity Document",
@@ -91,6 +96,7 @@ const DocumentUpload = () => {
       alert("Documents uploaded successfully!");
       console.log(response.data);
       handleCancel();
+      navigation("/view-document")
     } catch (error) {
       console.error("Upload failed:", error);
       alert("Failed to upload documents.");
@@ -98,9 +104,15 @@ const DocumentUpload = () => {
   };
 
   return (
-    <Container className="mt-4">
-      <h3>Upload Documents</h3>
-      <Table className="table-borderless mt-4" hover>
+    <Container className="mt-1">
+        <div className="top-pro-nav">
+        <ProfileSubNav/>
+        </div>
+        
+    
+      <h3 className="hed-doc">Upload Documents</h3>
+      <div className=""></div>
+      <Table className="table-borderless mt-4 doc-table" hover>
         <thead className="bg-light">
           <tr>
             <th>Document Type</th>
@@ -114,11 +126,11 @@ const DocumentUpload = () => {
             <tr key={doc.id}>
               <td>{doc.type}</td>
               <td>
-                <Form.Control type="date" value={doc.date} readOnly />
+                <Form.Control className="madate" type="date" value={doc.date} readOnly />
               </td>
               <td>
                 {!doc.file ? (
-                  <label className="btn btn-outline-primary btn-sm">
+                  <label className="btn btn-sm label-up">
                     <FaFileUpload size={18} /> Upload
                     <input
                       type="file"
@@ -148,11 +160,11 @@ const DocumentUpload = () => {
       </Table>
 
       {/* Submit and Cancel Buttons */}
-      <div className="mt-3">
-        <Button variant="secondary" className="me-2" onClick={handleCancel}>
+      <div className="mt-5 me-4">
+        <Button variant="secondary" className="me-2 p-btn-cancel " onClick={handleCancel}>
           Cancel
         </Button>
-        <Button variant="primary" onClick={handleSubmit}>
+        <Button variant="dark" className="p-btn-submit" onClick={handleSubmit}>
           Submit
         </Button>
       </div>
