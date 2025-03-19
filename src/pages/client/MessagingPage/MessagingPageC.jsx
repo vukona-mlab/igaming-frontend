@@ -55,12 +55,13 @@ const MessagingPageC = () => {
     const socket = io(url);
     
     socket.on('video-call-invitation', (data) => {
-      if (data.recipientId === localStorage.getItem('uid') && data.initiatorRole === 'freelancer') {
+      if (data.recipientId === localStorage.getItem('uid') && 
+          data.initiatorRole === 'freelancer' ) {
         // Show browser notification
         if (Notification.permission === 'granted') {
           const notification = new Notification('Video Call Invitation', {
             body: `${data.initiatorName} is inviting you to a video call`,
-            icon: '/path/to/notification-icon.png' // Add your notification icon
+            icon: '/path/to/notification-icon.png'
           });
 
           notification.onclick = () => {
