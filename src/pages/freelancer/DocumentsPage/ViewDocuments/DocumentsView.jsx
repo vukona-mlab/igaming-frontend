@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import NavBar from "../../../../components/Common/Navbar/navbar";
 import DocumentsHeader from "../../../../components/Documents/DocumentsHeader/DocumentsHeaderTabs";
 import styles from "./DocumentsView.module.css";
@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import DocumentsTable from "../../../../components/Documents/DocumentsTable/DocumentsTable";
 
 const DocumentsView = () => {
+  
+  const [activeTab, setActiveTab] = useState("approved");  // Track active tab status
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -14,6 +16,11 @@ const DocumentsView = () => {
 
   const handleBack = () => {
     navigate("/profile");
+  };
+
+  // Handle tab change (set the status filter to lowercase)
+  const handleTabChange = (tab) => {
+    setActiveTab(tab.toLowerCase());  // Ensure it's lowercase
   };
 
   return (
@@ -33,11 +40,11 @@ const DocumentsView = () => {
           tabOne="Approved"
           tabTwo="Pending"
           tabThree="Declined"
-          handleTabChange={() => {}}
+          handleTabChange={handleTabChange}
         />
 
-        {/* Documents Table */}
-        <DocumentsTable />
+        {/* Documents Table with filter applied based on activeTab */}
+        <DocumentsTable statusFilter={activeTab} />
       </div>
     </div>
   );

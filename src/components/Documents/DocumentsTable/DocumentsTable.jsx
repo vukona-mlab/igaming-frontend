@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './DocumentsTable.css';
 
-export default function DocumentsTable() {
+export default function DocumentsTable({ statusFilter }) {
   const [documents, setDocuments] = useState([]);
   const [email, setEmail] = useState(""); // State for user email
 
@@ -53,27 +53,29 @@ export default function DocumentsTable() {
           </tr>
         </thead>
         <tbody>
-          {documents.map((doc) => (
-            <tr key={doc.id}>
-              <td className="t-data">{doc.documentName}</td>
-              <td className="t-data">{doc.status}</td>
-              <td className="t-data">{doc.documentType}</td>
-              <td className="t-data">{email}</td>
-              <td className="t-data">{new Date(doc.dateAdded).toLocaleDateString()}</td>
-              <td className="t-data">
-                <div className="action-buttons">
-                  <button className="view-button" onClick={() => window.open(doc.url, '_blank')}>View</button>
-                  <button className="delete-button" onClick={() => handleDelete(doc.id)}>Delete</button>
-                </div>
-              </td>
-            </tr>
-          ))}
+          {documents
+            .filter((doc) => doc.status.toLowerCase() === statusFilter) // Filter by selected status
+            .map((doc) => (
+              <tr key={doc.id}>
+                <td className="t-data">{doc.documentName}</td>
+                <td className="t-data">{doc.status}</td>
+                <td className="t-data">{doc.documentType}</td>
+                <td className="t-data">{email}</td>
+                <td className="t-data">{new Date(doc.dateAdded).toLocaleDateString()}</td>
+                <td className="t-data">
+                  <div className="action-buttons">
+                    <button className="view-button" onClick={() => window.open(doc.url, '_blank')}>View</button>
+                    <button className="delete-button" onClick={() => handleDelete(doc.id)}>Delete</button>
+                  </div>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>
   );
 }
-
+//
 // Handle document deletion
 const handleDelete = (docId) => {
   // You would perform a delete request to your API here
