@@ -5,8 +5,20 @@ import "./ChatBox.css";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { auth, db, storage } from "../../../config/firebase";
 import ChatHeader from "../ChatHeader/ChatHeader";
+import { io } from "socket.io-client";
+import ProjectModal from "../ProjectModal/ProjectModal";
+import ProjectDetails from "../ProjectDetails/ProjectDetails";
+import EscrowForm from "../../Escrow/EscrowForm";
 
-const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName }) => {
+const ChatBox = ({
+  chatId,
+  currentChat,
+  currentClientId,
+  currentClientName,
+  currentClientEmail,
+  currentFreelancerEmail,
+  onEscrowClick,
+}) => {
   const [messages, setMessages] = useState([]);
   const [photoUrl, setPhotoUrl] = useState("");
   const [isUploading, setIsUploading] = useState(false);
@@ -20,16 +32,61 @@ const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName }) =>
   const uid = localStorage.getItem("uid");
   const token = localStorage.getItem("token");
   const bottomRef = useRef();
-
+  const socketRef = useRef();
+  const [showProjectModal, setShowProjectModal] = useState(false);
+  const [projectData, setProjectData] = useState(null);
+  const userRole = localStorage.getItem("role");
+  const [projectStatus, setProjectStatus] = useState(null);
+  const [showProjectDetails, setShowProjectDetails] = useState(false);
+  const [showEscrowModal, setShowEscrowModal] = useState(false);
+  const [escrowData, setEscrowData] = useState(null);
+  const otherParticipant = currentChat?.participants?.find(
+    (part) => part.uid !== uid
+  );
   useEffect(() => {
-    if (chatId !== "") {
+    if (chatId) {
       fetchMessages();
+      fetchProjectStatus();
     }
   }, [chatId]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  useEffect(() => {
+    // Initialize socket connection
+    socketRef.current = io("http://localhost:8000");
+
+    // Join the chat room when component mounts
+    if (chatId) {
+      socketRef.current.emit("join-chat", chatId);
+    }
+
+    // Listen for new messages
+    socketRef.current.on("new-message", (data) => {
+      if (data.chatId === chatId) {
+        setMessages((prev) => [...prev, data.message]);
+      }
+    });
+
+    // Listen for new project notifications
+    socketRef.current.on("new-project", (data) => {
+      if (data.chatId === chatId && userRole === "client") {
+        setProjectData(data.projectData);
+        setShowProjectModal(true);
+      }
+    });
+
+    // Cleanup on unmount
+    return () => {
+      if (chatId) {
+        socketRef.current.emit("leave-chat", chatId);
+      }
+      socketRef.current.disconnect();
+    };
+  }, [chatId, userRole]);
+
   const fetchMessages = async () => {
     try {
       const response = await fetch(
@@ -61,13 +118,33 @@ const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName }) =>
       setLoading(false);
     }
   };
+
+  const fetchProjectStatus = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/projects/chat/${chatId}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      const data = await response.json();
+      if (data.project) {
+        setProjectStatus(data.project);
+      }
+    } catch (error) {
+      console.error("Error fetching project status:", error);
+    }
+  };
+
   const sendMessage = async (text, files, fileIcon) => {
     try {
       let attachments = [];
       if (files) {
         attachments = await handleFileUpload(files || []);
       }
-      console.log(attachments);
+
       const response = await fetch(
         `http://localhost:8000/api/chats/${chatId}/messages`,
         {
@@ -85,15 +162,12 @@ const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName }) =>
       );
 
       if (!response.ok) {
-        throw new Error("Failed to fetch messages");
+        throw new Error("Failed to send message");
       }
 
-      const data = await response.json();
-      fetchMessages();
+      // No need to fetch messages here as we'll receive the update via socket
     } catch (error) {
-      console.error("Error fetching messages:", error);
-    } finally {
-      setLoading(false);
+      console.error("Error sending message:", error);
     }
   };
 
@@ -125,15 +199,121 @@ const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName }) =>
       setIsUploading(false);
     }
   };
-  if (loading) return;
 
+  const handleEscrowClick = () => {
+    setShowEscrowModal(true);
+  };
+
+  const handleEscrowOpen = (data) => {
+    setEscrowData(data);
+    setShowEscrowModal(true);
+  };
+
+  const handleDeleteProject = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("No authentication token found");
+      }
+
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/projects/${projectStatus.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: token,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 401) {
+        throw new Error("Unauthorized - Please log in again");
+      }
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to delete project");
+      }
+
+      // Clear project status and close modal if open
+      setProjectStatus(null);
+      setShowProjectDetails(false);
+
+      // Notify socket about project deletion
+      socketRef.current.emit("project-deleted", {
+        chatId,
+        projectId: projectStatus.id,
+      });
+    } catch (error) {
+      console.error("Error deleting project:", error.message);
+    }
+  };
+
+  if (loading) return;
+  console.log({ otherParticipant, projectStatus });
   return (
     <div className="f-chat-box">
-      {chatId === "" ? (
+      {!currentChat ? (
         <div>No messages</div>
       ) : (
         <>
           <ChatHeader currentChat={currentChat} />
+          {projectStatus &&
+            (otherParticipant.uid === projectStatus.clientId ||
+              otherParticipant.uid === projectStatus.freelancerId) && (
+              <div className="project-status-container">
+                <div className="project-status-header">
+                  <h3>Project Status</h3>
+                  <div className="project-status-actions">
+                    <button
+                      className="view-project-btn"
+                      onClick={() => setShowProjectDetails(true)}
+                    >
+                      View Project
+                    </button>
+                    {userRole === "client" &&
+                      projectStatus?.status === "pending" && (
+                        <button
+                          className="delete-project-btn"
+                          onClick={handleDeleteProject}
+                        >
+                          Delete Project
+                        </button>
+                      )}
+                    {/* {userRole === "freelancer" &&
+                      projectStatus.status === "approved" && (
+                        <button
+                          className="create-escrow-btn"
+                          onClick={handleEscrowClick}
+                        >
+                          Create Escrow
+                        </button>
+                      )} */}
+                  </div>
+                </div>
+
+                <div className="project-status-details">
+                  <div className="status-item">
+                    <span className="status-label">Status:</span>
+                    <span className={`status-value ${projectStatus.status}`}>
+                      {projectStatus.status.charAt(0).toUpperCase() +
+                        projectStatus.status.slice(1)}
+                    </span>
+                  </div>
+                  <div className="status-item">
+                    <span className="status-label">Title:</span>
+                    <span className="status-value">{projectStatus.title}</span>
+                  </div>
+                  <div className="status-item">
+                    <span className="status-label">Budget:</span>
+                    <span className="status-value">
+                      R{projectStatus.budget}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
           <div className="f-messages-container">
             {loading ? (
               <div className="loading">Loading messages...</div>
@@ -158,6 +338,63 @@ const ChatBox = ({ chatId, currentChat, currentClientId, currentClientName }) =>
               sendMessage={sendMessage}
             />
           </div>
+
+          {/* Project Details Modal */}
+          {showProjectDetails &&
+            projectStatus &&
+            (otherParticipant.uid === projectStatus.clientId ||
+              otherParticipant.uid === projectStatus.freelancerId) && (
+              <ProjectDetails
+                project={projectStatus}
+                onClose={() => setShowProjectDetails(false)}
+                isClient={userRole === "client"}
+                onEscrowOpen={handleEscrowOpen}
+              />
+            )}
+
+          {/* Existing Project Modal */}
+          {showProjectModal && (
+            <ProjectModal
+              isOpen={showProjectModal}
+              onClose={() => setShowProjectModal(false)}
+              projectData={projectData}
+              chatId={chatId}
+              isClientView={userRole === "client"}
+            />
+          )}
+
+          {showEscrowModal && (
+            <div className="escrow-modal-overlay">
+              <div className="escrow-modal">
+                <div className="escrow-modal-header">
+                  <h2>Update Escrow Agreement</h2>
+                  <button
+                    className="close-button"
+                    onClick={() => setShowEscrowModal(false)}
+                  >
+                    ×
+                  </button>
+                </div>
+                <EscrowForm
+                  onSubmit={async (escrowData) => {
+                    try {
+                      // Handle escrow submission
+                      await handleEscrowSubmit(escrowData);
+                      setShowEscrowModal(false);
+                    } catch (error) {
+                      console.error("Error creating escrow:", error);
+                    }
+                  }}
+                  freelancerId={escrowData.freelancerId}
+                  clientId={escrowData.clientId}
+                  existingEscrow={escrowData.escrowId}
+                  project={escrowData.project}
+                  isModal={true}
+                  onClose={() => setShowEscrowModal(false)}
+                />
+              </div>
+            </div>
+          )}
         </>
       )}
     </div>

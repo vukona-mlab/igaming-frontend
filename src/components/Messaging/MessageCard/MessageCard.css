@@ -25,3 +25,41 @@
 .MessageCard img {
   width: 250px;
 }
+
+.project-message {
+  background-color: #f0f7ff !important;
+  border: 1px solid #cce5ff;
+  padding: 15px;
+  border-radius: 8px;
+  max-width: 400px !important;
+}
+
+.project-message-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.project-details {
+  white-space: pre-line;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.project-link {
+  display: inline-block;
+  background-color: #007bff;
+  color: white !important;
+  padding: 8px 16px;
+  border-radius: 4px;
+  text-decoration: none;
+  margin-top: 10px;
+  transition: background-color 0.2s;
+  text-align: center;
+}
+
+.project-link:hover {
+  background-color: #0056b3;
+  text-decoration: none;
+  color: white !important;
+}
