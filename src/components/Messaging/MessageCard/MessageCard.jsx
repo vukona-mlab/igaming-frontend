@@ -30,12 +30,12 @@ const MessageCard = ({ message }) => {
 
     // If message is from today
     if (date.toDateString() === now.toDateString()) {
-      return `Today, ${timeString}`;
+      return `Today at ${timeString}`;
     }
     
     // If message is from yesterday
     if (date.toDateString() === yesterday.toDateString()) {
-      return `Yesterday, ${timeString}`;
+      return `Yesterday at ${timeString}`;
     }
     
     // If message is from this year
@@ -43,7 +43,7 @@ const MessageCard = ({ message }) => {
       return date.toLocaleDateString([], {
         month: 'short',
         day: 'numeric',
-      }) + `, ${timeString}`;
+      }) + ` at ${timeString}`;
     }
     
     // If message is from a different year
@@ -51,7 +51,7 @@ const MessageCard = ({ message }) => {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
-    }) + `, ${timeString}`;
+    }) + ` at ${timeString}`;
   };
 
   const handleJoinMeeting = (url) => {

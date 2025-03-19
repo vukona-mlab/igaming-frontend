@@ -1,5 +1,5 @@
 .MessageCard {
-  margin: 8px 0;
+  margin: 2px 0 8px 0;
   display: flex;
   flex-direction: column;
 }
@@ -17,6 +17,7 @@
   flex-direction: column;
   align-items: flex-start;
   max-width: 70%;
+  margin-bottom: 4px;
 }
 
 .MessageCard.right .message-wrapper {
@@ -27,7 +28,7 @@
   padding: 8px 12px;
   border-radius: 12px;
   background-color: #f0f2f5;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .MessageCard.right .message-bubble {
@@ -63,22 +64,46 @@
 }
 
 .message-time {
-  font-size: 0.75rem;
-  color: #707070;
+  font-size: 11px;
+  color: #8696a0;
   padding: 0 4px;
-  margin-top: 2px;
+  margin-top: 4px;
+  opacity: 0.8;
+  font-weight: 500;
+}
+
+.MessageCard.right .message-time {
+  text-align: right;
+  color: #8696a0;
+}
+
+.MessageCard.left .message-time {
+  text-align: left;
+  color: #8696a0;
+}
+
+/* Show timestamp on hover */
+.MessageCard:hover .message-time {
+  opacity: 1;
+}
+
+/* Add more space between different senders */
+.MessageCard.right + .MessageCard.left,
+.MessageCard.left + .MessageCard.right {
+  margin-top: 16px;
 }
 
 .zoom-meeting-message {
-  background: #f0f7ff;
-  border: 1px solid #cce4ff;
+  background: #f0f7ff00;
+  border: 1px solid #cce4ff00;
   border-radius: 8px;
   padding: 12px;
+  background-color: #00459400;
 }
 
 .MessageCard.right .zoom-meeting-message {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0);
+  border-color: rgba(255, 255, 255, 0);
 }
 
 .zoom-meeting-header {
@@ -119,17 +144,4 @@
   font-weight: 500;
   color: #0056b3;
   margin-bottom: 8px !important;
-}
-
-.MessageCard.right .message-time {
-  text-align: right;
-}
-
-.MessageCard.left .message-time {
-  text-align: left;
-}
-
-/* Add hover effect to show full timestamp */
-.message-time:hover {
-  color: #333;
 }

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./PersonCard.css";
 import { BsPersonCircle } from "react-icons/bs";
+import io from "socket.io-client";
 
 const PersonCard = ({
   chatId,
@@ -12,7 +13,25 @@ const PersonCard = ({
   setcurrentChatId,
   setCurrentClientId,
   setCurrentClientName,
+  formattedTime
 }) => {
+  const [isTyping, setIsTyping] = useState(false);
+  const socketRef = useRef();
+
+  useEffect(() => {
+    socketRef.current = io("http://localhost:8000");
+
+    socketRef.current.on("user-typing", ({ userId, isTyping }) => {
+      if (userId === otherId) {
+        setIsTyping(isTyping);
+      }
+    });
+
+    return () => {
+      socketRef.current.disconnect();
+    };
+  }, [otherId]);
+
   const formatTimestamp = (timestamp) => {
     if (!timestamp) return '';
     
@@ -51,10 +70,14 @@ const PersonCard = ({
         )}
       </div>
       <div className="person-info">
-        <div className="person-name">{name}</div>
-        <div className="last-message">{lastMessage}</div>
+        <div className="person-header">
+          <div className="person-name">{name}</div>
+          <div className="last-message-time">{formattedTime}</div>
+        </div>
+        <div className="last-message">
+          {isTyping ? "Typing..." : lastMessage}
+        </div>
       </div>
-      <div className="timestamp">{formatTimestamp(timestamp)}</div>
     </div>
   );
 };

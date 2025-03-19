@@ -18,6 +18,7 @@ const ChatHeader = ({ currentChat }) => {
   const [showProjectModal, setShowProjectModal] = useState(false);
   const [showZoomModal, setShowZoomModal] = useState(false);
   const [meetingDetails, setMeetingDetails] = useState(null);
+  const socketRef = useRef();
 
   // Get user role and ID from localStorage
   const userRole = localStorage.getItem("role");
@@ -38,12 +39,18 @@ const ChatHeader = ({ currentChat }) => {
     }
   }, [otherParticipant]);
   useEffect(() => {
-    socket.on("get-active-status", (data) => {
-      if (otherParticipant.uid === data.uid) {
+    socketRef.current = io(url, { transports: ["websocket"] });
+    
+    socketRef.current.on("get-active-status", (data) => {
+      if (otherParticipant?.uid === data.uid) {
         setActiveStatus(data.activeStatus);
       }
     });
-  }, []);
+
+    return () => {
+      socketRef.current.off("get-active-status");
+    };
+  }, [otherParticipant]);
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
