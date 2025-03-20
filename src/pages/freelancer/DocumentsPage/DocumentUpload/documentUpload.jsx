@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { FaFileUpload, FaEye, FaTrash } from "react-icons/fa";
 import { Container, Button, Form, Table } from "react-bootstrap";
-import ProfileSubNav from "../../../../components/Profile/ProfileSubNav/ProfileSubNav";
+import Navbar from "../../../../components/Common/Navbar/navbar";
 import axios from "axios";
-import  "./documentUpload.css"
-import {useNavigate} from "react-router-dom"
+import "./documentUpload.css";
+import { useNavigate } from "react-router-dom";
 
 const DocumentUpload = () => {
-
-  const navigation= useNavigate();
+  const navigation = useNavigate();
   // Predefined document types as an object
   const documentTypes = {
     identity: "Identity Document",
@@ -40,7 +39,12 @@ const DocumentUpload = () => {
       setDocuments((prevDocs) =>
         prevDocs.map((doc) =>
           doc.id === id
-            ? { ...doc, file, url: URL.createObjectURL(file), date: getCurrentDate() }
+            ? {
+                ...doc,
+                file,
+                url: URL.createObjectURL(file),
+                date: getCurrentDate(),
+              }
             : doc
         )
       );
@@ -75,7 +79,11 @@ const DocumentUpload = () => {
         formData.append("documents", doc.file);
         formData.append(
           "documentsArr[]",
-          JSON.stringify({ documentName: doc.file.name, documentType: doc.type, dateAdded: doc.date })
+          JSON.stringify({
+            documentName: doc.file.name,
+            documentType: doc.type,
+            dateAdded: doc.date,
+          })
         );
       }
     });
@@ -96,89 +104,115 @@ const DocumentUpload = () => {
       alert("Documents uploaded successfully!");
       console.log(response.data);
       handleCancel();
-      navigation("/view-document")
+      navigation("/view-document");
     } catch (error) {
       console.error("Upload failed:", error);
       alert("Failed to upload documents.");
     }
   };
 
-  const handleBack=()=>{
-    navigation("/view-document")
-  }
+  const handleBack = () => {
+    navigation("/view-document");
+  };
 
   return (
-    <Container className="mt-1">
-        <div className="top-pro-nav">
-        <ProfileSubNav/>
-        </div>
-        
-    
-      
-      <div className=" d-flex justify-content-between align-items-center mt-3 d-top-back">
-      <h3 className="hed-doc">Upload Documents</h3>
-         <button variant="dark" className="d-backButton" onClick={handleBack}>
-                    <img src="/images/arrow_back.png" alt="Back" className="d-arrowIcon" />
-                    Back
-                  </button>
-      </div>
-      <Table className="table-borderless mt-4 doc-table" hover>
-        <thead className="bg-light">
-          <tr>
-            <th>Document Type</th>
-            <th>Date</th>
-            <th>File</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {documents.map((doc) => (
-            <tr key={doc.id}>
-              <td>{doc.type}</td>
-              <td>
-                <Form.Control className="madate" type="date" value={doc.date} readOnly />
-              </td>
-              <td>
-                {!doc.file ? (
-                  <label className="btn btn-sm label-up">
-                    <FaFileUpload size={18} /> Upload
-                    <input
-                      type="file"
-                      className="d-none"
-                      onChange={(e) => handleFileSelect(doc.id, e)}
-                    />
-                  </label>
-                ) : (
-                  <span>{doc.file.name}</span>
-                )}
-              </td>
-              <td>
-                {doc.file && (
-                  <>
-                    <Button variant="success" size="sm" className="me-2" href={doc.url} target="_blank">
-                      <FaEye /> View
-                    </Button>
-                    <Button variant="danger" size="sm" onClick={() => handleDelete(doc.id)}>
-                      <FaTrash /> Remove
-                    </Button>
-                  </>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+    <div>
+      <Navbar />
+      <Container className="mt-1">
+        <div className="top-pro-nav"></div>
 
-      {/* Submit and Cancel Buttons */}
-      <div className="mt-5 me-4">
-        <Button variant="secondary" className="me-2 p-btn-cancel " onClick={handleCancel}>
-          Cancel
-        </Button>
-        <Button variant="dark" className="p-btn-submit" onClick={handleSubmit}>
-          Submit
-        </Button>
-      </div>
-    </Container>
+        <div className=" d-flex justify-content-between align-items-center mt-3 d-top-back">
+          <h3 className="hed-doc">Upload Documents</h3>
+          <button variant="dark" className="d-backButton" onClick={handleBack}>
+            <img
+              src="/images/arrow_back.png"
+              alt="Back"
+              className="d-arrowIcon"
+            />
+            Back
+          </button>
+        </div>
+        <Table className="table-borderless mt-4 doc-table" hover>
+          <thead className="bg-light">
+            <tr>
+              <th>Document Type</th>
+              <th>Date</th>
+              <th>File</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {documents.map((doc) => (
+              <tr key={doc.id}>
+                <td>{doc.type}</td>
+                <td>
+                  <Form.Control
+                    className="madate"
+                    type="date"
+                    value={doc.date}
+                    readOnly
+                  />
+                </td>
+                <td>
+                  {!doc.file ? (
+                    <label className="btn btn-sm label-up">
+                      <FaFileUpload size={18} /> Upload
+                      <input
+                        type="file"
+                        className="d-none"
+                        onChange={(e) => handleFileSelect(doc.id, e)}
+                      />
+                    </label>
+                  ) : (
+                    <span>{doc.file.name}</span>
+                  )}
+                </td>
+                <td>
+                  {doc.file && (
+                    <>
+                      <Button
+                        variant="success"
+                        size="sm"
+                        className="me-2"
+                        href={doc.url}
+                        target="_blank"
+                      >
+                        <FaEye /> View
+                      </Button>
+                      <Button
+                        variant="danger"
+                        size="sm"
+                        onClick={() => handleDelete(doc.id)}
+                      >
+                        <FaTrash /> Remove
+                      </Button>
+                    </>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+
+        {/* Submit and Cancel Buttons */}
+        <div className="mt-5 me-4">
+          <Button
+            variant="secondary"
+            className="me-2 p-btn-cancel "
+            onClick={handleCancel}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="dark"
+            className="p-btn-submit"
+            onClick={handleSubmit}
+          >
+            Submit
+          </Button>
+        </div>
+      </Container>
+    </div>
   );
 };
 
