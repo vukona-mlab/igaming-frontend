@@ -30,8 +30,10 @@ const Projects = () => {
   useEffect(() => {
     const filteredData = projects
       .filter((item) => {
+        console.log(filter, item.status);
         if (filter === "All") return true;
-        if (filter === "Completed") return item.status === "completed";
+        if (filter === "Completed")
+          return item.status === "completed" || item.status === "approved";
         if (filter === "Pending") return item.status === "pending";
         if (filter === "Cancelled") return item.status === "cancelled";
       })
@@ -49,11 +51,11 @@ const Projects = () => {
             item.freelancerId.toLowerCase().includes(searchLower))
         );
       });
-
+    console.log({ filteredData });
     if (filteredData.length > 0) {
       setFilteredData(filteredData);
     } else {
-      setFilteredData(projects);
+      setFilteredData([]);
     }
   }, [filter, searchTerm]);
 
@@ -151,14 +153,18 @@ const Projects = () => {
       <Navbar />
       <ProfileSubNav />
       <div className="pj-search-upload">
-        <SearchBar />
+        <SearchBar onSearch={setSearchTerm} />
         {role === "freelancer" && (
           <button className="pj-upload-btn">Upload project</button>
         )}
       </div>
-      <ProjectsTabsHeader />
+      <ProjectsTabsHeader handleTabChange={setFilter} />
       <div className="pj-main-container">
-        <ProjectsTable type={role} projects={filteredData} />
+        {filteredData.length > 0 ? (
+          <ProjectsTable type={role} projects={filteredData} />
+        ) : (
+          <div className="pj-no-data">No data</div>
+        )}
       </div>
     </div>
   );

@@ -1,59 +1,84 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./ProjectsTable.css";
+import { SlOptionsVertical } from "react-icons/sl";
 
 const ProjectsTable = ({ type, projects }) => {
-  console.log("my project", projects);
+  const [showMenu, setShowMenu] = useState(false);
+  const [current, setCurrent] = useState("");
+  const menuRef = useRef(null);
+  const buttonRef = useRef(null);
+
   return (
     <div className="ProjectsTable">
-      <table className="table-container">
+      <table className="pj-table-container">
         <tbody>
-          <tr className="table-heading">
-            <th className="t-heading">Project Name</th>
-            <th className="t-heading">Status</th>
-            <th className="t-heading">Project Ref</th>
-            <th className="t-heading">
+          <tr className="pj-table-heading">
+            <th className="pj-t-heading">Project Name</th>
+            <th className="pj-t-heading">Status</th>
+            <th className="pj-t-heading">Project Ref</th>
+            <th className="pj-t-heading">
               {type === "client" ? "Client's Email" : "Freelancer's Email"}
             </th>
-            <th className="t-heading">Due Date</th>
-            <th className="t-heading">Project Requirements</th>
-            <th className="t-heading">Actions</th>
+            <th className="pj-t-heading">Due Date</th>
+            <th className="pj-t-heading">Project Requirements</th>
+            <th className="pj-t-heading">Actions</th>
           </tr>
           {projects &&
             projects.length > 0 &&
             projects.map((project) => {
               return (
                 <tr key={project.id}>
-                  <td className="pt-t-data">
-                    <div className="pt-project-name">{project.title}</div>
+                  <td className="pj-t-data">
+                    <div className="pj-project-name">{project.title}</div>
                   </td>
-                  <td className="pt-t-data">
-                    <div className="pt-project-status">{project.status}</div>
+                  <td className="pj-t-data">
+                    <div className="pj-project-status">{project.status}</div>
                   </td>
-                  <td className="pt-t-data">
-                    <span className="pt-project-ref">{project.id}</span>
+                  <td className="pj-t-data">
+                    <span className="pj-project-ref">{project.id}</span>
                   </td>
-                  <td className="pt-t-data">
-                    <div className="pt-email">
+                  <td className="pj-t-data">
+                    <div className="pj-email">
                       {type === "client"
-                        ? project.freelancerEmail
-                        : type === "freelancer"
+                        ? project.freelancerEmail !== ""
+                          ? project.freelancerEmail
+                          : "N/A"
+                        : project.clientEmail !== ""
                         ? project.clientEmail
                         : "N/A"}
                     </div>
                   </td>
 
-                  <td className="pt-t-data">
-                    <div className="pt-deadline">{project.deadline}</div>
+                  <td className="pj-t-data">
+                    <div className="pj-deadline">{project.deadline}</div>
                   </td>
-                  <td className="pt-t-data">
-                    <div className="pt-project-requirements">
-                      {project.date}
+                  <td className="pj-t-data">
+                    <div className="pj-project-requirements">
+                      {project.requirements[0]}
                     </div>
                   </td>
-                  <td className="pt-t-data">
-                    <div className="pt-action-buttons">
-                      <button className="pt-action-button">View</button>
+                  <td className="pj-t-data pj-context-parent">
+                    <div className="pj-action-buttons">
+                      <button className="pj-action-button">View</button>
+                      <SlOptionsVertical
+                        className="pj-options"
+                        onClick={() => {
+                          setShowMenu(!showMenu);
+                          setCurrent(project.id);
+                        }}
+                        ref={buttonRef}
+                      />
                     </div>
+                    {showMenu && current === project.id && (
+                      <div className="pj-context-menu" ref={menuRef}>
+                        <div>Project Actions</div>
+                        <button>Approve project</button>
+                        <button>Decline project</button>
+                        <button>View SLA</button>
+                        <button>Pay project</button>
+                        <button>Rate the service</button>
+                      </div>
+                    )}
                   </td>
                 </tr>
               );
