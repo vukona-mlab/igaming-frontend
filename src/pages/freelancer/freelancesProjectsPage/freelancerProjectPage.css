@@ -1,7 +1,10 @@
+* {
+    background-color: #f8f9fa00;
+    background-color: #f8f9fa00;
+}
 
 .name-free{
     width: 100%;
-    border-bottom: 1px solid black;
     padding-bottom: 5px;
 }
 
@@ -9,5 +12,48 @@
     background-color: black;
     color: white;
     border-radius: 29px;
-    padding: 10px;
+    padding: 10px 24px;
+    transition: background-color 0.3s ease;
+}
+
+.buttona-message:hover {
+    background-color: #333;
+}
+
+.sidebar-col {
+    transition: all 0.3s ease-in-out;
+    padding: 20px;
+    background-color: transparent;
+}
+
+.row {
+    transition: all 0.3s ease-in-out;
+}
+
+.main-container {
+    padding: 0;
+    max-width: 100%;
+    background-color: #f8f9fa;
+}
+
+.content-wrapper {
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+@media (max-width: 1200px) {
+    .content-wrapper {
+        padding: 0 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .content-wrapper {
+        padding: 0 16px;
+    }
+    
+    .sidebar-col {
+        margin-bottom: 24px;
+    }
 }
