@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react"; 
 import DocumentTabs from "../DocumentsTabs/FreelancerTabs";
 import PricingPlans from "../PriceCard/PricingPlans";
 import ProjectCard from "../Project Card/ProjectCard";
 import StarRating from "../StarRating/StarRating";
+import ReviewForm from "../Reviews/ReviewForm/ReviewForm"
 import "./FreelancerProfileHeader.css";
 
 const FreelancerProfileHeader = ({ searchTerm, onTabChange, projects = [] }) => {
   const [selectedTab, setSelectedTab] = useState("Profile");
+  const [isReviewFormOpen, setIsReviewFormOpen] = useState(false); 
+  const [reviewRating, setReviewRating] = useState(0);
 
   useEffect(() => {
     onTabChange(selectedTab);
@@ -19,20 +22,20 @@ const FreelancerProfileHeader = ({ searchTerm, onTabChange, projects = [] }) => 
 
   const handleRatingChange = (rating) => {
     console.log("Rating changed:", rating);
-    // Handle rating change
   };
 
   const handleReviewClick = (rating) => {
-    console.log("Review clicked with rating:", rating);
-    // Handle review click
+    setReviewRating(rating); 
+    setIsReviewFormOpen(true); 
   };
 
-  const handleDemoClick = (projectId) => {
-    console.log("Demo clicked for project:", projectId);
+  const handleCloseReviewForm = () => {
+    setIsReviewFormOpen(false); 
   };
 
-  const handleShareClick = (projectId) => {
-    console.log("Share clicked for project:", projectId);
+  const handleSubmitReview = (rating, review) => {
+    console.log("Review Submitted:", { rating, review });
+    setIsReviewFormOpen(false); 
   };
 
   return (
@@ -72,8 +75,8 @@ const FreelancerProfileHeader = ({ searchTerm, onTabChange, projects = [] }) => 
                   projectName={project.projectName}
                   likes={project.likes || 0}
                   authorName={project.authorName}
-                  onDemoClick={() => handleDemoClick(project.id)}
-                  onShareClick={() => handleShareClick(project.id)}
+                  onDemoClick={() => console.log("Demo clicked for project:", project.id)}
+                  onShareClick={() => console.log("Share clicked for project:", project.id)}
                 />
               ))
             ) : (
@@ -82,6 +85,13 @@ const FreelancerProfileHeader = ({ searchTerm, onTabChange, projects = [] }) => 
           </div>
         )}
       </div>
+
+      {isReviewFormOpen && (
+        <ReviewForm 
+          onClose={handleCloseReviewForm} 
+          onSubmit={handleSubmitReview} 
+        />
+      )}
     </div>
   );
 };
