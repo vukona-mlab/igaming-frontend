@@ -1,0 +1,22 @@
+.pj-search-upload {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 25px 0px;
+  width: 92%;
+}
+
+.pj-upload-btn {
+  width: 170px;
+  height: 46px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  background-color: black;
+  color: white;
+  margin-top: 3rem;
+}
+
+.pj-no-data {
+  text-align: center;
+}
