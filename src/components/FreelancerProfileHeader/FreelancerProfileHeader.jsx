@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import DocumentTabs from "../DocumentsTabs/FreelancerTabs";
 import PricingPlans from "../PriceCard/PricingPlans";
 import ProjectCard from "../Project Card/ProjectCard";
+import StarRating from "../StarRating/StarRating";
 import "./FreelancerProfileHeader.css";
 
 const FreelancerProfileHeader = ({ searchTerm, onTabChange, projects = [] }) => {
@@ -16,13 +17,21 @@ const FreelancerProfileHeader = ({ searchTerm, onTabChange, projects = [] }) => 
     onTabChange(tab);
   };
 
+  const handleRatingChange = (rating) => {
+    console.log("Rating changed:", rating);
+    // Handle rating change
+  };
+
+  const handleReviewClick = (rating) => {
+    console.log("Review clicked with rating:", rating);
+    // Handle review click
+  };
+
   const handleDemoClick = (projectId) => {
-    // Handle demo click
     console.log("Demo clicked for project:", projectId);
   };
 
   const handleShareClick = (projectId) => {
-    // Handle share click
     console.log("Share clicked for project:", projectId);
   };
 
@@ -36,7 +45,18 @@ const FreelancerProfileHeader = ({ searchTerm, onTabChange, projects = [] }) => 
       />
 
       <div className="tab-content">
-        {selectedTab === "Profile" && <div>Profile</div>}
+        {selectedTab === "Profile" && (
+          <div className="profile-content">
+            <div className="section-header">
+              <h2 className="section-title">Reviews and Rating</h2>
+            </div>
+            <StarRating
+              onRatingChange={handleRatingChange}
+              onReviewClick={handleReviewClick}
+              showReviewButton={true}
+            />
+          </div>
+        )}
         {selectedTab === "Pricing & Packages" && (
           <div className="pricing-container">
             <PricingPlans />

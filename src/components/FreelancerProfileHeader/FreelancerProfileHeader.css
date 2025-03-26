@@ -30,6 +30,25 @@
     margin: 0 auto;
 }
 
+.profile-content {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.section-header {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    width: 100%;
+}
+
+.section-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
 .no-projects {
     text-align: center;
     padding: 40px;
@@ -59,5 +78,9 @@
     .projects-container {
         grid-template-columns: 1fr;
         padding: 16px;
+    }
+
+    .section-title {
+        font-size: 20px;
     }
 }
