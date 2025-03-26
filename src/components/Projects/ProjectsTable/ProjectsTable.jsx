@@ -1,15 +1,29 @@
 import React, { useState, useRef } from "react";
 import "./ProjectsTable.css";
 import { SlOptionsVertical } from "react-icons/sl";
-
+import ProjectDetails from "../../Projects/ProjectDetails/ProjectDetails";
+import SLA from "../SLA/SLA";
 const ProjectsTable = ({ type, projects }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [current, setCurrent] = useState("");
+  const [currProject, setCurrProject] = useState({});
+  const [showProjectDetails, setShowProjectDetails] = useState(false);
+  const [showSLA, setShowSLA] = useState(false);
+
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
 
   return (
     <div className="ProjectsTable">
+      {showProjectDetails && (
+        <ProjectDetails
+          project={currProject}
+          onClose={() => setShowProjectDetails(false)}
+        />
+      )}
+      {showSLA && (
+        <SLA project={currProject} onClose={() => setShowSLA(false)} />
+      )}
       <table className="pj-table-container">
         <tbody>
           <tr className="pj-table-heading">
@@ -59,7 +73,15 @@ const ProjectsTable = ({ type, projects }) => {
                   </td>
                   <td className="pj-t-data pj-context-parent">
                     <div className="pj-action-buttons">
-                      <button className="pj-action-button">View</button>
+                      <button
+                        className="pj-action-button"
+                        onClick={() => {
+                          setShowProjectDetails(true);
+                          setCurrProject(project);
+                        }}
+                      >
+                        View
+                      </button>
                       <SlOptionsVertical
                         className="pj-options"
                         onClick={() => {
@@ -69,16 +91,33 @@ const ProjectsTable = ({ type, projects }) => {
                         ref={buttonRef}
                       />
                     </div>
-                    {showMenu && current === project.id && (
-                      <div className="pj-context-menu" ref={menuRef}>
-                        <div>Project Actions</div>
-                        <button>Approve project</button>
-                        <button>Decline project</button>
-                        <button>View SLA</button>
-                        <button>Pay project</button>
-                        <button>Rate the service</button>
-                      </div>
-                    )}
+                    {showMenu &&
+                      current === project.id &&
+                      (type === "freelancer" ? (
+                        <div className="pj-context-menu" ref={menuRef}>
+                          <div>Project Actions</div>
+                          <button>Mark as complete</button>
+                          <button>Edit SLA</button>
+                          <button>Rate the service</button>
+                        </div>
+                      ) : (
+                        <div className="pj-context-menu" ref={menuRef}>
+                          <div>Project Actions</div>
+                          <button
+                            onClick={() => {
+                              setShowSLA(true);
+                              setCurrProject(project);
+                            }}
+                          >
+                            View SLA
+                          </button>
+                          {project.status === "approved" &&
+                            project.paymentStatus !== "completed" && (
+                              <button>Pay project</button>
+                            )}
+                          <button>Rate the service</button>
+                        </div>
+                      ))}
                   </td>
                 </tr>
               );
