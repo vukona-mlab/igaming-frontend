@@ -22,7 +22,11 @@
 .category-header {
   color: #00000080; /* Light black font color */
 }
-
+.cat-edit-icon {
+  color: #7c808d;
+  width: 18px;
+  height: 18px;
+}
 /* Buttons */
 button {
   transition: all 0.3s ease-in-out;
@@ -77,6 +81,18 @@ button:hover {
   padding: 5px !important;
   width: 100% !important;
   font-size: 16px;
+}
+
+.custom-input-noline {
+  border: none !important; /* Remove all borders */
+  border-bottom: none !important; /* Only bottom border */
+  border-radius: 0 !important;
+  background: transparent !important;
+  outline: none !important;
+  padding: 0px !important;
+  width: 100% !important;
+  font-size: 16px;
+  color: #00000080 !important;
 }
 
 /* Ensuring it stays black when focused */
