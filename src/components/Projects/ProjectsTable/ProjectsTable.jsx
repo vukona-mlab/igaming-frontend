@@ -9,10 +9,95 @@ const ProjectsTable = ({ type, projects }) => {
   const [currProject, setCurrProject] = useState({});
   const [showProjectDetails, setShowProjectDetails] = useState(false);
   const [showSLA, setShowSLA] = useState(false);
-
+  const [clientId, setClientId] = useState(currProject?.clientId || null);
+  const [freelancerId, setFreelancerId] = useState(
+    currProject?.freelancerId || null
+  );
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
+  const token = localStorage.getItem("token");
 
+  const handleTransaction = async (email) => {
+    try {
+      const response = await fetch("http://localhost:8000/api/transaction", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        body: JSON.stringify({
+          clientId: clientId,
+          freelancerId: freelancerId,
+          amount: parseFloat(currProject.budget),
+          clientEmail: email,
+          projectId: currProject.id,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        const popup = new PaystackPop();
+
+        popup.resumeTransaction(data.accessCode, {
+          onSuccess: async (transaction) => {
+            console.log(transaction);
+            if (transaction.status === "success") {
+              try {
+                const res = await fetch(
+                  "http://localhost:8000/api/payment/verify",
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: token,
+                    },
+                    body: JSON.stringify({
+                      reference: transaction.reference,
+                      clientId: clientId,
+                      projectId: currProject.id,
+                    }),
+                  }
+                );
+
+                const verificationData = await res.json();
+                if (res.ok) {
+                  alert("Payment successful! Transaction has been verified.");
+                  // Refresh the project details to show updated payment status
+                  window.location.reload();
+                } else {
+                  alert(
+                    `Payment verification failed: ${verificationData.error}`
+                  );
+                }
+              } catch (verifyError) {
+                alert("Error verifying payment. Please contact support.");
+                console.error("Verification error:", verifyError);
+              }
+            }
+          },
+
+          onLoad: (response) => {
+            console.log("onLoad: ", response);
+          },
+
+          onCancel: () => {
+            alert("Transaction was cancelled");
+          },
+
+          onError: (error) => {
+            alert(`Error during payment: ${error.message}`);
+            console.error("Payment error:", error);
+          },
+        });
+      } else {
+        alert(`Failed to create transaction: ${data.error}`);
+      }
+    } catch (error) {
+      console.error("Transaction error:", error);
+      alert("Error starting transaction. Please try again.");
+    }
+  };
   return (
     <div className="ProjectsTable">
       {showProjectDetails && (
@@ -113,7 +198,13 @@ const ProjectsTable = ({ type, projects }) => {
                           </button>
                           {project.status === "approved" &&
                             project.paymentStatus !== "completed" && (
-                              <button>Pay project</button>
+                              <button
+                                onClick={() =>
+                                  handleTransaction(project.clientEmail)
+                                }
+                              >
+                                Pay project
+                              </button>
                             )}
                           <button>Rate the service</button>
                         </div>

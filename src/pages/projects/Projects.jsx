@@ -7,6 +7,7 @@ import ProjectsTabsHeader from "../../components/Projects/ProjectsTabsHeader/Pro
 import ProjectsTable from "../../components/Projects/ProjectsTable/ProjectsTable";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import PaystackPop from "@paystack/inline-js";
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
@@ -147,6 +148,7 @@ const Projects = () => {
       }
     }
   };
+
   console.log({ projects });
   return (
     <div className="Projects">
