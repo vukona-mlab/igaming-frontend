@@ -206,9 +206,9 @@ const CategoryPreferences = ({
                   />
                 </Col>
                 <Col xs={4}>
-                  {!isUpdate && (
+                  {/* {!isUpdate && (
                     <img src={editIcon} className="cat-edit-icon" />
-                  )}
+                  )} */}
                 </Col>
               </Row>
             ))}
