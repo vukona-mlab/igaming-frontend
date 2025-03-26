@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { Card } from "react-bootstrap";
-import { CiCamera } from "react-icons/ci"; // Import the camera icon
-import "./freelancerCardProject.css"; // Import CSS
+import "./freelancerCardProject.css";
 
 const FreelancerProjectCards = ({ image, speciality }) => {
   return (
@@ -9,21 +8,22 @@ const FreelancerProjectCards = ({ image, speciality }) => {
       {/* Image Container */}
       <div className="image-container">
         {image ? (
-          <img src={image} alt="Freelancer" className="portfolio-image" />
+          <img src={image} alt="Portfolio" className="portfolio-image" />
         ) : (
-          <div className="no-image">No Image</div>
+          <div className="no-image">No Image Available</div>
         )}
       </div>
 
       {/* Card Body */}
       <Card.Body>
         <Card.Text className="card-text">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu fugiat
-          nulla pariatur.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum diam metus, volutpat nec congue in
         </Card.Text>
 
-        {/* Speciality */}
-        <input className="text-input" type="text" value={speciality} readOnly />
+        {/* Speciality Tag */}
+        <div className="text-input">
+          {speciality || "Creative and Design"}
+        </div>
       </Card.Body>
     </Card>
   );
