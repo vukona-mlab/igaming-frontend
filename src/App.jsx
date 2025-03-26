@@ -19,13 +19,13 @@ import MessagingPageF from "./pages/freelancer/MessagingPage/MessagingPageF";
 import EscrowPage from "./pages/EscrowPage/EscrowPage";
 import MessagingPageC from "./pages/client/MessagingPage/MessagingPageC";
 import Transactions from "./pages/transcations/Transactions";
-import Document from "./pages/freelancer/DocumentsPage/DocumentUpload/documentUpload"
-import DocumentView from "./pages/freelancer/DocumentsPage/ViewDocuments/DocumentsView"
+import Document from "./pages/freelancer/DocumentsPage/DocumentUpload/documentUpload";
+import DocumentView from "./pages/freelancer/DocumentsPage/ViewDocuments/DocumentsView";
+import Projects from "./pages/projects/Projects";
 function App() {
-  
   return (
     <div className="App">
-       <Router>
+      <Router>
         <div className="App">
           <Routes>
             <Route exact path="/" element={<LandingPage />} />
@@ -73,11 +73,11 @@ function App() {
               <Route path="transactions" element={<Transactions />} />
               <Route path="add-document" element={<Document />} />
               <Route path="view-document" element={<DocumentView />} />
-              DocumentView
+              <Route path="projects" element={<Projects />} />
             </Route>
           </Routes>
         </div>
-      </Router> 
+      </Router>
     </div>
   );
 }
