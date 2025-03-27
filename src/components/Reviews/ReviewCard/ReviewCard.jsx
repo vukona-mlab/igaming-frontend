@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './ReviewCard.css';
-import StarIcon from '../../assets/Star_duotone.svg';
+import StarIcon from '../../../assets/Star_duotone.svg';
 
 const ReviewCard = ({ review }) => {
     const [isExpanded, setIsExpanded] = useState(false);
