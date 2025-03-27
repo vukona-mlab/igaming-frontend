@@ -70,37 +70,19 @@ const ProfilePage = ({}) => {
       packages.push({ type: key, price: value, features: [] });
     }
     if (features.length > 0) {
-      packages = packages.map((obj) => {
-        let updatedObj = {};
-        features.forEach((feature) => {
-          if (feature.type === obj.type) {
-            updatedObj = { ...obj, features: feature.features };
-          } else {
-            updatedObj = obj;
-          }
-        });
-        return updatedObj;
+      const updatedArr = packages.map((obj) => {
+        const found = features.find((feature) => feature.type === obj.type);
+        return { ...obj, features: found.features };
       });
+      packages = updatedArr;
     }
     updateUserProfile({
       ...formData,
       categories: arr || [],
       packages: packages || [],
     });
-
     setFormData((prev) => ({ ...prev, categories: arr }));
-    setFormData((prev) => ({ ...prev, packages: data.prices }));
-
-    /*{
-      type: "Premium",
-      price: packages.premium ? `R${packages.premium}` : "N/A",
-      features: [
-        "30 days faster",
-        "Free logo",
-        "Free design"
-      ],
-      bgColor: "rgba(13, 153, 255, 0.20)"
-    }, */
+    setFormData((prev) => ({ ...prev, packages: packages }));
   };
   const showAlert = () => {
     Swal.fire({
@@ -265,13 +247,33 @@ const ProfilePage = ({}) => {
     let arr = [...features];
     if (arr.length > 0) {
       arr = arr.map((obj) => {
-        if (obj.type === feature.type) {
-          return { ...obj, features: [...obj.features, feature] };
+        if (obj.type && obj.type === feature.type) {
+          console.log("cccccccc", {
+            ...obj,
+            features: [...obj.features, feature.feature],
+          });
+
+          return { ...obj, features: [...obj.features, feature.feature] };
         }
         return obj;
       });
     } else {
       arr = [...arr, { type: feature.type, features: [feature.feature] }];
+    }
+    console.log("DSKDKSK", arr);
+    setFeatures(arr);
+  };
+  const handleUpdateFeature = (feature) => {
+    let arr = [...features];
+    if (arr.length > 0) {
+      arr = arr.map((obj) => {
+        if (obj.type && obj.type === feature.type) {
+          let updatedArr = [...obj.features];
+          updatedArr[feature.index] = feature.feature;
+          return { ...obj, features: updatedArr };
+        }
+        return obj;
+      });
     }
     setFeatures(arr);
   };
@@ -339,6 +341,8 @@ const ProfilePage = ({}) => {
                   categoriesArr={formData.categories}
                   packagesObj={formData.packages}
                   handleAddFeature={handleAddFeature}
+                  handleUpdateFeature={handleUpdateFeature}
+                  features={features}
                 />
               </Col>
             </Row>

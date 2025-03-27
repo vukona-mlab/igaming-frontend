@@ -9,6 +9,8 @@ const CategoryPreferences = ({
   categoriesArr,
   packagesObj,
   handleAddFeature,
+  handleUpdateFeature,
+  features,
 }) => {
   const [formData, setFormData] = useState({
     categories: {
@@ -126,7 +128,6 @@ const CategoryPreferences = ({
     e.preventDefault();
     onSubmit(formData); // Pass formData to parent component
   };
-  console.log({ formData });
   return (
     <Container>
       {showFeature && (
@@ -134,8 +135,10 @@ const CategoryPreferences = ({
           <PriceCard
             type={currFeature}
             price={formData.prices[currFeature]}
+            features={features}
             onClose={() => setShowFeature(false)}
             handleAddFeature={handleAddFeature}
+            handleUpdateFeature={handleUpdateFeature}
           />
         </div>
       )}
