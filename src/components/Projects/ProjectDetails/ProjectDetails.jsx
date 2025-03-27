@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./ProjectDetails.css";
 import ImageViewer from "./ImageViewer";
 import { CiCamera } from "react-icons/ci"; // Import the camera icon
+import { GoUpload } from "react-icons/go";
 
 const ProjectDetails = ({ project: initialProject, onClose }) => {
   const [currentTab, setCurrentTab] = useState("Details");
@@ -193,7 +194,7 @@ const ProjectDetails = ({ project: initialProject, onClose }) => {
   // Update the Images tab section
   const renderImagesTab = () => (
     <div className="project-details-content">
-      <div className="detail-group">
+      <div className="pjd-detail-group">
         <div className="images-header">
           <h3>Project Images</h3>
           <div className="upload-section">
@@ -206,7 +207,7 @@ const ProjectDetails = ({ project: initialProject, onClose }) => {
               onChange={handleFileSelect}
             />
             <button
-              className="upload-button"
+              className="pjd-upload-button"
               onClick={() => fileInputRef.current?.click()}
               disabled={uploading}
             >
@@ -288,7 +289,7 @@ const ProjectDetails = ({ project: initialProject, onClose }) => {
   // Update the Documents tab section
   const renderDocumentsTab = () => (
     <div className="project-details-content">
-      <div className="detail-group">
+      <div className="pjd-detail-group">
         <div className="documents-header">
           <h3>Project Documents</h3>
           <div className="upload-section">
@@ -301,7 +302,7 @@ const ProjectDetails = ({ project: initialProject, onClose }) => {
               onChange={handleDocumentSelect}
             />
             <button
-              className="upload-button"
+              className="pjd-upload-button"
               onClick={() => documentInputRef.current?.click()}
               disabled={uploadingDocs}
             >
@@ -447,18 +448,38 @@ const ProjectDetails = ({ project: initialProject, onClose }) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = (e) => setImage(e.target.result);
+      reader.onload = (e) => setCurrentImage(e.target.result);
       reader.readAsDataURL(file);
     }
-    setImage(file);
+    // setCurrentImage(file);
+    // try {
+    //    const response = await fetch(
+    //     `${import.meta.env.VITE_API_URL}/api/projects/${project.id}`,
+    //     {
+    //       method: "PUT",
+    //       headers: {
+    //         Authorization: token,
+    //       },
+    //       body: formData,
+    //     }
+    //   );
+
+    //   if (!response.ok) {
+    //     throw new Error("Failed to upload files");
+    //   }
+
+    //   const result = await response.json();
+    // } catch (error) {
+
+    // }
   };
   return (
     <div className="project-details-modal-overlay">
-      <div className="project-details-modal">
-        <div className="project-details-header">
+      <div className="pjd-project-details-modal">
+        <div className="pjd-project-details-header">
           <h2>Project Details</h2>
           <div className="header-actions">
-            <button className="close-button" onClick={onClose}>
+            <button className="pjd-close-button" onClick={onClose}>
               ×
             </button>
           </div>
@@ -497,8 +518,7 @@ const ProjectDetails = ({ project: initialProject, onClose }) => {
         </div>
         {currentTab === "Details" && (
           <div className="project-details-content">
-            <div className="detail-group">
-              <h3>Basic Information</h3>
+            <div className="pjd-detail-group pdc-image-details">
               <div className="pdc-detail-section-one">
                 <div className="pdc-image-container">
                   {currentImage ? (
@@ -512,71 +532,80 @@ const ProjectDetails = ({ project: initialProject, onClose }) => {
                   )}
 
                   {/* Camera Icon Button */}
-                  <div className="camera-icon" onClick={handleImageUpload}>
-                    <input
-                      type="file"
-                      id="fileInput"
-                      accept="image/*"
-                      hidden
-                      onChange={handleImageChange}
-                    />
-                    <CiCamera size={20} color="black" />
+                  <div className="pdc-camera-upload">
+                    <div className="camera-icon" onClick={handleImageUpload}>
+                      <input
+                        type="file"
+                        id="fileInput"
+                        accept="image/*"
+                        hidden
+                        onChange={handleImageChange}
+                      />
+                      <CiCamera size={20} color="black" />
+                    </div>
                   </div>
                 </div>
               </div>
               <div className="pdc-detail-section-two">
-                <div className="detail-item">
-                  <span className="detail-label">Title:</span>
-                  <span className="detail-value">{project.title}</span>
+                <h3>Basic Information</h3>
+
+                <div className="pdc-detail-sub-groups"></div>
+                <div className="pdc-detail-item">
+                  <span className="pdc-detail-label">Title:</span>
+                  <span className="pdc-detail-value">{project.title}</span>
                 </div>
-                <div className="detail-item">
-                  <span className="detail-label">Status:</span>
-                  <span className={`detail-value status ${project.status}`}>
+                <div className="pdc-detail-item">
+                  <span className="pdc-detail-label">Status:</span>
+                  <span
+                    className={`pdc-detail-value status pdc-${project.status}`}
+                  >
                     {project.status.charAt(0).toUpperCase() +
                       project.status.slice(1)}
                   </span>
                 </div>
-                <div className="detail-item">
-                  <span className="detail-label">Budget:</span>
-                  <span className="detail-value">R{project.budget}</span>
+                <div className="pdc-detail-item">
+                  <span className="pdc-detail-label">Budget:</span>
+                  <span className="pdc-detail-value">R{project.budget}</span>
                 </div>
-                <div className="detail-item">
-                  <span className="detail-label">Category:</span>
-                  <span className="detail-value">{project.category}</span>
+                <div className="pdc-detail-item">
+                  <span className="pdc-detail-label">Category:</span>
+                  <span className="pdc-detail-value">{project.category}</span>
                 </div>
-                <div className="detail-item">
-                  <span className="detail-label">Deadline:</span>
-                  <span className="detail-value">{project.deadline} days</span>
+                <div className="pdc-detail-item">
+                  <span className="pdc-detail-label">Deadline:</span>
+                  <span className="pdc-detail-value">
+                    {project.deadline} days
+                  </span>
                 </div>
               </div>
             </div>
 
-            <div className="detail-group">
+            <div className="pjd-detail-group">
               <h3>Participants</h3>
               {project && (
-                <div className="detail-item">
-                  <span className="detail-label">Client:</span>
-                  <span className="detail-value">
+                <div className="pdc-detail-item">
+                  <span className="pdc-detail-label">Client:</span>
+                  <span className="pdc-detail-value">
                     {project.clientEmail || "N/A"}
                   </span>
                 </div>
               )}
               {project && (
-                <div className="detail-item">
-                  <span className="detail-label">Freelancer:</span>
-                  <span className="detail-value">
+                <div className="pdc-detail-item">
+                  <span className="pdc-detail-label">Freelancer:</span>
+                  <span className="pdc-detail-value">
                     {project.freelancerEmail || "N/A"}
                   </span>
                 </div>
               )}
             </div>
 
-            <div className="detail-group">
+            <div className="pjd-detail-group">
               <h3>Description</h3>
               <p className="project-description">{project.description}</p>
             </div>
 
-            <div className="detail-group">
+            <div className="pjd-detail-group">
               <h3>Requirements</h3>
               <ul className="requirements-list">
                 {project.requirements.map((req, index) => (
