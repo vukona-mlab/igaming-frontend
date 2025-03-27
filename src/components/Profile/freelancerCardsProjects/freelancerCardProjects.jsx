@@ -6,7 +6,7 @@ const FreelancerProjectCards = ({ image, speciality }) => {
   return (
     <Card className="portfolio-card">
       {/* Image Container */}
-      <div className="image-container">
+      <div className="fcp-image-container">
         {image ? (
           <img src={image} alt="Portfolio" className="portfolio-image" />
         ) : (
