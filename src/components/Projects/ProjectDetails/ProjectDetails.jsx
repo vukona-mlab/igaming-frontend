@@ -17,7 +17,9 @@ const ProjectDetails = ({ project: initialProject, onClose }) => {
   const [uploadProgressDocs, setUploadProgressDocs] = useState(0);
   const documentInputRef = useRef(null);
   const [selectedDocument, setSelectedDocument] = useState(null);
-  const [currentImage, setCurrentImage] = useState(project.picture || "");
+  const [currentImage, setCurrentImage] = useState(
+    project.projectPicture || ""
+  );
 
   const handleFileSelect = (event) => {
     const files = Array.from(event.target.files);
@@ -444,34 +446,39 @@ const ProjectDetails = ({ project: initialProject, onClose }) => {
   const handleImageUpload = () => {
     document.getElementById("fileInput").click();
   };
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => setCurrentImage(e.target.result);
-      reader.readAsDataURL(file);
-    }
-    // setCurrentImage(file);
-    // try {
-    //    const response = await fetch(
-    //     `${import.meta.env.VITE_API_URL}/api/projects/${project.id}`,
-    //     {
-    //       method: "PUT",
-    //       headers: {
-    //         Authorization: token,
-    //       },
-    //       body: formData,
-    //     }
-    //   );
+  const handleImageChange = async (event) => {
+    try {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => setCurrentImage(e.target.result);
+        reader.readAsDataURL(file);
+      }
+      // setCurrentImage(file);
+      const currImage = Array.from(event.target.files);
 
-    //   if (!response.ok) {
-    //     throw new Error("Failed to upload files");
-    //   }
+      const formData = new FormData();
+      currImage.forEach((file) => {
+        formData.append("picture", file);
+      });
 
-    //   const result = await response.json();
-    // } catch (error) {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/projects/${project.id}/picture`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: token,
+          },
+          body: formData,
+        }
+      );
 
-    // }
+      if (!response.ok) {
+        throw new Error("Failed to upload files");
+      }
+
+      const result = await response.json();
+    } catch (error) {}
   };
   return (
     <div className="project-details-modal-overlay">
