@@ -29,7 +29,7 @@ const ProfilePage = ({}) => {
   const [jobTitle, setJobTitle] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [projects, setProjects] = useState([]);
-
+  const [features, setFeatures] = useState({});
   const uid = localStorage.getItem("uid");
   const token = localStorage.getItem("token");
 
@@ -63,14 +63,31 @@ const ProfilePage = ({}) => {
         return key;
       }
     });
+    console.log({ price: data.prices });
+    let packages = [];
+
+    for (const [key, value] of Object.entries(data.prices)) {
+      packages.push({ type: key, price: value, features: [] });
+    }
     updateUserProfile({
       ...formData,
       categories: arr || [],
-      packages: data.prices || {},
+      packages: packages || [],
     });
 
     setFormData((prev) => ({ ...prev, categories: arr }));
     setFormData((prev) => ({ ...prev, packages: data.prices }));
+
+    /*{
+      type: "Premium",
+      price: packages.premium ? `R${packages.premium}` : "N/A",
+      features: [
+        "30 days faster",
+        "Free logo",
+        "Free design"
+      ],
+      bgColor: "rgba(13, 153, 255, 0.20)"
+    }, */
   };
   const showAlert = () => {
     Swal.fire({
@@ -112,9 +129,17 @@ const ProfilePage = ({}) => {
           speciality:
             (data.user.specialities && data.user.specialities[0]) || "",
         }));
+        let obj = {};
+        if (data.user.packages) {
+          obj = data.user.packages.reduce(
+            (obj, item) => Object.assign(obj, { [item.key]: item.value }),
+            {}
+          );
+          console.log({ obj });
+        }
         setFormData((prev) => ({
           ...prev,
-          packages: data.user.packages || {},
+          packages: obj || {},
         }));
         setFormData((prev) => ({
           ...prev,
@@ -147,7 +172,7 @@ const ProfilePage = ({}) => {
       // formData.append("bio", formData.bio);
       formData.append("speciality", JSON.stringify([data.speciality || ""]));
       formData.append("categories", JSON.stringify(data.categories));
-      formData.append("packages", JSON.stringify(data.packages || {}));
+      formData.append("packages", JSON.stringify(data.packages || []));
       // formData.append("jobTitle", formData.jobTitle);
       formData.append("profilePicture", image || "");
       const response = await fetch(
@@ -290,7 +315,6 @@ const ProfilePage = ({}) => {
             </Row>
           </Col>
         </Row>
-        
       </Container>
     </>
   );
