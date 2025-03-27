@@ -59,16 +59,73 @@ h2{
     gap: 30px;
 }
 
+.input-field{
+    width: 278px;
+    height: 42px;
+    border-radius: 8px;
+    border: 2px solid #E9E9E9;
+}
+
 .contact-details li{
     list-style: none;
-    background-color: red;
-    padding: 28px;
+    padding: 20px;
+    font-family: 'Poppins';
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 100%;
+    color: #FFFFFF;
+}
+
+.contact-icon{
+    margin-left: 25px;
+}
+
+.half-ellipse{
+    position: relative;
+    left: 21%;
+}
+
+.full-ellipse{
+    position: relative;
+    left: 27%;
+}
+
+/* .social-links{
+    background-color: aqua;
+} */
+
+.social-icon{
+    margin: 8px;
+    color: #FFFFFF;
+}
+
+.button{
+    background-color: #000000;
+    color: #FFFFFF;
+    padding: 18px;
+    border-radius: 12px;
+    width: 214px;
+    height: 54px;
+}
+
+.subject-heading{
+    font-family: 'Poppins';
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+    color: #000000;
+    margin-top: 15px;
 }
 
 .select-subjects{
     display: flex;
   justify-content: center;
   align-items: center;
+  gap: 7px;
+  font-family: 'Poppins';
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 20px;
 }
 
 .check-form{
@@ -79,4 +136,6 @@ h2{
 
   .message-box{
     margin-top: 50px;
+    /* width: 594px; */
+    height: 72px;
   }
