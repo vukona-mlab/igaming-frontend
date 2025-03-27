@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import './DocumentsTable.css';
+import React, { useEffect, useState } from "react";
+import "./DocumentsTable.css";
 
 export default function DocumentsTable({ statusFilter }) {
   const [documents, setDocuments] = useState([]);
@@ -12,15 +12,18 @@ export default function DocumentsTable({ statusFilter }) {
   useEffect(() => {
     const fetchDocuments = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/auth/users/${userId}`, {
-          headers: { Authorization: token },
-        });
+        const response = await fetch(
+          `http://localhost:8000/api/auth/users/${userId}`,
+          {
+            headers: { Authorization: token },
+          }
+        );
 
         const data = await response.json();
         console.log("Fetched Data:", data);
 
         if (data.user && Array.isArray(data.user.documents)) {
-          setEmail(data.user.email || ""); 
+          setEmail(data.user.email || "");
           setDocuments(data.user.documents || []);
           console.log("Documents set in state:", data.user.documents);
         } else {
@@ -36,37 +39,39 @@ export default function DocumentsTable({ statusFilter }) {
   }, [userId, token]);
 
   // Handle document deletion
-  const handleDelete = async (documentName) => {
+  const handleDelete = async (docId) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/auth/users/${userId}/documents/delete`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: token,
-          'Content-Type': 'application/json',  // Specify the content type as JSON
-        },
-        body:JSON.stringify({documentName})
-      });
-      const data = await response.json(); 
-      console.log("delete response",data);
-      console.log("doc name",documentName)
-       
+      const response = await fetch(
+        `http://localhost:8000/api/auth/users/${userId}/documents/delete`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: token,
+            "Content-Type": "application/json", // Specify the content type as JSON
+          },
+          body: JSON.stringify({ docId }),
+        }
+      );
+      const data = await response.json();
+      console.log("delete response", data);
+      console.log("doc name", docId);
+
       if (response.ok) {
         // If delete was successful, update the state by removing the document from the list
         setDocuments((prevDocuments) =>
-          prevDocuments.filter((doc) => doc.documentName !== documentName)
+          prevDocuments.filter((doc) => doc.id !== docId)
         );
-        console.log(`Document with ID ${documentName} was deleted`);
+        console.log(`Document with ID ${docId} was deleted`);
       } else {
-        console.error('Error deleting document:', response.statusText);
+        console.error("Error deleting document:", response.statusText);
       }
     } catch (error) {
-      console.error('Error deleting document:', error);
+      console.error("Error deleting document:", error);
     }
   };
 
   return (
     <div className="overlord">
-      
       {/* Documents Table */}
       <table className="table-container">
         <thead>
@@ -88,11 +93,23 @@ export default function DocumentsTable({ statusFilter }) {
                 <td className="t-data">{doc.status}</td>
                 <td className="t-data">{doc.documentType}</td>
                 <td className="t-data">{email}</td>
-                <td className="t-data">{new Date(doc.dateAdded).toLocaleDateString()}</td>
+                <td className="t-data">
+                  {new Date(doc.dateAdded).toLocaleDateString()}
+                </td>
                 <td className="t-data">
                   <div className="action-buttons">
-                    <button className="view-button" onClick={() => window.open(doc.url, '_blank')}>View</button>
-                    <button className="delete-button" onClick={() => handleDelete(doc.documentName)}>Delete</button>
+                    <button
+                      className="view-button"
+                      onClick={() => window.open(doc.url, "_blank")}
+                    >
+                      View
+                    </button>
+                    <button
+                      className="delete-button"
+                      onClick={() => handleDelete(doc.id)}
+                    >
+                      Delete
+                    </button>
                   </div>
                 </td>
               </tr>

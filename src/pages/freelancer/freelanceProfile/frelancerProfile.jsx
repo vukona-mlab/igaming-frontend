@@ -3,14 +3,12 @@ import { Container, Row, Col } from "react-bootstrap";
 import ProfileCard from "../../../components/Profile/portfolioCard/portfolioCard"; // Import ProfileCard component
 import ProfileForm from "../../../components/Profile/profileForm/profileForm"; // Import ProfileForm component
 import CategoryPreferences from "../../../components/Profile/categoryPreferance/categoryPrefarances"; // Import CategoryPreferences component
-
+//import './freelancerProfile.css';
 import Navbar from "../../../components/Common/Navbar/navbar";
 import { Form, Button } from "react-bootstrap";
 import Swal from "sweetalert2";
 import SwitchRoleButton from "../../../components/Common/SwitchRoleButton/SwitchRoleButton";
 import ProfileSubNav from "../../../components/Profile/ProfileSubNav/ProfileSubNav";
-import './freelancerProfile.css';
-import { useNavigate } from "react-router-dom";
 
 const ProfilePage = ({}) => {
   const [formData, setFormData] = useState({
@@ -22,13 +20,15 @@ const ProfilePage = ({}) => {
     dateOfBirth: "",
     speciality: "",
     categories: [],
-    extraAmount: {},
+    packages: {},
   });
   const [image, setImage] = useState();
   const [currImage, setCurrImage] = useState();
   const [loading, setLoading] = useState(true);
   const [isUpdate, setIsUpdate] = useState(false);
   const [jobTitle, setJobTitle] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [projects, setProjects] = useState([]);
 
   const uid = localStorage.getItem("uid");
   const token = localStorage.getItem("token");
@@ -36,7 +36,6 @@ const ProfilePage = ({}) => {
   const url = import.meta.env.VITE_API_URL;
   const role = localStorage.getItem("role");
   const [currentRole, setCurrentRole] = useState("freelancer");
-  const navigate = useNavigate();
 
   useEffect(() => {
     getProfile();
@@ -58,7 +57,7 @@ const ProfilePage = ({}) => {
   };
 
   const handleCategoriesSubmit = (data) => {
-    console.log({ e: data });
+    console.log({ eee: data });
     let arr = Object.keys(data.categories).filter((key) => {
       if (data.categories[key] === true) {
         return key;
@@ -67,11 +66,11 @@ const ProfilePage = ({}) => {
     updateUserProfile({
       ...formData,
       categories: arr || [],
-      extraAmount: data.prices || {},
+      packages: data.prices || {},
     });
 
     setFormData((prev) => ({ ...prev, categories: arr }));
-    setFormData((prev) => ({ ...prev, extraAmount: data.prices }));
+    setFormData((prev) => ({ ...prev, packages: data.prices }));
   };
   const showAlert = () => {
     Swal.fire({
@@ -115,7 +114,7 @@ const ProfilePage = ({}) => {
         }));
         setFormData((prev) => ({
           ...prev,
-          extraAmount: data.user.extraAmount || {},
+          packages: data.user.packages || {},
         }));
         setFormData((prev) => ({
           ...prev,
@@ -148,7 +147,7 @@ const ProfilePage = ({}) => {
       // formData.append("bio", formData.bio);
       formData.append("speciality", JSON.stringify([data.speciality || ""]));
       formData.append("categories", JSON.stringify(data.categories));
-      formData.append("extraAmount", JSON.stringify(data.extraAmount || {}));
+      formData.append("packages", JSON.stringify(data.packages || {}));
       // formData.append("jobTitle", formData.jobTitle);
       formData.append("profilePicture", image || "");
       const response = await fetch(
@@ -176,10 +175,7 @@ const ProfilePage = ({}) => {
       console.log(error);
     }
   };
-   
-  const handleDocument = ()=>{
-    navigate("/view-document");
-  }
+
   const handleRoleSwitch = async (newRole) => {
     try {
       const response = await fetch(
@@ -222,21 +218,18 @@ const ProfilePage = ({}) => {
       });
     }
   };
+
+  const handleTabChange = (newTab) => {
+    setSearchTerm(newTab);
+  };
+
   if (loading) return <div></div>;
   return (
     <>
       <Navbar />
       <ProfileSubNav />
       <Container style={{ minHeight: "100vh", paddingBottom: "60px" }}>
-        <div className="div-btn-top">
-          <Button
-            variant="dark" className="add-my-documents"
-            onClick={handleDocument}
-            type="submit">Add Document
-
-          </Button>
-        </div>
-        <div className="profile-edit d-flex justify-content-between  align-items-center">
+        <div className="profile-edit d-flex justify-content-between align-items-center">
           <div className="welcome-message">
             {formData.displayName !== "" ? (
               <h4 className="welcome-name">Welcome, {formData.displayName}</h4>
@@ -245,8 +238,7 @@ const ProfilePage = ({}) => {
             )}
             {/* Placeholder for the user's name */}
           </div>
-          
-          <div className="switching-div">
+          <div>
             <SwitchRoleButton
               currentRole={currentRole}
               onRoleSwitch={handleRoleSwitch}
@@ -264,7 +256,7 @@ const ProfilePage = ({}) => {
           <Col md={3}>
             {/* Left Column - ProfileCard Component */}
             <ProfileCard
-              jobTitle={jobTitle}
+              jobTitle={jobTitle || formData.speciality}
               image={currImage}
               handleImageChange={handleImageChange}
             />
@@ -292,12 +284,13 @@ const ProfilePage = ({}) => {
                   isUpdate={isUpdate}
                   cancel={() => setIsUpdate(false)}
                   categoriesArr={formData.categories}
-                  extraAmountObj={formData.extraAmount}
+                  packagesObj={formData.packages}
                 />
               </Col>
             </Row>
           </Col>
         </Row>
+        
       </Container>
     </>
   );
