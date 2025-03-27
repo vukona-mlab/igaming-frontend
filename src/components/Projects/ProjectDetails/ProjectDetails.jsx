@@ -1,9 +1,420 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ProjectDetails.css";
+import ImageViewer from './ImageViewer';
 
-const ProjectDetails = ({ project, onClose }) => {
+const ProjectDetails = ({ project: initialProject, onClose }) => {
   const [currentTab, setCurrentTab] = useState("Details");
+  const [project, setProject] = useState(initialProject);
+  const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const fileInputRef = useRef(null);
+  const token = localStorage.getItem("token");
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [uploadingDocs, setUploadingDocs] = useState(false);
+  const [uploadProgressDocs, setUploadProgressDocs] = useState(0);
+  const documentInputRef = useRef(null);
+  const [selectedDocument, setSelectedDocument] = useState(null);
+
+  const handleFileSelect = (event) => {
+    const files = Array.from(event.target.files);
+    if (files.length > 0) {
+      handleFileUpload(files);
+    }
+  };
+
+  const handleFileUpload = async (files) => {
+    try {
+      setUploading(true);
+      setUploadProgress(0);
+
+      const formData = new FormData();
+      files.forEach(file => {
+        formData.append('files', file);
+      });
+
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/projects/${project.id}`,
+        {
+          method: 'PUT',
+          headers: {
+            Authorization: token,
+          },
+          body: formData,
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to upload files');
+      }
+
+      const result = await response.json();
+      
+      // Update the project's files list by combining existing and new files
+      setProject(prevProject => ({
+        ...prevProject,
+        files: [...(prevProject.files || []), ...(result.updatedFiles || [])]
+      }));
+      
+      // Force a re-render
+      setUploadProgress(100);
+      setTimeout(() => {
+        setUploading(false);
+        setUploadProgress(0);
+      }, 1000);
+
+    } catch (error) {
+      console.error('Error uploading files:', error);
+      alert('Failed to upload files. Please try again.');
+      setUploading(false);
+    }
+  };
+
+  const handleDocumentSelect = (event) => {
+    const files = Array.from(event.target.files);
+    if (files.length > 0) {
+      handleDocumentUpload(files);
+    }
+  };
+
+  const handleDocumentUpload = async (files) => {
+    try {
+      setUploadingDocs(true);
+      setUploadProgressDocs(0);
+
+      const formData = new FormData();
+      files.forEach(file => {
+        formData.append('docs', file);
+      });
+
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/projects/${project.id}/docs`,
+        {
+          method: 'PUT',
+          headers: {
+            Authorization: token,
+          },
+          body: formData,
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to upload documents');
+      }
+
+      const result = await response.json();
+      
+      // Update the project's docs list
+      setProject(prevProject => ({
+        ...prevProject,
+        docs: [...(prevProject.docs || []), ...(result.updatedDocs || [])]
+      }));
+      
+      setUploadProgressDocs(100);
+      setTimeout(() => {
+        setUploadingDocs(false);
+        setUploadProgressDocs(0);
+      }, 1000);
+
+    } catch (error) {
+      console.error('Error uploading documents:', error);
+      alert('Failed to upload documents. Please try again.');
+      setUploadingDocs(false);
+    }
+  };
+
+  const handleDeleteFile = async (fileUrl) => {
+    if (!window.confirm('Are you sure you want to delete this image?')) {
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/projects/${project.id}/files`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+          body: JSON.stringify({ fileUrl }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to delete file');
+      }
+
+      // Update the project's files list
+      setProject(prevProject => ({
+        ...prevProject,
+        files: prevProject.files.filter(file => file.url !== fileUrl)
+      }));
+
+    } catch (error) {
+      console.error('Error deleting file:', error);
+      alert('Failed to delete file. Please try again.');
+    }
+  };
+
+  const handleDeleteDocument = async (fileUrl) => {
+    if (!window.confirm('Are you sure you want to delete this document?')) {
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/projects/${project.id}/docs`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+          body: JSON.stringify({ fileUrl }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to delete document');
+      }
+
+      // Update the project's docs list
+      setProject(prevProject => ({
+        ...prevProject,
+        docs: prevProject.docs.filter(doc => doc.url !== fileUrl)
+      }));
+
+    } catch (error) {
+      console.error('Error deleting document:', error);
+      alert('Failed to delete document. Please try again.');
+    }
+  };
+
+  // Update the Images tab section
+  const renderImagesTab = () => (
+    <div className="project-details-content">
+      <div className="detail-group">
+        <div className="images-header">
+          <h3>Project Images</h3>
+          <div className="upload-section">
+            <input
+              type="file"
+              ref={fileInputRef}
+              accept="image/*"
+              multiple
+              style={{ display: 'none' }}
+              onChange={handleFileSelect}
+            />
+            <button 
+              className="upload-button"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+            >
+              <i className="fas fa-upload"></i> Upload Images
+            </button>
+            {uploading && (
+              <div className="upload-progress-container">
+                <div className="upload-progress">
+                  <div 
+                    className="progress-bar" 
+                    style={{ width: `${uploadProgress}%` }}
+                  ></div>
+                </div>
+                <p className="upload-status">Uploading... {uploadProgress}%</p>
+              </div>
+            )}
+          </div>
+        </div>
+        
+        {(!project.files || project.files.length === 0) && (
+          <div className="tab-description">
+            <p>View and manage all project-related images. This section allows you to:</p>
+            <ul>
+              <li>View all project images in a grid layout</li>
+              <li>Preview images in full size</li>
+              <li>Upload new images to the project</li>
+              <li>Delete images when they're no longer needed</li>
+            </ul>
+            <p className="upload-instructions">
+              Supported formats: JPG, PNG, GIF. Maximum file size: 5MB per image
+            </p>
+          </div>
+        )}
+
+        <div className="images-grid">
+          {project.files && project.files.length > 0 ? (
+            project.files.map((file, index) => (
+              <div 
+                key={index} 
+                className="image-item"
+                onClick={() => setSelectedImage(file)}
+              >
+                <img src={file.url} alt={`Project image ${index + 1}`} />
+                <button 
+                  className="delete-image-button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeleteFile(file.url);
+                  }}
+                >
+                  <i className="fas fa-trash"></i>
+                </button>
+              </div>
+            ))
+          ) : (
+            <div className="no-images-message">
+              <i className="fas fa-images"></i>
+              <p>No images uploaded yet. Click the button above to add images to your project.</p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {selectedImage && (
+        <ImageViewer
+          image={selectedImage}
+          onClose={() => setSelectedImage(null)}
+        />
+      )}
+    </div>
+  );
+
+  // Update the Documents tab section
+  const renderDocumentsTab = () => (
+    <div className="project-details-content">
+      <div className="detail-group">
+        <div className="documents-header">
+          <h3>Project Documents</h3>
+          <div className="upload-section">
+            <input
+              type="file"
+              ref={documentInputRef}
+              accept=".pdf,.doc,.docx,.txt,.xls,.xlsx"
+              multiple
+              style={{ display: 'none' }}
+              onChange={handleDocumentSelect}
+            />
+            <button 
+              className="upload-button"
+              onClick={() => documentInputRef.current?.click()}
+              disabled={uploadingDocs}
+            >
+              <i className="fas fa-file-upload"></i> Upload Documents
+            </button>
+            {uploadingDocs && (
+              <div className="upload-progress-container">
+                <div className="upload-progress">
+                  <div 
+                    className="progress-bar" 
+                    style={{ width: `${uploadProgressDocs}%` }}
+                  ></div>
+                </div>
+                <p className="upload-status">Uploading... {uploadProgressDocs}%</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {(!project.docs || project.docs.length === 0) && (
+          <div className="tab-description">
+            <p>Manage all project-related documents and files. This section allows you to:</p>
+            <ul>
+              <li>Upload and store important project documents</li>
+              <li>Download shared files and resources</li>
+              <li>Track document versions and updates</li>
+              <li>Organize files by type and purpose</li>
+            </ul>
+            <p className="upload-instructions">
+              Supported formats: PDF, DOC, DOCX, TXT, XLS, XLSX. Maximum file size: 10MB
+            </p>
+          </div>
+        )}
+
+        <div className="documents-grid">
+          {project.docs && project.docs.length > 0 ? (
+            project.docs.map((doc, index) => (
+              <div key={index} className="document-item">
+                <div className="document-icon">
+                  <i className={`fas ${getDocumentIcon(doc.type)}`}></i>
+                </div>
+                <div 
+                  className="document-info"
+                  onClick={() => {
+                    if (doc.type === 'application/pdf') {
+                      setSelectedDocument(doc);
+                    } else {
+                      window.open(doc.url, '_blank');
+                    }
+                  }}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <span className="document-name">{doc.name}</span>
+                  <span className="document-date">
+                    {new Date(doc.uploadedAt).toLocaleDateString()}
+                  </span>
+                </div>
+                <div className="document-actions">
+                  <a 
+                    href={doc.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="document-download"
+                  >
+                    <i className="fas fa-download"></i>
+                  </a>
+                  <button 
+                    className="document-delete"
+                    onClick={() => handleDeleteDocument(doc.url)}
+                  >
+                    <i className="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="no-documents-message">
+              <i className="fas fa-file-alt"></i>
+              <p>No documents uploaded yet. Click the button above to add documents to your project.</p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {selectedDocument && (
+        <div className="document-viewer-overlay" onClick={() => setSelectedDocument(null)}>
+          <div className="document-viewer-content" onClick={e => e.stopPropagation()}>
+            <button className="close-viewer" onClick={() => setSelectedDocument(null)}>
+              <i className="fas fa-times"></i>
+            </button>
+            <iframe
+              src={`${selectedDocument.url}#toolbar=0`}
+              title="Document Viewer"
+              width="100%"
+              height="100%"
+            />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
+  // Add helper function for document icons
+  const getDocumentIcon = (fileType) => {
+    switch (fileType) {
+      case 'application/pdf':
+        return 'fa-file-pdf';
+      case 'application/msword':
+      case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+        return 'fa-file-word';
+      case 'application/vnd.ms-excel':
+      case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+        return 'fa-file-excel';
+      default:
+        return 'fa-file-alt';
+    }
+  };
+
   return (
     <div className="project-details-modal-overlay">
       <div className="project-details-modal">
@@ -118,12 +529,8 @@ const ProjectDetails = ({ project, onClose }) => {
           /> */}
           </div>
         )}
-        {currentTab === "Images" && (
-          <div className="project-details-content"></div>
-        )}
-        {currentTab === "Documents" && (
-          <div className="project-details-content"></div>
-        )}
+        {currentTab === "Images" && renderImagesTab()}
+        {currentTab === "Documents" && renderDocumentsTab()}
       </div>
     </div>
   );
