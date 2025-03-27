@@ -9,7 +9,6 @@ import { Form, Button } from "react-bootstrap";
 import Swal from "sweetalert2";
 import SwitchRoleButton from "../../../components/Common/SwitchRoleButton/SwitchRoleButton";
 import ProfileSubNav from "../../../components/Profile/ProfileSubNav/ProfileSubNav";
-import FreelancerProfileHeader from "../../../components/FreelancerProfileHeader/FreelancerProfileHeader";
 
 const ProfilePage = ({}) => {
   const [formData, setFormData] = useState({
@@ -291,12 +290,7 @@ const ProfilePage = ({}) => {
             </Row>
           </Col>
         </Row>
-        <FreelancerProfileHeader
-          searchTerm={searchTerm}
-          onTabChange={handleTabChange}
-          projects={projects}
-          packages={formData.packages}
-        />
+        
       </Container>
     </>
   );
