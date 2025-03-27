@@ -93,13 +93,18 @@ const CategoryPreferences = ({
         ...prev.categories,
         [name]: checked,
       },
+    }));
+  };
+  const handleSpeedUpChange = (e) => {
+    const { name, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
       speedUp: {
         ...prev.speedUp,
         [name]: checked,
       },
     }));
   };
-
   // Handle input change
   const handlePriceChange = (e) => {
     const { name, value } = e.target;
@@ -182,7 +187,7 @@ const CategoryPreferences = ({
                     label={speed.label}
                     name={speed.name}
                     className="custom-checkbox"
-                    onChange={handleCheckboxChange}
+                    onChange={handleSpeedUpChange}
                     disabled={!isUpdate}
                     checked={formData.speedUp[speed.name]}
                   />

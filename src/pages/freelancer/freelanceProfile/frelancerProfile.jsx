@@ -54,7 +54,7 @@ const ProfilePage = ({}) => {
   };
 
   const handleCategoriesSubmit = (data) => {
-    console.log({ e: data });
+    console.log({ eee: data });
     let arr = Object.keys(data.categories).filter((key) => {
       if (data.categories[key] === true) {
         return key;
