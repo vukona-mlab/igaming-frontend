@@ -1,14 +1,20 @@
-import React, { useState, useEffect } from "react"; 
+import React, { useState, useEffect } from "react";
 import DocumentTabs from "../DocumentsTabs/FreelancerTabs";
 import PricingPlans from "../PriceCard/PricingPlans";
 import ProjectCard from "../Project Card/ProjectCard";
 import StarRating from "../StarRating/StarRating";
-import ReviewForm from "../Reviews/ReviewForm/ReviewForm"
+import ReviewForm from "../Reviews/ReviewForm/ReviewForm";
+import ReviewCard from "../ReviewCard/ReviewCard";
 import "./FreelancerProfileHeader.css";
 
-const FreelancerProfileHeader = ({ searchTerm, onTabChange, projects = [] }) => {
+const FreelancerProfileHeader = ({
+  searchTerm,
+  onTabChange,
+  projects = [],
+  packages,
+}) => {
   const [selectedTab, setSelectedTab] = useState("Profile");
-  const [isReviewFormOpen, setIsReviewFormOpen] = useState(false); 
+  const [isReviewFormOpen, setIsReviewFormOpen] = useState(false);
   const [reviewRating, setReviewRating] = useState(0);
 
   useEffect(() => {
@@ -25,17 +31,17 @@ const FreelancerProfileHeader = ({ searchTerm, onTabChange, projects = [] }) => 
   };
 
   const handleReviewClick = (rating) => {
-    setReviewRating(rating); 
-    setIsReviewFormOpen(true); 
+    setReviewRating(rating);
+    setIsReviewFormOpen(true);
   };
 
   const handleCloseReviewForm = () => {
-    setIsReviewFormOpen(false); 
+    setIsReviewFormOpen(false);
   };
 
   const handleSubmitReview = (rating, review) => {
     console.log("Review Submitted:", { rating, review });
-    setIsReviewFormOpen(false); 
+    setIsReviewFormOpen(false);
   };
 
   return (
@@ -58,11 +64,16 @@ const FreelancerProfileHeader = ({ searchTerm, onTabChange, projects = [] }) => 
               onReviewClick={handleReviewClick}
               showReviewButton={true}
             />
+            <div className="reviews-section">
+              <ReviewCard />
+              <ReviewCard />
+              <ReviewCard />
+            </div>
           </div>
         )}
         {selectedTab === "Pricing & Packages" && (
           <div className="pricing-container">
-            <PricingPlans />
+            <PricingPlans packages={packages} />
           </div>
         )}
         {selectedTab === "Projects" && (
@@ -71,12 +82,19 @@ const FreelancerProfileHeader = ({ searchTerm, onTabChange, projects = [] }) => 
               projects.map((project) => (
                 <ProjectCard
                   key={project.id}
-                  projectPicture={project.projectPicture || "https://via.placeholder.com/350x300"}
+                  projectPicture={
+                    project.projectPicture ||
+                    "https://via.placeholder.com/350x300"
+                  }
                   projectName={project.projectName}
                   likes={project.likes || 0}
                   authorName={project.authorName}
-                  onDemoClick={() => console.log("Demo clicked for project:", project.id)}
-                  onShareClick={() => console.log("Share clicked for project:", project.id)}
+                  onDemoClick={() =>
+                    console.log("Demo clicked for project:", project.id)
+                  }
+                  onShareClick={() =>
+                    console.log("Share clicked for project:", project.id)
+                  }
                 />
               ))
             ) : (
@@ -87,10 +105,10 @@ const FreelancerProfileHeader = ({ searchTerm, onTabChange, projects = [] }) => 
       </div>
 
       {isReviewFormOpen && (
-        <ReviewForm 
-          onClose={handleCloseReviewForm} 
-          onSubmit={handleSubmitReview} 
-          initialRating={reviewRating} 
+        <ReviewForm
+          onClose={handleCloseReviewForm}
+          onSubmit={handleSubmitReview}
+          initialRating={reviewRating}
         />
       )}
     </div>

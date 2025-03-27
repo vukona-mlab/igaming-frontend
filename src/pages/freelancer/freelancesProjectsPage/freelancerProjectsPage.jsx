@@ -47,7 +47,8 @@ const FreelancerProjects = () => {
           displayName: freelancer.displayName || "",
           profilePicture: freelancer.profilePicture || "https://www.example.com/default-image.jpg",
           specialities: freelancer.specialities || [],
-          id: freelancer.id
+          id: freelancer.id,
+          packages: freelancer.packages || {}
         });
 
         // Transform projects data to match ProjectCard requirements
@@ -169,6 +170,7 @@ const FreelancerProjects = () => {
                   searchTerm={freelancerData?.displayName} 
                   onTabChange={handleTabChange}
                   projects={projects}
+                  packages={freelancerData?.packages}
                 />
               </Col>
             </Row>

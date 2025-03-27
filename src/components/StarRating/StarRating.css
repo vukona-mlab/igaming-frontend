@@ -6,7 +6,7 @@
     align-items: flex-start;
     width: 100%;
     box-shadow: none;
-    background-color: #F6F6F6;
+    background-color: #f6f6f6;
 }
 
 .rating-title {
@@ -36,14 +36,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 60px;
-    height: 60px;
+    width: 32px;
+    height: 32px;
 }
 
 
 
 .star-filled {
-    color: #000000;
+    color: gold;
 }
 
 .star-empty {
@@ -61,6 +61,7 @@
     padding: 0;
     transition: opacity 0.2s ease;
     margin-left: auto;
+    margin-bottom: 10px;
 }
 
 .write-review-btn:hover {

@@ -9,6 +9,8 @@ import { Form, Button } from "react-bootstrap";
 import Swal from "sweetalert2";
 import SwitchRoleButton from "../../../components/Common/SwitchRoleButton/SwitchRoleButton";
 import ProfileSubNav from "../../../components/Profile/ProfileSubNav/ProfileSubNav";
+import FreelancerProfileHeader from "../../../components/FreelancerProfileHeader/FreelancerProfileHeader";
+
 const ProfilePage = ({}) => {
   const [formData, setFormData] = useState({
     name: "",
@@ -26,6 +28,8 @@ const ProfilePage = ({}) => {
   const [loading, setLoading] = useState(true);
   const [isUpdate, setIsUpdate] = useState(false);
   const [jobTitle, setJobTitle] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [projects, setProjects] = useState([]);
 
   const uid = localStorage.getItem("uid");
   const token = localStorage.getItem("token");
@@ -215,6 +219,11 @@ const ProfilePage = ({}) => {
       });
     }
   };
+
+  const handleTabChange = (newTab) => {
+    setSearchTerm(newTab);
+  };
+
   if (loading) return <div></div>;
   return (
     <>
@@ -248,7 +257,7 @@ const ProfilePage = ({}) => {
           <Col md={3}>
             {/* Left Column - ProfileCard Component */}
             <ProfileCard
-              jobTitle={jobTitle}
+              jobTitle={jobTitle || formData.speciality}
               image={currImage}
               handleImageChange={handleImageChange}
             />
@@ -282,6 +291,12 @@ const ProfilePage = ({}) => {
             </Row>
           </Col>
         </Row>
+        <FreelancerProfileHeader
+          searchTerm={searchTerm}
+          onTabChange={handleTabChange}
+          projects={projects}
+          packages={formData.packages}
+        />
       </Container>
     </>
   );
