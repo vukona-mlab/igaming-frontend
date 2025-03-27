@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./ReviewForm.css";
 
 const ReviewForm = ({ onClose, onSubmit }) => {
-  const [rating, setRating] = useState(4);
+  const [rating, setRating] = useState(0); 
   const [review, setReview] = useState("");
   const [isLoading, setIsLoading] = useState(false); 
 
@@ -40,7 +40,7 @@ const ReviewForm = ({ onClose, onSubmit }) => {
           {[...Array(5)].map((_, index) => (
             <img
               key={index}
-              src="/images/star.png"
+              src={rating === 0 ? "/images/sad-star.png" : index < rating ? "/images/star.png" : "/images/sad-star.png"}
               alt="Star"
               className={`star-img ${index < rating ? "filled" : "unfilled"}`}
               onClick={() => handleStarClick(index)}
