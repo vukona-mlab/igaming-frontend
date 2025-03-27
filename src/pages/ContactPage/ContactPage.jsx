@@ -37,9 +37,10 @@ export default function ContactPage() {
           </div>
         </div>
         <div className="right">
+            <form>
           <div className="input-container">
             <div className="input-left">
-              <form>
+              {/* <form> */}
                 <label htmlFor="fname">First name:</label>
                 <br />
                 <input type="text" id="fname" name="fname" />
@@ -47,10 +48,10 @@ export default function ContactPage() {
                 <label htmlFor="lname">Email:</label>
                 <br />
                 <input type="text" id="lname" name="lname" />
-              </form>
+              {/* </form> */}
             </div>
             <div className="input-right">
-              <form>
+              {/* <form> */}
                 <label htmlFor="fname">Last name:</label>
                 <br />
                 <input type="text" id="fname" name="fname" />
@@ -58,13 +59,13 @@ export default function ContactPage() {
                 <label htmlFor="lname">Phone number:</label>
                 <br />
                 <input type="text" id="lname" name="lname" />
-              </form>
+              {/* </form> */}
             </div>
           </div>
           <div className="subjects">
             <h6>Select subject?</h6>
             <div className="select-subjects">
-              <form className="check-form">
+              {/* <form className="check-form"> */}
                 <input
                   type="checkbox"
                   id="vehicle1"
@@ -98,10 +99,10 @@ export default function ContactPage() {
                   value="Boat"
                 />
                 <label htmlFor="vehicle3">General enquiry</label>
-              </form>
+              {/* </form> */}
             </div>
             <div className="message-box">
-            <form action="action_page.php">
+            {/* <form action="action_page.php"> */}
               <label htmlFor="subject">Subject</label>
               <textarea
                 id="subject"
@@ -109,10 +110,11 @@ export default function ContactPage() {
                 placeholder="Write something.."
                 style={{ height: "200px" }}
               />
-            </form>
+            {/* </form> */}
             <button>Send Message</button>
             </div>
           </div>
+          </form>
         </div>
       </div>
     </div>
