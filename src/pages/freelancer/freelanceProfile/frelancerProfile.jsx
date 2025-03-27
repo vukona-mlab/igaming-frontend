@@ -57,7 +57,7 @@ const ProfilePage = ({}) => {
   };
 
   const handleCategoriesSubmit = (data) => {
-    console.log({ eee: data });
+    console.log({ features });
     let arr = Object.keys(data.categories).filter((key) => {
       if (data.categories[key] === true) {
         return key;
@@ -132,7 +132,7 @@ const ProfilePage = ({}) => {
         let obj = {};
         if (data.user.packages) {
           obj = data.user.packages.reduce(
-            (obj, item) => Object.assign(obj, { [item.key]: item.value }),
+            (obj, item) => Object.assign(obj, { [item.type]: item.price }),
             {}
           );
           console.log({ obj });
@@ -247,8 +247,21 @@ const ProfilePage = ({}) => {
   const handleTabChange = (newTab) => {
     setSearchTerm(newTab);
   };
-
+  const handleAddFeature = (feature) => {
+    let arr = [...features];
+    if (arr.length > 0) {
+      arr = arr.map((obj) => {
+        if (obj.type === feature.type) {
+          return { ...obj, features: feature.features };
+        }
+        return obj;
+      });
+    } else {
+    }
+    setFeatures(arr);
+  };
   if (loading) return <div></div>;
+  console.log({ features });
   return (
     <>
       <Navbar />
@@ -310,6 +323,7 @@ const ProfilePage = ({}) => {
                   cancel={() => setIsUpdate(false)}
                   categoriesArr={formData.categories}
                   packagesObj={formData.packages}
+                  handleAddFeature={handleAddFeature}
                 />
               </Col>
             </Row>

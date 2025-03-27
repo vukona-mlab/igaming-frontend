@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { Form, Row, Col, Button, Container } from "react-bootstrap";
 import "./categoryPrefarances.css"; // Ensure this path is correct
-
+import PriceCard from "../PriceCard/PriceCard";
 const CategoryPreferences = ({
   onSubmit,
   isUpdate,
   cancel,
   categoriesArr,
   packagesObj,
+  handleAddFeature,
 }) => {
   const [formData, setFormData] = useState({
     categories: {
@@ -79,6 +80,9 @@ const CategoryPreferences = ({
           : false,
     },
   });
+  const [showFeature, setShowFeature] = useState(false);
+  const [currFeature, setCurrFeature] = useState("");
+
   console.log(
     "testt",
     packagesObj.basic,
@@ -122,12 +126,19 @@ const CategoryPreferences = ({
     e.preventDefault();
     onSubmit(formData); // Pass formData to parent component
   };
-  console.log(
-    categoriesArr,
-    categoriesArr && categoriesArr.indexOf("graphicDesign") !== -1
-  );
+  console.log({ formData });
   return (
     <Container>
+      {showFeature && (
+        <div className="feature-details-modal-overlay">
+          <PriceCard
+            type={currFeature}
+            price={formData.prices[currFeature]}
+            onClose={() => setShowFeature(false)}
+            handleAddFeature={handleAddFeature}
+          />
+        </div>
+      )}
       <Form onSubmit={handleSubmit}>
         <Row className="mb-4">
           {/* First Column */}
@@ -210,9 +221,16 @@ const CategoryPreferences = ({
                   />
                 </Col>
                 <Col xs={4}>
-                  {/* {!isUpdate && (
-                    <img src={editIcon} className="cat-edit-icon" />
-                  )} */}
+                  {isUpdate && formData.speedUp[speed.name] && (
+                    <img
+                      src="/images/eyecon.png"
+                      className="cat-edit-icon"
+                      onClick={() => {
+                        setShowFeature(true);
+                        setCurrFeature(speed.name);
+                      }}
+                    />
+                  )}
                 </Col>
               </Row>
             ))}
