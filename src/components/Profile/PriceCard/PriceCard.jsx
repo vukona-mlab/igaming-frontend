@@ -38,7 +38,7 @@ const PriceCard = ({
       </div>
       <button
         className="message-button"
-        onClick={() => handleAddFeature({ type: type, features: arr })}
+        onClick={() => handleAddFeature({ type: type, feature: text })}
       >
         Add Benefit
       </button>

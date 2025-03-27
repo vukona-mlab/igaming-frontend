@@ -29,7 +29,7 @@ const ProfilePage = ({}) => {
   const [jobTitle, setJobTitle] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [projects, setProjects] = useState([]);
-  const [features, setFeatures] = useState({});
+  const [features, setFeatures] = useState([]);
   const uid = localStorage.getItem("uid");
   const token = localStorage.getItem("token");
 
@@ -68,6 +68,19 @@ const ProfilePage = ({}) => {
 
     for (const [key, value] of Object.entries(data.prices)) {
       packages.push({ type: key, price: value, features: [] });
+    }
+    if (features.length > 0) {
+      packages = packages.map((obj) => {
+        let updatedObj = {};
+        features.forEach((feature) => {
+          if (feature.type === obj.type) {
+            updatedObj = { ...obj, features: feature.features };
+          } else {
+            updatedObj = obj;
+          }
+        });
+        return updatedObj;
+      });
     }
     updateUserProfile({
       ...formData,
@@ -130,13 +143,14 @@ const ProfilePage = ({}) => {
             (data.user.specialities && data.user.specialities[0]) || "",
         }));
         let obj = {};
-        if (data.user.packages) {
+        if (data.user && data.user.packages && data.user.packages.length > 0) {
           obj = data.user.packages.reduce(
             (obj, item) => Object.assign(obj, { [item.type]: item.price }),
             {}
           );
           console.log({ obj });
         }
+        setFeatures(data.user.packages);
         setFormData((prev) => ({
           ...prev,
           packages: obj || {},
@@ -252,11 +266,12 @@ const ProfilePage = ({}) => {
     if (arr.length > 0) {
       arr = arr.map((obj) => {
         if (obj.type === feature.type) {
-          return { ...obj, features: feature.features };
+          return { ...obj, features: [...obj.features, feature] };
         }
         return obj;
       });
     } else {
+      arr = [...arr, { type: feature.type, features: [feature.feature] }];
     }
     setFeatures(arr);
   };
