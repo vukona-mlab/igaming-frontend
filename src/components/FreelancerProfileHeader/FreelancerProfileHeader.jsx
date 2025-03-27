@@ -90,6 +90,7 @@ const FreelancerProfileHeader = ({ searchTerm, onTabChange, projects = [] }) => 
         <ReviewForm 
           onClose={handleCloseReviewForm} 
           onSubmit={handleSubmitReview} 
+          initialRating={reviewRating} 
         />
       )}
     </div>
