@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import DocumentTabs from "../DocumentsTabs/FreelancerTabs";
 import PricingPlans from "../PriceCard/PricingPlans";
 import ProjectCard from "../Project Card/ProjectCard";
-import StarRating from "../StarRating/StarRating";
+import StarRating from "../Reviews/StarRating/StarRating";
 import ReviewForm from "../Reviews/ReviewForm/ReviewForm";
-import ReviewCard from "../ReviewCard/ReviewCard";
+import ReviewCard from "../Reviews/ReviewCard/ReviewCard";
 import "./FreelancerProfileHeader.css";
 
 const FreelancerProfileHeader = ({
