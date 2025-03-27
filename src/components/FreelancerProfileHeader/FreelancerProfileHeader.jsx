@@ -12,6 +12,9 @@ const FreelancerProfileHeader = ({
   onTabChange,
   projects = [],
   packages,
+  reviews = [],
+  reviewsError = null,
+  onReviewSubmit
 }) => {
   const [selectedTab, setSelectedTab] = useState("Profile");
   const [isReviewFormOpen, setIsReviewFormOpen] = useState(false);
@@ -39,8 +42,10 @@ const FreelancerProfileHeader = ({
     setIsReviewFormOpen(false);
   };
 
-  const handleSubmitReview = (rating, review) => {
-    console.log("Review Submitted:", { rating, review });
+  const handleSubmitReview = async (rating, review) => {
+    if (onReviewSubmit) {
+      await onReviewSubmit(rating, review);
+    }
     setIsReviewFormOpen(false);
   };
 
@@ -65,9 +70,24 @@ const FreelancerProfileHeader = ({
               showReviewButton={true}
             />
             <div className="reviews-section">
-              <ReviewCard />
-              <ReviewCard />
-              <ReviewCard />
+              {reviewsError ? (
+                <div className="reviews-error">
+                  <p>{reviewsError}</p>
+                  <p className="reviews-error-subtext">Reviews will be displayed here once available.</p>
+                </div>
+              ) : reviews.length > 0 ? (
+                reviews.map((review) => (
+                  <ReviewCard
+                    key={review.id}
+                    review={review}
+                  />
+                ))
+              ) : (
+                <div className="no-reviews">
+                  <p>No reviews yet</p>
+                  <p className="no-reviews-subtext">Be the first to review this freelancer!</p>
+                </div>
+              )}
             </div>
           </div>
         )}
