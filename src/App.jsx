@@ -22,6 +22,7 @@ import Transactions from "./pages/transcations/Transactions";
 import Document from "./pages/freelancer/DocumentsPage/DocumentUpload/documentUpload";
 import DocumentView from "./pages/freelancer/DocumentsPage/ViewDocuments/DocumentsView";
 import Projects from "./pages/projects/Projects";
+import ContactPage from "./pages/ContactPage/ContactPage";
 function App() {
   return (
     <div className="App">
@@ -74,6 +75,7 @@ function App() {
               <Route path="add-document" element={<Document />} />
               <Route path="view-document" element={<DocumentView />} />
               <Route path="projects" element={<Projects />} />
+              <Route path="contact" element={<ContactPage />} />
             </Route>
           </Routes>
         </div>
