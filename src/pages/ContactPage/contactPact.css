@@ -1,0 +1,82 @@
+.contact-page{
+    justify-content: center;
+   text-align: center; 
+}
+
+.heading-container{
+padding: 30px;
+}
+
+h1{
+    font-family: 'Poppins';
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 100%;
+    color:#000000;
+}
+
+.scnd-heading{
+    font-family: 'Poppins';
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 100%;
+    color: #717171;
+}
+
+.left{
+    background-color: #000000;
+    padding: 40px;
+    width: 491px;
+    height: 647px;
+    border-radius: 12px;
+}
+
+h2{
+    font-family: 'Poppins';
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 100%;
+    color: white !important;
+}
+
+.thrd-heading{
+    font-family: 'Poppins';
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 100%;
+    color: #C9C9C9;
+}
+
+.contact-container{
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.input-container{
+    display: flex;
+    gap: 30px;
+}
+
+.contact-details li{
+    list-style: none;
+    background-color: red;
+    padding: 28px;
+}
+
+.select-subjects{
+    display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.check-form{
+    display: flex;
+    gap: 20px;
+    align-items: center; 
+  }
+
+  .message-box{
+    margin-top: 50px;
+  }
