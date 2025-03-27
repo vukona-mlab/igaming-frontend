@@ -7,7 +7,7 @@ const CategoryPreferences = ({
   isUpdate,
   cancel,
   categoriesArr,
-  extraAmountObj,
+  packagesObj,
 }) => {
   const [formData, setFormData] = useState({
     categories: {
@@ -43,62 +43,46 @@ const CategoryPreferences = ({
           : false,
     },
     prices: {
-      threeDays:
-        extraAmountObj &&
-        extraAmountObj.threeDays &&
-        extraAmountObj.threeDays !== ""
-          ? extraAmountObj.threeDays
+      basic:
+        packagesObj && packagesObj.basic && packagesObj.basic !== ""
+          ? packagesObj.basic
           : "",
-      fiveDays:
-        extraAmountObj &&
-        extraAmountObj.fiveDays &&
-        extraAmountObj.fiveDays !== ""
-          ? extraAmountObj.fiveDays
+      standard:
+        packagesObj && packagesObj.standard && packagesObj.standard !== ""
+          ? packagesObj.standard
           : "",
-      sevenDays:
-        extraAmountObj &&
-        extraAmountObj.sevenDays &&
-        extraAmountObj.sevenDays !== ""
-          ? extraAmountObj.sevenDays
+      premium:
+        packagesObj && packagesObj.premium && packagesObj.premium !== ""
+          ? packagesObj.premium
           : "",
-      fourteenDays:
-        extraAmountObj &&
-        extraAmountObj.fourteenDays &&
-        extraAmountObj.fourteenDays !== ""
-          ? extraAmountObj.fourteenDays
+      ultimate:
+        packagesObj && packagesObj.ultimate && packagesObj.ultimate !== ""
+          ? packagesObj.ultimate
           : "",
     },
     speedUp: {
-      threeDays:
-        extraAmountObj &&
-        extraAmountObj.threeDays &&
-        extraAmountObj.threeDays !== ""
+      basic:
+        packagesObj && packagesObj.basic && packagesObj.basic !== ""
           ? true
           : false,
-      fiveDays:
-        extraAmountObj &&
-        extraAmountObj.fiveDays &&
-        extraAmountObj.fiveDays !== ""
+      standard:
+        packagesObj && packagesObj.standard && packagesObj.standard !== ""
           ? true
           : false,
-      sevenDays:
-        extraAmountObj &&
-        extraAmountObj.sevenDays &&
-        extraAmountObj.sevenDays !== ""
+      premium:
+        packagesObj && packagesObj.premium && packagesObj.premium !== ""
           ? true
           : false,
-      fourteenDays:
-        extraAmountObj &&
-        extraAmountObj.fourteenDays &&
-        extraAmountObj.fourteenDays !== ""
+      ultimate:
+        packagesObj && packagesObj.ultimate && packagesObj.ultimate !== ""
           ? true
           : false,
     },
   });
   console.log(
     "testt",
-    extraAmountObj.threeDays,
-    extraAmountObj && extraAmountObj.threeDays !== ""
+    packagesObj.basic,
+    packagesObj && packagesObj.basic !== ""
   );
   // Handle checkbox change
   const handleCheckboxChange = (e) => {
@@ -109,13 +93,18 @@ const CategoryPreferences = ({
         ...prev.categories,
         [name]: checked,
       },
+    }));
+  };
+  const handleSpeedUpChange = (e) => {
+    const { name, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
       speedUp: {
         ...prev.speedUp,
         [name]: checked,
       },
     }));
   };
-
   // Handle input change
   const handlePriceChange = (e) => {
     const { name, value } = e.target;
@@ -142,7 +131,7 @@ const CategoryPreferences = ({
       <Form onSubmit={handleSubmit}>
         <Row className="mb-4">
           {/* First Column */}
-          <Col xs={12} md={4} className="mb-3">
+          <Col xs={12} md={3} className="mb-3">
             <h5 className="category-header">Categories Preferences</h5>
             {["graphicDesign", "uiUxDesign", "animation", "imageEditing"].map(
               (category) => (
@@ -161,7 +150,7 @@ const CategoryPreferences = ({
           </Col>
 
           {/* Middle Column */}
-          <Col xs={12} md={4} className="mb-3 mt-5">
+          <Col xs={12} md={3} className="mb-3 mt-5">
             {[
               "gameArt",
               "characterModeling",
@@ -182,15 +171,14 @@ const CategoryPreferences = ({
           </Col>
 
           {/* Third Column */}
-          <Col xs={12} md={4} className="mb-3">
-            <h5 className="category-header">
-              How much do extra amount speed up projects
-            </h5>
+          <Col xs={12} md={5} className="mb-3">
+            <h5 className="category-header">Price Plan</h5>
+
             {[
-              { name: "threeDays", label: "3 Days" },
-              { name: "fiveDays", label: "5 Days" },
-              { name: "sevenDays", label: "7 Days" },
-              { name: "fourteenDays", label: "14 Days" },
+              { name: "basic", label: "Basic:" },
+              { name: "standard", label: "Standard:" },
+              { name: "premium", label: "Premium:" },
+              { name: "ultimate", label: "Ultimate:" },
             ].map((speed) => (
               <Row className="mb-3" key={speed.name}>
                 <Col xs={4}>
@@ -199,21 +187,32 @@ const CategoryPreferences = ({
                     label={speed.label}
                     name={speed.name}
                     className="custom-checkbox"
-                    onChange={handleCheckboxChange}
+                    onChange={handleSpeedUpChange}
                     disabled={!isUpdate}
                     checked={formData.speedUp[speed.name]}
                   />
                 </Col>
-                <Col xs={8}>
+                <Col xs={4}>
                   <Form.Control
                     type="text"
                     placeholder="Enter price"
                     name={speed.name}
-                    value={formData.prices[speed.name]}
+                    value={
+                      formData.prices[speed.name] !== "" && !isUpdate
+                        ? `R${formData.prices[speed.name]}`
+                        : `${formData.prices[speed.name]}`
+                    }
                     onChange={handlePriceChange}
-                    className="custom-input"
+                    className={
+                      !isUpdate ? "custom-input-noline" : "custom-input"
+                    }
                     disabled={!formData.speedUp[speed.name] || !isUpdate} // Disable input if checkbox is not selected
                   />
+                </Col>
+                <Col xs={4}>
+                  {/* {!isUpdate && (
+                    <img src={editIcon} className="cat-edit-icon" />
+                  )} */}
                 </Col>
               </Row>
             ))}

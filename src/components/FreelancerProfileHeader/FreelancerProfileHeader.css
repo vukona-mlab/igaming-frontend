@@ -1,0 +1,132 @@
+.freelancer-profile-container {
+    width: 100%;
+    padding: 20px;
+    background-color: #ffffff00;
+    border-radius: 8px;
+}
+  
+.tab-content {
+    margin-top: 20px;
+    min-height: 300px;
+    width: 100%;
+}
+
+.pricing-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 20px;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.projects-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    padding: 32px;
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+.profile-content {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.section-header {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    width: 100%;
+}
+
+.section-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+.no-projects {
+    text-align: center;
+    padding: 40px;
+    font-size: 18px;
+    color: #666;
+    width: 100%;
+    font-family: "Poppins", sans-serif;
+    grid-column: 1 / -1;
+}
+
+.reviews-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.reviews-error,
+.no-reviews {
+    text-align: center;
+    padding: 40px 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.reviews-error p,
+.no-reviews p {
+    margin: 0;
+    color: #6c757d;
+}
+
+.reviews-error-subtext,
+.no-reviews-subtext {
+    font-size: 14px;
+    color: #adb5bd;
+    margin-top: 8px !important;
+}
+
+.reviews-error {
+    border: 1px solid #dc3545;
+    background: #fff5f5;
+}
+
+.reviews-error p {
+    color: #dc3545;
+}
+
+.no-reviews {
+    border: 1px dashed #dee2e6;
+}
+
+.no-reviews p {
+    color: #495057;
+}
+
+@media (max-width: 1400px) {
+    .projects-container {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 24px;
+    }
+}
+
+@media (max-width: 992px) {
+    .projects-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .projects-container {
+        grid-template-columns: 1fr;
+        padding: 16px;
+    }
+
+    .section-title {
+        font-size: 20px;
+    }
+}

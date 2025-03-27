@@ -39,7 +39,12 @@ export default function ProfileSubNav() {
 
             <div>Messages</div>
           </div>
-          <div className="p-subnav-link">
+          <div
+            className="p-subnav-link"
+            onClick={() => {
+              navigation("/projects");
+            }}
+          >
             <img src={Order} className="order-icon" />
 
             <div>Projects</div>

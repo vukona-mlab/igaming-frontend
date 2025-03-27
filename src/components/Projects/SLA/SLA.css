@@ -1,0 +1,56 @@
+.sla-project-details-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1200;
+  backdrop-filter: blur(5px);
+}
+
+.sla-project-details-modal {
+  background-color: white;
+  border-radius: 12px;
+  width: 40%;
+  max-width: 1200px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+.sla-project-details-header {
+  position: sticky;
+  top: 0;
+  background: white;
+  padding: 0.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+}
+.sla-project-details-header h2 {
+  color: #00000080;
+  font-size: 20px;
+}
+.sla-close-button {
+  background: none;
+  border: none;
+  font-size: 50px;
+  font-weight: 600;
+  color: #b90909;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.sla-detail-label {
+  color: #00000080;
+  font-size: 16px;
+  font-weight: 500;
+}

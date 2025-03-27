@@ -1,18 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Container, Row, Col, Button, Alert } from "react-bootstrap";
+import Swal from "sweetalert2";
 import Navbar from "../../../components/Common/Navbar/navbar";
 import ProjectCard from "../../../components/Profile/FreelancerProjects/ProjectCard";
 import FreelancerProjectCards from "../../../components/Profile/freelancerCardsProjects/freelancerCardProjects";
 import SectionHeader from "../../../components/Landing/section-header/SectionHeader";
+import FreelancerProfileHeader from "../../../components/FreelancerProfileHeader/FreelancerProfileHeader";
+import ReviewForm from "../../../components/Reviews/ReviewForm/ReviewForm";
 import './freelancerProjectPage.css'
+
 const FreelancerProjects = () => {
   const { freelancer_id } = useParams();
   const [projects, setProjects] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  const [reviewsError, setReviewsError] = useState(null);
   const [visibleProjects, setVisibleProjects] = useState(6);
   const [freelancerData, setFreelancerData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [currentTab, setCurrentTab] = useState("Profile");
 
   useEffect(() => {
     if (!freelancer_id) {
@@ -21,12 +28,23 @@ const FreelancerProjects = () => {
       return;
     }
 
-    const fetchProjects = async () => {
+    const fetchData = async () => {
       try {
+        // Get authentication token
+        let token = localStorage.getItem("token");
+        if (!token) {
+          console.log("No authentication token found");
+          setLoading(false);
+          return;
+        }
+
+        if (!token.startsWith("Bearer ")) {
+          token = `Bearer ${token}`;
+        }
+
+        // Fetch freelancer data
         const response = await fetch("http://localhost:8000/api/freelancers/projects/");
-
         if (!response.ok) throw new Error("Failed to fetch freelancer data");
-
         const data = await response.json();
         console.log("Fetched Data:", data);
 
@@ -34,29 +52,68 @@ const FreelancerProjects = () => {
           throw new Error("Freelancer not found");
         }
 
-        // Filter projects based on freelancer_id
         const freelancer = data.freelancers.find(f => f.id.toString() === freelancer_id);
-
         if (!freelancer) {
           throw new Error("Freelancer not found");
         }
 
         setFreelancerData({
-          displayName:freelancer.displayName || "",
+          displayName: freelancer.displayName || "",
           profilePicture: freelancer.profilePicture || "https://www.example.com/default-image.jpg",
           specialities: freelancer.specialities || [],
+          id: freelancer.id,
+          packages: freelancer.packages || {}
         });
 
-        setProjects(Array.isArray(freelancer.projects) ? freelancer.projects : []);
+        // Transform projects data
+        const transformedProjects = Array.isArray(freelancer.projects) 
+          ? freelancer.projects.map(project => ({
+              id: project.id,
+              projectPicture: project.projectPicture || project.image,
+              projectName: project.projectName || project.name,
+              likes: project.likes || 0,
+              authorName: freelancer.displayName
+            }))
+          : [];
+
+        setProjects(transformedProjects);
+
+        // Fetch reviews for the freelancer with authentication
+        try {
+          console.log("Fetching reviews for freelancer:", freelancer_id);
+          const reviewsResponse = await fetch(`http://localhost:8000/api/reviews?freelancerId=${freelancer_id}`, {
+            headers: {
+              'Authorization': token
+            }
+          });
+          
+          const reviewsData = await reviewsResponse.json();
+          console.log("Reviews response:", reviewsData);
+          
+          if (reviewsResponse.ok) {
+            const allReviews = reviewsData.reviews || [];
+            const approvedReviews = allReviews.filter(review => review.status === "Approved");
+            setReviews(approvedReviews);
+            setReviewsError(null);
+          } else {
+            console.error("Reviews fetch failed:", reviewsData);
+            setReviews([]);
+            setReviewsError(reviewsData.error || "No approved reviews available at this time.");
+          }
+        } catch (reviewError) {
+          console.error("Error fetching reviews:", reviewError);
+          setReviews([]);
+          setReviewsError("There was a problem loading the reviews. Please try refreshing the page.");
+        }
       } catch (err) {
-        console.error("Error fetching projects:", err);
+        console.error("Error fetching data:", err);
         setError(err.message);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProjects();
+    fetchData();
   }, [freelancer_id]);
 
   const handleSeeMore = () => {
@@ -89,7 +146,7 @@ const FreelancerProjects = () => {
         freelancerId: freelancerId,
         clientId: uid,
         senderId: uid,
-        message: "Hello! I'm interested in working with you.", // Add initial message
+        message: "Hello! I'm interested in working with you.",
       };
 
       console.log("Sending chat request with data:", requestData);
@@ -111,7 +168,6 @@ const FreelancerProjects = () => {
       const data = await response.json();
       console.log("Chat created successfully:", data);
 
-      // Navigate to messaging page with the new chat ID
       navigation(`/messaging-client/${data.chatId}`);
     } catch (error) {
       console.error("Error creating chat:", error);
@@ -119,66 +175,155 @@ const FreelancerProjects = () => {
     }
   };
 
-  console.log(projects);
+  const handleTabChange = (tab) => {
+    setCurrentTab(tab);
+  };
+
+  const shouldShowSidebar = currentTab === "Profile";
+
+  const handleReviewSubmit = async (stars, message) => {
+    try {
+      let token = localStorage.getItem("token");
+      if (!token) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Authentication Required',
+          text: 'Please sign in to submit a review',
+        });
+        return;
+      }
+
+      if (!token.startsWith("Bearer ")) {
+        token = `Bearer ${token}`;
+      }
+
+      const clientId = localStorage.getItem("uid");
+      
+      if (!clientId) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Client Login Required',
+          text: 'You must be logged in as a client to submit a review',
+        });
+        return;
+      }
+      
+      const reviewData = {
+        clientId,
+        freelancerId: freelancer_id,
+        stars,
+        message
+      };
+
+      console.log("Submitting review:", reviewData);
+
+      // Show loading state
+      Swal.fire({
+        title: 'Submitting Review',
+        text: 'Please wait...',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
+      const response = await fetch("http://localhost:8000/api/reviews", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token
+        },
+        body: JSON.stringify(reviewData)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to submit review");
+      }
+
+      const responseData = await response.json();
+      console.log("Review submitted successfully:", responseData);
+      
+      // Show success message with SweetAlert
+      Swal.fire({
+        icon: 'success',
+        title: 'Review Submitted!',
+        text: 'Your review has been submitted and is pending approval.',
+        confirmButtonText: 'Great!',
+        confirmButtonColor: '#4CAF50',
+      });
+
+      // Refresh reviews after submission to show pending review
+      try {
+        const refreshedReviewsResponse = await fetch(`http://localhost:8000/api/reviews?freelancerId=${freelancer_id}`, {
+          headers: {
+            'Authorization': token
+          }
+        });
+        
+        if (refreshedReviewsResponse.ok) {
+          const refreshedReviewsData = await refreshedReviewsResponse.json();
+          const allReviews = refreshedReviewsData.reviews || [];
+          // We can show all reviews including pending ones, or filter to approved only
+          const approvedReviews = allReviews.filter(review => review.status === "Approved");
+          setReviews(approvedReviews);
+          setReviewsError(null);
+        }
+      } catch (refreshError) {
+        console.error("Error refreshing reviews:", refreshError);
+      }
+    } catch (error) {
+      console.error("Error submitting review:", error);
+      
+      // Show error message with SweetAlert
+      Swal.fire({
+        icon: 'error',
+        title: 'Review Submission Failed',
+        text: error.message || "Failed to submit review. Please try again.",
+      });
+    }
+  };
 
   return (
     <>
       <Navbar />
-      <Container>
-      <div className="d-flex justify-content-between align-items-center my-4 name-free">
-  <h1 className="m-0">{freelancerData?.displayName}'s Profile</h1>
-  <Button variant="dark" className="buttona-message" onClick={() => handleMessageClick(freelancerData.id)}>Message</Button>
-</div>
+      <Container fluid className="main-container">
+        <div className="content-wrapper">
+          <div className="d-flex justify-content-between align-items-center my-4 name-free">
+            <h1 className="m-0">{freelancerData?.displayName}'s Profile</h1>
+            <Button variant="dark" className="buttona-message" onClick={() => handleMessageClick(freelancerData?.id)}>Message</Button>
+          </div>
 
-        {loading && <Alert variant="info">Loading projects...</Alert>}
-        {error && <Alert variant="danger">{error}</Alert>}
+          {loading && <Alert variant="info">Loading projects...</Alert>}
+          {error && <Alert variant="danger">{error}</Alert>}
 
-        {!loading && !error && (
-          <Row>
-            <Col md={3}>
-              {freelancerData && (
-                <FreelancerProjectCards
-                  image={freelancerData.profilePicture}
-                  specialities={freelancerData.specialities}
-                />
-              )}
-            </Col>
-
-            <Col md={9}>
-              <SectionHeader text="Projects" />
-              {projects.length === 0 ? (
-                <div className="text-center my-4">
-                  <h3>Oops! Freelancer currently does not have projects to display.</h3>
-                </div>
-              ) : (
-                <>
-                  <Row className="g-2">
-                    {projects.slice(0, visibleProjects).map((project) => (
-                      <Col key={project.id} md={4}>
-                        <ProjectCard
-                          projectPicture={project.projectPicture}
-                          projectName={project.projectName}
-                          likes={project.likes}
-                          authorName={project.author}
-                          onDemoClick={() => window.open(project.demoLink, "_blank")}
-                          onShareClick={() => alert(`Sharing ${project.projectName}`)}
-                        />
-                      </Col>
-                    ))}
-                  </Row>
-
-                  {visibleProjects < projects.length && (
-                    <div className="text-center mt-4">
-                      <Button variant="dark" onClick={handleSeeMore}>
-                        See More
-                      </Button>
-                    </div>
+          {!loading && !error && (
+            <Row>
+              {shouldShowSidebar && (
+                <Col md={3} className="sidebar-col">
+                  {freelancerData && (
+                    <FreelancerProjectCards
+                      image={freelancerData.profilePicture}
+                      specialities={freelancerData.specialities}
+                    />
                   )}
-                </>
+                </Col>
               )}
-            </Col>
-          </Row>
-        )}
+
+              <Col md={shouldShowSidebar ? 9 : 12} style={{backgroundColor: "#0000"}}>
+                <FreelancerProfileHeader 
+                  searchTerm={freelancerData?.displayName} 
+                  onTabChange={handleTabChange}
+                  projects={projects}
+                  packages={freelancerData?.packages}
+                  reviews={reviews}
+                  reviewsError={reviewsError}
+                  onReviewSubmit={handleReviewSubmit}
+                />
+              </Col>
+            </Row>
+          )}
+        </div>
       </Container>
     </>
   );

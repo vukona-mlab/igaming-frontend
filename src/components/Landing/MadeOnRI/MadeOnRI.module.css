@@ -5,7 +5,7 @@
 
 .sectionBody {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: flex-end;
   min-height: 650px;
   flex-wrap: wrap;
