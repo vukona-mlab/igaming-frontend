@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ProjectDetails.css";
 import ImageViewer from "./ImageViewer";
+import { CiCamera } from "react-icons/ci"; // Import the camera icon
 
 const ProjectDetails = ({ project: initialProject, onClose }) => {
   const [currentTab, setCurrentTab] = useState("Details");
@@ -15,6 +16,7 @@ const ProjectDetails = ({ project: initialProject, onClose }) => {
   const [uploadProgressDocs, setUploadProgressDocs] = useState(0);
   const documentInputRef = useRef(null);
   const [selectedDocument, setSelectedDocument] = useState(null);
+  const [currentImage, setCurrentImage] = useState(project.picture || "");
 
   const handleFileSelect = (event) => {
     const files = Array.from(event.target.files);
@@ -360,13 +362,8 @@ const ProjectDetails = ({ project: initialProject, onClose }) => {
                 >
                   <span className="document-name">{doc.name}</span>
                   <span className="document-date">
-                    {JSON.stringify(
-                      new Date(
-                        doc.uploadedAt || doc.uploadedAt._seconds
-                      ).toLocaleDateString()
-                    )}
                     {new Date(
-                      doc.uploadedAt || doc.uploadedAt._seconds
+                      doc.uploadedAt._seconds || doc.uploadedAt
                     ).toLocaleDateString()}
                   </span>
                 </div>
@@ -443,6 +440,18 @@ const ProjectDetails = ({ project: initialProject, onClose }) => {
     }
   };
   console.log("my project", project);
+  const handleImageUpload = () => {
+    document.getElementById("fileInput").click();
+  };
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => setImage(e.target.result);
+      reader.readAsDataURL(file);
+    }
+    setImage(file);
+  };
   return (
     <div className="project-details-modal-overlay">
       <div className="project-details-modal">
@@ -490,28 +499,55 @@ const ProjectDetails = ({ project: initialProject, onClose }) => {
           <div className="project-details-content">
             <div className="detail-group">
               <h3>Basic Information</h3>
-              <div className="detail-item">
-                <span className="detail-label">Title:</span>
-                <span className="detail-value">{project.title}</span>
+              <div className="pdc-detail-section-one">
+                <div className="pdc-image-container">
+                  {currentImage ? (
+                    <img
+                      src={currentImage}
+                      alt="Portfolio"
+                      className="pdc-portfolio-image"
+                    />
+                  ) : (
+                    <div className="no-image">No Image</div>
+                  )}
+
+                  {/* Camera Icon Button */}
+                  <div className="camera-icon" onClick={handleImageUpload}>
+                    <input
+                      type="file"
+                      id="fileInput"
+                      accept="image/*"
+                      hidden
+                      onChange={handleImageChange}
+                    />
+                    <CiCamera size={20} color="black" />
+                  </div>
+                </div>
               </div>
-              <div className="detail-item">
-                <span className="detail-label">Status:</span>
-                <span className={`detail-value status ${project.status}`}>
-                  {project.status.charAt(0).toUpperCase() +
-                    project.status.slice(1)}
-                </span>
-              </div>
-              <div className="detail-item">
-                <span className="detail-label">Budget:</span>
-                <span className="detail-value">R{project.budget}</span>
-              </div>
-              <div className="detail-item">
-                <span className="detail-label">Category:</span>
-                <span className="detail-value">{project.category}</span>
-              </div>
-              <div className="detail-item">
-                <span className="detail-label">Deadline:</span>
-                <span className="detail-value">{project.deadline} days</span>
+              <div className="pdc-detail-section-two">
+                <div className="detail-item">
+                  <span className="detail-label">Title:</span>
+                  <span className="detail-value">{project.title}</span>
+                </div>
+                <div className="detail-item">
+                  <span className="detail-label">Status:</span>
+                  <span className={`detail-value status ${project.status}`}>
+                    {project.status.charAt(0).toUpperCase() +
+                      project.status.slice(1)}
+                  </span>
+                </div>
+                <div className="detail-item">
+                  <span className="detail-label">Budget:</span>
+                  <span className="detail-value">R{project.budget}</span>
+                </div>
+                <div className="detail-item">
+                  <span className="detail-label">Category:</span>
+                  <span className="detail-value">{project.category}</span>
+                </div>
+                <div className="detail-item">
+                  <span className="detail-label">Deadline:</span>
+                  <span className="detail-value">{project.deadline} days</span>
+                </div>
               </div>
             </div>
 
