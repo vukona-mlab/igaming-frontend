@@ -3,9 +3,10 @@ import DocumentTabs from "../DocumentsTabs/FreelancerTabs";
 import PricingPlans from "../PriceCard/PricingPlans";
 import ProjectCard from "../Project Card/ProjectCard";
 import StarRating from "../StarRating/StarRating";
+import ReviewCard from "../ReviewCard/ReviewCard";
 import "./FreelancerProfileHeader.css";
 
-const FreelancerProfileHeader = ({ searchTerm, onTabChange, projects = [] }) => {
+const FreelancerProfileHeader = ({ searchTerm, onTabChange, projects = [], packages }) => {
   const [selectedTab, setSelectedTab] = useState("Profile");
 
   useEffect(() => {
@@ -55,11 +56,16 @@ const FreelancerProfileHeader = ({ searchTerm, onTabChange, projects = [] }) => 
               onReviewClick={handleReviewClick}
               showReviewButton={true}
             />
+            <div className="reviews-section">
+              <ReviewCard />
+              <ReviewCard />
+              <ReviewCard />
+            </div>
           </div>
         )}
         {selectedTab === "Pricing & Packages" && (
           <div className="pricing-container">
-            <PricingPlans />
+            <PricingPlans packages={packages} />
           </div>
         )}
         {selectedTab === "Projects" && (

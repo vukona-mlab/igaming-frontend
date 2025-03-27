@@ -2,11 +2,11 @@ import React from 'react';
 import PriceCard from './PriceCard';
 import './PricingPlans.css';
 
-const PricingPlans = () => {
+const PricingPlans = ({ packages = {} }) => {
   const pricingData = [
     {
       type: "Basic",
-      price: "R499",
+      price: packages.basic ? `R${packages.basic}` : "N/A",
       features: [
         "10 days faster",
         "Free logo",
@@ -16,7 +16,7 @@ const PricingPlans = () => {
     },
     {
       type: "Standard",
-      price: "R999",
+      price: packages.standard ? `R${packages.standard}` : "N/A",
       features: [
         "20 days faster",
         "Free logo",
@@ -26,7 +26,7 @@ const PricingPlans = () => {
     },
     {
       type: "Premium",
-      price: "R1,499",
+      price: packages.premium ? `R${packages.premium}` : "N/A",
       features: [
         "30 days faster",
         "Free logo",
@@ -36,7 +36,7 @@ const PricingPlans = () => {
     },
     {
       type: "Ultimate",
-      price: "R1,999",
+      price: packages.ultimate ? `R${packages.ultimate}` : "N/A",
       features: [
         "50 days faster",
         "Free logo",
