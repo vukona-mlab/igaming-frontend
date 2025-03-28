@@ -3,12 +3,13 @@ import { Container, Row, Col } from "react-bootstrap";
 import ProfileCard from "../../../components/Profile/portfolioCard/portfolioCard"; // Import ProfileCard component
 import ProfileForm from "../../../components/Profile/profileForm/profileForm"; // Import ProfileForm component
 import CategoryPreferences from "../../../components/Profile/categoryPreferance/categoryPrefarances"; // Import CategoryPreferences component
-//import './freelancerProfile.css';
+import "./freelancerProfile.css";
 import Navbar from "../../../components/Common/Navbar/navbar";
 import { Form, Button } from "react-bootstrap";
 import Swal from "sweetalert2";
 import SwitchRoleButton from "../../../components/Common/SwitchRoleButton/SwitchRoleButton";
 import ProfileSubNav from "../../../components/Profile/ProfileSubNav/ProfileSubNav";
+import { useNavigate } from "react-router-dom";
 
 const ProfilePage = ({}) => {
   const [formData, setFormData] = useState({
@@ -36,6 +37,7 @@ const ProfilePage = ({}) => {
   const url = import.meta.env.VITE_API_URL;
   const role = localStorage.getItem("role");
   const [currentRole, setCurrentRole] = useState("freelancer");
+  const navigate = useNavigate();
 
   useEffect(() => {
     getProfile();
@@ -192,7 +194,9 @@ const ProfilePage = ({}) => {
       console.log(error);
     }
   };
-
+  const handleDocument = () => {
+    navigate("/view-document");
+  };
   const handleRoleSwitch = async (newRole) => {
     try {
       const response = await fetch(`${url}/api/auth/users/${uid}/roles`, {
@@ -270,6 +274,16 @@ const ProfilePage = ({}) => {
       <Navbar />
       <ProfileSubNav />
       <Container style={{ minHeight: "100vh", paddingBottom: "60px" }}>
+        <div className="div-btn-top">
+          <Button
+            variant="dark"
+            className="add-my-documents"
+            onClick={handleDocument}
+            type="submit"
+          >
+            Add Document
+          </Button>
+        </div>
         <div className="profile-edit d-flex justify-content-between align-items-center">
           <div className="welcome-message">
             {formData.displayName !== "" ? (
