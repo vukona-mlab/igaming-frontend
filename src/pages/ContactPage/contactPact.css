@@ -1,10 +1,17 @@
 .contact-page{
-    justify-content: center;
-   text-align: center; 
+   width: 1196px;
+   padding-left: 60px;
+   width: f;
+}
+.main-container {
+overflow: hidden;
 }
 
 .heading-container{
 padding: 30px;
+justify-content: center;
+align-items: center;
+text-align: center;
 }
 
 h1{
@@ -24,11 +31,16 @@ h1{
 }
 
 .left{
+    position: relative;
     background-color: #000000;
     padding: 40px;
     width: 491px;
-    height: 647px;
+    height: 620px;
     border-radius: 12px;
+}
+
+.right{
+    position: relative;
 }
 
 h2{
@@ -64,6 +76,26 @@ h2{
     height: 42px;
     border-radius: 8px;
     border: 2px solid #E9E9E9;
+    margin-bottom: 22px;
+}
+.name-email{
+    margin-right: 70%;
+    margin-bottom: 15px;
+    font-family: 'Poppins';
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 20px;
+    color: #8D8D8D;
+}
+
+.last-number{
+    margin-right: 60%;
+    margin-bottom: 15px;
+    font-family: 'Poppins';
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 20px;
+    color: #000000;
 }
 
 .contact-details li{
@@ -77,26 +109,53 @@ h2{
 }
 
 .contact-icon{
-    margin-left: 25px;
+    position: absolute;
+    left: 13%;
 }
 
-.half-ellipse{
+.contact-info{
+    /* margin-left: 16px; */
+    position: absolute;
+    left: 23%;
+}
+
+.ellipse-conainer{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+/* .half-ellipse{
     position: relative;
     left: 21%;
-}
+     margin-top: 157px;
+    border-radius: 8px; 
 
-.full-ellipse{
-    position: relative;
-    left: 27%;
-}
-
-/* .social-links{
-    background-color: aqua;
 } */
 
+.full-ellipse{
+    position: absolute;
+     bottom: 50%;
+     left: -15%; 
+} 
+
+.social-links{
+    display: flex;
+    position: absolute;
+    bottom: 3%;
+    left: 3%;
+}
+
 .social-icon{
-    margin: 8px;
+    margin: 10px;
     color: #FFFFFF;
+    background-color: #1B1B1B;
+    font-size: 25px; 
+    padding: 8px;
+    border-radius: 50%;
+    /* background-color: aqua; */
+    width: 53px;
+    
 }
 
 .button{
@@ -106,6 +165,12 @@ h2{
     border-radius: 12px;
     width: 214px;
     height: 54px;
+    margin-top: 16px;
+    margin-left: 73%;
+}
+
+.subjects{
+    margin-right: 20%;
 }
 
 .subject-heading{
@@ -115,6 +180,7 @@ h2{
     line-height: 20px;
     color: #000000;
     margin-top: 15px;
+    margin-right: 78%;
 }
 
 .select-subjects{
@@ -134,8 +200,53 @@ h2{
     align-items: center; 
   }
 
+  .checkbox{
+    accent-color: #000000;
+  }
+
+
+
+  .message-text{
+    font-family: 'Poppins';
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: #8D8D8D;
+    margin-right: 86%;
+    margin-bottom: 15px;
+  }
+
   .message-box{
     margin-top: 50px;
-    /* width: 594px; */
-    height: 72px;
+  }
+
+  textarea{
+    border-radius: 8px;
+    border: 2px solid #EDEEEE;
+    height: 72;
+    width: 594px;
+  }
+
+  .chat-box{
+    display: flex;
+    gap: 25px;
+    position: relative;
+    left: 65%;
+    margin-top: 24px;
+  }
+
+  .chat-text{
+    font-family: 'Poppins';
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 150%;
+    color: #4C4C4C;
+  }
+
+  .chat-icon{
+    width: 38px;
+  }
+
+  .chat-icon:hover{
+    cursor: pointer;
   }
