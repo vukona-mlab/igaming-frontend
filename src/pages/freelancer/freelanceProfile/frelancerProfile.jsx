@@ -29,7 +29,7 @@ const ProfilePage = ({}) => {
   const [jobTitle, setJobTitle] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [projects, setProjects] = useState([]);
-
+  const [features, setFeatures] = useState([]);
   const uid = localStorage.getItem("uid");
   const token = localStorage.getItem("token");
 
@@ -57,20 +57,31 @@ const ProfilePage = ({}) => {
   };
 
   const handleCategoriesSubmit = (data) => {
-    console.log({ eee: data });
+    console.log({ features });
     let arr = Object.keys(data.categories).filter((key) => {
       if (data.categories[key] === true) {
         return key;
       }
     });
+    let packages = [];
+
+    for (const [key, value] of Object.entries(data.prices)) {
+      packages.push({ type: key, price: value, features: [] });
+    }
+    if (features.length > 0) {
+      const updatedArr = packages.map((obj) => {
+        const found = features.find((feature) => feature.type === obj.type);
+        return { ...obj, features: found.features };
+      });
+      packages = updatedArr;
+    }
     updateUserProfile({
       ...formData,
       categories: arr || [],
-      packages: data.prices || {},
+      packages: packages || [],
     });
-
     setFormData((prev) => ({ ...prev, categories: arr }));
-    setFormData((prev) => ({ ...prev, packages: data.prices }));
+    setFormData((prev) => ({ ...prev, packages: packages }));
   };
   const showAlert = () => {
     Swal.fire({
@@ -112,9 +123,18 @@ const ProfilePage = ({}) => {
           speciality:
             (data.user.specialities && data.user.specialities[0]) || "",
         }));
+        let obj = {};
+        if (data.user && data.user.packages && data.user.packages.length > 0) {
+          obj = data.user.packages.reduce(
+            (obj, item) => Object.assign(obj, { [item.type]: item.price }),
+            {}
+          );
+          console.log({ obj });
+        }
+        setFeatures(data.user.packages);
         setFormData((prev) => ({
           ...prev,
-          packages: data.user.packages || {},
+          packages: obj || {},
         }));
         setFormData((prev) => ({
           ...prev,
@@ -147,19 +167,16 @@ const ProfilePage = ({}) => {
       // formData.append("bio", formData.bio);
       formData.append("speciality", JSON.stringify([data.speciality || ""]));
       formData.append("categories", JSON.stringify(data.categories));
-      formData.append("packages", JSON.stringify(data.packages || {}));
+      formData.append("packages", JSON.stringify(data.packages || []));
       // formData.append("jobTitle", formData.jobTitle);
       formData.append("profilePicture", image || "");
-      const response = await fetch(
-        `http://localhost:8000/api/auth/users/${uid}/update`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: token,
-          },
-          body: formData,
-        }
-      );
+      const response = await fetch(`${url}/api/auth/users/${uid}/update`, {
+        method: "PUT",
+        headers: {
+          Authorization: token,
+        },
+        body: formData,
+      });
       console.log(response);
       if (response.ok) {
         const data = await response.json();
@@ -178,19 +195,16 @@ const ProfilePage = ({}) => {
 
   const handleRoleSwitch = async (newRole) => {
     try {
-      const response = await fetch(
-        `http://localhost:8000/api/auth/users/${uid}/roles`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token,
-          },
-          body: JSON.stringify({
-            roles: [newRole],
-          }),
-        }
-      );
+      const response = await fetch(`${url}/api/auth/users/${uid}/roles`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        body: JSON.stringify({
+          roles: [newRole],
+        }),
+      });
 
       if (response.ok) {
         setCurrentRole(newRole);
@@ -222,7 +236,34 @@ const ProfilePage = ({}) => {
   const handleTabChange = (newTab) => {
     setSearchTerm(newTab);
   };
-
+  const handleAddFeature = (feature) => {
+    let arr = [...features];
+    if (arr.length > 0) {
+      arr = arr.map((obj) => {
+        if (obj.type && obj.type === feature.type) {
+          return { ...obj, features: [...obj.features, feature.feature] };
+        }
+        return obj;
+      });
+    } else {
+      arr = [...arr, { type: feature.type, features: [feature.feature] }];
+    }
+    setFeatures(arr);
+  };
+  const handleUpdateFeature = (feature) => {
+    let arr = [...features];
+    if (arr.length > 0) {
+      arr = arr.map((obj) => {
+        if (obj.type && obj.type === feature.type) {
+          let updatedArr = [...obj.features];
+          updatedArr[feature.index] = feature.feature;
+          return { ...obj, features: updatedArr };
+        }
+        return obj;
+      });
+    }
+    setFeatures(arr);
+  };
   if (loading) return <div></div>;
   return (
     <>
@@ -285,12 +326,14 @@ const ProfilePage = ({}) => {
                   cancel={() => setIsUpdate(false)}
                   categoriesArr={formData.categories}
                   packagesObj={formData.packages}
+                  handleAddFeature={handleAddFeature}
+                  handleUpdateFeature={handleUpdateFeature}
+                  features={features}
                 />
               </Col>
             </Row>
           </Col>
         </Row>
-        
       </Container>
     </>
   );

@@ -1,0 +1,126 @@
+.pc-pricing-card {
+  background: white;
+  border-radius: 16px;
+  padding: 0px 24px;
+  width: 100%;
+  max-width: 400px;
+  height: 600px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  align-items: center;
+  overflow-y: scroll;
+}
+
+.pricing-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.plan-type {
+  background: #e8f5e9;
+  color: #2e7d32;
+  padding: 8px 16px;
+  border-radius: 20px;
+  display: inline-block;
+  font-weight: 500;
+  text-align: center;
+  font-size: 15px;
+  min-width: 120px;
+}
+
+.price {
+  font-size: 32px;
+  font-weight: bold;
+  margin: 16px 0;
+  text-align: center;
+  width: 100%;
+}
+
+.pc-features {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex-grow: 1;
+  width: 100%;
+  overflow-y: scroll;
+}
+
+.pc-feature-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: #333;
+  font-size: 15px;
+}
+
+.pc-check-text {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.checkmark {
+  color: #2e7d32;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.pc-add-button {
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.2s;
+  margin: 15px 0px;
+}
+
+.message-button:hover {
+  background: #444;
+}
+
+.pc-text-area {
+  height: 90px;
+  width: 330px;
+}
+.pc-close-button {
+  background: none;
+  border: none;
+  font-size: 50px;
+  font-weight: 600;
+  color: #b90909;
+  cursor: pointer;
+  padding: 0px 8px;
+  border-radius: 50%;
+  transition: all 0.2s;
+  margin-left: auto;
+}
+.pc-edit-img {
+  text-align: end;
+}
+
+@media (max-width: 1200px) {
+  .pricing-card {
+    padding: 24px 20px;
+    gap: 16px;
+    max-width: 300px;
+    min-width: 260px;
+  }
+}
+
+@media (max-width: 768px) {
+  .pricing-card {
+    width: 100%;
+    max-width: 340px;
+    min-width: 280px;
+  }
+}
