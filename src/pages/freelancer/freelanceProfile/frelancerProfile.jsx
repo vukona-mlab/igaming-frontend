@@ -63,7 +63,6 @@ const ProfilePage = ({}) => {
         return key;
       }
     });
-    console.log({ price: data.prices });
     let packages = [];
 
     for (const [key, value] of Object.entries(data.prices)) {
@@ -171,16 +170,13 @@ const ProfilePage = ({}) => {
       formData.append("packages", JSON.stringify(data.packages || []));
       // formData.append("jobTitle", formData.jobTitle);
       formData.append("profilePicture", image || "");
-      const response = await fetch(
-        `http://localhost:8000/api/auth/users/${uid}/update`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: token,
-          },
-          body: formData,
-        }
-      );
+      const response = await fetch(`${url}/api/auth/users/${uid}/update`, {
+        method: "PUT",
+        headers: {
+          Authorization: token,
+        },
+        body: formData,
+      });
       console.log(response);
       if (response.ok) {
         const data = await response.json();
@@ -199,19 +195,16 @@ const ProfilePage = ({}) => {
 
   const handleRoleSwitch = async (newRole) => {
     try {
-      const response = await fetch(
-        `http://localhost:8000/api/auth/users/${uid}/roles`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token,
-          },
-          body: JSON.stringify({
-            roles: [newRole],
-          }),
-        }
-      );
+      const response = await fetch(`${url}/api/auth/users/${uid}/roles`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        body: JSON.stringify({
+          roles: [newRole],
+        }),
+      });
 
       if (response.ok) {
         setCurrentRole(newRole);
@@ -248,11 +241,6 @@ const ProfilePage = ({}) => {
     if (arr.length > 0) {
       arr = arr.map((obj) => {
         if (obj.type && obj.type === feature.type) {
-          console.log("cccccccc", {
-            ...obj,
-            features: [...obj.features, feature.feature],
-          });
-
           return { ...obj, features: [...obj.features, feature.feature] };
         }
         return obj;
@@ -260,7 +248,6 @@ const ProfilePage = ({}) => {
     } else {
       arr = [...arr, { type: feature.type, features: [feature.feature] }];
     }
-    console.log("DSKDKSK", arr);
     setFeatures(arr);
   };
   const handleUpdateFeature = (feature) => {
@@ -278,7 +265,6 @@ const ProfilePage = ({}) => {
     setFeatures(arr);
   };
   if (loading) return <div></div>;
-  console.log({ features });
   return (
     <>
       <Navbar />
