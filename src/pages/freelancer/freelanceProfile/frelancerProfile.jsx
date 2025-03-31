@@ -268,6 +268,19 @@ const ProfilePage = ({}) => {
     }
     setFeatures(arr);
   };
+  const handleDeleteFeature = (feature) => {
+    let arr = [...features];
+    if (arr.length > 0) {
+      arr = arr.map((obj) => {
+        if (obj.type && obj.type === feature.type) {
+          let updatedArr = obj.features.filter((f) => f !== feature.feature);
+          return { ...obj, features: updatedArr };
+        }
+        return obj;
+      });
+    }
+    setFeatures(arr);
+  };
   if (loading) return <div></div>;
   return (
     <>
@@ -342,6 +355,7 @@ const ProfilePage = ({}) => {
                   packagesObj={formData.packages}
                   handleAddFeature={handleAddFeature}
                   handleUpdateFeature={handleUpdateFeature}
+                  handleDeleteFeature={handleDeleteFeature}
                   features={features}
                 />
               </Col>

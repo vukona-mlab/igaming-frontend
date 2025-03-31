@@ -10,6 +10,7 @@ const CategoryPreferences = ({
   packagesObj,
   handleAddFeature,
   handleUpdateFeature,
+  handleDeleteFeature,
   features,
 }) => {
   const [formData, setFormData] = useState({
@@ -139,6 +140,7 @@ const CategoryPreferences = ({
             onClose={() => setShowFeature(false)}
             handleAddFeature={handleAddFeature}
             handleUpdateFeature={handleUpdateFeature}
+            handleDeleteFeature={handleDeleteFeature}
           />
         </div>
       )}
