@@ -1,20 +1,13 @@
-.contact-page-c{
-   width: 1196px;
-   padding-left: 60px;
-   width: f;
-}
-.main-container-c {
-overflow: hidden;
+.contact-page{
+    justify-content: center;
+   text-align: center; 
 }
 
-.heading-container-c{
+.heading-container{
 padding: 30px;
-justify-content: center;
-align-items: center;
-text-align: center;
 }
 
-.frst-heading-c{
+h1{
     font-family: 'Poppins';
     font-weight: 700;
     font-size: 40px;
@@ -22,7 +15,7 @@ text-align: center;
     color:#000000;
 }
 
-.scnd-heading-c{
+.scnd-heading{
     font-family: 'Poppins';
     font-weight: 500;
     font-size: 18px;
@@ -30,20 +23,15 @@ text-align: center;
     color: #717171;
 }
 
-.left-c{
-    position: relative;
+.left{
     background-color: #000000;
     padding: 40px;
     width: 491px;
-    height: 620px;
+    height: 647px;
     border-radius: 12px;
 }
 
-.rightc{
-    position: relative;
-}
-
-.contact-heading-c{
+h2{
     font-family: 'Poppins';
     font-weight: 600;
     font-size: 28px;
@@ -51,7 +39,7 @@ text-align: center;
     color: white !important;
 }
 
-.thrd-heading-c{
+.thrd-heading{
     font-family: 'Poppins';
     font-weight: 400;
     font-size: 18px;
@@ -59,140 +47,28 @@ text-align: center;
     color: #C9C9C9;
 }
 
-.contact-container-c{
+.contact-container{
     display: flex;
     justify-content: center;
     gap: 30px;
     margin-top: 50px;
 }
 
-.input-container-c{
+.input-container{
     display: flex;
     gap: 30px;
 }
 
-.input-field-c{
-    width: 278px;
-    height: 42px;
-    border-radius: 8px;
-    border: 2px solid #E9E9E9;
-    margin-bottom: 22px;
-}
-.name-email{
-    margin-right: 70%;
-    margin-bottom: 15px;
-    font-family: 'Poppins';
-    font-weight: 500;
-    font-size: 12px;
-    line-height: 20px;
-    color: #8D8D8D;
-}
-
-.last-number{
-    margin-right: 60%;
-    margin-bottom: 15px;
-    font-family: 'Poppins';
-    font-weight: 500;
-    font-size: 12px;
-    line-height: 20px;
-    color: #000000;
-}
-
-.contact-details-c li{
+.contact-details li{
     list-style: none;
-    padding: 20px;
-    font-family: 'Poppins';
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 100%;
-    color: #FFFFFF;
+    background-color: red;
+    padding: 28px;
 }
 
-.contact-icon-c{
-    position: absolute;
-    left: 13%;
-}
-
-.contact-info-c{
-    /* margin-left: 16px; */
-    position: absolute;
-    left: 23%;
-}
-
-.ellipse-conainer{
-    position: absolute;
-    bottom: 0;
-    right: 0;
-}
-
-/* .half-ellipse{
-    position: relative;
-    left: 21%;
-     margin-top: 157px;
-    border-radius: 8px; 
-
-} */
-
-.full-ellipse{
-    position: absolute;
-     bottom: 50%;
-     left: -15%; 
-} 
-
-.social-links-c{
-    display: flex;
-    position: absolute;
-    bottom: 3%;
-    left: 3%;
-}
-
-.social-icon-c{
-    margin: 10px;
-    color: #FFFFFF;
-    background-color: #1B1B1B;
-    font-size: 25px; 
-    padding: 8px;
-    border-radius: 50%;
-    /* background-color: aqua; */
-    width: 53px;
-    
-}
-
-.send-button-c{
-    background-color: #000000;
-    color: #FFFFFF;
-    padding: 18px;
-    border-radius: 12px;
-    width: 214px;
-    height: 54px;
-    margin-top: 16px;
-    margin-left: 73%;
-    text-align: center;
-}
-
-.subjects-c{
-    margin-right: 20%;
-}
-
-.subject-heading-c{
-    font-family: 'Poppins';
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 20px;
-    color: #000000;
-    margin-top: 15px;
-    margin-right: 78%;
-}
-
-.select-subjects-c{
+.select-subjects{
     display: flex;
   justify-content: center;
   align-items: center;
-  gap: 7px;
-  font-family: 'Poppins';
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 20px;
 }
 
 .check-form{
@@ -201,53 +77,6 @@ text-align: center;
     align-items: center; 
   }
 
-  .checkbox-c{
-    accent-color: #000000;
-  }
-
-
-
-  .message-text-c{
-    font-family: 'Poppins';
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 20px;
-    color: #8D8D8D;
-    margin-right: 86%;
-    margin-bottom: 15px;
-  }
-
-  .message-box-c{
+  .message-box{
     margin-top: 50px;
-  }
-
-  .message-c{
-    border-radius: 8px;
-    border: 2px solid #EDEEEE;
-    height: 72;
-    width: 594px;
-  }
-
-  .chat-box-c{
-    display: flex;
-    gap: 25px;
-    position: relative;
-    left: 65%;
-    margin-top: 24px;
-  }
-
-  .chat-text{
-    font-family: 'Poppins';
-    font-weight: 500;
-    font-size: 24px;
-    line-height: 150%;
-    color: #4C4C4C;
-  }
-
-  .chat-icon-c{
-    width: 38px;
-  }
-
-  .chat-icon-c:hover{
-    cursor: pointer;
   }
