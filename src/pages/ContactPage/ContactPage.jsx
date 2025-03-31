@@ -12,56 +12,56 @@ import Footer from "../footer/Footer";
 
 export default function ContactPage() {
   return (
-  <div className="main-container">
+  <div className="main-container-c">
     {/* <NavBar/> */}
     <SubNavBar />
-    <div className="contact-page">
-      <div className="heading-container">
-        <h1 className="frst-heading">Contact Us</h1>
-        <div className="scnd-heading">
+    <div className="contact-page-c">
+      <div className="heading-container-c">
+        <h1 className="frst-heading-c">Contact Us</h1>
+        <div className="scnd-heading-c">
           {" "}
           <p>Any questions or remarks? Just write us a message!</p>
         </div>
       </div>
-      <div className="contact-container">
-        <div className="left">
-          <h2 className="contact-heading">Contact Information</h2>
-          <div className="thrd-heading">
+      <div className="contact-container-c">
+        <div className="left-c">
+          <h2 className="contact-heading-c">Contact Information</h2>
+          <div className="thrd-heading-c">
             <p>Say something to start a live chat!</p>
           </div>
-          <div className="contact-details">
+          <div className="contact-details-c">
             <ul>
               <li>
                 <span>
-                  <BiSolidPhoneCall className="contact-icon" />
+                  <BiSolidPhoneCall className="contact-icon-c" />
                 </span>
-                <span className="contact-info">0660850741</span>
+                <span className="contact-info-c">0660850741</span>
               </li>
               <li>
                 <span>
-                  <MdEmail className="contact-icon" />
+                  <MdEmail className="contact-icon-c" />
                 </span>
-                <span className="contact-info">igaming@gmail.com</span>
+                <span className="contact-info-c">igaming@gmail.com</span>
               </li>
               <li>
                 <span>
-                  <IoLocationSharp className="contact-icon" />
+                  <IoLocationSharp className="contact-icon-c" />
                 </span>{" "}
-                <span className="contact-info">
+                <span className="contact-info-c">
                   132 igaming Street JHB,
                   <br />
                   Massachusetts 02156 South Africa
                 </span>
               </li>
             </ul>
-            <div className="social-links">
-              <div className="social-icon">
+            <div className="social-links-c">
+              <div className="social-icon-c">
                 <IoLogoTwitter id="titter" className="twitter-icon" />
               </div>
-              <div className="social-icon">
+              <div className="social-icon-c">
                 <SlSocialInstagram id="ig" className="ig-icon" />
               </div>
-              <div className="social-icon">
+              <div className="social-icon-c">
                 <FaDiscord id="discord" className="discord-icon" />
               </div>
             </div>
@@ -79,9 +79,9 @@ export default function ContactPage() {
             </div>
           </div>
         </div>
-        <div className="right">
+        <div className="right-c">
           <form>
-            <div className="input-container">
+            <div className="input-container-c">
               <div className="input-left">
                 <label htmlFor="fname" className="name-email">
                   First name
@@ -91,7 +91,7 @@ export default function ContactPage() {
                   type="text"
                   id="fname"
                   name="fname"
-                  className="input-field"
+                  className="input-field-c"
                 />
                 <br />
                 <label htmlFor="lname" className="name-email">
@@ -102,7 +102,7 @@ export default function ContactPage() {
                   type="text"
                   id="lname"
                   name="lname"
-                  className="input-field"
+                  className="input-field-c"
                 />
               </div>
               <div className="input-right">
@@ -114,7 +114,7 @@ export default function ContactPage() {
                   type="text"
                   id="fname"
                   name="fname"
-                  className="input-field"
+                  className="input-field-c"
                 />
                 <br />
                 <label htmlFor="lname" className="last-number">
@@ -125,20 +125,20 @@ export default function ContactPage() {
                   type="text"
                   id="lname"
                   name="lname"
-                  className="input-field"
+                  className="input-field-c"
                 />
               </div>
             </div>
-            <div className="subjects">
-              <h6 className="subject-heading">Select subject?</h6>
-              <div className="select-subjects">
+            <div className="subjects-c">
+              <h6 className="subject-heading-c">Select subject?</h6>
+              <div className="select-subjects-c">
                 {/* <form className="check-form"> */}
                 <input
                   type="checkbox"
                   id="checkbox"
                   name="vehicle1"
                   value="Bike"
-                  className="checkbox"
+                  className="checkbox-c"
                 />
                 <label htmlFor="vehicle1">General enquiry</label>
                 <br />
@@ -148,7 +148,7 @@ export default function ContactPage() {
                   id="checkbox"
                   name="vehicle2"
                   value="Car"
-                  className="checkbox"
+                  className="checkbox-c"
                 />
                 <label htmlFor="vehicle2"> General enquiry</label>
                 <br />
@@ -158,7 +158,7 @@ export default function ContactPage() {
                   id="checkbox"
                   name="vehicle3"
                   value="Boat"
-                  className="checkbox"
+                  className="checkbox-c"
                 />
                 <label htmlFor="vehicle3">General enquiry</label>
                 <br />
@@ -167,13 +167,13 @@ export default function ContactPage() {
                   id="checkbox"
                   name="vehicle3"
                   value="Boat"
-                  className="checkbox"
+                  className="checkbox-c"
                 />
                 <label htmlFor="vehicle3">General enquiry</label>
                 {/* </form> */}
               </div>
-              <div className="message-box">
-                <label htmlFor="subject" className="message-text">
+              <div className="message-box-c">
+                <label htmlFor="subject" className="message-text-c">
                   Message
                 </label>
                 <textarea
@@ -181,18 +181,19 @@ export default function ContactPage() {
                   name="subject"
                   placeholder="Write write youir message.."
                   style={{ height: "200px" }}
+                  className="message-c"
                 />
-                <div className="send-button">Send Message</div>
+                <div className="send-button-c">Send Message</div>
               </div>
             </div>
           </form>
-          <div className="chat-box">
+          <div className="chat-box-c">
             <div className="chat-text">Chat With Us</div>
             <div className="chat-img">
               <img
                 src="/public/images/message-icon.png"
                 alt="chat with us icon"
-                className="chat-icon"
+                className="chat-icon-c"
               ></img>
             </div>
           </div>

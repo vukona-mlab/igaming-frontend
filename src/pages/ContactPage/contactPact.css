@@ -1,20 +1,20 @@
-.contact-page{
+.contact-page-c{
    width: 1196px;
    padding-left: 60px;
    width: f;
 }
-.main-container {
+.main-container-c {
 overflow: hidden;
 }
 
-.heading-container{
+.heading-container-c{
 padding: 30px;
 justify-content: center;
 align-items: center;
 text-align: center;
 }
 
-.frst-heading{
+.frst-heading-c{
     font-family: 'Poppins';
     font-weight: 700;
     font-size: 40px;
@@ -22,7 +22,7 @@ text-align: center;
     color:#000000;
 }
 
-.scnd-heading{
+.scnd-heading-c{
     font-family: 'Poppins';
     font-weight: 500;
     font-size: 18px;
@@ -30,7 +30,7 @@ text-align: center;
     color: #717171;
 }
 
-.left{
+.left-c{
     position: relative;
     background-color: #000000;
     padding: 40px;
@@ -39,11 +39,11 @@ text-align: center;
     border-radius: 12px;
 }
 
-.right{
+.rightc{
     position: relative;
 }
 
-.contact-heading{
+.contact-heading-c{
     font-family: 'Poppins';
     font-weight: 600;
     font-size: 28px;
@@ -51,7 +51,7 @@ text-align: center;
     color: white !important;
 }
 
-.thrd-heading{
+.thrd-heading-c{
     font-family: 'Poppins';
     font-weight: 400;
     font-size: 18px;
@@ -59,19 +59,19 @@ text-align: center;
     color: #C9C9C9;
 }
 
-.contact-container{
+.contact-container-c{
     display: flex;
     justify-content: center;
     gap: 30px;
     margin-top: 50px;
 }
 
-.input-container{
+.input-container-c{
     display: flex;
     gap: 30px;
 }
 
-.input-field{
+.input-field-c{
     width: 278px;
     height: 42px;
     border-radius: 8px;
@@ -98,7 +98,7 @@ text-align: center;
     color: #000000;
 }
 
-.contact-details li{
+.contact-details-c li{
     list-style: none;
     padding: 20px;
     font-family: 'Poppins';
@@ -108,12 +108,12 @@ text-align: center;
     color: #FFFFFF;
 }
 
-.contact-icon{
+.contact-icon-c{
     position: absolute;
     left: 13%;
 }
 
-.contact-info{
+.contact-info-c{
     /* margin-left: 16px; */
     position: absolute;
     left: 23%;
@@ -139,14 +139,14 @@ text-align: center;
      left: -15%; 
 } 
 
-.social-links{
+.social-links-c{
     display: flex;
     position: absolute;
     bottom: 3%;
     left: 3%;
 }
 
-.social-icon{
+.social-icon-c{
     margin: 10px;
     color: #FFFFFF;
     background-color: #1B1B1B;
@@ -158,7 +158,7 @@ text-align: center;
     
 }
 
-.send-button{
+.send-button-c{
     background-color: #000000;
     color: #FFFFFF;
     padding: 18px;
@@ -170,11 +170,11 @@ text-align: center;
     text-align: center;
 }
 
-.subjects{
+.subjects-c{
     margin-right: 20%;
 }
 
-.subject-heading{
+.subject-heading-c{
     font-family: 'Poppins';
     font-weight: 600;
     font-size: 14px;
@@ -184,7 +184,7 @@ text-align: center;
     margin-right: 78%;
 }
 
-.select-subjects{
+.select-subjects-c{
     display: flex;
   justify-content: center;
   align-items: center;
@@ -201,13 +201,13 @@ text-align: center;
     align-items: center; 
   }
 
-  .checkbox{
+  .checkbox-c{
     accent-color: #000000;
   }
 
 
 
-  .message-text{
+  .message-text-c{
     font-family: 'Poppins';
     font-weight: 500;
     font-size: 14px;
@@ -217,18 +217,18 @@ text-align: center;
     margin-bottom: 15px;
   }
 
-  .message-box{
+  .message-box-c{
     margin-top: 50px;
   }
 
-  textarea{
+  .message-c{
     border-radius: 8px;
     border: 2px solid #EDEEEE;
     height: 72;
     width: 594px;
   }
 
-  .chat-box{
+  .chat-box-c{
     display: flex;
     gap: 25px;
     position: relative;
@@ -244,10 +244,10 @@ text-align: center;
     color: #4C4C4C;
   }
 
-  .chat-icon{
+  .chat-icon-c{
     width: 38px;
   }
 
-  .chat-icon:hover{
+  .chat-icon-c:hover{
     cursor: pointer;
   }
