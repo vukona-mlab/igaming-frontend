@@ -23,6 +23,7 @@ const MessagingPage = () => {
 
   useEffect(() => {
     getAllChats();
+    getCurrentUserProfile();
   }, []);
 
   useEffect(() => {
@@ -31,9 +32,12 @@ const MessagingPage = () => {
       const chat = chats.find(chat => chat.id === currentChatId);
       setCurrentChat(chat);
       
+      const currentUserId = localStorage.getItem("uid");
+      console.log("Current logged in user ID:", currentUserId);
+      
       // Find the client participant
       const client = chat?.participants?.find(
-        part => part.uid !== localStorage.getItem("uid")
+        part => part.uid !== currentUserId
       );
       
       if (client) {
@@ -111,6 +115,27 @@ const MessagingPage = () => {
       console.error("Error fetching chats:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const getCurrentUserProfile = async () => {
+    try {
+      const userId = localStorage.getItem("uid");
+      const response = await fetch(`${url}/api/users/${userId}`, {
+        method: "GET",
+        headers: {
+          Authorization: token,
+        },
+      });
+      
+      if (response.ok) {
+        const userData = await response.json();
+        console.log("Current User Profile:", userData);
+      } else {
+        console.error("Failed to fetch user profile");
+      }
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
     }
   };
 

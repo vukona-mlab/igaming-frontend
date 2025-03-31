@@ -1,14 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './ProjectForm.css';
 import DocumentIcon from '../../../assets/document-icon.svg'; // You'll need to add this icon
 import PlanOptions from './PlanOptions/PlanOptions';
 import Info from "./ProjectDescription/ProjectDescription"
 import DocumentSection from './DocumentSection/DocumentSection';
 
-const ProjectForm = () => {
+const ProjectForm = ({ freelancerId }) => {
     const [selectedPlan, setSelectedPlan] = useState('standard');
     const [isFullScreen, setIsFullScreen] = useState(false);
+    const [freelancerPackages, setFreelancerPackages] = useState([]);
 
+    useEffect(() => {
+        const fetchFreelancerPackages = async () => {
+            try {
+                const token = localStorage.getItem("token");
+                const response = await fetch(
+                    `${import.meta.env.VITE_API_URL}/api/auth/users/${freelancerId}`,
+                    {
+                        headers: {
+                            Authorization: token,
+                        },
+                    }
+                );
+                if (response.ok) {
+                    const data = await response.json();
+                    setFreelancerPackages(data.user.packages || []);
+                }
+            } catch (error) {
+                console.error("Error fetching freelancer packages:", error);
+            }
+        };
+
+        if (freelancerId) {
+            fetchFreelancerPackages();
+        }
+    }, [freelancerId]);
 
     return (
         <>
@@ -43,6 +69,7 @@ const ProjectForm = () => {
                 <PlanOptions 
                     selectedPlan={selectedPlan}
                     onPlanChange={setSelectedPlan}
+                    planPrices={freelancerPackages}
                 />
             </div>
 

@@ -19,6 +19,7 @@ const ChatHeader = ({ currentChat }) => {
   const [showZoomModal, setShowZoomModal] = useState(false);
   const [meetingDetails, setMeetingDetails] = useState(null);
   const socketRef = useRef();
+  const [projectData, setProjectData] = useState(null);
 
   // Get user role and ID from localStorage
   const userRole = localStorage.getItem("role");
@@ -68,6 +69,17 @@ const ChatHeader = ({ currentChat }) => {
   }, []);
 
   const handleCreateProject = () => {
+    if (!otherParticipant?.uid) {
+      console.error("No other participant found");
+      return;
+    }
+
+    setProjectData({
+      clientId: isFreelancer ? otherParticipant.uid : currentUserId,
+      freelancerId: isFreelancer ? currentUserId : otherParticipant.uid,
+      clientEmail: isFreelancer ? otherParticipant.email : currentUser.email,
+      freelancerEmail: isFreelancer ? currentUser.email : otherParticipant.email,
+    });
     setShowProjectModal(true);
     setShowMenu(false);
   };
@@ -230,16 +242,7 @@ const ChatHeader = ({ currentChat }) => {
         onClose={() => setShowProjectModal(false)}
         chatId={currentChat?.id}
         isClientView={!isFreelancer}
-        projectData={{
-          clientId: isFreelancer ? otherParticipant?.uid : currentUserId,
-          freelancerId: isFreelancer ? currentUserId : otherParticipant?.uid,
-          clientEmail: isFreelancer
-            ? otherParticipant?.email
-            : currentUser?.email,
-          freelancerEmail: isFreelancer
-            ? currentUser?.email
-            : otherParticipant?.email,
-        }}
+        projectData={projectData}
       />
       <ZoomMeetingModal 
         isOpen={showZoomModal}
