@@ -14,7 +14,6 @@ const ProjectForm = () => {
         <>
             <div className="project-form-container">
                 <div className="sla-section">
-                    <h1>Service Level Agreement</h1>
                     <Info/>
 
                     <DocumentSection 

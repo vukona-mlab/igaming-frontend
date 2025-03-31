@@ -141,3 +141,29 @@
     width: 28px;
     height: 28px;
 }
+
+.no-packages {
+    text-align: center;
+    padding: 2rem;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+.no-packages p {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+}
+
+.no-packages p:first-child {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.8);
+    margin-bottom: 0.5rem;
+}
+
+.no-packages .sub-text {
+    font-size: 0.9rem;
+    color: rgba(0, 0, 0, 0.6);
+}
