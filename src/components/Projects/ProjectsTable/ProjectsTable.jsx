@@ -50,7 +50,6 @@ const ProjectsTable = ({ type, projects }) => {
 
         popup.resumeTransaction(data.accessCode, {
           onSuccess: async (transaction) => {
-            console.log(transaction);
             if (transaction.status === "success") {
               try {
                 const res = await fetch(
