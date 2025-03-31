@@ -107,7 +107,6 @@ const ProjectsTable = ({ type, projects }) => {
       alert("Error starting transaction. Please try again.");
     }
   };
-  console.log(projects);
   return (
     <div className="ProjectsTable">
       {showProjectDetails && (
@@ -126,7 +125,7 @@ const ProjectsTable = ({ type, projects }) => {
             <th className="pj-t-heading">Status</th>
             <th className="pj-t-heading">Project Ref</th>
             <th className="pj-t-heading">
-              {type === "client" ? "Client's Email" : "Freelancer's Email"}
+              {type === "client" ? "Freelancer's Email" : "Client's Email"}
             </th>
             <th className="pj-t-heading">Due Date</th>
             <th className="pj-t-heading">Project Requirements</th>
