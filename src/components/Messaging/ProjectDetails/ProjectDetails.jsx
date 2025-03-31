@@ -290,7 +290,6 @@ const ProjectDetails = ({ project, onClose, isClient }) => {
         <div className="project-details-content">
           <div className="project-form-container">
             <div className="sla-section">
-              <h1>Service Level Agreement</h1>
               
               <div className="form-group">
                 <label>Title:</label>

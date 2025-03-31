@@ -64,8 +64,12 @@ const ProjectModal = ({
   useEffect(() => {
     const baseBudget = parseInt(formData.budget) || 0;
     const planAmount = hasPackages ? parseInt(planPrices[selectedPlan]) || 0 : 0;
-    setTotalBudget(baseBudget + planAmount);
-  }, [formData.budget, selectedPlan, planPrices, hasPackages]);
+    
+    setFormData(prev => ({
+      ...prev,
+      budget: (baseBudget + planAmount).toString()
+    }));
+  }, [selectedPlan, planPrices, hasPackages]);
 
   const categories = [
     "Game Development",
@@ -213,7 +217,6 @@ const ProjectModal = ({
           {isClientView ? (
             <div className="project-form-container">
               <div className="sla-section">
-                <h1>Service Level Agreement</h1>
                 <ProjectDescription />
 
                 <DocumentSection 
@@ -252,7 +255,7 @@ const ProjectModal = ({
                   <div className="total-budget-section">
                     <div className="total-budget-row">
                       <span>Base Budget:</span>
-                      <span>R{formData.budget || '0'}</span>
+                      <span>R{(parseInt(formData.budget) - (parseInt(planPrices[selectedPlan]) || 0)) || '0'}</span>
                     </div>
                     <div className="total-budget-row">
                       <span>Plan Amount:</span>
@@ -260,7 +263,7 @@ const ProjectModal = ({
                     </div>
                     <div className="total-budget-row total">
                       <span>Total Budget:</span>
-                      <span>R{totalBudget}</span>
+                      <span>R{formData.budget || '0'}</span>
                     </div>
                   </div>
                 )}
@@ -269,7 +272,6 @@ const ProjectModal = ({
           ) : (
             <form onSubmit={handleSubmit} className="project-form-container">
               <div className="sla-section">
-                <h1>Service Level Agreement</h1>
                 <div className="form-group">
                   <label>Title:</label>
                   <input
@@ -367,7 +369,7 @@ const ProjectModal = ({
                   <div className="total-budget-section">
                     <div className="total-budget-row">
                       <span>Base Budget:</span>
-                      <span>R{formData.budget || '0'}</span>
+                      <span>R{(parseInt(formData.budget) - (parseInt(planPrices[selectedPlan]) || 0)) || '0'}</span>
                     </div>
                     <div className="total-budget-row">
                       <span>Plan Amount:</span>
@@ -375,7 +377,7 @@ const ProjectModal = ({
                     </div>
                     <div className="total-budget-row total">
                       <span>Total Budget:</span>
-                      <span>R{totalBudget}</span>
+                      <span>R{formData.budget || '0'}</span>
                     </div>
                   </div>
                 )}
