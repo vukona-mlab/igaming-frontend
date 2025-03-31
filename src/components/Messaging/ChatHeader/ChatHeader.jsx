@@ -74,11 +74,17 @@ const ChatHeader = ({ currentChat }) => {
       return;
     }
 
+    if (!currentChat?.id) {
+      console.error("No chat ID found");
+      return;
+    }
+
     setProjectData({
       clientId: isFreelancer ? otherParticipant.uid : currentUserId,
       freelancerId: isFreelancer ? currentUserId : otherParticipant.uid,
       clientEmail: isFreelancer ? otherParticipant.email : currentUser.email,
       freelancerEmail: isFreelancer ? currentUser.email : otherParticipant.email,
+      chatId: currentChat.id
     });
     setShowProjectModal(true);
     setShowMenu(false);
@@ -197,15 +203,15 @@ const ChatHeader = ({ currentChat }) => {
             ) : (
               <BsPersonCircle className="default-avatar" />
             )}
-            <span className="online-status"></span>
+            <span className={`online-status ${activeStatus ? 'active' : ''}`}></span>
           </div>
           <div className="user-info">
             <h3 className="user-name">{otherParticipant?.name || "User"}</h3>
             <span className="user-status">
               {!activeStatus
                 ? `Last seen ${new Date(
-                    otherParticipant.lastSeen._seconds ||
-                      otherParticipant.lastSeen
+                    otherParticipant?.lastSeen?._seconds ||
+                    otherParticipant?.lastSeen
                   ).toLocaleString()}`
                 : "Online"}
             </span>
@@ -237,13 +243,18 @@ const ChatHeader = ({ currentChat }) => {
         </div>
       </div>
 
-      <ProjectModal
-        isOpen={showProjectModal}
-        onClose={() => setShowProjectModal(false)}
-        chatId={currentChat?.id}
-        isClientView={!isFreelancer}
-        projectData={projectData}
-      />
+      {showProjectModal && projectData && (
+        <ProjectModal
+          isOpen={showProjectModal}
+          onClose={() => {
+            setShowProjectModal(false);
+            setProjectData(null);
+          }}
+          chatId={currentChat?.id}
+          isClientView={!isFreelancer}
+          projectData={projectData}
+        />
+      )}
       <ZoomMeetingModal 
         isOpen={showZoomModal}
         onClose={() => setShowZoomModal(false)}

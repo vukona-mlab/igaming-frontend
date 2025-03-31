@@ -23,7 +23,6 @@ const MessagingPage = () => {
 
   useEffect(() => {
     getAllChats();
-    getCurrentUserProfile();
   }, []);
 
   useEffect(() => {
@@ -118,30 +117,9 @@ const MessagingPage = () => {
     }
   };
 
-  const getCurrentUserProfile = async () => {
-    try {
-      const userId = localStorage.getItem("uid");
-      const response = await fetch(`${url}/api/users/${userId}`, {
-        method: "GET",
-        headers: {
-          Authorization: token,
-        },
-      });
-      
-      if (response.ok) {
-        const userData = await response.json();
-        console.log("Current User Profile:", userData);
-      } else {
-        console.error("Failed to fetch user profile");
-      }
-    } catch (error) {
-      console.error("Error fetching user profile:", error);
-    }
-  };
+ 
 
-  if (loading) {
-    return <div className="loading">Loading...</div>;
-  }
+ 
 
   return (
     <div className="MessagingPageF">
