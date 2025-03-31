@@ -3,6 +3,8 @@ import "./ProjectsTable.css";
 import { SlOptionsVertical } from "react-icons/sl";
 import ProjectDetails from "../../Projects/ProjectDetails/ProjectDetails";
 import SLA from "../SLA/SLA";
+import PaystackPop from "@paystack/inline-js";
+
 const ProjectsTable = ({ type, projects }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [current, setCurrent] = useState("");
@@ -17,7 +19,14 @@ const ProjectsTable = ({ type, projects }) => {
   const buttonRef = useRef(null);
   const token = localStorage.getItem("token");
 
-  const handleTransaction = async (email) => {
+  const handleTransaction = async (
+    clientId,
+    freelancerId,
+    amount,
+    email,
+    projectId
+  ) => {
+    console.log("PP", clientId, freelancerId, amount, email, projectId);
     try {
       const response = await fetch("http://localhost:8000/api/transaction", {
         method: "POST",
@@ -28,9 +37,9 @@ const ProjectsTable = ({ type, projects }) => {
         body: JSON.stringify({
           clientId: clientId,
           freelancerId: freelancerId,
-          amount: parseFloat(currProject.budget),
+          amount: parseFloat(amount),
           clientEmail: email,
-          projectId: currProject.id,
+          projectId: projectId,
         }),
       });
 
@@ -55,7 +64,7 @@ const ProjectsTable = ({ type, projects }) => {
                     body: JSON.stringify({
                       reference: transaction.reference,
                       clientId: clientId,
-                      projectId: currProject.id,
+                      projectId: projectId,
                     }),
                   }
                 );
@@ -98,6 +107,7 @@ const ProjectsTable = ({ type, projects }) => {
       alert("Error starting transaction. Please try again.");
     }
   };
+  console.log(projects);
   return (
     <div className="ProjectsTable">
       {showProjectDetails && (
@@ -200,7 +210,13 @@ const ProjectsTable = ({ type, projects }) => {
                             project.paymentStatus !== "completed" && (
                               <button
                                 onClick={() =>
-                                  handleTransaction(project.clientEmail)
+                                  handleTransaction(
+                                    project.clientId,
+                                    project.freelancerId,
+                                    project.budget,
+                                    project.clientEmail,
+                                    project.id
+                                  )
                                 }
                               >
                                 Pay project
