@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./PriceCard.css";
+import { VscClose } from "react-icons/vsc";
 
 const PriceCard = ({
   type,
@@ -8,6 +9,7 @@ const PriceCard = ({
   bgColor,
   handleAddFeature,
   handleUpdateFeature,
+  handleDeleteFeature,
   onClose,
 }) => {
   const [text, setText] = useState("");
@@ -52,12 +54,25 @@ const PriceCard = ({
     setArr(arr);
   };
   const add = (text) => {
+    if (text === "") {
+      alert("Text cannot be empty");
+      return;
+    }
     handleAddFeature({ type: type, feature: text });
     let arr = [...updatedArr];
-    if (text !== "") {
-      arr.push({ id: arr.length, text, edit: false });
-      setArr(arr);
-    }
+
+    arr.push({ id: arr.length, text, edit: false });
+    setArr(arr);
+  };
+  const del = (id, index, text) => {
+    handleDeleteFeature({
+      type: type,
+      index,
+      feature: text,
+    });
+    let arr = [...updatedArr];
+    arr = arr.filter((a) => a.id !== id);
+    setArr(arr);
   };
   return (
     <div className="pc-pricing-card">
@@ -86,23 +101,30 @@ const PriceCard = ({
                   <span>{feature.text}</span>
                 </div>
               )}
-
-              <span
-                onClick={() =>
-                  feature.edit
-                    ? update(feature.id, index, feature.text)
-                    : handleEdit(feature.id)
-                }
-              >
-                {feature.edit ? (
-                  <div>✓</div>
-                ) : (
-                  <img
-                    src="/images/basil_edit-outline.png"
-                    className="pc-edit-img"
-                  />
-                )}
-              </span>
+              <div className="pc-edit-del">
+                <div
+                  className="pc-del"
+                  onClick={() => del(feature.id, index, feature.text)}
+                >
+                  <VscClose />
+                </div>
+                <span
+                  onClick={() =>
+                    feature.edit
+                      ? update(feature.id, index, feature.text)
+                      : handleEdit(feature.id)
+                  }
+                >
+                  {feature.edit ? (
+                    <div>✓</div>
+                  ) : (
+                    <img
+                      src="/images/basil_edit-outline.png"
+                      className="pc-edit-img"
+                    />
+                  )}
+                </span>
+              </div>
             </div>
           ))}
       </div>
