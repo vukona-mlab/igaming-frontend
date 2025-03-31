@@ -14,7 +14,7 @@ align-items: center;
 text-align: center;
 }
 
-h1{
+.frst-heading{
     font-family: 'Poppins';
     font-weight: 700;
     font-size: 40px;
@@ -43,7 +43,7 @@ h1{
     position: relative;
 }
 
-h2{
+.contact-heading{
     font-family: 'Poppins';
     font-weight: 600;
     font-size: 28px;
@@ -158,7 +158,7 @@ h2{
     
 }
 
-.button{
+.send-button{
     background-color: #000000;
     color: #FFFFFF;
     padding: 18px;
@@ -167,6 +167,7 @@ h2{
     height: 54px;
     margin-top: 16px;
     margin-left: 73%;
+    text-align: center;
 }
 
 .subjects{

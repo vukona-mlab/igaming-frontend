@@ -17,7 +17,7 @@ export default function ContactPage() {
     <SubNavBar />
     <div className="contact-page">
       <div className="heading-container">
-        <h1>Contact Us</h1>
+        <h1 className="frst-heading">Contact Us</h1>
         <div className="scnd-heading">
           {" "}
           <p>Any questions or remarks? Just write us a message!</p>
@@ -25,7 +25,7 @@ export default function ContactPage() {
       </div>
       <div className="contact-container">
         <div className="left">
-          <h2>Contact Information</h2>
+          <h2 className="contact-heading">Contact Information</h2>
           <div className="thrd-heading">
             <p>Say something to start a live chat!</p>
           </div>
@@ -182,7 +182,7 @@ export default function ContactPage() {
                   placeholder="Write write youir message.."
                   style={{ height: "200px" }}
                 />
-                <div className="button">Send Message</div>
+                <div className="send-button">Send Message</div>
               </div>
             </div>
           </form>
