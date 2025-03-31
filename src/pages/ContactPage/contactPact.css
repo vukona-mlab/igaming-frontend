@@ -1,7 +1,9 @@
 .contact-page-c{
-   width: 1196px;
+   /* width: 1196px; */
+   width: 100%;
    padding-left: 60px;
-   width: f;
+   justify-content: center !important;
+   align-items: center;
 }
 .main-container-c {
 overflow: hidden;
@@ -39,7 +41,7 @@ text-align: center;
     border-radius: 12px;
 }
 
-.rightc{
+.right-c{
     position: relative;
 }
 
@@ -125,13 +127,6 @@ text-align: center;
     right: 0;
 }
 
-/* .half-ellipse{
-    position: relative;
-    left: 21%;
-     margin-top: 157px;
-    border-radius: 8px; 
-
-} */
 
 .full-ellipse{
     position: absolute;
@@ -151,10 +146,10 @@ text-align: center;
     color: #FFFFFF;
     background-color: #1B1B1B;
     font-size: 25px; 
-    padding: 8px;
+    padding: 6px;
     border-radius: 50%;
-    /* background-color: aqua; */
     width: 53px;
+    text-align: center;
     
 }
 

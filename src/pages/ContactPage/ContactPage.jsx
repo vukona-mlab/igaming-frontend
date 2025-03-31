@@ -15,14 +15,21 @@ export default function ContactPage() {
   <div className="main-container-c">
     {/* <NavBar/> */}
     <SubNavBar />
-    <div className="contact-page-c">
-      <div className="heading-container-c">
+    <div className="heading-container-c">
         <h1 className="frst-heading-c">Contact Us</h1>
         <div className="scnd-heading-c">
           {" "}
           <p>Any questions or remarks? Just write us a message!</p>
         </div>
       </div>
+    <div className="contact-page-c">
+      {/* <div className="heading-container-c">
+        <h1 className="frst-heading-c">Contact Us</h1>
+        <div className="scnd-heading-c">
+          {" "}
+          <p>Any questions or remarks? Just write us a message!</p>
+        </div>
+      </div> */}
       <div className="contact-container-c">
         <div className="left-c">
           <h2 className="contact-heading-c">Contact Information</h2>
@@ -56,7 +63,7 @@ export default function ContactPage() {
             </ul>
             <div className="social-links-c">
               <div className="social-icon-c">
-                <IoLogoTwitter id="titter" className="twitter-icon" />
+                <IoLogoTwitter id="twitter" className="twitter-icon" />
               </div>
               <div className="social-icon-c">
                 <SlSocialInstagram id="ig" className="ig-icon" />
