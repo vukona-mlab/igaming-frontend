@@ -23,7 +23,7 @@ const ProjectModal = ({
   });
   const [selectedPlan, setSelectedPlan] = useState('standard');
   const [totalBudget, setTotalBudget] = useState(0);
-  const [freelancerPackages, setFreelancerPackages] = useState(null);
+  const [freelancerPackages, setFreelancerPackages] = useState([]);
 
   // Fetch freelancer's packages when component mounts
   useEffect(() => {
@@ -40,7 +40,7 @@ const ProjectModal = ({
         );
         if (response.ok) {
           const data = await response.json();
-          setFreelancerPackages(data.user.packages);
+          setFreelancerPackages(data.user.packages || []);
         }
       } catch (error) {
         console.error("Error fetching freelancer packages:", error);
@@ -52,24 +52,22 @@ const ProjectModal = ({
     }
   }, [projectData?.freelancerId]);
 
-  const hasPackages = freelancerPackages && 
-    typeof freelancerPackages === 'object' && 
-    'basic' in freelancerPackages && 
-    'standard' in freelancerPackages && 
-    'premium' in freelancerPackages && 
-    'ultimate' in freelancerPackages;
+  const hasPackages = freelancerPackages && Array.isArray(freelancerPackages) && freelancerPackages.length > 0;
 
-  const planPrices = hasPackages ? freelancerPackages : null;
+  const getSelectedPlanPrice = () => {
+    const selectedPackage = freelancerPackages.find(pkg => pkg.type === selectedPlan);
+    return selectedPackage ? parseInt(selectedPackage.price) : 0;
+  };
 
   useEffect(() => {
     const baseBudget = parseInt(formData.budget) || 0;
-    const planAmount = hasPackages ? parseInt(planPrices[selectedPlan]) || 0 : 0;
+    const planAmount = hasPackages ? getSelectedPlanPrice() : 0;
     
     setFormData(prev => ({
       ...prev,
       budget: (baseBudget + planAmount).toString()
     }));
-  }, [selectedPlan, planPrices, hasPackages]);
+  }, [selectedPlan, freelancerPackages, hasPackages]);
 
   const categories = [
     "Game Development",
@@ -232,7 +230,7 @@ const ProjectModal = ({
                   {hasPackages && (
                     <div className="price-row">
                       <span>Checkout price</span>
-                      <span>R{parseInt(projectData.budget) + parseInt(planPrices[selectedPlan])}</span>
+                      <span>R{parseInt(projectData.budget) + getSelectedPlanPrice()}</span>
                     </div>
                   )}
                 </div>
@@ -249,17 +247,17 @@ const ProjectModal = ({
                 <PlanOptions 
                   selectedPlan={selectedPlan}
                   onPlanChange={setSelectedPlan}
-                  planPrices={planPrices}
+                  planPrices={freelancerPackages}
                 />
                 {hasPackages && (
                   <div className="total-budget-section">
                     <div className="total-budget-row">
                       <span>Base Budget:</span>
-                      <span>R{(parseInt(formData.budget) - (parseInt(planPrices[selectedPlan]) || 0)) || '0'}</span>
+                      <span>R{(parseInt(formData.budget) - getSelectedPlanPrice()) || '0'}</span>
                     </div>
                     <div className="total-budget-row">
                       <span>Plan Amount:</span>
-                      <span>R{planPrices[selectedPlan]}</span>
+                      <span>R{getSelectedPlanPrice()}</span>
                     </div>
                     <div className="total-budget-row total">
                       <span>Total Budget:</span>
@@ -363,17 +361,17 @@ const ProjectModal = ({
                 <PlanOptions 
                   selectedPlan={selectedPlan}
                   onPlanChange={setSelectedPlan}
-                  planPrices={planPrices}
+                  planPrices={freelancerPackages}
                 />
                 {hasPackages && (
                   <div className="total-budget-section">
                     <div className="total-budget-row">
                       <span>Base Budget:</span>
-                      <span>R{(parseInt(formData.budget) - (parseInt(planPrices[selectedPlan]) || 0)) || '0'}</span>
+                      <span>R{(parseInt(formData.budget) - getSelectedPlanPrice()) || '0'}</span>
                     </div>
                     <div className="total-budget-row">
                       <span>Plan Amount:</span>
-                      <span>R{planPrices[selectedPlan]}</span>
+                      <span>R{getSelectedPlanPrice()}</span>
                     </div>
                     <div className="total-budget-row total">
                       <span>Total Budget:</span>

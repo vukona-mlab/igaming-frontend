@@ -31,9 +31,12 @@ const MessagingPage = () => {
       const chat = chats.find(chat => chat.id === currentChatId);
       setCurrentChat(chat);
       
+      const currentUserId = localStorage.getItem("uid");
+      console.log("Current logged in user ID:", currentUserId);
+      
       // Find the client participant
       const client = chat?.participants?.find(
-        part => part.uid !== localStorage.getItem("uid")
+        part => part.uid !== currentUserId
       );
       
       if (client) {
@@ -114,9 +117,9 @@ const MessagingPage = () => {
     }
   };
 
-  if (loading) {
-    return <div className="loading">Loading...</div>;
-  }
+ 
+
+ 
 
   return (
     <div className="MessagingPageF">

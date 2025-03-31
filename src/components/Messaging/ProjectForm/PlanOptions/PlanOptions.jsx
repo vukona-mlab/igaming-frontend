@@ -3,19 +3,14 @@ import './PlanOptions.css';
 import checkIcon from '../../../../assets/check.svg'
 
 const PlanOptions = ({ selectedPlan, onPlanChange, planPrices }) => {
-    const hasPackages = planPrices && 
-        typeof planPrices === 'object' && 
-        'basic' in planPrices && 
-        'standard' in planPrices && 
-        'premium' in planPrices && 
-        'ultimate' in planPrices;
+    const hasPackages = planPrices && Array.isArray(planPrices) && planPrices.length > 0;
 
-    const plans = hasPackages ? [
-        { id: 'basic', name: 'Basic plan', price: planPrices.basic },
-        { id: 'standard', name: 'Standard plan', price: planPrices.standard },
-        { id: 'premium', name: 'Premium plan', price: planPrices.premium },
-        { id: 'ultimate', name: 'Ultimate plan', price: planPrices.ultimate }
-    ] : [];
+    const plans = hasPackages ? planPrices.map(pkg => ({
+        id: pkg.type,
+        name: `${pkg.type.charAt(0).toUpperCase() + pkg.type.slice(1)} plan`,
+        price: pkg.price,
+        features: pkg.features || []
+    })) : [];
 
     const benefits = [
         '20 days faster',

@@ -2,49 +2,17 @@ import React from 'react';
 import PriceCard from './PriceCard';
 import './PricingPlans.css';
 
-const PricingPlans = ({ packages = {} }) => {
-  const pricingData = [
-    {
-      type: "Basic",
-      price: packages.basic ? `R${packages.basic}` : "N/A",
-      features: [
-        "10 days faster",
-        "Free logo",
-        "Free design"
-      ],
-      bgColor: "rgba(158, 240, 26, 0.25)"
-    },
-    {
-      type: "Standard",
-      price: packages.standard ? `R${packages.standard}` : "N/A",
-      features: [
-        "20 days faster",
-        "Free logo",
-        "Free design"
-      ],
-      bgColor: "rgba(131, 56, 236, 0.20)"
-    },
-    {
-      type: "Premium",
-      price: packages.premium ? `R${packages.premium}` : "N/A",
-      features: [
-        "30 days faster",
-        "Free logo",
-        "Free design"
-      ],
-      bgColor: "rgba(13, 153, 255, 0.20)"
-    },
-    {
-      type: "Ultimate",
-      price: packages.ultimate ? `R${packages.ultimate}` : "N/A",
-      features: [
-        "50 days faster",
-        "Free logo",
-        "Free design"
-      ],
-      bgColor: "rgba(26, 240, 226, 0.2)"
-    }
-  ];
+const PricingPlans = ({ packages = [] }) => {
+  const pricingData = packages.map(pkg => ({
+    type: pkg.type.charAt(0).toUpperCase() + pkg.type.slice(1),
+    price: `R${pkg.price}`,
+    features: pkg.features || [
+      "10 days faster",
+      "Free logo",
+      "Free design"
+    ],
+    bgColor: getBgColor(pkg.type)
+  }));
 
   return (
     <div className="pricing-plans-container">
@@ -59,6 +27,16 @@ const PricingPlans = ({ packages = {} }) => {
       ))}
     </div>
   );
+};
+
+const getBgColor = (type) => {
+  const colors = {
+    basic: "rgba(158, 240, 26, 0.25)",
+    standard: "rgba(131, 56, 236, 0.20)",
+    premium: "rgba(13, 153, 255, 0.20)",
+    ultimate: "rgba(26, 240, 226, 0.2)"
+  };
+  return colors[type] || "rgba(158, 240, 26, 0.25)";
 };
 
 export default PricingPlans; 
