@@ -9,18 +9,28 @@ import { FaDiscord } from "react-icons/fa";
 
 export default function ContactPage() {
   return (
-    <div className="contact-page">
-      <div className="heading-container">
-        <h1>Contact Us</h1>
-        <div className="scnd-heading">
+  <div className="main-container-c">
+    {/* <NavBar/> */}
+    <SubNavBar />
+    <div className="heading-container-c">
+        <h1 className="frst-heading-c">Contact Us</h1>
+        <div className="scnd-heading-c">
           {" "}
           <p>Any questions or remarks? Just write us a message!</p>
         </div>
       </div>
-      <div className="contact-container">
-        <div className="left">
-          <h2>Contact Information</h2>
-          <div className="thrd-heading">
+    <div className="contact-page-c">
+      {/* <div className="heading-container-c">
+        <h1 className="frst-heading-c">Contact Us</h1>
+        <div className="scnd-heading-c">
+          {" "}
+          <p>Any questions or remarks? Just write us a message!</p>
+        </div>
+      </div> */}
+      <div className="contact-container-c">
+        <div className="left-c">
+          <h2 className="contact-heading-c">Contact Information</h2>
+          <div className="thrd-heading-c">
             <p>Say something to start a live chat!</p>
           </div>
           <div className="contact-details">
@@ -33,7 +43,29 @@ export default function ContactPage() {
                 Massachusetts 02156 South Africa
               </li>
             </ul>
-            <div className="social-links"><IoLogoTwitter /><SlSocialInstagram /><FaDiscord /></div>
+            <div className="social-links-c">
+              <div className="social-icon-c">
+                <IoLogoTwitter id="twitter" className="twitter-icon" />
+              </div>
+              <div className="social-icon-c">
+                <SlSocialInstagram id="ig" className="ig-icon" />
+              </div>
+              <div className="social-icon-c">
+                <FaDiscord id="discord" className="discord-icon" />
+              </div>
+            </div>
+            <div className="ellipse-conainer">
+              <img
+                src="/public/images/Ellipse-full.png"
+                alt="full ellipse"
+                className="full-ellipse"
+              ></img>
+              <img
+                src="/public/images/Ellipse-half.png"
+                alt="half ellipse"
+                className="half-ellipse"
+              ></img>
+            </div>
           </div>
         </div>
         <div className="right">
