@@ -22,6 +22,7 @@ import Transactions from "./pages/transcations/Transactions";
 import Document from "./pages/freelancer/DocumentsPage/DocumentUpload/documentUpload";
 import DocumentView from "./pages/freelancer/DocumentsPage/ViewDocuments/DocumentsView";
 import Projects from "./pages/projects/Projects";
+import ContactPage from "./pages/ContactPage/ContactPage";
 function App() {
   return (
     <div className="App">
@@ -33,6 +34,7 @@ function App() {
               <Route path=":freelancer_id" element={<FreelancerProjects />} />
             </Route>
             <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/contact" element={<ContactPage />} />
 
             <Route element={<ProtectedRouteReg />}>
               <Route

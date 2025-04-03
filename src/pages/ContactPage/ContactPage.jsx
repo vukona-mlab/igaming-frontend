@@ -6,6 +6,9 @@ import { IoLocationSharp } from "react-icons/io5";
 import { IoLogoTwitter } from "react-icons/io5";
 import { SlSocialInstagram } from "react-icons/sl";
 import { FaDiscord } from "react-icons/fa";
+// import NavBar from "../../components/Common/Navbar/navbar";
+import SubNavBar from "../../components/Common/SubNavBar/SubNavBar";
+import Footer from "../footer/Footer";
 
 export default function ContactPage() {
   return (
@@ -33,20 +36,29 @@ export default function ContactPage() {
             <div className="thrd-heading-c">
               <p>Say something to start a live chat!</p>
             </div>
-            <div className="contact-details">
+            <div className="contact-details-c">
               <ul>
                 <li>
-                  <BiSolidPhoneCall />
-                  0660850741
+                  <span>
+                    <BiSolidPhoneCall className="contact-icon-c" />
+                  </span>
+                  <span className="contact-info-c">0660850741</span>
                 </li>
                 <li>
-                  <MdEmail />
-                  igaming@gmail.com
+                  <span>
+                    <MdEmail className="contact-icon-c" />
+                  </span>
+                  <span className="contact-info-c">igaming@gmail.com</span>
                 </li>
                 <li>
-                  <IoLocationSharp /> 132 igaming Street JHB,
-                  <br />
-                  Massachusetts 02156 South Africa
+                  <span>
+                    <IoLocationSharp className="contact-icon-c" />
+                  </span>{" "}
+                  <span className="contact-info-c">
+                    132 igaming Street JHB,
+                    <br />
+                    Massachusetts 02156 South Africa
+                  </span>
                 </li>
               </ul>
               <div className="social-links-c">
@@ -74,86 +86,129 @@ export default function ContactPage() {
               </div>
             </div>
           </div>
-          <div className="right">
-            <div className="input-container">
-              <div className="input-left">
-                <form>
-                  <label htmlFor="fname">First name:</label>
+          <div className="right-c">
+            <form>
+              <div className="input-container-c">
+                <div className="input-left">
+                  <label htmlFor="fname" className="name-email">
+                    First name
+                  </label>
                   <br />
-                  <input type="text" id="fname" name="fname" />
+                  <input
+                    type="text"
+                    id="fname"
+                    name="fname"
+                    className="input-field-c"
+                  />
                   <br />
-                  <label htmlFor="lname">Email:</label>
+                  <label htmlFor="lname" className="name-email">
+                    Email
+                  </label>
                   <br />
-                  <input type="text" id="lname" name="lname" />
-                </form>
+                  <input
+                    type="text"
+                    id="lname"
+                    name="lname"
+                    className="input-field-c"
+                  />
+                </div>
+                <div className="input-right">
+                  <label htmlFor="fname" className="last-number">
+                    Last name
+                  </label>
+                  <br />
+                  <input
+                    type="text"
+                    id="fname"
+                    name="fname"
+                    className="input-field-c"
+                  />
+                  <br />
+                  <label htmlFor="lname" className="last-number">
+                    Phone number
+                  </label>
+                  <br />
+                  <input
+                    type="text"
+                    id="lname"
+                    name="lname"
+                    className="input-field-c"
+                  />
+                </div>
               </div>
-              <div className="input-right">
-                <form>
-                  <label htmlFor="fname">Last name:</label>
-                  <br />
-                  <input type="text" id="fname" name="fname" />
-                  <br />
-                  <label htmlFor="lname">Phone number:</label>
-                  <br />
-                  <input type="text" id="lname" name="lname" />
-                </form>
-              </div>
-            </div>
-            <div className="subjects">
-              <h6>Select subject?</h6>
-              <div className="select-subjects">
-                <form className="check-form">
+              <div className="subjects-c">
+                <h6 className="subject-heading-c">Select subject?</h6>
+                <div className="select-subjects-c">
+                  {/* <form className="check-form"> */}
                   <input
                     type="checkbox"
-                    id="vehicle1"
+                    id="checkbox"
                     name="vehicle1"
                     value="Bike"
+                    className="checkbox-c"
                   />
                   <label htmlFor="vehicle1">General enquiry</label>
                   <br />
 
                   <input
                     type="checkbox"
-                    id="vehicle2"
+                    id="checkbox"
                     name="vehicle2"
                     value="Car"
+                    className="checkbox-c"
                   />
                   <label htmlFor="vehicle2"> General enquiry</label>
                   <br />
 
                   <input
                     type="checkbox"
-                    id="vehicle3"
+                    id="checkbox"
                     name="vehicle3"
                     value="Boat"
+                    className="checkbox-c"
                   />
                   <label htmlFor="vehicle3">General enquiry</label>
                   <br />
                   <input
                     type="checkbox"
-                    id="vehicle3"
+                    id="checkbox"
                     name="vehicle3"
                     value="Boat"
+                    className="checkbox-c"
                   />
                   <label htmlFor="vehicle3">General enquiry</label>
-                </form>
-              </div>
-              <div className="message-box">
-                <form action="action_page.php">
-                  <label htmlFor="subject">Subject</label>
+                  {/* </form> */}
+                </div>
+                <div className="message-box-c">
+                  <label htmlFor="subject" className="message-text-c">
+                    Message
+                  </label>
                   <textarea
                     id="subject"
                     name="subject"
-                    placeholder="Write something.."
+                    placeholder="Write write youir message.."
                     style={{ height: "200px" }}
+                    className="message-c"
                   />
-                </form>
-                <button>Send Message</button>
+                  <div className="send-button-c">Send Message</div>
+                </div>
+              </div>
+            </form>
+            <div className="chat-box-c">
+              <div className="chat-text">Chat With Us</div>
+              <div className="chat-img">
+                <img
+                  src="/public/images/message-icon.png"
+                  alt="chat with us icon"
+                  className="chat-icon-c"
+                ></img>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 }

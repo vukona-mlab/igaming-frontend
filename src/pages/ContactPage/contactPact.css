@@ -9,11 +9,14 @@
   overflow: hidden;
 }
 
-.heading-container {
+.heading-container-c {
   padding: 30px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
-h1 {
+.frst-heading-c {
   font-family: "Poppins";
   font-weight: 700;
   font-size: 40px;
@@ -21,7 +24,7 @@ h1 {
   color: #000000;
 }
 
-.scnd-heading {
+.scnd-heading-c {
   font-family: "Poppins";
   font-weight: 500;
   font-size: 18px;
@@ -29,11 +32,12 @@ h1 {
   color: #717171;
 }
 
-.left {
+.left-c {
+  position: relative;
   background-color: #000000;
   padding: 40px;
   width: 491px;
-  height: 647px;
+  height: 620px;
   border-radius: 12px;
 }
 
@@ -49,7 +53,7 @@ h1 {
   color: white !important;
 }
 
-.thrd-heading {
+.thrd-heading-c {
   font-family: "Poppins";
   font-weight: 400;
   font-size: 18px;
@@ -57,19 +61,46 @@ h1 {
   color: #c9c9c9;
 }
 
-.contact-container {
+.contact-container-c {
   display: flex;
   justify-content: center;
   gap: 30px;
   margin-top: 50px;
 }
 
-.input-container {
+.input-container-c {
   display: flex;
   gap: 30px;
 }
 
-.contact-details li {
+.input-field-c {
+  width: 278px;
+  height: 42px;
+  border-radius: 8px;
+  border: 2px solid #e9e9e9;
+  margin-bottom: 22px;
+}
+.name-email {
+  margin-right: 70%;
+  margin-bottom: 15px;
+  font-family: "Poppins";
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 20px;
+  color: #8d8d8d;
+}
+
+.last-number {
+  margin-right: 60%;
+  margin-bottom: 15px;
+  font-family: "Poppins";
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 20px;
+  color: #000000;
+}
+
+.contact-details-c li {
   list-style: none;
   padding: 20px;
   font-family: "Poppins";
@@ -132,10 +163,29 @@ h1 {
   text-align: center;
 }
 
-.select-subjects {
+.subjects-c {
+  margin-right: 20%;
+}
+
+.subject-heading-c {
+  font-family: "Poppins";
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  color: #000000;
+  margin-top: 15px;
+  margin-right: 78%;
+}
+
+.select-subjects-c {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 7px;
+  font-family: "Poppins";
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 20px;
 }
 
 .check-form {
@@ -144,6 +194,51 @@ h1 {
   align-items: center;
 }
 
-.message-box {
+.checkbox-c {
+  accent-color: #000000;
+}
+
+.message-text-c {
+  font-family: "Poppins";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: #8d8d8d;
+  margin-right: 86%;
+  margin-bottom: 15px;
+}
+
+.message-box-c {
   margin-top: 50px;
+}
+
+.message-c {
+  border-radius: 8px;
+  border: 2px solid #edeeee;
+  height: 72;
+  width: 594px;
+}
+
+.chat-box-c {
+  display: flex;
+  gap: 25px;
+  position: relative;
+  left: 65%;
+  margin-top: 24px;
+}
+
+.chat-text {
+  font-family: "Poppins";
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 150%;
+  color: #4c4c4c;
+}
+
+.chat-icon-c {
+  width: 38px;
+}
+
+.chat-icon-c:hover {
+  cursor: pointer;
 }
