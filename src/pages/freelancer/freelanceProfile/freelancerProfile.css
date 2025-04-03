@@ -1,13 +1,12 @@
-
+/* 
 .welcome-message{
   display: flex;
   justify-content: flex-start;
-}
+} */
 
-.div-btn-top{
+.div-btn-top {
   width: 100%;
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  
 }

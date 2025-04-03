@@ -19,6 +19,7 @@ const ChatHeader = ({ currentChat }) => {
   const [showZoomModal, setShowZoomModal] = useState(false);
   const [meetingDetails, setMeetingDetails] = useState(null);
   const socketRef = useRef();
+  const [projectData, setProjectData] = useState(null);
 
   // Get user role and ID from localStorage
   const userRole = localStorage.getItem("role");
@@ -68,6 +69,23 @@ const ChatHeader = ({ currentChat }) => {
   }, []);
 
   const handleCreateProject = () => {
+    if (!otherParticipant?.uid) {
+      console.error("No other participant found");
+      return;
+    }
+
+    if (!currentChat?.id) {
+      console.error("No chat ID found");
+      return;
+    }
+
+    setProjectData({
+      clientId: isFreelancer ? otherParticipant.uid : currentUserId,
+      freelancerId: isFreelancer ? currentUserId : otherParticipant.uid,
+      clientEmail: isFreelancer ? otherParticipant.email : currentUser.email,
+      freelancerEmail: isFreelancer ? currentUser.email : otherParticipant.email,
+      chatId: currentChat.id
+    });
     setShowProjectModal(true);
     setShowMenu(false);
   };
@@ -185,15 +203,15 @@ const ChatHeader = ({ currentChat }) => {
             ) : (
               <BsPersonCircle className="default-avatar" />
             )}
-            <span className="online-status"></span>
+            <span className={`online-status ${activeStatus ? 'active' : ''}`}></span>
           </div>
           <div className="user-info">
             <h3 className="user-name">{otherParticipant?.name || "User"}</h3>
             <span className="user-status">
               {!activeStatus
                 ? `Last seen ${new Date(
-                    otherParticipant.lastSeen._seconds ||
-                      otherParticipant.lastSeen
+                    otherParticipant?.lastSeen?._seconds ||
+                    otherParticipant?.lastSeen
                   ).toLocaleString()}`
                 : "Online"}
             </span>
@@ -225,22 +243,18 @@ const ChatHeader = ({ currentChat }) => {
         </div>
       </div>
 
-      <ProjectModal
-        isOpen={showProjectModal}
-        onClose={() => setShowProjectModal(false)}
-        chatId={currentChat?.id}
-        isClientView={!isFreelancer}
-        projectData={{
-          clientId: isFreelancer ? otherParticipant?.uid : currentUserId,
-          freelancerId: isFreelancer ? currentUserId : otherParticipant?.uid,
-          clientEmail: isFreelancer
-            ? otherParticipant?.email
-            : currentUser?.email,
-          freelancerEmail: isFreelancer
-            ? currentUser?.email
-            : otherParticipant?.email,
-        }}
-      />
+      {showProjectModal && projectData && (
+        <ProjectModal
+          isOpen={showProjectModal}
+          onClose={() => {
+            setShowProjectModal(false);
+            setProjectData(null);
+          }}
+          chatId={currentChat?.id}
+          isClientView={!isFreelancer}
+          projectData={projectData}
+        />
+      )}
       <ZoomMeetingModal 
         isOpen={showZoomModal}
         onClose={() => setShowZoomModal(false)}

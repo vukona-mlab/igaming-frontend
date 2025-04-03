@@ -22,7 +22,6 @@ import Transactions from "./pages/transcations/Transactions";
 import Document from "./pages/freelancer/DocumentsPage/DocumentUpload/documentUpload";
 import DocumentView from "./pages/freelancer/DocumentsPage/ViewDocuments/DocumentsView";
 import Projects from "./pages/projects/Projects";
-import ContactPage from "./pages/ContactPage/ContactPage";
 function App() {
   return (
     <div className="App">

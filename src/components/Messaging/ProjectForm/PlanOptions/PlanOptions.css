@@ -1,0 +1,169 @@
+.pricing-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.pricing-section h2 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 30px;
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+.package-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.package-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 2.5rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    transition: all 0.2s;
+    cursor: pointer;
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.package-card:hover {
+    border-color: #dc3545;
+    background: rgba(220, 53, 69, 0.02);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.package-card.selected {
+    border-color: rgba(185,9,9,0.3);
+    background: rgba(18, 156, 29, 0);
+    border-width: 2px;
+    box-shadow: 0 2px 5px rgba(220, 53, 69, 0.1);
+}
+
+.package-card.selected label{
+    color: rgba(185, 9, 9, 1);
+}
+.radio-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.label-price-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.radio-group input[type="radio"] {
+    width: 24px;
+    height: 24px;
+    accent-color: #dc3545;
+    border: 2px solid #e0e0e0;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    border-radius: 50%;
+    position: relative;
+}
+
+.radio-group input[type="radio"]:checked {
+    border-color: #dc3545;
+    background: #ffffff;
+    
+}
+
+.radio-group input[type="radio"]:checked::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: rgb(185,9,9,0.3);
+    border-radius: 50%;
+    border-color: #e0e0e000;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.radio-group label {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    color: #333;
+    cursor: pointer;
+    margin: 0;
+}
+
+.price {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    color: rgba(179, 179, 179, 1);
+    margin: 0;
+}
+
+.benefits-section {
+    margin-top: 2rem;
+}
+
+.benefits-section h3 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    margin-bottom: 1rem;
+    color: rgba(51,51,51,1);
+}
+
+.benefits-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.benefits-section li {
+    display: flex;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    color: rgba(51,51,51,1);
+}
+
+.benefits-section img {
+    width: 28px;
+    height: 28px;
+}
+
+.no-packages {
+    text-align: center;
+    padding: 2rem;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+.no-packages p {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+}
+
+.no-packages p:first-child {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.8);
+    margin-bottom: 0.5rem;
+}
+
+.no-packages .sub-text {
+    font-size: 0.9rem;
+    color: rgba(0, 0, 0, 0.6);
+}

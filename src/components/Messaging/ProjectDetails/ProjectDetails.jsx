@@ -4,6 +4,8 @@ import "./ProjectDetails.css";
 import { io } from "socket.io-client";
 import PaystackPop from "@paystack/inline-js";
 import TermsModal from "../../Escrow/TermsModal";
+import DocumentIcon from '../../../assets/document-icon.svg';
+import DocumentSection from '../ProjectForm/DocumentSection/DocumentSection';
 
 const ProjectDetails = ({ project, onClose, isClient }) => {
   const navigate = useNavigate();
@@ -281,133 +283,106 @@ const ProjectDetails = ({ project, onClose, isClient }) => {
     <div className="project-details-modal-overlay">
       <div className="project-details-modal">
         <div className="project-details-header">
-          <h2>Project Agreement</h2>
-          <div className="header-actions">
-            <button className="close-button" onClick={onClose}>
-              ×
-            </button>
-          </div>
+          <h2>Service Level Agreement</h2>
+          <button className="close-button" onClick={onClose}>×</button>
         </div>
 
         <div className="project-details-content">
-          <div className="detail-group">
-            <h3>Basic Information</h3>
-            <div className="detail-item">
-              <span className="detail-label">Title:</span>
-              <span className="detail-value">{project.title}</span>
-            </div>
-            <div className="detail-item">
-              <span className="detail-label">Status:</span>
-              <span className={`detail-value status ${project.status}`}>
-                {project.status.charAt(0).toUpperCase() +
-                  project.status.slice(1)}
-              </span>
-            </div>
-            <div className="detail-item">
-              <span className="detail-label">Budget:</span>
-              <span className="detail-value">R{project.budget}</span>
-            </div>
-            <div className="detail-item">
-              <span className="detail-label">Category:</span>
-              <span className="detail-value">{project.category}</span>
-            </div>
-            <div className="detail-item">
-              <span className="detail-label">Deadline:</span>
-              <span className="detail-value">{project.deadline} days</span>
-            </div>
-          </div>
-
-          <div className="detail-group">
-            <h3>Participants</h3>
-            {clientDetails && (
-              <div className="detail-item">
-                <span className="detail-label">Client:</span>
-                <span className="detail-value">
-                  {clientDetails.displayName || clientDetails.email}
-                </span>
+          <div className="project-form-container">
+            <div className="sla-section">
+              
+              <div className="form-group">
+                <label>Title:</label>
+                <p className="form-value">{project.title}</p>
               </div>
-            )}
-            {freelancerDetails && (
-              <div className="detail-item">
-                <span className="detail-label">Freelancer:</span>
-                <span className="detail-value">
-                  {freelancerDetails.displayName || freelancerDetails.email}
-                </span>
+
+              <div className="form-group">
+                <label>Description:</label>
+                <p className="form-value">{project.description}</p>
               </div>
-            )}
-          </div>
 
-          <div className="detail-group">
-            <h3>Description</h3>
-            <p className="project-description">{project.description}</p>
-          </div>
+              <div className="form-group">
+                <label>Base Budget (R):</label>
+                <p className="form-value">{project.budget}</p>
+              </div>
 
-          <div className="detail-group">
-            <h3>Requirements</h3>
-            <ul className="requirements-list">
-              {project.requirements.map((req, index) => (
-                <li key={index}>{req}</li>
-              ))}
-            </ul>
-          </div>
+              <div className="form-group">
+                <label>Deadline (days):</label>
+                <p className="form-value">{project.deadline}</p>
+              </div>
 
-          <TermsModal
-            show={showTermsModal}
-            onHide={() => setShowTermsModal(false)}
-            onAccept={setAcceptedTerms}
-            accepted={acceptedTerms}
-          />
+              <div className="form-group">
+                <label>Category:</label>
+                <p className="form-value">{project.category}</p>
+              </div>
 
-          <div className="project-actions">
-            {isClient && project.status === "pending" && (
-              <>
-                <button
-                  className="approve-button"
-                  onClick={() => handleProjectAction("approve")}
-                >
-                  Approve & Fund Project
-                </button>
-                <button
-                  className="reject-button"
-                  onClick={() => handleProjectAction("reject")}
-                >
-                  Reject Project
-                </button>
-              </>
-            )}
-            {isClient && project.status === "approved" && (
-              <div className="transaction-container">
-                {!project.payments || project.payments.length === 0 ? (
-                  <button
-                    className="pay-now-button"
-                    onClick={() => handleTransaction()}
-                  >
-                    Pay Now
-                  </button>
-                ) : (
+              <div className="form-group">
+                <label>Requirements:</label>
+                <ul className="requirements-list">
+                  {project.requirements && Array.isArray(project.requirements) ? (
+                    project.requirements.map((req, index) => (
+                      <li key={index}>{req}</li>
+                    ))
+                  ) : (
+                    <li>No requirements specified</li>
+                  )}
+                </ul>
+              </div>
+
+              {project.document && (
+                <DocumentSection 
+                  documentName={project.document.name}
+                  documentIcon={DocumentIcon}
+                />
+              )}
+
+              <div className="price-section">
+                <div className="price-row">
+                  <span>Price</span>
+                  <span>R{project.budget}</span>
+                </div>
+              </div>
+
+              <div className="button-group">
+                {isClient && project.status === "pending" && (
                   <>
-                    <div className="transaction-status">
-                      <span className="status-label">Payment Status:</span>
-                      <span className={`status-value ${project.paymentStatus}`}>
-                        {project.paymentStatus.charAt(0).toUpperCase() +
-                          project.paymentStatus.slice(1)}
-                      </span>
-                    </div>
-                    <button
-                      className={`release-button ${
-                        project.paymentStatus === "released" ? "released" : ""
-                      }`}
-                      onClick={() => handleReleaseFunds()}
-                      disabled={project.paymentStatus === "released"}
-                    >
-                      {project.paymentStatus === "released"
-                        ? "Funds Released"
-                        : "Release funds"}
+                    <button className="decline-btn" onClick={() => handleProjectAction("reject")}>
+                      Decline SLA
+                    </button>
+                    <button className="accept-btn" onClick={() => handleProjectAction("approve")}>
+                      Accept SLA
                     </button>
                   </>
                 )}
+                {isClient && project.status === "approved" && (
+                  <div className="transaction-container">
+                    {!project.payments || project.payments.length === 0 ? (
+                      <button className="accept-btn" onClick={() => handleTransaction()}>
+                        Pay Now
+                      </button>
+                    ) : (
+                      <>
+                        <div className="transaction-status">
+                          <span className="status-label">Payment Status:</span>
+                          <span className={`status-value ${project.paymentStatus}`}>
+                            {project.paymentStatus.charAt(0).toUpperCase() + project.paymentStatus.slice(1)}
+                          </span>
+                        </div>
+                        <button
+                          className={`accept-btn ${project.paymentStatus === "released" ? "released" : ""}`}
+                          onClick={() => handleReleaseFunds()}
+                          disabled={project.paymentStatus === "released"}
+                        >
+                          {project.paymentStatus === "released" ? "Funds Released" : "Release funds"}
+                        </button>
+                      </>
+                    )}
+                  </div>
+                )}
               </div>
-            )}
+
+              <p className="disclaimer">By accepting the SLA, you are confirming that every information on SLA is correct and valid.</p>
+            </div>
           </div>
         </div>
       </div>

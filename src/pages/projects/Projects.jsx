@@ -71,6 +71,7 @@ const Projects = () => {
           Authorization: token,
         },
       });
+
       let filteredProjects =
         role === "freelancer"
           ? response.data.projects.filter(
@@ -97,7 +98,6 @@ const Projects = () => {
             freelancerEmail = freelancer.email;
           }
         });
-        console.log({ ...project, clientEmail, freelancerEmail });
         ``;
         return { ...project, clientEmail, freelancerEmail };
       });

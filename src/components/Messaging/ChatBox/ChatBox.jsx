@@ -150,12 +150,25 @@ const ChatBox = ({
           },
         }
       );
+      
+      if (!response.ok) {
+        if (response.status === 404) {
+          // No project exists yet
+          setProjectStatus(null);
+          return;
+        }
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
       const data = await response.json();
       if (data.project) {
         setProjectStatus(data.project);
+      } else {
+        setProjectStatus(null);
       }
     } catch (error) {
       console.error("Error fetching project status:", error);
+      setProjectStatus(null);
     }
   };
 
@@ -292,65 +305,62 @@ const ChatBox = ({
   return (
     <div className="f-chat-box">
       {!currentChat ? (
-        <div>No messages</div>
+        <div className="no-chat-message">Select a chat to start messaging</div>
       ) : (
         <>
           <ChatHeader currentChat={currentChat} />
-          {projectStatus &&
-            (otherParticipant.uid === projectStatus.clientId ||
-              otherParticipant.uid === projectStatus.freelancerId) && (
-              <div className="project-status-container">
-                <div className="project-status-header">
-                  <h3>Project Status</h3>
-                  <div className="project-status-actions">
-                    <button
-                      className="view-project-btn"
-                      onClick={() => setShowProjectDetails(true)}
-                    >
-                      View Project
-                    </button>
-                    {userRole === "client" &&
-                      projectStatus?.status === "pending" && (
-                        <button
-                          className="delete-project-btn"
-                          onClick={handleDeleteProject}
-                        >
-                          Delete Project
-                        </button>
-                      )}
-                    {/* {userRole === "freelancer" &&
-                      projectStatus.status === "approved" && (
-                        <button
-                          className="create-escrow-btn"
-                          onClick={handleEscrowClick}
-                        >
-                          Create Escrow
-                        </button>
-                      )} */}
-                  </div>
-                </div>
-
-                <div className="project-status-details">
-                  <div className="status-item">
-                    <span className="status-label">Status:</span>
-                    <span className={`status-value ${projectStatus.status}`}>
-                      {projectStatus.status.charAt(0).toUpperCase() +
-                        projectStatus.status.slice(1)}
-                    </span>
-                  </div>
-                  <div className="status-item">
-                    <span className="status-label">Title:</span>
-                    <span className="status-value">{projectStatus.title}</span>
-                  </div>
-                  <div className="status-item">
-                    <span className="status-label">Budget:</span>
-                    <span className="status-value">
-                      R{projectStatus.budget}
-                    </span>
-                  </div>
+          {projectStatus ? (
+            <div className="project-status-container">
+              <div className="project-status-header">
+                <h3>Project Status</h3>
+                <div className="project-status-actions">
+                  <button
+                    className="view-project-btn"
+                    onClick={() => setShowProjectDetails(true)}
+                  >
+                    View Project
+                  </button>
+                  {userRole === "client" &&
+                    projectStatus?.status === "pending" && (
+                      <button
+                        className="delete-project-btn"
+                        onClick={handleDeleteProject}
+                      >
+                        Delete Project
+                      </button>
+                    )}
                 </div>
               </div>
-            )}
+
+              <div className="project-status-details">
+                <div className="status-item">
+                  <span className="status-label">Status:</span>
+                  <span className={`status-value ${projectStatus.status}`}>
+                    {projectStatus.status.charAt(0).toUpperCase() +
+                      projectStatus.status.slice(1)}
+                  </span>
+                </div>
+                <div className="status-item">
+                  <span className="status-label">Title:</span>
+                  <span className="status-value">{projectStatus.title}</span>
+                </div>
+                <div className="status-item">
+                  <span className="status-label">Budget:</span>
+                  <span className="status-value">
+                    R{projectStatus.budget}
+                  </span>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="no-project-message">
+              {userRole === "freelancer" ? (
+                <p>No active project. Create a project agreement to get started.</p>
+              ) : (
+                <p>No active project. Wait for the freelancer to create a project agreement.</p>
+              )}
+            </div>
+          )}
           <div className="f-messages-container">
             {loading ? (
               <div className="loading">Loading messages...</div>
