@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Container, Row, Col, Button, Alert } from "react-bootstrap";
 import Swal from "sweetalert2";
 import Navbar from "../../../components/Common/Navbar/navbar";
@@ -9,6 +9,7 @@ import SectionHeader from "../../../components/Landing/section-header/SectionHea
 import FreelancerProfileHeader from "../../../components/FreelancerProfileHeader/FreelancerProfileHeader";
 import ReviewForm from "../../../components/Reviews/ReviewForm/ReviewForm";
 import './freelancerProjectPage.css'
+import SectionContainer from "../../../components/SectionContainer";
 
 const FreelancerProjects = () => {
   const { freelancer_id } = useParams();
@@ -20,6 +21,7 @@ const FreelancerProjects = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [currentTab, setCurrentTab] = useState("Profile");
+  const navigation = useNavigate();
 
   useEffect(() => {
     if (!freelancer_id) {
@@ -66,14 +68,14 @@ const FreelancerProjects = () => {
         });
 
         // Transform projects data
-        const transformedProjects = Array.isArray(freelancer.projects) 
+        const transformedProjects = Array.isArray(freelancer.projects)
           ? freelancer.projects.map(project => ({
-              id: project.id,
-              projectPicture: project.projectPicture || project.image,
-              projectName: project.projectName || project.name,
-              likes: project.likes || 0,
-              authorName: freelancer.displayName
-            }))
+            id: project.id,
+            projectPicture: project.projectPicture || project.image,
+            projectName: project.projectName || project.name,
+            likes: project.likes || 0,
+            authorName: freelancer.displayName
+          }))
           : [];
 
         setProjects(transformedProjects);
@@ -86,10 +88,10 @@ const FreelancerProjects = () => {
               'Authorization': token
             }
           });
-          
+
           const reviewsData = await reviewsResponse.json();
           console.log("Reviews response:", reviewsData);
-          
+
           if (reviewsResponse.ok) {
             const allReviews = reviewsData.reviews || [];
             const approvedReviews = allReviews.filter(review => review.status === "Approved");
@@ -198,7 +200,7 @@ const FreelancerProjects = () => {
       }
 
       const clientId = localStorage.getItem("uid");
-      
+
       if (!clientId) {
         Swal.fire({
           icon: 'error',
@@ -207,7 +209,7 @@ const FreelancerProjects = () => {
         });
         return;
       }
-      
+
       const reviewData = {
         clientId,
         freelancerId: freelancer_id,
@@ -243,7 +245,7 @@ const FreelancerProjects = () => {
 
       const responseData = await response.json();
       console.log("Review submitted successfully:", responseData);
-      
+
       // Show success message with SweetAlert
       Swal.fire({
         icon: 'success',
@@ -260,7 +262,7 @@ const FreelancerProjects = () => {
             'Authorization': token
           }
         });
-        
+
         if (refreshedReviewsResponse.ok) {
           const refreshedReviewsData = await refreshedReviewsResponse.json();
           const allReviews = refreshedReviewsData.reviews || [];
@@ -274,7 +276,7 @@ const FreelancerProjects = () => {
       }
     } catch (error) {
       console.error("Error submitting review:", error);
-      
+
       // Show error message with SweetAlert
       Swal.fire({
         icon: 'error',
@@ -287,44 +289,48 @@ const FreelancerProjects = () => {
   return (
     <>
       <Navbar />
-      <Container fluid className="main-container">
-        <div className="content-wrapper">
-          <div className="d-flex justify-content-between align-items-center my-4 name-free">
-            <h1 className="m-0">{freelancerData?.displayName}'s Profile</h1>
-            <Button variant="dark" className="buttona-message" onClick={() => handleMessageClick(freelancerData?.id)}>Message</Button>
-          </div>
+      <SectionContainer>
+        <Container fluid className="main-container">
 
-          {loading && <Alert variant="info">Loading projects...</Alert>}
-          {error && <Alert variant="danger">{error}</Alert>}
+          <div className="content-wrapper">
+            <div className="d-flex justify-content-between align-items-center my-4 name-free p-2">
+              <h1 className="m-0">{freelancerData?.displayName}'s Profile</h1>
+              <Button variant="dark" className="buttona-message" onClick={() => handleMessageClick(freelancerData?.id)}>Message</Button>
+            </div>
 
-          {!loading && !error && (
-            <Row>
-              {shouldShowSidebar && (
-                <Col md={3} className="sidebar-col">
-                  {freelancerData && (
-                    <FreelancerProjectCards
-                      image={freelancerData.profilePicture}
-                      specialities={freelancerData.specialities}
-                    />
-                  )}
+            {loading && <Alert variant="info">Loading projects...</Alert>}
+            {error && <Alert variant="danger">{error}</Alert>}
+
+            {!loading && !error && (
+              <Row style={{ width: '100%', margin: 'auto'}}>
+                {shouldShowSidebar && (
+                  <Col md={3} className="sidebar-col">
+                    {freelancerData && (
+                      <FreelancerProjectCards
+                        image={freelancerData.profilePicture}
+                        specialities={freelancerData.specialities}
+                      />
+                    )}
+                  </Col>
+                )}
+
+                <Col md={shouldShowSidebar ? 9 : 12} style={{ backgroundColor: "#0000" }}>
+                  <FreelancerProfileHeader
+                    searchTerm={freelancerData?.displayName}
+                    onTabChange={handleTabChange}
+                    projects={projects}
+                    packages={freelancerData?.packages}
+                    reviews={reviews}
+                    reviewsError={reviewsError}
+                    onReviewSubmit={handleReviewSubmit}
+                  />
                 </Col>
-              )}
+              </Row>
+            )}
+          </div>
+        </Container>
+      </SectionContainer>
 
-              <Col md={shouldShowSidebar ? 9 : 12} style={{backgroundColor: "#0000"}}>
-                <FreelancerProfileHeader 
-                  searchTerm={freelancerData?.displayName} 
-                  onTabChange={handleTabChange}
-                  projects={projects}
-                  packages={freelancerData?.packages}
-                  reviews={reviews}
-                  reviewsError={reviewsError}
-                  onReviewSubmit={handleReviewSubmit}
-                />
-              </Col>
-            </Row>
-          )}
-        </div>
-      </Container>
     </>
   );
 };

@@ -8,6 +8,7 @@ import Money from "../../../../public/images/money.svg";
 import Order from "../../../../public/images/order.svg";
 
 import { useNavigate } from "react-router";
+import SectionContainer from "../../SectionContainer";
 
 export default function ProfileSubNav() {
   const navigation = useNavigate();
@@ -17,7 +18,7 @@ export default function ProfileSubNav() {
       : "/messaging-client"
   );
   return (
-    <>
+    <SectionContainer containerColor="black">
       <div className="ProfileSubNav">
         <div class="p-subnav-content">
           <div className="p-subnav-link">
@@ -61,6 +62,8 @@ export default function ProfileSubNav() {
           </div>
         </div>
       </div>
-    </>
+    </SectionContainer>
+
+
   );
 }

@@ -225,7 +225,8 @@ const ProjectModal = ({
                 <div className="price-section">
                   <div className="price-row">
                     <span>Price</span>
-                    <span>R{projectData.budget}</span>
+                    <span>R{projectData.budget > 0 ? projectData.budget : 1000}</span>
+
                   </div>
                   {hasPackages && (
                     <div className="price-row">

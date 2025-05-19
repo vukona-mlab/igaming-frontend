@@ -1,23 +1,27 @@
 import React from 'react';
 import './About.css'; // Custom CSS for the background
 import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure Bootstrap is imported
+import SectionContainer from '../SectionContainer';
 
 const About = () => {
   return (
-    <section className="about-section text-center text-white d-flex align-items-center">
-      <div className="container">
-        <h1 className="display-4 fw-bold"> Ri Experts </h1>
-        <p className="lead">
-         <b> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor 
-          in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
-          sunt in culpa qui officia deserunt mollit anim id est laborum.
-       </b> </p>
-        <p className="lead"><b>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit a
-       </b> </p>
-      </div>
-    </section>
+    <SectionContainer containerColor={'#f8f9fa'}>
+      <section className="about-section text-center text-white d-flex align-items-center">
+        <div className="container">
+          <h1 className="display-4 fw-bold"> Ri Experts </h1>
+          <p className="lead">
+            <b> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+              in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+              sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </b> </p>
+          <p className="lead"><b>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit a
+          </b> </p>
+        </div>
+      </section>
+    </SectionContainer>
+
   );
 };
 

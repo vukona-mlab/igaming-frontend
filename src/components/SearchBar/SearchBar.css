@@ -1,17 +1,17 @@
 .search-container {
-  width: 40%;
+  /* width: 40%;
   padding: 1rem 2rem;
   font-family: "Poppins", sans-serif;
   display: flex;
-  justify-content: center;
+  justify-content: center; */
 }
 
 .search-container {
-  width: 42%;
+  /* width: 42%;
   padding: 1rem 2rem;
   font-family: "Poppins", sans-serif;
   display: flex;
-  justify-content: center;
+  justify-content: center; */
 }
 
 .search-wrapper {
@@ -44,6 +44,6 @@
 }
 
 .search-bar-container {
-  margin-top: 10rem;
-  margin-bottom: 2rem;
+  /* margin-top: 10rem;
+  margin-bottom: 2rem; */
 }

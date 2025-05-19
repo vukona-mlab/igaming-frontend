@@ -22,7 +22,7 @@
 
 .sidebar-col {
     transition: all 0.3s ease-in-out;
-    padding: 20px;
+    /* padding: 20px; */
     background-color: transparent;
     
 }
@@ -38,20 +38,21 @@
 }
 
 .content-wrapper {
-    max-width: 1800px;
+    /* max-width: 1800px; */
+    /* background-color: "blue"; */
     margin: 0 auto;
-    padding: 0 40px;
+    /* padding: 0 40px; */
 }
 
 @media (max-width: 1200px) {
     .content-wrapper {
-        padding: 0 24px;
+        /* padding: 0 24px; */
     }
 }
 
 @media (max-width: 768px) {
     .content-wrapper {
-        padding: 0 16px;
+        /* padding: 0 16px; */
     }
     
     .sidebar-col {

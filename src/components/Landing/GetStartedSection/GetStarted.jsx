@@ -4,15 +4,14 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
+import SectionContainer from "../../SectionContainer";
+import SectionHeader from "../section-header/SectionHeader";
 
 export default function GetStarted() {
   return (
+    <SectionContainer>
     <div className="gs">
-      <div className="get-started-box">
-        <h6>
-          Get Started<div className="red-line"></div>
-        </h6>
-      </div>
+      <SectionHeader text="Get Started" />
       <h1>
         <span className="how">How</span>{" "}
         <span className="ri-experts">Ri Experts </span>
@@ -65,5 +64,7 @@ export default function GetStarted() {
         </Container>
       </div>
     </div>
+    </SectionContainer>
+
   );
 }

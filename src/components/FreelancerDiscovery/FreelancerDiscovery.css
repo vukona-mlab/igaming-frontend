@@ -1,27 +1,30 @@
 .freelancer-discovery {
-  width: 140%;
+  /* width: 140%; */
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 2rem
 }
 
 .freelancer-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 2.5rem 7rem;
-  margin-bottom: 2rem;
-  justify-content: center;
+  gap: 1em;
+  /* margin-bottom: 2rem; */
+  justify-content:flex-start;
+
   width: 100%;
-  max-width: 1600px;
 }
 
 .freelancer-card-wrapper {
-  flex: 0 0 calc(25% - 3.75rem);
-  min-width: 200px;
-  max-width: 280px;
+  /* flex: ; */
+  width: calc((100% - 3em) / 4);
+  /* min-width: 200px;
+  max-width: calc(365px); */
   position: relative; /* For positioning hover message */
   cursor: pointer;
   transition: transform 0.3s ease-in-out; /* Add transition for scaling */
+  /* background-color: blue; */
 }
 
 .freelancer-card-wrapper:hover {

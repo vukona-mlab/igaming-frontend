@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./FAQSection.module.css";
 import Accordion from "../FAQ/Accordian";
 import SectionHeader from "../section-header/SectionHeader";
+import SectionContainer from "../../SectionContainer";
 
 const FAQSection = () => {
   const data = [
@@ -55,13 +56,16 @@ const FAQSection = () => {
     },
   ];
   return (
-    <section className={styles.FAQSection}>
-      <SectionHeader text="FAQ" />
-      <div className={styles.FAQTitle}>Frequently Asked Questions</div>
-      {data.map((item, i) => (
-        <Accordion key={i} question={item.question} answer={item.answer} />
-      ))}
-    </section>
+    <SectionContainer>
+      <section className={styles.FAQSection}>
+        <SectionHeader text="FAQ" />
+        <div className={styles.FAQTitle}>Frequently Asked Questions</div>
+        {data.map((item, i) => (
+          <Accordion key={i} question={item.question} answer={item.answer} />
+        ))}
+      </section>
+    </SectionContainer>
+
   );
 };
 

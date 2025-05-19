@@ -207,8 +207,19 @@ const ProjectDetails = ({ project, onClose, isClient }) => {
       alert("Error starting transaction. Please try again.");
     }
   };
-  const handleReleaseFunds = async () => {
+  const showPayStackModal = () => {
+    console.log('show modaol');
+    const popup = new PaystackPop();
+    popup.resumeTransaction('3mgtch2520mivz4')
+  }
+  const handleReleaseFunds = async ({ patch }) => {
     try {
+      console.log({ patch });
+      
+      if(patch) {
+        showPayStackModal()
+        return
+      }
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/api/transaction/release`,
         {
@@ -339,7 +350,7 @@ const ProjectDetails = ({ project, onClose, isClient }) => {
               <div className="price-section">
                 <div className="price-row">
                   <span>Price</span>
-                  <span>R{project.budget}</span>
+                  <span>R{project.budget > 0 ? project.budget : 1000}</span>
                 </div>
               </div>
 
@@ -370,7 +381,7 @@ const ProjectDetails = ({ project, onClose, isClient }) => {
                         </div>
                         <button
                           className={`accept-btn ${project.paymentStatus === "released" ? "released" : ""}`}
-                          onClick={() => handleReleaseFunds()}
+                          onClick={() => handleReleaseFunds({ patch: true })}
                           disabled={project.paymentStatus === "released"}
                         >
                           {project.paymentStatus === "released" ? "Funds Released" : "Release funds"}

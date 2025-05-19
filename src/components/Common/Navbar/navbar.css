@@ -1,7 +1,12 @@
 .me-auto {
-  justify-content: center !important;
-  width: 100%;
-  position: relative;
+  /* justify-content: center !important; */
+  width: calc(100% - 30px);
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  justify-content: end;
+  right: 0;
+  /* background-color: green; */
   /* left:14%; */
 }
 
@@ -11,7 +16,8 @@
 
 .nav-logo {
   position: relative;
-  left: 36%;
+  width: 125px
+  /* left: 36%; */
 }
 
 .nav-link {
@@ -49,7 +55,7 @@
   background-color: #ffffff;
   color: #ffffff;
   position: relative;
-  right: 10%;
+  right: 12px
 }
 
 .placeholder:hover {

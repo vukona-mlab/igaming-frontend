@@ -4,8 +4,8 @@
 }
 
 .messagePageContainer {
-  width: calc(90%);
-  height: calc(95vh - 10px);
+  width: 100%;
+  height: calc(100vh - 84px - 46px - 92px - 40px);
   margin: 25px auto;
   display: flex;
   justify-content: center;

@@ -8,6 +8,7 @@ import "./clientProfile.css";
 import Swal from "sweetalert2";
 import SwitchRoleButton from "../../../components/Common/SwitchRoleButton/SwitchRoleButton";
 import ProfileSubNav from "../../../components/Profile/ProfileSubNav/ProfileSubNav";
+import SectionContainer from "../../../components/SectionContainer";
 const ProfilePage = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -174,9 +175,8 @@ const ProfilePage = () => {
             icon: "success",
             confirmButtonText: "OK",
           }).then(() => {
-            window.location.href = `/${
-              newRole === "client" ? "client" : "freelancer"
-            }-profile`;
+            window.location.href = `/${newRole === "client" ? "client" : "freelancer"
+              }-profile`;
           });
         } else {
           throw new Error("Failed to update role");
@@ -196,65 +196,66 @@ const ProfilePage = () => {
     <>
       <Navbar />
       <ProfileSubNav />
-      <Container style={{ minHeight: "100vh", paddingBottom: "60px" }}>
-        <div className="profile-edit d-flex justify-content-between align-items-center">
-          <div className="welcome-message">
-            {formData.displayName !== "" ? (
-              <h4 className="welcome-name">Welcome, {formData.displayName}</h4>
-            ) : (
-              <h4 className="welcome-name"></h4>
-            )}
-            {/* Placeholder for the user's name */}
-          </div>
-          <div>
-            <SwitchRoleButton
-              currentRole={currentRole}
-              onRoleSwitch={handleRoleSwitch}
-            />
+      <SectionContainer>
+        <Container fluid style={{}}>
+          <div className="profile-edit d-flex justify-content-between align-items-center">
+            <div className="welcome-message">
+              {formData.displayName !== "" ? (
+                <h4 className="welcome-name">Welcome ad, {formData.displayName}</h4>
+              ) : (
+                <h4 className="welcome-name"></h4>
+              )}
+              {/* Placeholder for the user's name */}
+            </div>
+            <div>
+              <SwitchRoleButton
+                currentRole={currentRole}
+                onRoleSwitch={handleRoleSwitch}
+              />
 
-            {!isUpdate && (
-              <Button variant="dark" onClick={() => setIsUpdate(true)}>
-                Edit
-              </Button>
-            )}
+              {!isUpdate && (
+                <Button variant="dark" onClick={() => setIsUpdate(true)}>
+                  Edit
+                </Button>
+              )}
+            </div>
           </div>
-        </div>
-        <Row className="my-4">
-          <Col md={3}>
-            <ProfileCard
-              jobTitle={"Recruiter"}
-              image={currImage}
-              handleImageChange={handleImageChange}
-            />
-          </Col>
-          <Col md={9}>
-            <ProfileForm
-              formData={{
-                name: formData.name,
-                surname: formData.surname,
-                displayName: formData.displayName,
-                phone: formData.phone || "",
-                email: formData.email || "",
-                dateOfBirth: formData.dateOfBirth,
-              }}
-              handleChange={handleChange}
-              isUpdate={isUpdate} // Pass isUpdate as a prop
-            />
-            <Row>
-              <Col>
-                <CategoryPreferences
-                  onSubmit={handleCategoriesSubmit}
-                  isUpdate={isUpdate}
-                  cancel={() => setIsUpdate(false)}
-                  categoriesArr={formData.categories}
-                />
-              </Col>
-            </Row>
-          </Col>
-        </Row>
+          <Row className="my-4">
+            <Col md={3}>
+              <ProfileCard
+                jobTitle={"Recruiter"}
+                image={currImage}
+                handleImageChange={handleImageChange}
+              />
+            </Col>
+            <Col md={9}>
+              <ProfileForm
+                formData={{
+                  name: formData.name,
+                  surname: formData.surname,
+                  displayName: formData.displayName,
+                  phone: formData.phone || "",
+                  email: formData.email || "",
+                  dateOfBirth: formData.dateOfBirth,
+                }}
+                handleChange={handleChange}
+                isUpdate={isUpdate} // Pass isUpdate as a prop
+              />
+              <Row>
+                <Col>
+                  <CategoryPreferences
+                    onSubmit={handleCategoriesSubmit}
+                    isUpdate={isUpdate}
+                    cancel={() => setIsUpdate(false)}
+                    categoriesArr={formData.categories}
+                  />
+                </Col>
+              </Row>
+            </Col>
+          </Row>
 
-        {/* Update and Cancel buttons at the bottom right */}
-        {/* {isUpdate && (
+          {/* Update and Cancel buttons at the bottom right */}
+          {/* {isUpdate && (
           <div className="profile-buttons-container">
             <Button
               variant="secondary"
@@ -272,7 +273,9 @@ const ProfilePage = () => {
             </Button>
           </div>
         )} */}
-      </Container>
+        </Container>
+      </SectionContainer>
+
     </>
   );
 };

@@ -4,6 +4,7 @@ import defaultProfile from "../../assets/clem.jpg";
 import messageIcon from "../../assets/message.svg";
 import "./FreelancerDiscovery.css";
 import { useNavigate } from "react-router-dom";
+import SectionContainer from "../SectionContainer";
 const FreelancerDiscovery = ({ searchQuery }) => {
   const [freelancers, setFreelancers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -193,43 +194,49 @@ const FreelancerDiscovery = ({ searchQuery }) => {
   };
 
   return (
-    <div className="freelancer-discovery">
-      {rows.map((row, rowIndex) => (
-        <div key={rowIndex} className="freelancer-row">
-          {row.map((freelancer) => (
-            <div
-              key={freelancer.id}
-              className="freelancer-card-wrapper"
-              onClick={() => navigation(`/discovery/${freelancer.id}`)}
-            >
-              <FreelancerCard
-                profilePicture={freelancer.profilePicture || defaultProfile}
-                name={freelancer.displayName || "Anonymous Freelancer"}
-                jobTitle={freelancer.jobTitle || "Freelancer"}
-                projectsCompleted={freelancer.projects?.length || 0}
-                rating={4.5}
-                messageIcon={messageIcon}
-                onMessageClick={() => handleMessageClick(freelancer.id)}
-              />
-              {/* Hover message */}
-              <div className="hover-message">Click image to view more</div>
+    <SectionContainer>
+      <div style={{ padding: '20px' }}>
+        <div className="freelancer-discovery">
+          {rows.map((row, rowIndex) => (
+            <div key={rowIndex} className="freelancer-row">
+              {row.map((freelancer) => (
+                <div
+                  key={freelancer.id}
+                  className="freelancer-card-wrapper"
+                  onClick={() => navigation(`/discovery/${freelancer.id}`)}
+                >
+                  <FreelancerCard
+                    profilePicture={freelancer.profilePicture || defaultProfile}
+                    name={freelancer.displayName || "Anonymous Freelancer"}
+                    jobTitle={freelancer.jobTitle || "Freelancer"}
+                    projectsCompleted={freelancer.projects?.length || 0}
+                    rating={4.5}
+                    messageIcon={messageIcon}
+                    onMessageClick={() => handleMessageClick(freelancer.id)}
+                  />
+                  {/* Hover message */}
+                  <div className="hover-message">Click image to view more</div>
+                </div>
+              ))}
             </div>
           ))}
+          {/* Pagination Controls */}
+          <div className="pagination">
+            <button onClick={handlePrevious} disabled={currentPage === 1}>
+              Previous
+            </button>
+            <span>
+              Page {currentPage} of {totalPages}
+            </span>
+            <button onClick={handleNext} disabled={currentPage === totalPages}>
+              Next
+            </button>
+          </div>
         </div>
-      ))}
-      {/* Pagination Controls */}
-      <div className="pagination">
-        <button onClick={handlePrevious} disabled={currentPage === 1}>
-          Previous
-        </button>
-        <span>
-          Page {currentPage} of {totalPages}
-        </span>
-        <button onClick={handleNext} disabled={currentPage === totalPages}>
-          Next
-        </button>
       </div>
-    </div>
+
+    </SectionContainer>
+
   );
 };
 

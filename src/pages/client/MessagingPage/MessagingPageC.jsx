@@ -8,6 +8,7 @@ import ChatBox from "../../../components/Messaging/ChatBox/ChatBox";
 import EscrowForm from "../../../components/Escrow/EscrowForm";
 import io from "socket.io-client";
 import ZoomMeetingModal from "../../../components/Messaging/ZoomMeetingModal/ZoomMeetingModal";
+import SectionContainer from "../../../components/SectionContainer";
 
 const MessagingPageC = () => {
   const [loading, setLoading] = useState(false);
@@ -53,10 +54,10 @@ const MessagingPageC = () => {
     }
 
     const socket = io(url);
-    
+
     socket.on('video-call-invitation', (data) => {
-      if (data.recipientId === localStorage.getItem('uid') && 
-          data.initiatorRole === 'freelancer' ) {
+      if (data.recipientId === localStorage.getItem('uid') &&
+        data.initiatorRole === 'freelancer') {
         // Show browser notification
         if (Notification.permission === 'granted') {
           const notification = new Notification('Video Call Invitation', {
@@ -177,26 +178,25 @@ const MessagingPageC = () => {
       <Navbar />
       <ProfileSubNav />
       <SearchBar placeholder="Search people..." onSearch={handleSearch} />
-
-      <div className="messagePageContainer">
-        <PeopleComponent
-          people={filteredChats}
-          setcurrentChatId={setCurrentChatId}
-          setCurrentClientId={setCurrentFreelancerId}
-          setCurrentClientName={setCurrentFreelancerName}
-        />
-        {currentChatId && (
-          <ChatBox
-            chatId={currentChatId}
-            currentChat={currentChat}
-            currentClientId={currentFreelancerId}
-            currentClientName={currentFreelancerName}
-            onEscrowClick={handleEscrow}
+      <SectionContainer>
+        <div className="messagePageContainer">
+          <PeopleComponent
+            people={filteredChats}
+            setcurrentChatId={setCurrentChatId}
+            setCurrentClientId={setCurrentFreelancerId}
+            setCurrentClientName={setCurrentFreelancerName}
           />
-        )}
-      </div>
-
-      {showEscrowModal && escrowData && (
+          {currentChatId && (
+            <ChatBox
+              chatId={currentChatId}
+              currentChat={currentChat}
+              currentClientId={currentFreelancerId}
+              currentClientName={currentFreelancerName}
+              onEscrowClick={handleEscrow}
+            />
+          )}
+        </div>
+        {showEscrowModal && escrowData && (
         <EscrowForm
           onSubmit={handleEscrowSubmit}
           freelancerId={escrowData.freelancerId}
@@ -214,6 +214,8 @@ const MessagingPageC = () => {
           isInvitation={isInvitation}
         />
       )}
+      </SectionContainer>
+
     </div>
   );
 };

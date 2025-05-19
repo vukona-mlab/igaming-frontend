@@ -6,6 +6,7 @@ import ProjectCard from "../../Project Card/ProjectCard";
 import SeeMoreButton from "../SeeMoreButton/SeeMoreButton";
 import SectionTitle from "../SectionTitle/SectionTitle";
 import { useNavigate } from "react-router";
+import SectionContainer from "../../SectionContainer";
 
 const MadeOnRI = () => {
   const [loading, setLoading] = useState(true);
@@ -36,6 +37,7 @@ const MadeOnRI = () => {
   };
   if (loading) return;
   return (
+    <SectionContainer>
     <section className={styles.MadeOnRI}>
       <SectionHeader text={`Made on`} bold="RI Experts" />
       <SectionTitle
@@ -63,6 +65,8 @@ const MadeOnRI = () => {
         />
       </div>
     </section>
+    </SectionContainer>
+
   );
 };
 

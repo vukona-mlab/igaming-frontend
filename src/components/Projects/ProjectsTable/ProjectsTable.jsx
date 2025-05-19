@@ -161,7 +161,7 @@ const ProjectsTable = ({ type, projects }) => {
                   </td>
                   <td className="pj-t-data">
                     <div className="pj-project-requirements">
-                      {project.requirements[0]}
+                      { project.requirements ? project.requirements[0] : 'N/A'}
                     </div>
                   </td>
                   <td className="pj-t-data pj-context-parent">

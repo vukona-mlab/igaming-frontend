@@ -2,6 +2,7 @@ import Reac, { useState, useEffect } from "react";
 import styles from "./TestimonialsSection.module.css";
 import SectionHeader from "../section-header/SectionHeader";
 import TestimonyCard from "./TestimonyCard";
+import SectionContainer from "../../SectionContainer";
 
 const TestimonialsSection = () => {
   const [loading, setLoading] = useState(true);
@@ -33,32 +34,35 @@ const TestimonialsSection = () => {
   if (loading) return;
   console.log(testimonials);
   return (
-    <section className={styles.TestimonialsSection}>
-      <SectionHeader text="Testimonials" />
-      <div className={styles.TestimonialsHeader}>
-        <div className={styles.TestimonialsTitle}>
-          What <span className={styles.TestimonialsSpan}>customers</span> are
-          saying
+    <SectionContainer>
+      <section className={styles.TestimonialsSection}>
+        <SectionHeader text="Testimonials" />
+        <div className={styles.TestimonialsHeader}>
+          <div className={styles.TestimonialsTitle}>
+            What <span className={styles.TestimonialsSpan}>customers</span> are
+            saying
+          </div>
+          <div className={styles.TestimonialsSubTitle}>
+            Hear from our happpy customers about their experiences with our
+            service
+          </div>
         </div>
-        <div className={styles.TestimonialsSubTitle}>
-          Hear from our happpy customers about their experiences with our
-          service
+        <div className={styles.sectionBody}>
+          {testimonials &&
+            testimonials.map((testimonial, i) => (
+              <TestimonyCard
+                key={i}
+                text={testimonial.message}
+                name={testimonial.name}
+                country={testimonial.country}
+                date={testimonial.dateWritten._seconds}
+                imageUrl={testimonial.clientProfile}
+              />
+            ))}
         </div>
-      </div>
-      <div className={styles.sectionBody}>
-        {testimonials &&
-          testimonials.map((testimonial, i) => (
-            <TestimonyCard
-              key={i}
-              text={testimonial.message}
-              name={testimonial.name}
-              country={testimonial.country}
-              date={testimonial.dateWritten._seconds}
-              imageUrl={testimonial.clientProfile}
-            />
-          ))}
-      </div>
-    </section>
+      </section>
+    </SectionContainer>
+
   );
 };
 

@@ -10,8 +10,9 @@ import Swal from "sweetalert2";
 import SwitchRoleButton from "../../../components/Common/SwitchRoleButton/SwitchRoleButton";
 import ProfileSubNav from "../../../components/Profile/ProfileSubNav/ProfileSubNav";
 import { useNavigate } from "react-router-dom";
+import SectionContainer from "../../../components/SectionContainer";
 
-const ProfilePage = ({}) => {
+const ProfilePage = ({ }) => {
   const [formData, setFormData] = useState({
     name: "",
     surname: "",
@@ -220,9 +221,8 @@ const ProfilePage = ({}) => {
           icon: "success",
           confirmButtonText: "OK",
         }).then(() => {
-          window.location.href = `/${
-            newRole === "client" ? "client" : "freelancer"
-          }-profile`;
+          window.location.href = `/${newRole === "client" ? "client" : "freelancer"
+            }-profile`;
         });
       } else {
         throw new Error("Failed to update role");
@@ -286,83 +286,87 @@ const ProfilePage = ({}) => {
     <>
       <Navbar />
       <ProfileSubNav />
-      <Container style={{ minHeight: "100vh", paddingBottom: "60px" }}>
-        <div className="div-btn-top">
-          <Button
-            variant="dark"
-            className="add-my-documents"
-            onClick={handleDocument}
-            type="submit"
-          >
-            Add Document
-          </Button>
-        </div>
-        <div className="profile-edit d-flex justify-content-between align-items-center">
-          <div className="welcome-message">
-            {formData.displayName !== "" ? (
-              <h4 className="welcome-name">Welcome, {formData.displayName}</h4>
-            ) : (
-              <h4 className="welcome-name"></h4>
-            )}
-            {/* Placeholder for the user's name */}
-          </div>
-          <div>
-            <SwitchRoleButton
-              currentRole={currentRole}
-              onRoleSwitch={handleRoleSwitch}
-            />
-            {!isUpdate && (
-              <Button variant="dark" onClick={() => setIsUpdate(true)}>
-                Edit
-              </Button>
-            )}
-          </div>
-        </div>
+      <SectionContainer>
+        <Container fluid style={{ backgroundColor: 'red' }} className="p-0 m-0">
 
-        {/* First Row with ProfileCard and ProfileForm */}
-        <Row className="my-4">
-          <Col md={3}>
-            {/* Left Column - ProfileCard Component */}
-            <ProfileCard
-              jobTitle={jobTitle || formData.speciality}
-              image={currImage}
-              handleImageChange={handleImageChange}
-            />
-          </Col>
-          <Col md={9}>
-            {/* Right Column - ProfileForm Component with props from components */}
-            <ProfileForm
-              formData={{
-                name: formData.name || "",
-                surname: formData.surname || "",
-                displayName: formData.displayName || "",
-                phone: formData.phone || "",
-                email: formData.email || "",
-                dateOfBirth: formData.dateOfBirth || "",
-                speciality: formData.speciality || "",
-              }}
-              handleChange={handleChange}
-              isUpdate={isUpdate}
-            />
-            <Row>
-              <Col>
-                {/* Below the profile card and form - CategoryPreferences Component */}
-                <CategoryPreferences
-                  onSubmit={handleCategoriesSubmit}
-                  isUpdate={isUpdate}
-                  cancel={() => setIsUpdate(false)}
-                  categoriesArr={formData.categories}
-                  packagesObj={formData.packages}
-                  handleAddFeature={handleAddFeature}
-                  handleUpdateFeature={handleUpdateFeature}
-                  handleDeleteFeature={handleDeleteFeature}
-                  features={features}
-                />
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-      </Container>
+          <div className="div-btn-top p-2">
+            <Button
+              variant="dark"
+              className="add-my-documents"
+              onClick={handleDocument}
+              type="submit"
+            >
+              Add Document
+            </Button>
+          </div>
+          <div className="profile-edit d-flex justify-content-between align-items-center">
+            <div className="welcome-message">
+              {formData.displayName !== "" ? (
+                <h4 className="welcome-name">Welcome, {formData.displayName}</h4>
+              ) : (
+                <h4 className="welcome-name"></h4>
+              )}
+              {/* Placeholder for the user's name */}
+            </div>
+            <div>
+              <SwitchRoleButton
+                currentRole={currentRole}
+                onRoleSwitch={handleRoleSwitch}
+              />
+              {!isUpdate && (
+                <Button variant="dark" onClick={() => setIsUpdate(true)}>
+                  Edit
+                </Button>
+              )}
+            </div>
+          </div>
+
+          {/* First Row with ProfileCard and ProfileForm */}
+          <Row className="my-4">
+            <Col md={3}>
+              {/* Left Column - ProfileCard Component */}
+              <ProfileCard
+                jobTitle={jobTitle || formData.speciality}
+                image={currImage}
+                handleImageChange={handleImageChange}
+              />
+            </Col>
+            <Col md={9}>
+              {/* Right Column - ProfileForm Component with props from components */}
+              <ProfileForm
+                formData={{
+                  name: formData.name || "",
+                  surname: formData.surname || "",
+                  displayName: formData.displayName || "",
+                  phone: formData.phone || "",
+                  email: formData.email || "",
+                  dateOfBirth: formData.dateOfBirth || "",
+                  speciality: formData.speciality || "",
+                }}
+                handleChange={handleChange}
+                isUpdate={isUpdate}
+              />
+              <Row>
+                <Col>
+                  {/* Below the profile card and form - CategoryPreferences Component */}
+                  <CategoryPreferences
+                    onSubmit={handleCategoriesSubmit}
+                    isUpdate={isUpdate}
+                    cancel={() => setIsUpdate(false)}
+                    categoriesArr={formData.categories}
+                    packagesObj={formData.packages}
+                    handleAddFeature={handleAddFeature}
+                    handleUpdateFeature={handleUpdateFeature}
+                    handleDeleteFeature={handleDeleteFeature}
+                    features={features}
+                  />
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </Container>
+      </SectionContainer>
+
     </>
   );
 };

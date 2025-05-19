@@ -9,6 +9,7 @@ import SearchBar from "../../SearchBar/SearchBar";
 import { FaSearch } from "react-icons/fa";
 import LogoutButton from "../LogoutButton/LogoutButton";
 import { useLocation } from "react-router-dom";
+import SectionContainer from "../../SectionContainer";
 function NavBar() {
   const [profilePicture, setProfilePicture] = useState("");
   const [loading, setLoading] = useState(false);
@@ -43,60 +44,62 @@ function NavBar() {
   };
 
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
-      <Container fluid>
-        <Navbar.Brand href="#">
-          <div className="nav-logo">
-            <img
-              src="/images/logo-ri-express.png"
-              alt="logo"
-              width="125"
-              height="58px"
-            ></img>
-          </div>
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="navbarScroll" />
-        <Navbar.Collapse id="navbarScroll">
-          <Nav
-            className="me-auto my-2 my-lg-0"
-            style={{ maxHeight: "100px" }}
-            navbarScroll
-          >
-            <Nav.Link
-              href="#action1"
-              className="nav-link"
-              onClick={() => navigation("/")}
-            >
-              <div className="text">Home</div>
-            </Nav.Link>
-            <Nav.Link href="#action2" className="nav-link">
-              <div className="text">About</div>
-            </Nav.Link>
-            <Nav.Link href="#">
-              <div className="text">Contact</div>
-            </Nav.Link>
-            <Nav.Link className="nav-link" href="#pricing">
-              <div className="text">FAQ</div>
-            </Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-        <div className="placeholder">
-          {profilePicture !== "" ? (
-            <div style={{ display: "flex", gap: "15px" }}>
+    <SectionContainer containerColor={'#f8f9fa'} backgroundColor="#f8f9fa">
+      <Navbar expand="lg" className="bg-body-tertiary" >
+        <Container fluid style={{ display: 'flex', justifyContent: 'space-around'}}>
+          <Navbar.Brand href="#">
+            <div className="nav-logo">
               <img
-                src={profilePicture}
-                alt="User"
-                className="user-profile"
-                onClick={() => navigation("/profile")}
-              />
-              <LogoutButton />
+                src="/images/logo-ri-express.png"
+                alt="logo"
+                width="125"
+                height="58px"
+              ></img>
             </div>
-          ) : (
-            <FaSearch className="search-icon" />
-          )}
-        </div>
-      </Container>
-    </Navbar>
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="navbarScroll" />
+          <Navbar.Collapse id="navbarScroll">
+            <Nav
+              className="me-auto my-2 my-lg-0"
+              style={{ maxHeight: "100px" }}
+              navbarScroll
+            >
+              <Nav.Link
+                href="#action1"
+                className="nav-link"
+                onClick={() => navigation("/")}
+              >
+                <div className="text">Home</div>
+              </Nav.Link>
+              <Nav.Link href="#action2" className="nav-link">
+                <div className="text">About</div>
+              </Nav.Link>
+              <Nav.Link href="#">
+                <div className="text">Contact</div>
+              </Nav.Link>
+              <Nav.Link className="nav-link" href="#pricing">
+                <div className="text">FAQ</div>
+              </Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+          <div className="placeholder">
+            {profilePicture !== "" ? (
+              <div style={{ display: "flex", gap: "15px" }}>
+                <img
+                  src={profilePicture}
+                  alt="User"
+                  className="user-profile"
+                  onClick={() => navigation("/profile")}
+                />
+                <LogoutButton />
+              </div>
+            ) : (
+              <FaSearch className="search-icon" />
+            )}
+          </div>
+        </Container>
+      </Navbar>
+    </SectionContainer>
   );
 }
 
