@@ -10,7 +10,7 @@ const PeopleComponent = ({
 }) => {
   const formatLastMessageTime = (timestamp) => {
     if (!timestamp) return '';
-    
+
     let date;
     // Handle Firestore timestamp
     if (timestamp?._seconds) {
@@ -23,10 +23,10 @@ const PeopleComponent = ({
     const now = new Date();
     const yesterday = new Date(now);
     yesterday.setDate(yesterday.getDate() - 1);
-    
+
     // Format time
-    const timeString = date.toLocaleTimeString([], { 
-      hour: '2-digit', 
+    const timeString = date.toLocaleTimeString([], {
+      hour: '2-digit',
       minute: '2-digit'
     });
 
@@ -34,18 +34,18 @@ const PeopleComponent = ({
     if (date.toDateString() === now.toDateString()) {
       return timeString;
     }
-    
+
     // If message is from yesterday
     if (date.toDateString() === yesterday.toDateString()) {
       return 'Yesterday';
     }
-    
+
     // If message is from this week
     const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
     if (diffDays < 7) {
       return date.toLocaleDateString([], { weekday: 'short' });
     }
-    
+
     // If message is from this year
     if (date.getFullYear() === now.getFullYear()) {
       return date.toLocaleDateString([], {
@@ -53,7 +53,7 @@ const PeopleComponent = ({
         day: 'numeric',
       });
     }
-    
+
     // If message is from a different year
     return date.toLocaleDateString([], {
       year: 'numeric',
@@ -64,17 +64,18 @@ const PeopleComponent = ({
 
   return (
     <div className="PeopleComponent">
-      {people.length === 0 ? (
-        <div>No chats</div>
-      ) : (
-        <>
-          <div className="people-title">People</div>
-          <div className="people-list">
-            {people.map((person, i) => {
+      <div className="people-title">People</div>
+      <div className="people-list">
+        {
+          people.length === 0 ? (
+            <div style={{ paddingLeft: 15 }}><span>No ongoing chats</span> </div>
+          ) : (
+
+            people.map((person, i) => {
               const otherParticipant = person.participants?.find(
                 (part) => part.uid !== localStorage.getItem("uid")
               );
-              
+
               return (
                 <div key={i} className="person-card-container">
                   <PersonCard
@@ -91,10 +92,13 @@ const PeopleComponent = ({
                   />
                 </div>
               );
-            })}
-          </div>
-        </>
-      )}
+            })
+
+          )
+        }
+
+      </div>
+
     </div>
   );
 };

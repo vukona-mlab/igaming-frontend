@@ -3,6 +3,7 @@ import EscrowForm from '../../components/Escrow/EscrowForm';
 import EscrowStatus from '../../components/Escrow/EscrowStatus';
 import './EscrowPage.css';
 import { useLocation } from 'react-router-dom';
+import BACKEND_URL from '../../config/backend-config';
 
 const EscrowPage = () => {
   const location = useLocation();
@@ -39,7 +40,7 @@ const EscrowPage = () => {
       const token = localStorage.getItem('token'); // Fetch the token from local storage
       console.log('Retrieved Token:', token); // Log the token for debugging
 
-      const response = await fetch('http://localhost:8000/api/escrows', {
+      const response = await fetch(`${BACKEND_URL}/api/escrows`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

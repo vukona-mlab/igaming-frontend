@@ -5,6 +5,7 @@ import Navbar from "../../../../components/Common/Navbar/navbar";
 import axios from "axios";
 import "./documentUpload.css";
 import { useNavigate } from "react-router-dom";
+import BACKEND_URL from "../../../../config/backend-config";
 
 const DocumentUpload = () => {
   const navigation = useNavigate();
@@ -92,7 +93,7 @@ const DocumentUpload = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:8000/api/auth/users/${userId}/upload`,
+        `${BACKEND_URL}/api/auth/users/${userId}/upload`,
         formData,
         {
           headers: {

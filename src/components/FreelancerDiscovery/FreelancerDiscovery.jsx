@@ -5,6 +5,7 @@ import messageIcon from "../../assets/message.svg";
 import "./FreelancerDiscovery.css";
 import { useNavigate } from "react-router-dom";
 import SectionContainer from "../SectionContainer";
+import BACKEND_URL from "../../config/backend-config";
 const FreelancerDiscovery = ({ searchQuery }) => {
   const [freelancers, setFreelancers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -67,7 +68,7 @@ const FreelancerDiscovery = ({ searchQuery }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:8000/api/freelancers/projects?page=${currentPage}&pageSize=${pageSize}`,
+        `${BACKEND_URL}/api/freelancers/projects?page=${currentPage}&pageSize=${pageSize}`,
         {
           headers: {
             Authorization: token,
@@ -120,7 +121,7 @@ const FreelancerDiscovery = ({ searchQuery }) => {
       console.log("Sending chat request with data:", requestData);
       console.log("Using authorization token:", token);
 
-      const response = await fetch("http://localhost:8000/api/create-chat", {
+      const response = await fetch(`${BACKEND_URL}/api/chats`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

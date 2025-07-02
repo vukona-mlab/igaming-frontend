@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import NavBar from "../../components/Common/Navbar/navbar";
 import "./LandingPage.css";
 import SubNavBar from "../../components/Common/SubNavBar/SubNavBar";
@@ -12,7 +12,12 @@ import FAQSection from "../../components/Landing/FAQSection/FAQSection";
 import SpeechBubble from "../../components/Landing/TestimonialsSection/SpeechBubble";
 import TestimonialsSection from "../../components/Landing/TestimonialsSection/TestimonialsSection";
 import GetStarted from "../../components/Landing/GetStartedSection/GetStarted";
+import ContactPage from "../ContactPage/ContactPage";
 function LandingPage() {
+  useEffect(() => {
+    console.log('on landing');
+    
+  },[])
   return (
     <>
       <NavBar />
@@ -21,7 +26,9 @@ function LandingPage() {
       <About />
       <GetStarted />
       <PopularServices />
+      <TopFreelancers />
       <MadeOnRI />
+      <ContactPage />
       <TestimonialsSection />
       <FAQSection />
       <Footer />

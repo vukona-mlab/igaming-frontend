@@ -133,7 +133,7 @@ const ResetPassword = () => {
       {/* Right Section */}
       <div className="reset-right">
         <img
-          src="/public/images/ri-experts.jpg"
+          src="/images/ri-experts.jpg"
           alt="Woman with digital interface"
         />
       </div>

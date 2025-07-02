@@ -4,6 +4,8 @@ import { SlOptionsVertical } from "react-icons/sl";
 import ProjectDetails from "../../Projects/ProjectDetails/ProjectDetails";
 import SLA from "../SLA/SLA";
 import PaystackPop from "@paystack/inline-js";
+import BACKEND_URL from "../../../config/backend-config";
+import SectionContainer from "../../SectionContainer";
 
 const ProjectsTable = ({ type, projects }) => {
   const [showMenu, setShowMenu] = useState(false);
@@ -28,7 +30,7 @@ const ProjectsTable = ({ type, projects }) => {
   ) => {
     console.log("PP", clientId, freelancerId, amount, email, projectId);
     try {
-      const response = await fetch("http://localhost:8000/api/transaction", {
+      const response = await fetch(`${BACKEND_URL}/api/transaction`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -53,7 +55,7 @@ const ProjectsTable = ({ type, projects }) => {
             if (transaction.status === "success") {
               try {
                 const res = await fetch(
-                  "http://localhost:8000/api/payment/verify",
+                  `${BACKEND_URL}/api/payment/verify`,
                   {
                     method: "POST",
                     headers: {
@@ -107,129 +109,136 @@ const ProjectsTable = ({ type, projects }) => {
     }
   };
   return (
-    <div className="ProjectsTable">
-      {showProjectDetails && (
-        <ProjectDetails
-          project={currProject}
-          onClose={() => setShowProjectDetails(false)}
-        />
-      )}
-      {showSLA && (
-        <SLA project={currProject} onClose={() => setShowSLA(false)} />
-      )}
-      <table className="pj-table-container">
-        <tbody>
-          <tr className="pj-table-heading">
-            <th className="pj-t-heading">Project Name</th>
-            <th className="pj-t-heading">Status</th>
-            <th className="pj-t-heading">Project Ref</th>
-            <th className="pj-t-heading">
-              {type === "client" ? "Freelancer's Email" : "Client's Email"}
-            </th>
-            <th className="pj-t-heading">Due Date</th>
-            <th className="pj-t-heading">Project Requirements</th>
-            <th className="pj-t-heading">Actions</th>
-          </tr>
-          {projects &&
-            projects.length > 0 &&
-            projects.map((project) => {
-              return (
-                <tr key={project.id}>
-                  <td className="pj-t-data">
-                    <div className="pj-project-name">{project.title}</div>
-                  </td>
-                  <td className="pj-t-data">
-                    <div className="pj-project-status">{project.status}</div>
-                  </td>
-                  <td className="pj-t-data">
-                    <span className="pj-project-ref">{project.id}</span>
-                  </td>
-                  <td className="pj-t-data">
-                    <div className="pj-email">
-                      {type === "client"
-                        ? project.freelancerEmail !== ""
-                          ? project.freelancerEmail
-                          : "N/A"
-                        : project.clientEmail !== ""
-                        ? project.clientEmail
-                        : "N/A"}
-                    </div>
-                  </td>
+    <SectionContainer>
+      <div className="ProjectsTable">
+        {showProjectDetails && (
+          <ProjectDetails
+            project={currProject}
+            onClose={() => setShowProjectDetails(false)}
+          />
+        )}
+        {showSLA && (
+          <SLA project={currProject} onClose={() => setShowSLA(false)} />
+        )}
+        <table className="pj-table-container">
+          <tbody>
+            <tr className="pj-table-heading">
+              <th className="pj-t-heading">Project Name</th>
+              <th className="pj-t-heading">Status</th>
+              <th className="pj-t-heading">Project Ref</th>
+              <th className="pj-t-heading">
+                {type === "client" ? "Freelancer's Email" : "Client's Email"}
+              </th>
+              <th className="pj-t-heading">Due Date</th>
+              <th className="pj-t-heading">Project Requirements</th>
+              <th className="pj-t-heading">Actions</th>
+            </tr>
+            {projects &&
+              projects.length > 0 &&
+              projects.map((project) => {
+                return (
+                  <tr key={project.id}>
+                    <td className="pj-t-data">
+                      <div className="pj-project-name">{project.title}</div>
+                    </td>
+                    <td className="pj-t-data">
+                      <div className="pj-project-status">{project.status}</div>
+                    </td>
+                    <td className="pj-t-data">
+                      <span className="pj-project-ref">{project.id}</span>
+                    </td>
+                    <td className="pj-t-data">
+                      <div className="pj-email">
+                        {type === "client"
+                          ? project.freelancerEmail !== ""
+                            ? project.freelancerEmail
+                            : "N/A"
+                          : project.clientEmail !== ""
+                            ? project.clientEmail
+                            : "N/A"}
+                      </div>
+                    </td>
 
-                  <td className="pj-t-data">
-                    <div className="pj-deadline">{project.deadline}</div>
-                  </td>
-                  <td className="pj-t-data">
-                    <div className="pj-project-requirements">
-                      { project.requirements ? project.requirements[0] : 'N/A'}
-                    </div>
-                  </td>
-                  <td className="pj-t-data pj-context-parent">
-                    <div className="pj-action-buttons">
-                      <button
-                        className="pj-action-button"
-                        onClick={() => {
-                          setShowProjectDetails(true);
-                          setCurrProject(project);
-                        }}
-                      >
-                        View
-                      </button>
-                      <SlOptionsVertical
-                        className="pj-options"
-                        onClick={() => {
-                          setShowMenu(!showMenu);
-                          setCurrent(project.id);
-                        }}
-                        ref={buttonRef}
-                      />
-                    </div>
-                    {showMenu &&
-                      current === project.id &&
-                      (type === "freelancer" ? (
-                        <div className="pj-context-menu" ref={menuRef}>
-                          <div>Project Actions</div>
-                          <button>Mark as complete</button>
-                          <button>Edit SLA</button>
-                          <button>Rate the service</button>
-                        </div>
-                      ) : (
-                        <div className="pj-context-menu" ref={menuRef}>
-                          <div>Project Actions</div>
-                          <button
-                            onClick={() => {
-                              setShowSLA(true);
-                              setCurrProject(project);
-                            }}
-                          >
-                            View SLA
-                          </button>
-                          {project.status === "approved" &&
-                            project.paymentStatus !== "completed" && (
-                              <button
-                                onClick={() =>
-                                  handleTransaction(
-                                    project.clientId,
-                                    project.freelancerId,
-                                    project.budget,
-                                    project.clientEmail,
-                                    project.id
-                                  )
-                                }
-                              >
-                                Pay project
-                              </button>
-                            )}
-                          <button>Rate the service</button>
-                        </div>
-                      ))}
-                  </td>
-                </tr>
-              );
-            })}
-        </tbody>
-      </table>
-    </div>
+                    <td className="pj-t-data">
+                      <div className="pj-deadline">{project.deadline}</div>
+                    </td>
+                    <td className="pj-t-data">
+                      <div className="pj-project-requirements">
+                        {project.requirements ? project.requirements[0] : 'N/A'}
+                      </div>
+                    </td>
+                    <td className="pj-t-data pj-context-parent">
+                      <div className="pj-action-buttons">
+                        <button
+                          className="pj-action-button"
+                          onClick={() => {
+                            setShowProjectDetails(true);
+                            setCurrProject(project);
+                          }}
+                        >
+                          View
+                        </button>
+                        <SlOptionsVertical
+                          className="pj-options"
+                          onClick={() => {
+                            setShowMenu(!showMenu);
+                            setCurrent(project.id);
+                          }}
+                          ref={buttonRef}
+                        />
+                      </div>
+                      {showMenu &&
+                        current === project.id &&
+                        (type === "freelancer" ? (
+                          <div className="pj-context-menu" ref={menuRef}>
+                            <div>Project Actions</div>
+                            <button>Mark as complete</button>
+                            <button>Edit SLA</button>
+                            <button>Rate the service</button>
+                          </div>
+                        ) : (
+                          <div className="pj-context-menu" ref={menuRef}>
+                            <div>Project Actions</div>
+                            <button
+                              onClick={() => {
+                                setShowSLA(true);
+                                setCurrProject(project);
+                              }}
+                            >
+                              View SLA
+                            </button>
+                            {project.status === "approved" &&
+                              project.paymentStatus !== "completed" && (
+                                <button
+                                  onClick={() => {
+                                    console.log({project});
+                                    
+                                    handleTransaction(
+                                      project.clientId,
+                                      project.freelancerId,
+                                      project.budget,
+                                      project.clientEmail,
+                                      project.id
+                                    )
+                                  }
+                                    
+                                  }
+                                >
+                                  Pay project
+                                </button>
+                              )}
+                            <button>Rate the service</button>
+                          </div>
+                        ))}
+                    </td>
+                  </tr>
+                );
+              })}
+          </tbody>
+        </table>
+      </div>
+    </SectionContainer>
+
   );
 };
 

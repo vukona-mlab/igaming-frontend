@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./DocumentsTable.css";
+import BACKEND_URL from "../../../config/backend-config";
 
 export default function DocumentsTable({ statusFilter }) {
   const [documents, setDocuments] = useState([]);
@@ -13,7 +14,7 @@ export default function DocumentsTable({ statusFilter }) {
     const fetchDocuments = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8000/api/auth/users/${userId}`,
+          `${BACKEND_URL}/api/auth/users/${userId}`,
           {
             headers: { Authorization: token },
           }
@@ -42,7 +43,7 @@ export default function DocumentsTable({ statusFilter }) {
   const handleDelete = async (docId) => {
     try {
       const response = await fetch(
-        `http://localhost:8000/api/auth/users/${userId}/documents/delete`,
+        `${BACKEND_URL}/api/auth/users/${userId}/documents/delete`,
         {
           method: "DELETE",
           headers: {

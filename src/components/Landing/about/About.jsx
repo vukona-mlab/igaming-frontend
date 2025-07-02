@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure Bootstrap is imported
 
 const About = () => {
   return (
-    <section className="about-section text-center text-white d-flex align-items-center">
+    <section id="about" className="about-section text-center text-white d-flex align-items-center">
       <div className="container">
         <h1 className="display-4 fw-bold"> Ri Experts </h1>
         <p className="lead">

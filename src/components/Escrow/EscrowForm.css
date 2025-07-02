@@ -216,7 +216,7 @@
 
 /* Error state */
 .error-message {
-  color: #dc3545;
+  color: red;
   margin-top: 0.5rem;
   font-size: 0.875rem;
 }

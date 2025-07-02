@@ -10,6 +10,7 @@ import FreelancerProfileHeader from "../../../components/FreelancerProfileHeader
 import ReviewForm from "../../../components/Reviews/ReviewForm/ReviewForm";
 import './freelancerProjectPage.css'
 import SectionContainer from "../../../components/SectionContainer";
+import BACKEND_URL from "../../../config/backend-config";
 
 const FreelancerProjects = () => {
   const { freelancer_id } = useParams();
@@ -45,7 +46,7 @@ const FreelancerProjects = () => {
         }
 
         // Fetch freelancer data
-        const response = await fetch("http://localhost:8000/api/freelancers/projects/");
+        const response = await fetch(`${BACKEND_URL}/api/freelancers/projects/`);
         if (!response.ok) throw new Error("Failed to fetch freelancer data");
         const data = await response.json();
         console.log("Fetched Data:", data);
@@ -83,7 +84,7 @@ const FreelancerProjects = () => {
         // Fetch reviews for the freelancer with authentication
         try {
           console.log("Fetching reviews for freelancer:", freelancer_id);
-          const reviewsResponse = await fetch(`http://localhost:8000/api/reviews?freelancerId=${freelancer_id}`, {
+          const reviewsResponse = await fetch(`${BACKEND_URL}/api/reviews?freelancerId=${freelancer_id}`, {
             headers: {
               'Authorization': token
             }
@@ -154,7 +155,7 @@ const FreelancerProjects = () => {
       console.log("Sending chat request with data:", requestData);
       console.log("Using authorization token:", token);
 
-      const response = await fetch("http://localhost:8000/api/create-chat", {
+      const response = await fetch(`${BACKEND_URL}/api/chats`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -229,7 +230,7 @@ const FreelancerProjects = () => {
         }
       });
 
-      const response = await fetch("http://localhost:8000/api/reviews", {
+      const response = await fetch(`${BACKEND_URL}/api/reviews`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -257,7 +258,7 @@ const FreelancerProjects = () => {
 
       // Refresh reviews after submission to show pending review
       try {
-        const refreshedReviewsResponse = await fetch(`http://localhost:8000/api/reviews?freelancerId=${freelancer_id}`, {
+        const refreshedReviewsResponse = await fetch(`${BACKEND_URL}/api/reviews?freelancerId=${freelancer_id}`, {
           headers: {
             'Authorization': token
           }

@@ -9,6 +9,8 @@ import Swal from "sweetalert2";
 import SwitchRoleButton from "../../../components/Common/SwitchRoleButton/SwitchRoleButton";
 import ProfileSubNav from "../../../components/Profile/ProfileSubNav/ProfileSubNav";
 import SectionContainer from "../../../components/SectionContainer";
+import BACKEND_URL from "../../../config/backend-config";
+import { useNavigate } from "react-router-dom";
 const ProfilePage = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -27,7 +29,7 @@ const ProfilePage = () => {
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
   const [currentRole, setCurrentRole] = useState("client");
-
+  const navigate = useNavigate()
   useEffect(() => {
     getProfile();
   }, []);
@@ -74,7 +76,7 @@ const ProfilePage = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:8000/api/auth/users/${uid}`,
+        `${BACKEND_URL}/api/auth/users/${uid}`,
         {
           method: "GET",
           headers: { Authorization: token },
@@ -116,7 +118,7 @@ const ProfilePage = () => {
       formData.append("profilePicture", image || "");
 
       const response = await fetch(
-        `http://localhost:8000/api/auth/users/${uid}/update`,
+        `${BACKEND_URL}/api/auth/users/${uid}/update`,
         {
           method: "PUT",
           headers: { Authorization: token },
@@ -153,7 +155,7 @@ const ProfilePage = () => {
       // If user confirms
       if (result.isConfirmed) {
         const response = await fetch(
-          `http://localhost:8000/api/auth/users/${uid}/roles`,
+          `${BACKEND_URL}/api/auth/users/${uid}/roles`,
           {
             method: "PUT",
             headers: {
@@ -175,8 +177,9 @@ const ProfilePage = () => {
             icon: "success",
             confirmButtonText: "OK",
           }).then(() => {
-            window.location.href = `/${newRole === "client" ? "client" : "freelancer"
-              }-profile`;
+
+            navigate(`/${newRole === "client" ? "client" : "freelancer"
+              }-profile`);
           });
         } else {
           throw new Error("Failed to update role");
@@ -195,13 +198,13 @@ const ProfilePage = () => {
   return (
     <>
       <Navbar />
-      <ProfileSubNav />
+      <ProfileSubNav showTransactions={true} />
       <SectionContainer>
         <Container fluid style={{}}>
           <div className="profile-edit d-flex justify-content-between align-items-center">
             <div className="welcome-message">
               {formData.displayName !== "" ? (
-                <h4 className="welcome-name">Welcome ad, {formData.displayName}</h4>
+                <h4 className="welcome-name">Welcome, {formData.displayName}</h4>
               ) : (
                 <h4 className="welcome-name"></h4>
               )}

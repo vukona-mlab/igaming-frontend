@@ -8,6 +8,8 @@ import ProjectsTable from "../../components/Projects/ProjectsTable/ProjectsTable
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import PaystackPop from "@paystack/inline-js";
+import BACKEND_URL from "../../config/backend-config";
+import SectionContainer from "../../components/SectionContainer";
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
@@ -66,7 +68,7 @@ const Projects = () => {
     try {
       const freelancers = await fetchFreelancers();
       const clients = await fetchClients();
-      const response = await axios.get("http://localhost:8000/api/projects", {
+      const response = await axios.get(`${BACKEND_URL}/api/projects`, {
         headers: {
           Authorization: token,
         },
@@ -75,11 +77,11 @@ const Projects = () => {
       let filteredProjects =
         role === "freelancer"
           ? response.data.projects.filter(
-              (project) => project.freelancerId === uid
-            )
+            (project) => project.freelancerId === uid
+          )
           : response.data.projects.filter(
-              (project) => project.clientId === uid
-            );
+            (project) => project.clientId === uid
+          );
       const updatedProjects = filteredProjects.map((project) => {
         let clientEmail = "";
         let freelancerEmail = "";
@@ -115,7 +117,7 @@ const Projects = () => {
   };
   const fetchClients = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/clients", {
+      const response = await axios.get(`${BACKEND_URL}/api/clients`, {
         headers: {
           Authorization: token,
         },
@@ -132,7 +134,7 @@ const Projects = () => {
   const fetchFreelancers = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/freelancers",
+        `${BACKEND_URL}/api/freelancers`,
         {
           headers: {
             Authorization: token,
@@ -154,18 +156,24 @@ const Projects = () => {
     <div className="Projects">
       <Navbar />
       <ProfileSubNav />
-      <div className="pj-search-upload">
-        <SearchBar onSearch={setSearchTerm} />
-        {role === "freelancer" && (
-          <button className="pj-upload-btn">Upload project</button>
-        )}
-      </div>
+      <SectionContainer>
+        <div className="pj-search-upload">
+          <SearchBar onSearch={setSearchTerm} />
+          {role === "freelancer" && (
+            <button className="pj-upload-btn">Upload project</button>
+          )}
+        </div>
+      </SectionContainer>
+
       <ProjectsTabsHeader handleTabChange={setFilter} />
       <div className="pj-main-container">
         {filteredData.length > 0 ? (
           <ProjectsTable type={role} projects={filteredData} />
         ) : (
-          <div className="pj-no-data">No data</div>
+          <SectionContainer>
+            <div className="pj-no-data">No data</div>
+          </SectionContainer>
+
         )}
       </div>
     </div>

@@ -10,6 +10,7 @@ import {
 } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import { getMessaging } from "firebase/messaging";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -29,13 +30,16 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 const analytics = getAnalytics(app);
-
 const auth = getAuth(app);
-await setPersistence(auth, inMemoryPersistence);
+const initAuth = async () => {
+  
+  await setPersistence(auth, inMemoryPersistence);
+}
+initAuth()
 const db = getFirestore(app);
 const storage = getStorage(app);
 const googleProvider = new GoogleAuthProvider();
-
+const messaging = getMessaging(app)
 // Add logout function
 const handleLogout = async () => {
   try {
@@ -51,4 +55,4 @@ const handleLogout = async () => {
   }
 };
 
-export { auth, db, storage, googleProvider, handleLogout };
+export { auth, db, storage, googleProvider, handleLogout, messaging };

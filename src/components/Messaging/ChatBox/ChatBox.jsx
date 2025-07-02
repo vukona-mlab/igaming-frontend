@@ -9,6 +9,7 @@ import { io } from "socket.io-client";
 import ProjectModal from "../ProjectModal/ProjectModal";
 import ProjectDetails from "../ProjectDetails/ProjectDetails";
 import EscrowForm from "../../Escrow/EscrowForm";
+import BACKEND_URL from "../../../config/backend-config";
 
 const ChatBox = ({
   chatId,
@@ -63,7 +64,7 @@ const ChatBox = ({
 
   useEffect(() => {
     // Initialize socket connection
-    socketRef.current = io("http://localhost:8000");
+    socketRef.current = io(BACKEND_URL);
 
     // Join the chat room when component mounts
     if (chatId) {
@@ -105,7 +106,7 @@ const ChatBox = ({
     try {
       setIsLoadingMore(true);
       const response = await fetch(
-        `http://localhost:8000/api/chats/${chatId}?page=${pageNum}&limit=${MESSAGES_PER_PAGE}`,
+        `${BACKEND_URL}/api/chats/${chatId}?page=${pageNum}&limit=${MESSAGES_PER_PAGE}`,
         {
           headers: {
             Authorization: `${localStorage.getItem("token")}`,
@@ -143,7 +144,7 @@ const ChatBox = ({
   const fetchProjectStatus = async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/projects/chat/${chatId}`,
+        `${BACKEND_URL}/api/projects/chat/${chatId}`,
         {
           headers: {
             Authorization: token,
@@ -180,7 +181,7 @@ const ChatBox = ({
       }
 
       const response = await fetch(
-        `http://localhost:8000/api/chats/${chatId}/messages`,
+        `${BACKEND_URL}/api/chats/${chatId}/messages`,
         {
           method: "POST",
           headers: {
@@ -251,7 +252,7 @@ const ChatBox = ({
       }
 
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/projects/${projectStatus.id}`,
+        `${BACKEND_URL}/api/projects/${projectStatus.id}`,
         {
           method: "DELETE",
           headers: {

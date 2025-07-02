@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { handleLogout } from "../../../config/firebase";
 import "./LogoutButton.css";
 import { io } from "socket.io-client";
-const url = "http://localhost:8000";
-const socket = io(url, { transports: ["websocket"] });
+import BACKEND_URL from "../../../config/backend-config";
+// const url = "http://localhost:8000";
+const socket = io(BACKEND_URL, { transports: ["websocket"] });
 
 const LogoutButton = ({ className, customStyle }) => {
   const navigate = useNavigate();

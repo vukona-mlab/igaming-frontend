@@ -1,4 +1,4 @@
-.TransactionDetails {
+.transaction-details {
   width: 100%;
   min-height: 141px;
   padding: 20px;
@@ -30,13 +30,30 @@
   color: #0000004d;
 }
 
-.td-delete-btn {
-  width: 114px;
+.td-btn {
+  min-width: 114px;
+  width:fit-content;
   height: 49px;
-  background-color: #b90909;
+  background-color: #000000;
   color: white;
   padding: 10px;
   border-radius: 12px;
   border: none;
   outline: none;
+}
+.row-flex {
+  display: flex;
+  justify-content: space-between;
+}
+.dropdown-content {
+  width: calc(100% - 20px);
+  min-height: 141px;
+  height: 200px;
+  padding: 20px;
+  font-family: "Poppins";
+  border: 2px solid #0000000d;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  border-top: none;
+  margin: auto;
 }

@@ -7,11 +7,12 @@ import SeeMoreButton from "../SeeMoreButton/SeeMoreButton";
 import SectionTitle from "../SectionTitle/SectionTitle";
 import { useNavigate } from "react-router";
 import SectionContainer from "../../SectionContainer";
+import BACKEND_URL from "../../../config/backend-config";
 
 const MadeOnRI = () => {
   const [loading, setLoading] = useState(true);
   const [projects, setProjects] = useState([]);
-  const url = "http://localhost:8000/api/projects";
+  const url = `${BACKEND_URL}/api/projects`;
   const navigation = useNavigate();
 
   useEffect(() => {

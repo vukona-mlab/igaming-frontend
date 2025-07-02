@@ -10,6 +10,7 @@ import { FaSearch } from "react-icons/fa";
 import LogoutButton from "../LogoutButton/LogoutButton";
 import { useLocation } from "react-router-dom";
 import SectionContainer from "../../SectionContainer";
+import BACKEND_URL from "../../../config/backend-config";
 function NavBar() {
   const [profilePicture, setProfilePicture] = useState("");
   const [loading, setLoading] = useState(false);
@@ -27,7 +28,7 @@ function NavBar() {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:8000/api/auth/users/${uid}`,
+        `${BACKEND_URL}/api/auth/users/${uid}`,
         {
           method: "GET",
           headers: { Authorization: token },
@@ -65,19 +66,18 @@ function NavBar() {
               navbarScroll
             >
               <Nav.Link
-                href="#action1"
+                href="/#landing"
                 className="nav-link"
-                onClick={() => navigation("/")}
               >
                 <div className="text">Home</div>
               </Nav.Link>
-              <Nav.Link href="#action2" className="nav-link">
+              <Nav.Link href="/#about" className="nav-link">
                 <div className="text">About</div>
               </Nav.Link>
-              <Nav.Link href="#">
+              <Nav.Link href="/#contact">
                 <div className="text">Contact</div>
               </Nav.Link>
-              <Nav.Link className="nav-link" href="#pricing">
+              <Nav.Link className="nav-link" href="/#faq">
                 <div className="text">FAQ</div>
               </Nav.Link>
             </Nav>

@@ -6,7 +6,7 @@ import SectionContainer from '../SectionContainer';
 const About = () => {
   return (
     <SectionContainer containerColor={'#f8f9fa'}>
-      <section className="about-section text-center text-white d-flex align-items-center">
+      <section id='about' className="about-section text-center text-white d-flex align-items-center">
         <div className="container">
           <h1 className="display-4 fw-bold"> Ri Experts </h1>
           <p className="lead">

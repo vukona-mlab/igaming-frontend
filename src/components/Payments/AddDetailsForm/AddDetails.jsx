@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
 import Swal from "sweetalert2";
 import "./AddDetails.css";
+import BACKEND_URL from "../../../config/backend-config";
 //import Bankingdetails from"../../../components/Payments/BankingDetailsSection/BankingDetailsSection"
 //type, bank_code, account_number, name
-const AddBankDetailsForm = () => {
+const AddBankDetailsForm = ({ setHideCards }) => {
   const [accountNumber, setAccountNumber] = useState("");
   const [name, setName] = useState("");
   const [type, setType] = useState("basa");
@@ -17,7 +18,7 @@ const AddBankDetailsForm = () => {
   useEffect(() => {
     const fetchBanks = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/banks", {
+        const response = await fetch(`${BACKEND_URL}/api/banks`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -59,7 +60,7 @@ const AddBankDetailsForm = () => {
     console.log("Token:", token); // Check if token is available
 
     // Use the hardcoded API URL
-    const apiUrl = "http://localhost:8000/api/bank-accounts"; // Replace with your localhost URL
+    const apiUrl = `${BACKEND_URL}/api/bank-accounts`; // Replace with your localhost URL
 
     // Prepare the data to send
     const bankDetails = {
@@ -93,7 +94,7 @@ const AddBankDetailsForm = () => {
         setType("");
 
         setShowForm(false);
-
+        setHideCards(!showForm)
         // Show success alert with SweetAlert
         Swal.fire({
           icon: "success",
@@ -101,6 +102,7 @@ const AddBankDetailsForm = () => {
           text: "Banking details have been added successfully.",
           confirmButtonText: "Okay",
         });
+        
       } else {
         console.error(
           "Error submitting data:",
@@ -127,7 +129,7 @@ const AddBankDetailsForm = () => {
     <div className="outer-diving">
       <div className="btn-adit-me">
         {/*<h2 className="text-gray-500 text-lg mb-4">Bank Details</h2>*/}
-        <Button variant="dark" onClick={() => setShowForm(!showForm)}>
+        <Button variant="dark" onClick={() => { setShowForm(!showForm); setHideCards(!showForm)}}>
           {showForm ? "Close Form" : "Add Card"}
         </Button>
       </div>
@@ -181,7 +183,7 @@ const AddBankDetailsForm = () => {
               <Button
                 variant="light"
                 className="cancel-btn"
-                onClick={() => setShowForm(false)}
+                onClick={() => { setShowForm(false); setHideCards(!showForm)}}
               >
                 Cancel
               </Button>

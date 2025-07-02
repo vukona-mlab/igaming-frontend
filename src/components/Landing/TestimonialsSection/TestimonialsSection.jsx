@@ -3,11 +3,12 @@ import styles from "./TestimonialsSection.module.css";
 import SectionHeader from "../section-header/SectionHeader";
 import TestimonyCard from "./TestimonyCard";
 import SectionContainer from "../../SectionContainer";
+import BACKEND_URL from "../../../config/backend-config";
 
 const TestimonialsSection = () => {
   const [loading, setLoading] = useState(true);
   const [testimonials, setTestimonials] = useState([]);
-  const url = "http://localhost:8000/api/testimonials";
+  const url = `${BACKEND_URL}/api/testimonials`;
 
   useEffect(() => {
     getTestimonials();

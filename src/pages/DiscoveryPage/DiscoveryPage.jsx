@@ -5,6 +5,7 @@ import SearchBar from "../../components/SearchBar/SearchBar";
 import FreelancerDiscovery from "../../components/FreelancerDiscovery/FreelancerDiscovery";
 import "./DiscoveryPage.css";
 import { useParams, Outlet } from "react-router-dom";
+import SectionContainer from "../../components/SectionContainer";
 const DiscoveryPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const { freelancer_id } = useParams();
@@ -20,16 +21,18 @@ const DiscoveryPage = () => {
         <NavBar />
         <SubNavBar />
       </div>
-
+      <SectionContainer>
         <SearchBar
           placeholder="Search by name or job title..."
           onSearch={handleSearch}
         />
+      </SectionContainer>
+
 
       <div className="section-divider"></div>
 
-      
-        <FreelancerDiscovery searchQuery={searchQuery} />
+
+      <FreelancerDiscovery searchQuery={searchQuery} />
 
     </div>
   );

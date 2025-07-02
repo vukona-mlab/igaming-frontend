@@ -7,57 +7,67 @@ import SectionContainer from "../../SectionContainer";
 const FAQSection = () => {
   const data = [
     {
-      question: "Lorem ipsum dolor sit amet",
+      question: "What is RI Experts?",
       answer: {
-        title: "Ipsum dolor sit amet",
+        title: "What is RI Experts?",
         description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam gravida tempor massa quis blandit. Fusce dapibus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam gravida tempor massa quis blandit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          `RI Experts is a freelancer platform designed for professionals in the gaming industry,
+connecting experts with operators, suppliers, affiliates, and other businesses looking for
+specialised skills.`,
       },
     },
     {
-      question: "Lorem ipsum dolor sit amet",
+      question: "Who can join RI Experts?",
       answer: {
-        title: "Ipsum dolor sit amet",
+        title: "Who can join RI Experts?",
         description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam gravida tempor massa quis blandit. Fusce dapibus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam gravida tempor massa quis blandit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          `Anyone with expertise in the gaming industry can join, including consultants, developers,
+designers, marketers, compliance specialists, responsible gambling experts, trainers, and
+more.`,
       },
     },
     {
-      question: "Lorem ipsum dolor sit amet",
+      question: "How does RI Experts work?",
       answer: {
-        title: "Ipsum dolor sit amet",
+        title: "How does RI Experts work?",
         description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam gravida tempor massa quis blandit. Fusce dapibus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam gravida tempor massa quis blandit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          `Freelancers create a profile showcasing their skills and experience, while businesses
+recruit them for job opportunities or projects. The platform facilitates connections,
+allowing freelancers to be directly hired projects.`,
       },
     },
     {
-      question: "Lorem ipsum dolor sit amet",
+      question: "Is RI Experts only for iGaming professionals?",
       answer: {
-        title: "Ipsum dolor sit amet",
+        title: "Is RI Experts only for iGaming professionals?",
         description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam gravida tempor massa quis blandit. Fusce dapibus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam gravida tempor massa quis blandit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          `While the primary focus is on iGaming and gambling-related industries, professionals with
+relevant skills that support the industry, such as legal consultants, content creators, and
+customer support specialists, are also welcome, subject to terms and conditions.`,
       },
     },
     {
-      question: "Lorem ipsum dolor sit amet",
+      question: "How do I get paid as a freelancer?",
       answer: {
-        title: "Ipsum dolor sit amet",
+        title: "How do I get paid as Freelancer?",
         description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam gravida tempor massa quis blandit. Fusce dapibus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam gravida tempor massa quis blandit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          `Payments are securely processed through the platform. Depending on the project
+agreement, freelancers may receive payments upon project completion, in milestones, or
+based on work agreement.`
       },
     },
     {
-      question: "Lorem ipsum dolor sit amet",
+      question: "Can I set my own rates as a freelancer?",
       answer: {
-        title: "Ipsum dolor sit amet",
+        title: "Can I set my own rates?",
         description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam gravida tempor massa quis blandit. Fusce dapibus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam gravida tempor massa quis blandit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          `Yes, you can define your rates for services on projects that match your expertise.`
       },
     },
   ];
   return (
     <SectionContainer>
-      <section className={styles.FAQSection}>
+      <section id="faq" className={styles.FAQSection}>
         <SectionHeader text="FAQ" />
         <div className={styles.FAQTitle}>Frequently Asked Questions</div>
         {data.map((item, i) => (

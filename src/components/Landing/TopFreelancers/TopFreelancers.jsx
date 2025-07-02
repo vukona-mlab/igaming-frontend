@@ -5,6 +5,7 @@ import FreelancerCard from "../../Freelancer Card/FreelancerCard";
 import SeeMoreButton from "../SeeMoreButton/SeeMoreButton";
 import SectionTitle from "../SectionTitle/SectionTitle";
 import { useNavigate } from "react-router";
+import BACKEND_URL from "../../../config/backend-config";
 
 const TopFreelancers = () => {
   const [loading, setLoading] = useState(true);
@@ -18,7 +19,7 @@ const TopFreelancers = () => {
   const getTopFreelancers = async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/freelancers`,
+        `${BACKEND_URL}/api/freelancers`,
         {
           method: "GET",
         }
@@ -53,7 +54,7 @@ const TopFreelancers = () => {
               profilePicture={freelancer.profilePicture}
               name={freelancer.displayName}
               jobTitle={freelancer.jobTitle}
-              projectsCompleted={freelancer.projects.length}
+              projectsCompleted={freelancer.projects?.length ?? 0 }
               rating={freelancer.rating}
             />
           ))}

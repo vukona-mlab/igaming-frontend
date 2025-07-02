@@ -9,6 +9,9 @@ import EscrowForm from "../../../components/Escrow/EscrowForm";
 import io from "socket.io-client";
 import ZoomMeetingModal from "../../../components/Messaging/ZoomMeetingModal/ZoomMeetingModal";
 import SectionContainer from "../../../components/SectionContainer";
+import BACKEND_URL from "../../../config/backend-config";
+import { BsCameraVideo, BsPersonCircle, BsThreeDotsVertical } from "react-icons/bs";
+import EmptyChatBox from "../../../components/Messaging/ChatBox/EmptyChatBox";
 
 const MessagingPageC = () => {
   const [loading, setLoading] = useState(false);
@@ -25,7 +28,7 @@ const MessagingPageC = () => {
   const [isInvitation, setIsInvitation] = useState(false);
 
   const token = localStorage.getItem("token");
-  const url = import.meta.env.VITE_API_URL;
+  const url = BACKEND_URL;
 
   useEffect(() => {
     getAllChats();
@@ -118,7 +121,7 @@ const MessagingPageC = () => {
     try {
       setLoading(true);
       const response = await fetch(
-        `${url || "http://localhost:8000"}/api/chats`,
+        `${url || BACKEND_URL}/api/chats`,
         {
           method: "GET",
           headers: {
@@ -177,7 +180,10 @@ const MessagingPageC = () => {
     <div className="MessagingPageC">
       <Navbar />
       <ProfileSubNav />
-      <SearchBar placeholder="Search people..." onSearch={handleSearch} />
+      <SectionContainer>
+        <SearchBar placeholder="Search people..." onSearch={handleSearch} />
+      </SectionContainer>
+
       <SectionContainer>
         <div className="messagePageContainer">
           <PeopleComponent
@@ -186,34 +192,41 @@ const MessagingPageC = () => {
             setCurrentClientId={setCurrentFreelancerId}
             setCurrentClientName={setCurrentFreelancerName}
           />
-          {currentChatId && (
-            <ChatBox
-              chatId={currentChatId}
-              currentChat={currentChat}
-              currentClientId={currentFreelancerId}
-              currentClientName={currentFreelancerName}
-              onEscrowClick={handleEscrow}
-            />
-          )}
+          {
+            filteredChats.length === 0 ? (
+              <EmptyChatBox />
+            ) : (
+              currentChatId && (
+                <ChatBox
+                  chatId={currentChatId}
+                  currentChat={currentChat}
+                  currentClientId={currentFreelancerId}
+                  currentClientName={currentFreelancerName}
+                  onEscrowClick={handleEscrow}
+                />
+              )
+            )
+          }
+
         </div>
         {showEscrowModal && escrowData && (
-        <EscrowForm
-          onSubmit={handleEscrowSubmit}
-          freelancerId={escrowData.freelancerId}
-          clientId={escrowData.clientId}
-          project={currentChat?.project}
-          isModal={true}
-          onClose={() => setShowEscrowModal(false)}
-        />
-      )}
-      {showZoomModal && (
-        <ZoomMeetingModal
-          isOpen={showZoomModal}
-          onClose={() => setShowZoomModal(false)}
-          meetingDetails={meetingDetails}
-          isInvitation={isInvitation}
-        />
-      )}
+          <EscrowForm
+            onSubmit={handleEscrowSubmit}
+            freelancerId={escrowData.freelancerId}
+            clientId={escrowData.clientId}
+            project={currentChat?.project}
+            isModal={true}
+            onClose={() => setShowEscrowModal(false)}
+          />
+        )}
+        {showZoomModal && (
+          <ZoomMeetingModal
+            isOpen={showZoomModal}
+            onClose={() => setShowZoomModal(false)}
+            meetingDetails={meetingDetails}
+            isInvitation={isInvitation}
+          />
+        )}
       </SectionContainer>
 
     </div>

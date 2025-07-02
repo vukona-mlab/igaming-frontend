@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import "./PersonCard.css";
 import { BsPersonCircle } from "react-icons/bs";
 import io from "socket.io-client";
+import BACKEND_URL from "../../../config/backend-config";
 
 const PersonCard = ({
   chatId,
@@ -19,7 +20,7 @@ const PersonCard = ({
   const socketRef = useRef();
 
   useEffect(() => {
-    socketRef.current = io("http://localhost:8000");
+    socketRef.current = io(BACKEND_URL);
 
     socketRef.current.on("user-typing", ({ userId, isTyping }) => {
       if (userId === otherId) {

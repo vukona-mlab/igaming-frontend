@@ -6,22 +6,43 @@ import ProfileSubNav from "../../components/Profile/ProfileSubNav/ProfileSubNav"
 import TransactionsSection from "../../components/Payments/TransactionsSection/TransactionsSection";
 import BankingDetailsSection from "../../components/Payments/BankingDetailsSection/BankingDetailsSection"
 import TabsHeader from "../../components/Payments/TabsHeader/TabsHeader";
+import SectionContainer from "../../components/SectionContainer";
 const Transactions = () => {
   const [tab, setTab] = useState("Bank Details");
+  const role = localStorage.getItem('role')
   return (
     <div className="Transactions">
       <Navbar />
       <ProfileSubNav />
-      <div className="transaction-page-sections">
-        <TabsHeader
-          fieldOne="Bank Details"
-          fieldTwo="Transactions"
-          handleTabChange={setTab}
-        />
-       
-        {tab === "Bank Details" ? <BankingDetailsSection/> : <TransactionsSection />}
-      </div>
-    </div>
+      <SectionContainer>
+        <div className="transaction-page-sections">
+          {
+            role === "freelancer" ? (
+              <>
+                <TabsHeader
+                  fieldOne="Bank Details"
+                />
+
+                {tab === "Bank Details" && <BankingDetailsSection /> }
+              </>
+
+            ) : (
+              <>
+                <TabsHeader
+                  fieldOne="Bank Details"
+                  fieldTwo="Transactions"
+                  handleTabChange={setTab}
+                />
+
+                {tab === "Bank Details" ? <BankingDetailsSection /> : <TransactionsSection />}
+              </>
+
+            )
+          }
+        </div>
+      </SectionContainer >
+
+    </div >
   );
 };
 

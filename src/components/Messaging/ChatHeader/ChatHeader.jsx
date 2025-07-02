@@ -5,8 +5,9 @@ import { BsThreeDotsVertical, BsPersonCircle, BsCameraVideo } from "react-icons/
 import { io } from "socket.io-client";
 import ProjectModal from "../ProjectModal/ProjectModal";
 import ZoomMeetingModal from '../ZoomMeetingModal/ZoomMeetingModal';
+import BACKEND_URL from "../../../config/backend-config";
 
-const url = "http://localhost:8000";
+const url = BACKEND_URL;
 const socket = io(url, { transports: ["websocket"] });
 
 const ChatHeader = ({ currentChat }) => {
@@ -99,6 +100,9 @@ const ChatHeader = ({ currentChat }) => {
     // TODO: Implement delete chat logic
     setShowMenu(false);
   };
+  const handleReportUser = () => {
+
+  }
   const handleVideoCall = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -238,6 +242,7 @@ const ChatHeader = ({ currentChat }) => {
               )}
               <button onClick={handleEndChat}>End Chat</button>
               <button onClick={handleDeleteChat}>Delete Chat</button>
+              <button onClick={handleReportUser}>Report User</button>
             </div>
           )}
         </div>

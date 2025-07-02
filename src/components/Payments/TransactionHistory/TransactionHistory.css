@@ -15,6 +15,7 @@
 .th-title {
   font-weight: 400;
   font-size: 16px;
+  margin-top: 20px;
 }
 
 .th-heading-value {
@@ -24,4 +25,14 @@
 }
 .th-transactions-div {
   padding: 25px 0px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px
+}
+.no-projects {
+  color: rgb(26, 26, 26);
+  font-size: 14px;
+  text-align: left;
+  background-color: aqua;
+  padding: 0;
 }

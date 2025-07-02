@@ -16,8 +16,9 @@
   background: white;
   border-radius: 12px;
   width: 100%;
-  max-width: 1600px;
+  max-width: 920px;
   max-height: 90vh;
+  margin: auto;
   display: flex;
   flex-direction: column;
   overflow: hidden;

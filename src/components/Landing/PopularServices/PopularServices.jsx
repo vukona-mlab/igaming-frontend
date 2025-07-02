@@ -5,6 +5,7 @@ import SeeMoreButton from "../SeeMoreButton/SeeMoreButton";
 import "./PopularServices.css";
 import SectionTitle from "../SectionTitle/SectionTitle";
 import SectionContainer from "../../SectionContainer";
+import BACKEND_URL from "../../../config/backend-config";
 
 const PopularServices = () => {
   const [services, setServices] = useState([]);
@@ -14,7 +15,7 @@ const PopularServices = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/services");
+        const response = await fetch(`${BACKEND_URL}/api/services`);
         if (!response.ok) {
           throw new Error("Failed to load services");
         }

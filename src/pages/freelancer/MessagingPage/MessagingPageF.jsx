@@ -6,6 +6,9 @@ import PeopleComponent from "../../../components/Messaging/PeopleComponent/Peopl
 import ChatBox from "../../../components/Messaging/ChatBox/ChatBox";
 import ZoomMeetingModal from "../../../components/Messaging/ZoomMeetingModal/ZoomMeetingModal";
 import io from "socket.io-client";
+import BACKEND_URL from "../../../config/backend-config";
+import SectionContainer from "../../../components/SectionContainer";
+import EmptyChatBox from "../../../components/Messaging/ChatBox/EmptyChatBox";
 
 const MessagingPage = () => {
   const [loading, setLoading] = useState(false);
@@ -19,7 +22,7 @@ const MessagingPage = () => {
   const [isInvitation, setIsInvitation] = useState(false);
 
   const token = localStorage.getItem("token");
-  const url = import.meta.env.VITE_API_URL;
+  // const url = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     getAllChats();
@@ -30,15 +33,15 @@ const MessagingPage = () => {
     if (currentChatId && chats.length > 0) {
       const chat = chats.find(chat => chat.id === currentChatId);
       setCurrentChat(chat);
-      
+
       const currentUserId = localStorage.getItem("uid");
       console.log("Current logged in user ID:", currentUserId);
-      
+
       // Find the client participant
       const client = chat?.participants?.find(
         part => part.uid !== currentUserId
       );
-      
+
       if (client) {
         setCurrentClientName(client.name || "");
         setCurrentClientId(client.uid || "");
@@ -52,15 +55,15 @@ const MessagingPage = () => {
       Notification.requestPermission();
     }
 
-    const socket = io(url);
-    
+    const socket = io(BACKEND_URL);
+
     socket.on('video-call-invitation', (data) => {
-      if (data.recipientId === localStorage.getItem('uid') && 
-          data.initiatorRole === 'client') {
+      if (data.recipientId === localStorage.getItem('uid') &&
+        data.initiatorRole === 'client') {
         if (Notification.permission === 'granted') {
           const notification = new Notification('Video Call Invitation', {
             body: `${data.initiatorName} is inviting you to a video call`,
-            icon: '/path/to/notification-icon.png' 
+            icon: '/path/to/notification-icon.png'
           });
 
           notification.onclick = () => {
@@ -84,26 +87,26 @@ const MessagingPage = () => {
   const getAllChats = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${url || 'http://localhost:8000'}/api/chats`, {
+      const response = await fetch(`${BACKEND_URL}/api/chats`, {
         method: "GET",
         headers: {
           Authorization: token,
         },
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         if (data.chats && data.chats.length > 0) {
           // Process the chats to ensure lastMessage is a string
           const processedChats = data.chats.map(chat => ({
             ...chat,
-            lastMessage: typeof chat.lastMessage === 'object' 
-              ? chat.lastMessage.text 
+            lastMessage: typeof chat.lastMessage === 'object'
+              ? chat.lastMessage.text
               : chat.lastMessage || 'No messages'
           }));
-          
+
           setChats(processedChats);
-          
+
           // Set initial chat if available
           if (processedChats.length > 0) {
             setCurrentChatId(processedChats[0].id);
@@ -117,30 +120,39 @@ const MessagingPage = () => {
     }
   };
 
- 
 
- 
+
+
 
   return (
     <div className="MessagingPageF">
       <Navbar />
       <ProfileSubNav />
-      <div className="messagePageContainer">
-        <PeopleComponent
-          people={chats}
-          setcurrentChatId={setCurrentChatId}
-          setCurrentClientId={setCurrentClientId}
-          setCurrentClientName={setCurrentClientName}
-        />
-        {currentChatId && (
-          <ChatBox
-            chatId={currentChatId}
-            currentChat={currentChat}
-            currentClientId={currentClientId}
-            currentClientName={currentClientName}
+      <SectionContainer>
+        <div className="messagePageContainer">
+          <PeopleComponent
+            people={chats}
+            setcurrentChatId={setCurrentChatId}
+            setCurrentClientId={setCurrentClientId}
+            setCurrentClientName={setCurrentClientName}
           />
-        )}
-      </div>
+          {
+            chats.length === 0 ? (
+              <EmptyChatBox />
+            ) : (
+              currentChatId && (
+                <ChatBox
+                  chatId={currentChatId}
+                  currentChat={currentChat}
+                  currentClientId={currentClientId}
+                  currentClientName={currentClientName}
+                />
+              )
+            )
+          }
+        </div>
+
+      </SectionContainer>
       {showZoomModal && (
         <ZoomMeetingModal
           isOpen={showZoomModal}
@@ -149,6 +161,7 @@ const MessagingPage = () => {
           isInvitation={isInvitation}
         />
       )}
+
     </div>
   );
 };

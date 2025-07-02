@@ -7,6 +7,9 @@ import GoogleSignInButton from "../../../components/Auth/googleSignButton/google
 import { useNavigate } from "react-router";
 import { auth, googleProvider } from "../../../config/firebase";
 import { signInWithPopup } from "firebase/auth";
+import BACKEND_URL from "../../../config/backend-config";
+const deviceToken = localStorage.getItem("rig-dev-token")
+
 export default function SignIn() {
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
@@ -28,7 +31,7 @@ export default function SignIn() {
     if (!error) {
       // Submit form
       try {
-        const res = await fetch(`http://localhost:8000/api/auth/login`, {
+        const res = await fetch(`${BACKEND_URL}/api/auth/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -36,6 +39,7 @@ export default function SignIn() {
           body: JSON.stringify({
             email: formData.username,
             password: formData.password,
+            deviceToken: deviceToken
           }),
         });
         const data = await res.json();
@@ -56,6 +60,9 @@ export default function SignIn() {
     }
   };
   const handleGoogleSignIn = async () => {
+    console.log({ deviceToken });
+    
+    return
     try {
       // Sign in with Google
       const result = await signInWithPopup(auth, googleProvider);
@@ -64,14 +71,14 @@ export default function SignIn() {
       const idToken = await result.user.getIdToken();
 
       // Send token to backend
-      const response = await fetch("http://localhost:8000/api/auth/google", {
+      const response = await fetch(`${BACKEND_URL}/api/auth/google`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ idToken }),
+        body: JSON.stringify({ idToken, deviceToken }),
       });
-
+      
       const data = await response.json();
       if (response.ok) {
         localStorage.setItem("token", data.token);
@@ -118,7 +125,7 @@ export default function SignIn() {
         </div>
         <div className="image-section">
           <img
-            src="/public/images/ri-experts.jpg"
+            src="/images/ri-experts.jpg"
             alt="logo"
             className="image"
           ></img>

@@ -54,8 +54,10 @@ const ChatInput = ({
           type="text"
           placeholder="Type your message here..."
           className="message-input"
+          size="sm"
           value={text}
           onChange={(e) => setText(e.target.value)}
+
         />
 
         {/* Show Camera Icon when input is empty, else show Send Icon */}

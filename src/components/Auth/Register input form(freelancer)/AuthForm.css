@@ -52,9 +52,8 @@
 .input-group-wrapper .btn-eye {
   position: absolute;
   right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
 }
+
 
 @media screen and (max-width: 425px) {
   .auth-form {

@@ -23,7 +23,14 @@ import Document from "./pages/freelancer/DocumentsPage/DocumentUpload/documentUp
 import DocumentView from "./pages/freelancer/DocumentsPage/ViewDocuments/DocumentsView";
 import Projects from "./pages/projects/Projects";
 import ContactPage from "./pages/ContactPage/ContactPage";
+import { registerNotificationSW } from "./config/service-workers";
+import { useEffect } from "react";
+import { requestPermissionAndGetToken } from "./config/service-workers/notification-sw";
 function App() {
+  useEffect(() => {
+    //register service worker
+    requestPermissionAndGetToken()
+  }, [])
   return (
     <div className="App">
       <Router>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 //import Swal from "sweetalert2"; // Make sure to import SweetAlert
 import "./EditForm.css";
 import { Form, Button } from "react-bootstrap";
+import BACKEND_URL from "../../../config/backend-config";
 
 const EditForm = ({ card, onCancel, onUpdate }) => {
   // State for card details and errors
@@ -18,7 +19,7 @@ const EditForm = ({ card, onCancel, onUpdate }) => {
   useEffect(() => {
     const fetchBanks = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/banks", {
+        const response = await fetch(`${BACKEND_URL}/api/banks`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

@@ -4,6 +4,7 @@ import DocumentIcon from '../../../assets/document-icon.svg'; // You'll need to 
 import PlanOptions from './PlanOptions/PlanOptions';
 import Info from "./ProjectDescription/ProjectDescription"
 import DocumentSection from './DocumentSection/DocumentSection';
+import BACKEND_URL from '../../../config/backend-config';
 
 const ProjectForm = ({ freelancerId }) => {
     const [selectedPlan, setSelectedPlan] = useState('standard');
@@ -15,7 +16,7 @@ const ProjectForm = ({ freelancerId }) => {
             try {
                 const token = localStorage.getItem("token");
                 const response = await fetch(
-                    `${import.meta.env.VITE_API_URL}/api/auth/users/${freelancerId}`,
+                    `${BACKEND_URL}/api/auth/users/${freelancerId}`,
                     {
                         headers: {
                             Authorization: token,

@@ -8,7 +8,8 @@ import "./SignIn.css";
 import { auth, googleProvider } from "../../../config/firebase";
 import { signInWithPopup } from "firebase/auth";
 import { io } from "socket.io-client";
-const url = "http://localhost:8000";
+import BACKEND_URL from "../../../config/backend-config";
+const url = BACKEND_URL;
 const socket = io(url, { transports: ["websocket"] });
 // Validation functions
 export const validatePassword = (password) => {
@@ -43,7 +44,7 @@ const FreelancerSignIn = () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const idToken = await result.user.getIdToken();
-      const response = await fetch("http://localhost:8000/api/auth/google", {
+      const response = await fetch(`${BACKEND_URL}/api/auth/google`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -86,7 +87,7 @@ const FreelancerSignIn = () => {
 
     return new Promise(async (r) => {
       try {
-        const res = await fetch("http://localhost:8000/api/auth/login", {
+        const res = await fetch(`${BACKEND_URL}/api/auth/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -166,7 +167,7 @@ const FreelancerSignIn = () => {
 
       <div className="client-login-right d-flex align-items-stretch">
         <img
-          src="/public/images/ri-experts.jpg"
+          src="/images/ri-experts.jpg"
           alt="Woman with digital interface"
           className="img-fluid h-100"
         />

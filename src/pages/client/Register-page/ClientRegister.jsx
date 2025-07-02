@@ -8,20 +8,8 @@ import AuthForm from "../../../components/Auth/registration-input-form-client/Au
 import "./ClientRegister.css";
 import { auth, googleProvider } from "../../../config/firebase";
 import { signInWithPopup } from "firebase/auth";
-
-export const validatePassword = (password) => {
-  if (!password.match(/^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$/)) {
-    return "Password must be at least 6 characters, with a number, one uppercase letter, and a special character";
-  }
-  return "";
-};
-
-export const validateEmail = (email) => {
-  if (!email.match(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/)) {
-    return "Invalid email format";
-  }
-  return "";
-};
+import BACKEND_URL from "../../../config/backend-config";
+import ErrorSpan from "../../../components/Common/error-span/ErrorSpan";
 
 const ClientRegister = () => {
   const [formData, setFormData] = useState({
@@ -34,9 +22,32 @@ const ClientRegister = () => {
     username: "",
     password: "",
   });
-
+  const [submissionError, setSubmissionError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const validateEmail = (email) => {
+    setErrors((errors) => {
+      return {
+        ...errors, username: !email
+          ? "Email is required"
+          : !email.match(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/)
+            ? "Invalid email format"
+            : ""
+      }
+    })
+  }
+  const validatePassword = (password) => {
+    setErrors((errors) => {
+      return {
+        ...errors, password: !password
+          ? "Password is required"
+          : !password.match(/^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$/)
+            ? "Password must be at least 6 characters, with a number, one uppercase letter, and a special character"
+            : ""
+      }
+    })
+  }
   const navigation = useNavigate();
-  const url = import.meta.env.VITE_API_URL;
+  // const url = BACKEND_URL;
 
   const handleGoogleSignIn = async () => {
     try {
@@ -47,7 +58,7 @@ const ClientRegister = () => {
       const idToken = await result.user.getIdToken();
 
       // Send token to backend
-      const response = await fetch(`${url}/api/auth/google`, {
+      const response = await fetch(`${BACKEND_URL}/api/auth/google`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -63,6 +74,8 @@ const ClientRegister = () => {
 
         navigation("/profile");
       }
+      console.log();
+      
     } catch (error) {
       console.error("Error:", error);
       alert("Error signing in: " + error.message);
@@ -75,19 +88,18 @@ const ClientRegister = () => {
   };
 
   const handleRegister = async () => {
-    const emailError = validateEmail(formData.username);
-    const passwordError = validatePassword(formData.password);
+    if(formData.username.trim() === "") setErrors((e) => ({ ...e, username: "Email is required"}))
+    if(formData.password.trim() === "") setErrors(e => ({ ...e, password: "Password is required" }))
 
-    if (emailError || passwordError) {
-      setErrors({ username: emailError, password: passwordError });
+    if ((errors.username || !formData.username.trim() || errors.password || !formData.password.trim())) {
       return;
     }
-
+    setIsLoading(true)
     console.log({ formData });
 
     return new Promise(async (r) => {
       try {
-        const res = await fetch(`${url}/api/auth/register`, {
+        const res = await fetch(`${BACKEND_URL}/api/auth/register`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -101,11 +113,16 @@ const ClientRegister = () => {
         });
         const data = await res.json();
         if (res.ok) {
+          setIsLoading(false)
           navigation("/client-signin");
           r(true);
+        } else {
+          setSubmissionError(data.error)
+          setIsLoading(false)
         }
       } catch (err) {
         console.log(err);
+        setSubmissionError(err.error)
         r(false);
       }
     });
@@ -136,19 +153,14 @@ const ClientRegister = () => {
             formData={formData}
             setFormData={setFormData}
             onSubmit={handleFormSubmit}
+            validateEmail={validateEmail}
+            validatePassword={validatePassword}
             errors={errors}
           />
 
-          {/* Display validation errors */}
-          {errors.username && (
-            <p className="error-message">{errors.username}</p>
-          )}
-          {errors.password && (
-            <p className="error-message">{errors.password}</p>
-          )}
-
+          <ErrorSpan error={submissionError} />
           {/* Sign Up Button */}
-          <LoadingButton onClick={handleRegister} text="Continue with email" />
+          <LoadingButton onClick={handleRegister} text="Continue with email" isLoading={isLoading} />
 
           {/* Google Sign-In Button */}
           <GoogleSignInButton handleGoogleSignIn={handleGoogleSignIn} />
@@ -158,7 +170,7 @@ const ClientRegister = () => {
       {/* Right Section */}
       <div className="client-register-right d-flex align-items-stretch">
         <img
-          src="/public/images/ri-experts.jpg"
+          src="/images/ri-experts.jpg"
           alt="Woman with digital interface"
           className="img-fluid h-100"
         />

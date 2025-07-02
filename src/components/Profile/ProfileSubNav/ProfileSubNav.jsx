@@ -1,11 +1,11 @@
 import React from "react";
 import "./ProfileSubNav.css";
-import Dashboard from "../../../../public/images/dashboard.svg";
-import Message from "../../../../public/images/message.svg";
+import Dashboard from "/images/dashboard.svg";
+import Message from "/images/message.svg";
 
-import Money from "../../../../public/images/money.svg";
+import Money from "/images/money.svg";
 
-import Order from "../../../../public/images/order.svg";
+import Order from "/images/order.svg";
 
 import { useNavigate } from "react-router";
 import SectionContainer from "../../SectionContainer";

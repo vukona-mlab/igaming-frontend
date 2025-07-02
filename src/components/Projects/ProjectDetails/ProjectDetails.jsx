@@ -4,6 +4,7 @@ import "./ProjectDetails.css";
 import ImageViewer from "./ImageViewer";
 import { CiCamera } from "react-icons/ci"; // Import the camera icon
 import { GoUpload } from "react-icons/go";
+import BACKEND_URL from "../../../config/backend-config";
 
 const ProjectDetails = ({ project: initialProject, onClose }) => {
   const [currentTab, setCurrentTab] = useState("Details");
@@ -39,7 +40,7 @@ const ProjectDetails = ({ project: initialProject, onClose }) => {
       });
 
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/projects/${project.id}`,
+        `${BACKEND_URL}/api/projects/${project.id}`,
         {
           method: "PUT",
           headers: {
@@ -92,7 +93,7 @@ const ProjectDetails = ({ project: initialProject, onClose }) => {
       });
 
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/projects/${project.id}/docs`,
+        `${BACKEND_URL}/api/projects/${project.id}/docs`,
         {
           method: "PUT",
           headers: {
@@ -134,7 +135,7 @@ const ProjectDetails = ({ project: initialProject, onClose }) => {
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/projects/${project.id}/files`,
+        `${BACKEND_URL}/api/projects/${project.id}/files`,
         {
           method: "DELETE",
           headers: {
@@ -167,7 +168,7 @@ const ProjectDetails = ({ project: initialProject, onClose }) => {
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/projects/${project.id}/docs`,
+        `${BACKEND_URL}/api/projects/${project.id}/docs`,
         {
           method: "DELETE",
           headers: {
@@ -463,7 +464,7 @@ const ProjectDetails = ({ project: initialProject, onClose }) => {
       });
 
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/projects/${project.id}/picture`,
+        `${BACKEND_URL}/api/projects/${project.id}/picture`,
         {
           method: "PUT",
           headers: {
@@ -615,7 +616,7 @@ const ProjectDetails = ({ project: initialProject, onClose }) => {
             <div className="pjd-detail-group">
               <h3>Requirements</h3>
               <ul className="requirements-list">
-                {project.requirements.map((req, index) => (
+                {project.requirements && project.requirements.map((req, index) => (
                   <li key={index}>{req}</li>
                 ))}
               </ul>

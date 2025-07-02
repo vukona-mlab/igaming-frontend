@@ -7,36 +7,12 @@ import AuthForm from "../../../components/Auth/Register input form(freelancer)/A
 import "./Register.css";
 import { auth, googleProvider } from "../../../config/firebase";
 import { signInWithPopup } from "firebase/auth";
-
-export const validatePassword = (password) => {
-  if (!password.match(/^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$/)) {
-    return "Password must be at least 6 characters, with a number, one uppercase letter, and a special character";
-  }
-  return "";
-};
-
-export const validateEmail = (email) => {
-  if (!email.match(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/)) {
-    return "Invalid email format";
-  }
-  return "";
-};
-
-export const validateJobTitle = (jobTitle) => {
-  if (!jobTitle.trim()) {
-    return "Job title is required";
-  }
-  return "";
-};
-
-export const validateExperience = (experience) => {
-  if (!experience || isNaN(experience) || experience < 0) {
-    return "Experience must be a positive number";
-  }
-  return "";
-};
+import BACKEND_URL from "../../../config/backend-config";
+import ErrorSpan from "../../../components/Common/error-span/ErrorSpan";
 
 const Register = () => {
+  const [submissionError, setSubmissionError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -52,12 +28,52 @@ const Register = () => {
   });
 
   const navigation = useNavigate();
+  const validateEmail = (email) => {
+    setErrors((errors) => {
+      return {
+        ...errors, username: !email.trim()
+          ? "Email is required"
+          : !email.match(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/)
+            ? "Invalid email format"
+            : ""
+      }
+    })
+  }
+  const validatePassword = (password) => {
+    setErrors((errors) => {
+      return {
+        ...errors, password: !password.trim()
+          ? "Password is required"
+          : !password.match(/^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$/)
+            ? "Password must be at least 6 characters, with a number, one uppercase letter, and a special character"
+            : ""
+      }
+    })
+  }
+  const validateJobTitle = (jobTitle) => {
+    setErrors(errors => {
+      return {
+        ...errors, jobTitle: !jobTitle.trim()
+          ? "Job Title is required"
+          : ""
+      }
+    })
+  };
 
+  const validateExperience = (experience) => {
+    setErrors(errors => {
+      return {
+        ...errors, experience: !experience || isNaN(experience) || experience < 0
+          ? "Experience must be a positive number"
+          : ""
+      }
+    })
+  };
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const idToken = await result.user.getIdToken();
-      const response = await fetch("http://localhost:8000/api/auth/google", {
+      const response = await fetch(`${BACKEND_URL}/api/auth/google`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -80,23 +96,18 @@ const Register = () => {
   };
 
   const handleRegister = async () => {
-    const emailError = validateEmail(formData.username);
-    const passwordError = validatePassword(formData.password);
-    const jobTitleError = validateJobTitle(formData.jobTitle);
-    const experienceError = validateExperience(formData.experience);
+    if (formData.username.trim() === "") setErrors((e) => ({ ...e, username: "Email is required" }))
+    if (formData.password.trim() === "") setErrors(e => ({ ...e, password: "Password is required" }))
+    if (formData.jobTitle.trim() === "") setErrors((e) => ({ ...e, jobTitle: "Job title is required" }))
+    if (formData.experience.trim() === "") setErrors(e => ({ ...e, experience: "Experience is required" }))
 
-    if (emailError || passwordError || jobTitleError || experienceError) {
-      setErrors({
-        username: emailError,
-        password: passwordError,
-        jobTitle: jobTitleError,
-        experience: experienceError,
-      });
+    if (errors.username || !formData.username.trim() || errors.password || !formData.password.trim()
+      || errors.jobTitle || !formData.jobTitle.trim() || errors.experience || !formData.experience.trim()) {
       return;
     }
-
+    setIsLoading(true)
     try {
-      const res = await fetch("http://localhost:8000/api/auth/register", {
+      const res = await fetch(`${BACKEND_URL}/api/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -112,9 +123,11 @@ const Register = () => {
 
       const data = await res.json();
       if (res.ok) {
+        setIsLoading(false)
         navigation("/freelancer-signin");
       } else {
-        alert(data.error || "Registration failed");
+        setSubmissionError(data.error)
+        setIsLoading(false)
       }
     } catch (err) {
       console.log(err);
@@ -144,29 +157,21 @@ const Register = () => {
             formData={formData}
             setFormData={setFormData}
             errors={errors}
+            validateEmail={validateEmail}
+            validateExperience={validateExperience}
+            validateJobTitle={validateJobTitle}
+            validatePassword={validatePassword}
           />
-
-          {errors.username && (
-            <p className="error-message">{errors.username}</p>
-          )}
-          {errors.password && (
-            <p className="error-message">{errors.password}</p>
-          )}
-          {errors.jobTitle && (
-            <p className="error-message">{errors.jobTitle}</p>
-          )}
-          {errors.experience && (
-            <p className="error-message">{errors.experience}</p>
-          )}
-
-          <LoadingButton onClick={handleRegister} text="Continue with email" />
+          <ErrorSpan error={submissionError} />
+          
+          <LoadingButton onClick={handleRegister} text="Continue with email" isLoading={isLoading} />
           <GoogleSignInButton handleGoogleSignIn={handleGoogleSignIn} />
         </div>
       </div>
 
       <div className="client-register-right d-flex align-items-stretch">
         <img
-          src="/public/images/ri-experts.jpg"
+          src="/images/ri-experts.jpg"
           alt="Woman with digital interface"
           className="img-fluid h-100"
         />

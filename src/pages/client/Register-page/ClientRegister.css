@@ -118,14 +118,7 @@
   border-radius: 15px;
 }
 
-.error-message {
-  font-size: 11px;
-  color: red;
-  text-align: center;
-  width: 100%;
-  margin-top: 2px;
-  font-weight: 500;
-}
+
 
 @media screen and (max-width: 768px) {
   .client-register-right {

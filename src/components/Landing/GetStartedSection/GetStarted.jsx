@@ -27,7 +27,7 @@ export default function GetStarted() {
               <div className="cards">
                 <div className="img-card">
                   <img
-                    src="/public/images/red-magnifying-img.png"
+                    src="/images/red-magnifying-img.png"
                     width="300"
                   ></img>
                 </div>
@@ -38,7 +38,7 @@ export default function GetStarted() {
             <Col>
               <div className="cards">
                 <div className="img-card">
-                  <img src="/public/images/green-red-img.png" width="300"></img>
+                  <img src="/images/green-red-img.png" width="300"></img>
                 </div>
                 <p>
                   Get quality done quickly and within <br />
@@ -50,7 +50,7 @@ export default function GetStarted() {
               <div className="cards">
                 <div className="img-card">
                   <img
-                    src="/public/images/green-tick-img.png"
+                    src="/images/green-tick-img.png"
                     width="300"
                   ></img>
                 </div>

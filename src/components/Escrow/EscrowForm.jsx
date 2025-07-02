@@ -3,6 +3,7 @@ import { Button, Form } from "react-bootstrap";
 import "./EscrowForm.css";
 import Modal from 'react-bootstrap/Modal';
 import TermsModal from './TermsModal';
+import BACKEND_URL from "../../config/backend-config";
 
 const EscrowForm = ({ 
   onSubmit, 
@@ -31,7 +32,7 @@ const EscrowForm = ({
         const token = localStorage.getItem("token");
         
         // Fetch client details using the correct endpoint
-        const clientResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/users/${clientId}`, {
+        const clientResponse = await fetch(`${BACKEND_URL}/api/auth/users/${clientId}`, {
           headers: {
             Authorization: token
           }
@@ -40,7 +41,7 @@ const EscrowForm = ({
         setClientEmail(clientData.user.email);
 
         // Fetch freelancer details using the correct endpoint
-        const freelancerResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/users/${freelancerId}`, {
+        const freelancerResponse = await fetch(`${BACKEND_URL}/api/auth/users/${freelancerId}`, {
           headers: {
             Authorization: token
           }

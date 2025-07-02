@@ -12,7 +12,7 @@ const Showcase = () => {
 
   return (
     <SectionContainer padding={60}>
-      <section className="showcase-section">
+      <section id="landing" className="showcase-section">
         <div className="showcase-content">
           {/* Left Side - Text */}
           <div className="showcase-text">

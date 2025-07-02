@@ -2,50 +2,55 @@ import React, { useState, useEffect } from "react";
 import EditForm from "../EditForm/EditForm"; // Import EditForm
 import "./BankingCard.css";
 import { useNavigate } from "react-router";
-const BankingCard = () => {
+import BACKEND_URL from "../../../config/backend-config";
+const BankingCard = ({ hideCards }) => {
   const [cards, setCards] = useState([]);
   const [banks, setBanks] = useState([]);
 
   const [editCardId, setEditCardId] = useState(null); // Track which card is being edited
   const token = localStorage.getItem("token") || "";
   const navigation = useNavigate();
-  useEffect(() => {
-    const fetchCards = async () => {
-      try {
-        console.log("Fetching cards...");
+  const fetchCards = async () => {
+    try {
+      console.log("Fetching cards...");
 
-        const response = await fetch(
-          "http://localhost:8000/api/bank-accounts",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: token,
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error(`HTTP Error: ${response.status}`);
+      const response = await fetch(
+        `${BACKEND_URL}/api/bank-accounts`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
         }
+      );
 
-        const data = await response.json();
-        console.log("Full API Response:", data);
-
-        if (data.bankAccounts) {
-          setCards(data.bankAccounts);
-        } else if (data.bankAccount) {
-          setCards([data.bankAccount]);
-        } else {
-          throw new Error("Unexpected response format");
-        }
-      } catch (error) {
-        console.error("Error fetching cards:", error);
+      if (!response.ok) {
+        throw new Error(`HTTP Error: ${response.status}`);
+      } else {
+        console.log({ bankResponse: response.status});
+        
       }
-    };
+
+      const data = await response.json();
+      console.log("Full Bank API Response:", data);
+
+      if (data.bankAccounts) {
+        setCards(data.bankAccounts);
+      } else if (data.bankAccount) {
+        setCards([data.bankAccount]);
+      } else {
+        throw new Error("Unexpected response format");
+      }
+    } catch (error) {
+      console.error("Error fetching cards:", error);
+    }
+  };
+  useEffect(() => {
+
     const fetchBanks = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/banks", {
+        const response = await fetch(`${BACKEND_URL}/api/banks`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -73,7 +78,7 @@ const BankingCard = () => {
   const handleDelete = async (cardId) => {
     try {
       const response = await fetch(
-        `http://localhost:8000/api/bank-accounts/${cardId}`,
+        `${BACKEND_URL}/api/bank-accounts/${cardId}`,
         {
           method: "DELETE",
           headers: {
@@ -97,7 +102,7 @@ const BankingCard = () => {
   const handleUpdate = async (updatedCard) => {
     try {
       const response = await fetch(
-        `http://localhost:8000/api/bank-accounts/${updatedCard.id}`,
+        `${BACKEND_URL}/api/bank-accounts/${updatedCard.id}`,
         {
           method: "PUT",
           headers: {
@@ -121,7 +126,7 @@ const BankingCard = () => {
       console.error("Error updating card:", error);
     }
   };
-
+  if(hideCards) return null
   return (
     <div className="BankingCardContainer">
       {editCardId ? (

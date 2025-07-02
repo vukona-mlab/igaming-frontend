@@ -5,21 +5,23 @@
   position: relative;
   align-items: stretch;
   width: 100% !important;
+  overflow: hidden;
 }
 
 .client-register-left {
   flex: 55%;
   width: 55% !important;
   background: #fff;
-  padding: 50px;
+  padding: 500px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   position: relative;
-  height: 100%;
+  height: calc(100% - 100px);
   margin-top: 0;
   width: 100% !important;
   align-items: center !important;
+  overflow: scroll;
 }
 
 .client-register-right {
@@ -114,15 +116,6 @@
   margin-bottom: 15px !important;
   width: 90% !important;
   border-radius: 15px;
-}
-
-.error-message {
-  font-size: 11px;
-  color: red;
-  text-align: center;
-  width: 100%;
-  margin-top: 2px;
-  font-weight: 500;
 }
 
 @media screen and (max-width: 768px) {

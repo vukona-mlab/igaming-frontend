@@ -8,8 +8,10 @@ import "./signin.css";
 import { auth, googleProvider } from "../../../config/firebase";
 import { signInWithPopup } from "firebase/auth";
 import { io } from "socket.io-client";
-const url = "http://localhost:8000";
+import BACKEND_URL from "../../../config/backend-config";
+const url = BACKEND_URL;
 const socket = io(url, { transports: ["websocket"] });
+const deviceToken = localStorage.getItem("rig-dev-token")
 
 // Validation functions
 export const validatePassword = (password) => {
@@ -44,12 +46,12 @@ const ClientLogin = () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const idToken = await result.user.getIdToken();
-      const response = await fetch("http://localhost:8000/api/auth/google", {
+      const response = await fetch(`${BACKEND_URL}/api/auth/google`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ idToken }),
+        body: JSON.stringify({ idToken, deviceToken }),
       });
 
       const data = await response.json();
@@ -87,7 +89,7 @@ const ClientLogin = () => {
 
     return new Promise(async (r) => {
       try {
-        const res = await fetch("http://localhost:8000/api/auth/login", {
+        const res = await fetch(`${BACKEND_URL}/api/auth/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -95,6 +97,7 @@ const ClientLogin = () => {
           body: JSON.stringify({
             email: formData.username,
             password: formData.password,
+            deviceToken: deviceToken
           }),
         });
 
@@ -169,7 +172,7 @@ const ClientLogin = () => {
 
       <div className="client-login-right d-flex align-items-stretch">
         <img
-          src="/public/images/ri-experts.jpg"
+          src="/images/ri-experts.jpg"
           alt="Woman with digital interface"
           className="img-fluid h-100"
         />

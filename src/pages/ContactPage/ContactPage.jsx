@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./contactPact.css";
 import { BiSolidPhoneCall } from "react-icons/bi";
 import { MdEmail } from "react-icons/md";
@@ -11,10 +11,19 @@ import SubNavBar from "../../components/Common/SubNavBar/SubNavBar";
 import Footer from "../footer/Footer";
 
 export default function ContactPage() {
+  const [formData, handleFormDataChange] = useState({})
+    const handleChange = (e) => {
+    handleFormDataChange({ ...formData, [e.target.name]: e.target.value });
+  };
+  const handleFormSubmit = (e) => {
+    e.preventDefault()
+    console.log(formData);
+    
+  }
   return (
-    <div className="main-container-c">
+    <div id="contact" className="main-container-c">
       {/* <NavBar/> */}
-      <SubNavBar />
+      {/* <SubNavBar /> */}
       <div className="heading-container-c">
         <h1 className="frst-heading-c">Contact Us</h1>
         <div className="scnd-heading-c">
@@ -74,12 +83,12 @@ export default function ContactPage() {
               </div>
               <div className="ellipse-conainer">
                 <img
-                  src="/public/images/Ellipse-full.png"
+                  src="/images/Ellipse-full.png"
                   alt="full ellipse"
                   className="full-ellipse"
                 ></img>
                 <img
-                  src="/public/images/Ellipse-half.png"
+                  src="/images/Ellipse-half.png"
                   alt="half ellipse"
                   className="half-ellipse"
                 ></img>
@@ -87,7 +96,7 @@ export default function ContactPage() {
             </div>
           </div>
           <div className="right-c">
-            <form>
+            <form onSubmit={handleFormSubmit}>
               <div className="input-container-c">
                 <div className="input-left">
                   <label htmlFor="fname" className="name-email">
@@ -99,116 +108,91 @@ export default function ContactPage() {
                     id="fname"
                     name="fname"
                     className="input-field-c"
+                    onChange={handleChange}
                   />
                   <br />
-                  <label htmlFor="lname" className="name-email">
+                  <label htmlFor="email" className="name-email">
                     Email
                   </label>
                   <br />
                   <input
                     type="text"
-                    id="lname"
-                    name="lname"
+                    id="email"
+                    name="email"
                     className="input-field-c"
+                    onChange={handleChange}
                   />
                 </div>
                 <div className="input-right">
-                  <label htmlFor="fname" className="last-number">
+                  <label htmlFor="lname" className="last-number">
                     Last name
                   </label>
                   <br />
                   <input
                     type="text"
-                    id="fname"
-                    name="fname"
+                    id="lname"
+                    name="lname"
                     className="input-field-c"
+                    onChange={handleChange}
                   />
                   <br />
-                  <label htmlFor="lname" className="last-number">
+                  <label htmlFor="phoneNumber" className="last-number">
                     Phone number
                   </label>
                   <br />
                   <input
                     type="text"
-                    id="lname"
-                    name="lname"
+                    id="phoneNumber"
+                    name="phoneNumber"
                     className="input-field-c"
+                    onChange={handleChange}
                   />
                 </div>
               </div>
               <div className="subjects-c">
-                <h6 className="subject-heading-c">Select subject?</h6>
-                <div className="select-subjects-c">
-                  {/* <form className="check-form"> */}
-                  <input
-                    type="checkbox"
-                    id="checkbox"
-                    name="vehicle1"
-                    value="Bike"
-                    className="checkbox-c"
-                  />
-                  <label htmlFor="vehicle1">General enquiry</label>
-                  <br />
-
-                  <input
-                    type="checkbox"
-                    id="checkbox"
-                    name="vehicle2"
-                    value="Car"
-                    className="checkbox-c"
-                  />
-                  <label htmlFor="vehicle2"> General enquiry</label>
-                  <br />
-
-                  <input
-                    type="checkbox"
-                    id="checkbox"
-                    name="vehicle3"
-                    value="Boat"
-                    className="checkbox-c"
-                  />
-                  <label htmlFor="vehicle3">General enquiry</label>
-                  <br />
-                  <input
-                    type="checkbox"
-                    id="checkbox"
-                    name="vehicle3"
-                    value="Boat"
-                    className="checkbox-c"
-                  />
-                  <label htmlFor="vehicle3">General enquiry</label>
-                  {/* </form> */}
-                </div>
                 <div className="message-box-c">
                   <label htmlFor="subject" className="message-text-c">
+                    Subject
+                  </label>
+                  <input
+                    id="subject"
+                    name="subject"
+                    placeholder="Write write your subject"
+                    style={{ height: "50px", padding: 10 }}
+                    className="message-c"
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="message-box-c">
+                  <label htmlFor="message" className="message-text-c">
                     Message
                   </label>
                   <textarea
-                    id="subject"
-                    name="subject"
-                    placeholder="Write write youir message.."
+                    id="message"
+                    name="message"
+                    placeholder="Write write your message.."
                     style={{ height: "200px" }}
                     className="message-c"
+                    onChange={handleChange}
                   />
-                  <div className="send-button-c">Send Message</div>
+                  <input type="submit" className="send-button-c" value={"Send Message"} />
+                  {/* <div className="send-button-c" onClick={handleFormSubmission}>Send Message</div> */}
                 </div>
               </div>
             </form>
-            <div className="chat-box-c">
+            {/* <div className="chat-box-c">
               <div className="chat-text">Chat With Us</div>
               <div className="chat-img">
                 <img
-                  src="/public/images/message-icon.png"
+                  src="/images/message-icon.png"
                   alt="chat with us icon"
                   className="chat-icon-c"
                 ></img>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 }

@@ -9,7 +9,7 @@ const SearchBar = ({ placeholder, onSearch }) => {
   };
 
   return (
-    <SectionContainer>
+    // <SectionContainer containerColor={'red'}>
       <div className="search-container">
         <div className="search-wrapper">
           <FaSearch className="search-icon" />
@@ -21,7 +21,7 @@ const SearchBar = ({ placeholder, onSearch }) => {
           />
         </div>
       </div>
-    </SectionContainer>
+    // {/* </SectionContainer> */}
 
   );
 };

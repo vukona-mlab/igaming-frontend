@@ -11,6 +11,7 @@ import SwitchRoleButton from "../../../components/Common/SwitchRoleButton/Switch
 import ProfileSubNav from "../../../components/Profile/ProfileSubNav/ProfileSubNav";
 import { useNavigate } from "react-router-dom";
 import SectionContainer from "../../../components/SectionContainer";
+import BACKEND_URL from "../../../config/backend-config";
 
 const ProfilePage = ({ }) => {
   const [formData, setFormData] = useState({
@@ -35,7 +36,7 @@ const ProfilePage = ({ }) => {
   const uid = localStorage.getItem("uid");
   const token = localStorage.getItem("token");
 
-  const url = import.meta.env.VITE_API_URL;
+  const url = BACKEND_URL;
   const role = localStorage.getItem("role");
   const [currentRole, setCurrentRole] = useState("freelancer");
   const navigate = useNavigate();
@@ -221,8 +222,8 @@ const ProfilePage = ({ }) => {
           icon: "success",
           confirmButtonText: "OK",
         }).then(() => {
-          window.location.href = `/${newRole === "client" ? "client" : "freelancer"
-            }-profile`;
+          navigate(`/${newRole === "client" ? "client" : "freelancer"
+            }-profile`);
         });
       } else {
         throw new Error("Failed to update role");
@@ -285,9 +286,9 @@ const ProfilePage = ({ }) => {
   return (
     <>
       <Navbar />
-      <ProfileSubNav />
+      <ProfileSubNav showTransactions={false} />
       <SectionContainer>
-        <Container fluid style={{ backgroundColor: 'red' }} className="p-0 m-0">
+        <Container fluid style={{  }} className="p-0 m-0">
 
           <div className="div-btn-top p-2">
             <Button

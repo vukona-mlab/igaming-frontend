@@ -6,6 +6,8 @@ import PaystackPop from "@paystack/inline-js";
 import TermsModal from "../../Escrow/TermsModal";
 import DocumentIcon from '../../../assets/document-icon.svg';
 import DocumentSection from '../ProjectForm/DocumentSection/DocumentSection';
+import BACKEND_URL from "../../../config/backend-config";
+import SectionContainer from "../../SectionContainer";
 
 const ProjectDetails = ({ project, onClose, isClient }) => {
   const navigate = useNavigate();
@@ -34,7 +36,7 @@ const ProjectDetails = ({ project, onClose, isClient }) => {
 
       // Fetch client details using the correct endpoint
       const clientResponse = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/auth/users/${project.clientId}`,
+        `${BACKEND_URL}/api/auth/users/${project.clientId}`,
         {
           headers: {
             Authorization: token,
@@ -47,8 +49,7 @@ const ProjectDetails = ({ project, onClose, isClient }) => {
       // Fetch freelancer details if available
       if (project.freelancerId) {
         const freelancerResponse = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/auth/users/${
-            project.freelancerId
+          `${BACKEND_URL}/api/auth/users/${project.freelancerId
           }`,
           {
             headers: {
@@ -71,7 +72,7 @@ const ProjectDetails = ({ project, onClose, isClient }) => {
       if (action === "reject" || action === "delete") {
         // Delete the project if rejected by client or deleted by freelancer
         const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/projects/${project.id}`,
+          `${BACKEND_URL}/api/projects/${project.id}`,
           {
             method: "DELETE",
             headers: {
@@ -82,7 +83,7 @@ const ProjectDetails = ({ project, onClose, isClient }) => {
 
         if (response.ok) {
           // Emit socket event for project deletion/rejection
-          const socket = io(import.meta.env.VITE_API_URL);
+          const socket = io(BACKEND_URL);
           socket.emit("project-status-updated", {
             chatId: project.chatId,
             projectId: project.id,
@@ -97,7 +98,7 @@ const ProjectDetails = ({ project, onClose, isClient }) => {
       } else if (action === "approve") {
         // Update project status to approved
         const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/projects/${project.id}/status`,
+          `${BACKEND_URL}/api/projects/${project.id}/status`,
           {
             method: "PUT",
             headers: {
@@ -111,7 +112,7 @@ const ProjectDetails = ({ project, onClose, isClient }) => {
         if (response.ok) {
           await handleTransaction();
           // Emit socket event for project approval
-          const socket = io(import.meta.env.VITE_API_URL);
+          const socket = io(BACKEND_URL);
           socket.emit("project-status-updated", {
             chatId: project.chatId,
             projectId: project.id,
@@ -128,7 +129,7 @@ const ProjectDetails = ({ project, onClose, isClient }) => {
 
   const handleTransaction = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/transaction", {
+      const response = await fetch(`${BACKEND_URL}/api/transaction`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -154,7 +155,7 @@ const ProjectDetails = ({ project, onClose, isClient }) => {
             if (transaction.status === "success") {
               try {
                 const res = await fetch(
-                  "http://localhost:8000/api/payment/verify",
+                  `${BACKEND_URL}/api/payment/verify`,
                   {
                     method: "POST",
                     headers: {
@@ -215,13 +216,13 @@ const ProjectDetails = ({ project, onClose, isClient }) => {
   const handleReleaseFunds = async ({ patch }) => {
     try {
       console.log({ patch });
-      
-      if(patch) {
+
+      if (patch) {
         showPayStackModal()
         return
       }
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/transaction/release`,
+        `${BACKEND_URL}/api/transaction/release`,
         {
           method: "POST",
           headers: {
@@ -262,8 +263,7 @@ const ProjectDetails = ({ project, onClose, isClient }) => {
       if (project.payments && project.payments.length > 0) {
         try {
           const response = await fetch(
-            `${import.meta.env.VITE_API_URL}/api/transaction/${
-              project.payments[0].transactionId
+            `${BACKEND_URL}/api/transaction/${project.payments[0].transactionId
             }/status?clientId=${clientId}`,
             {
               headers: {
@@ -292,111 +292,114 @@ const ProjectDetails = ({ project, onClose, isClient }) => {
   console.log(project);
   return (
     <div className="project-details-modal-overlay">
-      <div className="project-details-modal">
-        <div className="project-details-header">
-          <h2>Service Level Agreement</h2>
-          <button className="close-button" onClick={onClose}>×</button>
-        </div>
+      <SectionContainer>
+        <div className="project-details-modal">
+          <div className="project-details-header">
+            <h2>Service Level Agreement</h2>
+            <button className="close-button" onClick={onClose}>×</button>
+          </div>
 
-        <div className="project-details-content">
-          <div className="project-form-container">
-            <div className="sla-section">
-              
-              <div className="form-group">
-                <label>Title:</label>
-                <p className="form-value">{project.title}</p>
-              </div>
+          <div className="project-details-content">
+            <div className="project-form-container">
+              <div className="sla-section">
 
-              <div className="form-group">
-                <label>Description:</label>
-                <p className="form-value">{project.description}</p>
-              </div>
-
-              <div className="form-group">
-                <label>Base Budget (R):</label>
-                <p className="form-value">{project.budget}</p>
-              </div>
-
-              <div className="form-group">
-                <label>Deadline (days):</label>
-                <p className="form-value">{project.deadline}</p>
-              </div>
-
-              <div className="form-group">
-                <label>Category:</label>
-                <p className="form-value">{project.category}</p>
-              </div>
-
-              <div className="form-group">
-                <label>Requirements:</label>
-                <ul className="requirements-list">
-                  {project.requirements && Array.isArray(project.requirements) ? (
-                    project.requirements.map((req, index) => (
-                      <li key={index}>{req}</li>
-                    ))
-                  ) : (
-                    <li>No requirements specified</li>
-                  )}
-                </ul>
-              </div>
-
-              {project.document && (
-                <DocumentSection 
-                  documentName={project.document.name}
-                  documentIcon={DocumentIcon}
-                />
-              )}
-
-              <div className="price-section">
-                <div className="price-row">
-                  <span>Price</span>
-                  <span>R{project.budget > 0 ? project.budget : 1000}</span>
+                <div className="form-group">
+                  <label>Title:</label>
+                  <p className="form-value">{project.title}</p>
                 </div>
-              </div>
 
-              <div className="button-group">
-                {isClient && project.status === "pending" && (
-                  <>
-                    <button className="decline-btn" onClick={() => handleProjectAction("reject")}>
-                      Decline SLA
-                    </button>
-                    <button className="accept-btn" onClick={() => handleProjectAction("approve")}>
-                      Accept SLA
-                    </button>
-                  </>
-                )}
-                {isClient && project.status === "approved" && (
-                  <div className="transaction-container">
-                    {!project.payments || project.payments.length === 0 ? (
-                      <button className="accept-btn" onClick={() => handleTransaction()}>
-                        Pay Now
-                      </button>
+                <div className="form-group">
+                  <label>Description:</label>
+                  <p className="form-value">{project.description}</p>
+                </div>
+
+                <div className="form-group">
+                  <label>Base Budget (R):</label>
+                  <p className="form-value">{project.budget}</p>
+                </div>
+
+                <div className="form-group">
+                  <label>Deadline (days):</label>
+                  <p className="form-value">{project.deadline}</p>
+                </div>
+
+                <div className="form-group">
+                  <label>Category:</label>
+                  <p className="form-value">{project.category}</p>
+                </div>
+
+                <div className="form-group">
+                  <label>Requirements:</label>
+                  <ul className="requirements-list">
+                    {project.requirements && Array.isArray(project.requirements) ? (
+                      project.requirements.map((req, index) => (
+                        <li key={index}>{req}</li>
+                      ))
                     ) : (
-                      <>
-                        <div className="transaction-status">
-                          <span className="status-label">Payment Status:</span>
-                          <span className={`status-value ${project.paymentStatus}`}>
-                            {project.paymentStatus.charAt(0).toUpperCase() + project.paymentStatus.slice(1)}
-                          </span>
-                        </div>
-                        <button
-                          className={`accept-btn ${project.paymentStatus === "released" ? "released" : ""}`}
-                          onClick={() => handleReleaseFunds({ patch: true })}
-                          disabled={project.paymentStatus === "released"}
-                        >
-                          {project.paymentStatus === "released" ? "Funds Released" : "Release funds"}
-                        </button>
-                      </>
+                      <li>No requirements specified</li>
                     )}
-                  </div>
-                )}
-              </div>
+                  </ul>
+                </div>
 
-              <p className="disclaimer">By accepting the SLA, you are confirming that every information on SLA is correct and valid.</p>
+                {project.document && (
+                  <DocumentSection
+                    documentName={project.document.name}
+                    documentIcon={DocumentIcon}
+                  />
+                )}
+
+                <div className="price-section">
+                  <div className="price-row">
+                    <span>Price</span>
+                    <span>R{project.budget > 0 ? project.budget : 1000}</span>
+                  </div>
+                </div>
+
+                <div className="button-group">
+                  {isClient && project.status === "pending" && (
+                    <>
+                      <button className="decline-btn" onClick={() => handleProjectAction("reject")}>
+                        Decline SLA
+                      </button>
+                      <button className="accept-btn" onClick={() => handleProjectAction("approve")}>
+                        Accept SLA
+                      </button>
+                    </>
+                  )}
+                  {isClient && project.status === "approved" && (
+                    <div className="transaction-container">
+                      {!project.payments || project.payments.length === 0 ? (
+                        <button className="accept-btn" onClick={() => handleTransaction()}>
+                          Pay Now
+                        </button>
+                      ) : (
+                        <>
+                          <div className="transaction-status">
+                            <span className="status-label">Payment Status:</span>
+                            <span className={`status-value ${project.paymentStatus}`}>
+                              {project.paymentStatus.charAt(0).toUpperCase() + project.paymentStatus.slice(1)}
+                            </span>
+                          </div>
+                          <button
+                            className={`accept-btn ${project.paymentStatus === "released" ? "released" : ""}`}
+                            onClick={() => handleReleaseFunds({ patch: false })}
+                            disabled={project.paymentStatus === "released"}
+                          >
+                            {project.paymentStatus === "released" ? "Funds Released" : "Release funds"}
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                <p className="disclaimer">By accepting the SLA, you are confirming that every information on SLA is correct and valid.</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </SectionContainer>
+
     </div>
   );
 };

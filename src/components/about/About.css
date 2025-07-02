@@ -10,7 +10,7 @@
 
 .about-section .container {
     position: relative;
-    background-image: url('/public/images/FacelessDummy.png');
+    background-image: url('/images/FacelessDummy.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;

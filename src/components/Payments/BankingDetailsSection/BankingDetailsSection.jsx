@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './bankingDetails.css';
 import AddDetails from "../../Payments/AddDetailsForm/AddDetails"
 import BankingCard from "../../Payments/BankingCard/BankingCard"
@@ -8,11 +8,20 @@ export default function BankingDetailsSection(){
         bankName: "STANDARD BANK",
         accountNumber: "*******8754",
       }]
+    const [bankCards, setBankCards] = useState([])
+    const [hideCards, setHideCards] = useState(false)
+    const handleCardAdd = (details) => {
+      setBankCards(cards => ([...cards, details]))
+    }
+    useEffect(() => {
+      console.log({ hideCards });
+      
+    }, [hideCards])
     return(
         <div>
         <h3 className="details-text mt-3">Bank Details</h3>
-        <AddDetails/>
-        <BankingCard/>
+        <AddDetails addCard={handleCardAdd} setHideCards={setHideCards} />
+        <BankingCard cards={bankCards} setBankCards={setBankCards} hideCards={hideCards}/>
        {/*  {bankDetails.map((bank, index) => (
           <div className="bank-details" key={index}>
             <div className="left">

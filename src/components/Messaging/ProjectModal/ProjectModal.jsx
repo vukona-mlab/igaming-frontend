@@ -5,6 +5,7 @@ import DocumentIcon from '../../../assets/document-icon.svg';
 import PlanOptions from '../ProjectForm/PlanOptions/PlanOptions';
 import ProjectDescription from '../ProjectForm/ProjectDescription/ProjectDescription';
 import DocumentSection from '../ProjectForm/DocumentSection/DocumentSection';
+import BACKEND_URL from "../../../config/backend-config";
 
 const ProjectModal = ({
   isOpen,
@@ -31,7 +32,7 @@ const ProjectModal = ({
       try {
         const token = localStorage.getItem("token");
         const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/auth/users/${projectData.freelancerId}`,
+          `${BACKEND_URL}/api/auth/users/${projectData.freelancerId}`,
           {
             headers: {
               Authorization: token,
@@ -95,9 +96,10 @@ const ProjectModal = ({
         console.error("Missing required IDs:", { projectData });
         return;
       }
-
+      console.log({ totalBudget: formData.budget });
+      // return
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/projects`,
+        `${BACKEND_URL}/api/projects`,
         {
           method: "POST",
           headers: {
@@ -106,7 +108,7 @@ const ProjectModal = ({
           },
           body: JSON.stringify({
             ...formData,
-            budget: totalBudget.toString(), // Use the total budget including plan amount
+            budget: formData.budget.toString(), // Use the total budget including plan amount
             clientId: projectData.clientId,
             freelancerId: projectData.freelancerId,
             requirements: formData.requirements
@@ -120,7 +122,7 @@ const ProjectModal = ({
 
       if (response.ok) {
         const data = await response.json();
-        const socket = io(import.meta.env.VITE_API_URL);
+        const socket = io(BACKEND_URL);
         socket.emit("project-created", {
           chatId,
           projectData: {
@@ -140,7 +142,7 @@ const ProjectModal = ({
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/projects/${projectData.id}/status`,
+        `${BACKEND_URL}/api/projects/${projectData.id}/status`,
         {
           method: "PUT",
           headers: {
@@ -158,7 +160,7 @@ const ProjectModal = ({
         throw new Error(errorData.error || "Failed to approve project");
       }
 
-      const socket = io(import.meta.env.VITE_API_URL);
+      const socket = io(BACKEND_URL);
       socket.emit("project-status-update", {
         chatId,
         projectId: projectData.id,
@@ -175,7 +177,7 @@ const ProjectModal = ({
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/projects/${projectData.id}/status`,
+        `${BACKEND_URL}/api/projects/${projectData.id}/status`,
         {
           method: "PUT",
           headers: {
@@ -189,7 +191,7 @@ const ProjectModal = ({
       );
 
       if (response.ok) {
-        const socket = io(import.meta.env.VITE_API_URL);
+        const socket = io(BACKEND_URL);
         socket.emit("project-status-updated", {
           chatId,
           projectId: projectData.id,
