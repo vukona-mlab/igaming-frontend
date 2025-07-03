@@ -33,13 +33,17 @@
   align-items: center;
 }
 .arrowIconDown {
-  width: 20px;
-  height: 20px;
+  width: 32px;
+  height: 32px;
   color: #898b8e;
+  cursor: pointer;
+  padding: 4px;
 }
 .arrowIconUp {
-  width: 20px;
-  height: 20px;
+  width: 32px;
+  height: 32px;
   color: #898b8e;
   transform: rotate(180deg);
+  cursor: pointer;
+  padding: 4px;
 }

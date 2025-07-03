@@ -32,7 +32,6 @@ const CompletedProjects = ({ completedProjects, role }) => {
               price={project.budget}
               requirements={project.requirements}
               description={project.description}
-              message={`You have transferred R${project.budget} to Ri Experts for ${project.title} from STANDARD BANK account *********5564;`}
               reference={`REF ${project.id}`}
               date={`${new Date(project.updatedAt._seconds * 1000).toLocaleDateString(undefined, {
                 year: 'numeric',
@@ -68,11 +67,11 @@ const PendingProjects = ({ pendingProjects, role }) => {
         {
           pendingProjects && pendingProjects.length > 0 && pendingProjects.map(project => {
             return <TransactionDetails
+              key={project.id}
               title={project.title}
               price={project.budget}
               requirements={project.requirements}
               description={project.description}
-              message={`Project ${project.title} is awaiting funding of R${project.budget} before work can begin`}
               reference={`REF ${project.id}`}
               date={`${new Date(project.updatedAt._seconds * 1000).toLocaleDateString(undefined, {
                 year: 'numeric',
