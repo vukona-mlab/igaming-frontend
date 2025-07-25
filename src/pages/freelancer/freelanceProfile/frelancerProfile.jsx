@@ -11,6 +11,7 @@ import SwitchRoleButton from "../../../components/Common/SwitchRoleButton/Switch
 import ProfileSubNav from "../../../components/Profile/ProfileSubNav/ProfileSubNav";
 import { useNavigate } from "react-router-dom";
 import SectionContainer from "../../../components/SectionContainer";
+import NewPriceCard from "../../../components/PriceCard/NewPriceCard/NewPriceCard";
 import BACKEND_URL from "../../../config/backend-config";
 
 const ProfilePage = ({ }) => {
@@ -35,10 +36,19 @@ const ProfilePage = ({ }) => {
   const [features, setFeatures] = useState([]);
   const uid = localStorage.getItem("uid");
   const token = localStorage.getItem("token");
-
+  const [showPriceModal, setShowPriceModal] = useState(false)
+  const [currentPrice, setCurrentPrice] = useState(0)
+  const [currentBenefits, setCurrentBenefits] = useState([])
+  const [currentType, setCurrentType] = useState('Basic')
   const url = BACKEND_URL;
   const role = localStorage.getItem("role");
   const [currentRole, setCurrentRole] = useState("freelancer");
+  const [pricePackages, setPricePackages] = useState([
+    { name: 'Basic', price: 0, benefits: [] },
+    { name: "Standard", price: 0, benefits: [] },
+    { name: "Premium", price: 0, benefits: [] },
+    { name: "Ultimate", price: 0, benefits: [] }
+  ])
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -72,7 +82,7 @@ const ProfilePage = ({ }) => {
     for (const [key, value] of Object.entries(data.prices)) {
       packages.push({ type: key, price: value, features: [] });
     }
-    if (features.length > 0) {
+    if (features && features.length > 0) {
       const updatedArr = packages.map((obj) => {
         const found = features.find((feature) => feature.type === obj.type);
         return { ...obj, features: found.features };
@@ -171,15 +181,18 @@ const ProfilePage = ({ }) => {
       // formData.append("bio", formData.bio);
       formData.append("speciality", JSON.stringify([data.speciality || ""]));
       formData.append("categories", JSON.stringify(data.categories));
-      formData.append("packages", JSON.stringify(data.packages || []));
+      // formData.append("packages", JSON.stringify(data.packages || []));
       // formData.append("jobTitle", formData.jobTitle);
       formData.append("profilePicture", image || "");
       const response = await fetch(`${url}/api/auth/users/${uid}/update`, {
         method: "PUT",
         headers: {
           Authorization: token,
+          'Content-Type': 'application/json',
         },
-        body: formData,
+        body: JSON.stringify({
+          ...data,
+          packages: pricePackages }),
       });
       console.log(response);
       if (response.ok) {
@@ -282,6 +295,34 @@ const ProfilePage = ({ }) => {
     }
     setFeatures(arr);
   };
+  const handleShowPriceModal = (name, price, benefits) => {
+    console.log('running...');
+    
+    setCurrentPrice(price);
+    setCurrentBenefits(benefits);
+    setCurrentType(name)
+    setShowPriceModal(true)
+  }
+  useEffect(() => {
+    console.log({ currentPrice, currentType, currentBenefits, showPriceModal });
+    
+  }, [showPriceModal])
+  const handlePriceFormSubmit = (benefits, price, type) => {
+    console.log({ benefits, price, type});
+    setPricePackages(packages => {
+      return packages.map(pkg => {
+        if(type !== pkg.name) {
+          return pkg
+        } else {
+          return { name: type, price: price, benefits: benefits }
+        }
+      })
+    })
+  }
+  useEffect(() => {
+    console.log({pricePackages});
+    
+  }, [pricePackages])
   if (loading) return <div></div>;
   return (
     <>
@@ -289,7 +330,7 @@ const ProfilePage = ({ }) => {
       <ProfileSubNav showTransactions={false} />
       <SectionContainer>
         <Container fluid style={{  }} className="p-0 m-0">
-
+          <NewPriceCard showModal={showPriceModal} setNewBenefitList={setCurrentBenefits} price={currentPrice} benefits={currentBenefits} type={currentType} handleFormSubmit={handlePriceFormSubmit} setShowModal={(name, price, benefits) => setShowPriceModal(name, price, benefits)}/>
           <div className="div-btn-top p-2">
             <Button
               variant="dark"
@@ -356,10 +397,12 @@ const ProfilePage = ({ }) => {
                     cancel={() => setIsUpdate(false)}
                     categoriesArr={formData.categories}
                     packagesObj={formData.packages}
+                    pricePackages={pricePackages}
                     handleAddFeature={handleAddFeature}
                     handleUpdateFeature={handleUpdateFeature}
                     handleDeleteFeature={handleDeleteFeature}
                     features={features}
+                    showPriceModal={handleShowPriceModal}
                   />
                 </Col>
               </Row>

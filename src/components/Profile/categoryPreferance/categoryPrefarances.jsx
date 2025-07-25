@@ -12,6 +12,8 @@ const CategoryPreferences = ({
   handleUpdateFeature,
   handleDeleteFeature,
   features,
+  pricePackages,
+  showPriceModal
 }) => {
   const [formData, setFormData] = useState({
     categories: {
@@ -190,49 +192,39 @@ const CategoryPreferences = ({
           <Col xs={12} md={5} className="mb-3">
             <h5 className="category-header">Price Plan</h5>
 
-            {[
-              { name: "basic", label: "Basic:" },
-              { name: "standard", label: "Standard:" },
-              { name: "premium", label: "Premium:" },
-              { name: "ultimate", label: "Ultimate:" },
-            ].map((speed) => (
-              <Row className="mb-3" key={speed.name}>
+            {pricePackages.length > 0 && pricePackages.map((pricePackage) => (
+              <Row className="mb-3" key={pricePackage.name}>
                 <Col xs={4}>
                   <Form.Check
                     type="checkbox"
-                    label={speed.label}
-                    name={speed.name}
+                    label={pricePackage.name}
+                    name={pricePackage.name}
                     className="custom-checkbox"
                     onChange={handleSpeedUpChange}
                     disabled={!isUpdate}
-                    checked={formData.speedUp[speed.name]}
+                    checked={formData.speedUp[pricePackage.name]}
                   />
                 </Col>
                 <Col xs={4}>
-                  <Form.Control
+                  <Form.Text
                     type="text"
                     placeholder="Enter price"
-                    name={speed.name}
-                    value={
-                      formData.prices[speed.name] !== "" && !isUpdate
-                        ? `R${formData.prices[speed.name]}`
-                        : `${formData.prices[speed.name]}`
-                    }
+                    name={pricePackage.name}
+                    value={pricePackage.price}
                     onChange={handlePriceChange}
                     className={
                       !isUpdate ? "custom-input-noline" : "custom-input"
                     }
-                    disabled={!formData.speedUp[speed.name] || !isUpdate} // Disable input if checkbox is not selected
+                    disabled={!formData.speedUp[pricePackage.name] || !isUpdate} // Disable input if checkbox is not selected
                   />
                 </Col>
                 <Col xs={4}>
-                  {isUpdate && formData.speedUp[speed.name] && (
+                  {isUpdate && formData.speedUp[pricePackage.name] && (
                     <img
                       src="/images/eyecon.png"
                       className="cat-edit-icon"
                       onClick={() => {
-                        setShowFeature(true);
-                        setCurrFeature(speed.name);
+                        showPriceModal(pricePackage.name, pricePackage.price, pricePackage.benefits)
                       }}
                     />
                   )}
@@ -266,6 +258,7 @@ const CategoryPreferences = ({
           </Col>
         </Row>
       </Form>
+      <input type="button" value={'change'} onClick={() => showPriceModal('Basic', 500, [])} />
     </Container>
   );
 };

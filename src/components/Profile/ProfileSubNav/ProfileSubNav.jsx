@@ -12,15 +12,10 @@ import SectionContainer from "../../SectionContainer";
 
 export default function ProfileSubNav() {
   const navigation = useNavigate();
-  console.log(
-    localStorage.getItem("role") === "freelancer"
-      ? "/messaging-freelancer"
-      : "/messaging-client"
-  );
   return (
     <SectionContainer containerColor="black">
       <div className="ProfileSubNav">
-        <div class="p-subnav-content">
+        <div className="p-subnav-content">
           <div className="p-subnav-link">
             <img src={Dashboard} className="dashboard-icon" />
             <div>Dashboard</div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import './PriceCard.css';
 
-const PriceCard = ({ type, price, features, bgColor }) => {
+const PriceCard = ({ type, price, features, bgColor, handleMessageClick }) => {
   return (
     <div className="pricing-card">
       <div className="plan-type" style={{ background: bgColor }}>
@@ -16,7 +16,7 @@ const PriceCard = ({ type, price, features, bgColor }) => {
           </div>
         ))}
       </div>
-      <button className="message-button">Message</button>
+      <button className="message-button" onClick={() => handleMessageClick(price)}>Message</button>
     </div>
   );
 };

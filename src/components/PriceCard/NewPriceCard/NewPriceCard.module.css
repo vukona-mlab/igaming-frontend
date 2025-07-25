@@ -1,0 +1,111 @@
+.overlay {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(26, 26, 26, 0.836);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+.closeIcon {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 24px;
+    height: 24px;
+}
+.priceForm {
+    background-color: white;
+    border-radius: 24px;
+    width: 360px;
+    padding: 20px;
+    padding-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+}
+.line {
+    
+}
+.priceCont {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.benefitListCont {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* align-items: center; */
+    gap: 10px
+}
+.benefitCont {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.leftContent {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+.priceSpan {
+    font-size: 28px;
+    margin-left: 10px;
+}
+.textInput {
+    border: none;
+    font-size: 28px;
+    color: black;
+    width: 80px !important;
+    min-width: 80px;
+
+}
+.icon {
+    width: 24px;
+    height: 24px
+}
+.textarea {
+    height: 100px;
+    width: 100%;
+}
+
+.button {
+    width: 100%;
+    background-color: #333333;
+    border-radius: 16px;
+    height: 40px;
+    color: #FFFFFF;
+    border: none                                       
+}
+.saveButton {
+    height: 60px;
+}
+.packageType {
+    border-radius: 16px;
+    padding: 12px 24px;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.658);
+    width: 200px;
+    margin: auto;
+}
+.basicPackage {
+    background-color: rgba(158, 240, 26, 0.25);
+}
+
+.standardPackage {
+    background-color: rgba(131, 56, 236, 0.20);
+}
+
+.premiumPackage {
+    background-color: rgba(13, 153, 255, 0.20);
+}
+
+.ultimatePackage {
+   background-color: rgba(26, 240, 226, 0.2);
+}

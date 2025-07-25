@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Container, Row, Col, Button, Alert } from "react-bootstrap";
 import Swal from "sweetalert2";
 import Navbar from "../../../components/Common/Navbar/navbar";
@@ -13,7 +13,7 @@ import SectionContainer from "../../../components/SectionContainer";
 import BACKEND_URL from "../../../config/backend-config";
 
 const FreelancerProjects = () => {
-  const { freelancer_id } = useParams();
+  // const { freelancer_id } = useParams();
   const [projects, setProjects] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [reviewsError, setReviewsError] = useState(null);
@@ -24,7 +24,73 @@ const FreelancerProjects = () => {
   const [currentTab, setCurrentTab] = useState("Profile");
   const navigation = useNavigate();
 
+  const location = useLocation()
+  console.log({ location });
+  const freelancer_id = location.pathname.split('/')[2]
+  console.log({ id: freelancer_id });
   useEffect(() => {
+    fetchProjects()
+    fetchReviews()
+    fetchFreelancerData()
+  }, [freelancer_id])
+  const fetchProjects = async () => {
+    if (freelancer_id) {
+      console.log({ freelancer_id });
+      const response = await fetch(`${BACKEND_URL}/api/freelancers/projects/${freelancer_id}`)
+      if (response.ok) {
+        const data = await response.json()
+        console.log(console.log({ data: data}));
+        setProjects(data.data)
+      }
+    }
+
+  }
+  const fetchFreelancerData = async() => {
+    if(freelancer_id) {
+      const response = await fetch(`${BACKEND_URL}/api/freelancers/${freelancer_id}`)
+      if (response.ok) {
+        const freelanceData = await response.json()
+        console.log(console.log({ freelancerData: freelanceData }));
+        setFreelancerData(freelanceData)
+      }
+    }
+  }
+  const fetchReviews = async() => {
+    if(freelancer_id) {
+      try {
+          console.log("Fetching reviews for freelancer:", freelancer_id);
+          const reviewsResponse = await fetch(`${BACKEND_URL}/api/reviews?freelancerId=${freelancer_id}`, {
+            headers: {
+              'Authorization': token
+            }
+          });
+
+          const reviewsData = await reviewsResponse.json();
+          console.log("Reviews response:", reviewsData);
+
+          if (reviewsResponse.ok) {
+            const allReviews = reviewsData.reviews || [];
+            const approvedReviews = allReviews.filter(review => review.status === "Approved");
+            setReviews(approvedReviews);
+            setReviewsError(null);
+            setLoading(false)
+          } else {
+            console.error("Reviews fetch failed:", reviewsData);
+            setReviews([]);
+            setReviewsError(reviewsData.error || "No approved reviews available at this time.");
+            setLoading(false)
+          }
+        } catch (reviewError) {
+          console.error("Error fetching reviews:", reviewError);
+          setReviews([]);
+          setReviewsError("There was a problem loading the reviews. Please try refreshing the page.");
+          setLoading(false)
+        }
+    }
+  }
+  useEffect(() => {
+    // fetchProjects()
+    return
     if (!freelancer_id) {
       setError("Freelancer ID is missing.");
       setLoading(false);
@@ -98,19 +164,23 @@ const FreelancerProjects = () => {
             const approvedReviews = allReviews.filter(review => review.status === "Approved");
             setReviews(approvedReviews);
             setReviewsError(null);
+            setLoading(false)
           } else {
             console.error("Reviews fetch failed:", reviewsData);
             setReviews([]);
             setReviewsError(reviewsData.error || "No approved reviews available at this time.");
+            setLoading(false)
           }
         } catch (reviewError) {
           console.error("Error fetching reviews:", reviewError);
           setReviews([]);
           setReviewsError("There was a problem loading the reviews. Please try refreshing the page.");
+          setLoading(false)
         }
       } catch (err) {
         console.error("Error fetching data:", err);
         setError(err.message);
+        setLoading(false)
       } finally {
         setLoading(false);
       }
@@ -123,7 +193,7 @@ const FreelancerProjects = () => {
     setVisibleProjects((prev) => prev + 6);
   };
 
-  const handleMessageClick = async (freelancerId) => {
+  const handleMessageClick = async (freelancerId, price) => {
     try {
       console.log("Freelancer data received:", { freelancerId });
 
@@ -149,7 +219,7 @@ const FreelancerProjects = () => {
         freelancerId: freelancerId,
         clientId: uid,
         senderId: uid,
-        message: "Hello! I'm interested in working with you.",
+        message: price ? `Hello! I'm interested in working with you, currently looking at the R${price} package.` : "Hello! I'm interested in working with you.",
       };
 
       console.log("Sending chat request with data:", requestData);
@@ -286,11 +356,15 @@ const FreelancerProjects = () => {
       });
     }
   };
+  useEffect(() => {
+    console.log({ freelancerData });
+    
+  }, [freelancerData])
 
   return (
     <>
       <Navbar />
-      <SectionContainer>
+      <SectionContainer padding={20}>
         <Container fluid className="main-container">
 
           <div className="content-wrapper">
@@ -303,7 +377,7 @@ const FreelancerProjects = () => {
             {error && <Alert variant="danger">{error}</Alert>}
 
             {!loading && !error && (
-              <Row style={{ width: '100%', margin: 'auto'}}>
+              <Row style={{ width: '100%', margin: 'auto' }}>
                 {shouldShowSidebar && (
                   <Col md={3} className="sidebar-col">
                     {freelancerData && (
@@ -324,6 +398,7 @@ const FreelancerProjects = () => {
                     reviews={reviews}
                     reviewsError={reviewsError}
                     onReviewSubmit={handleReviewSubmit}
+                    handleMessageClick={(price) => handleMessageClick(freelancerData?.id, price)}
                   />
                 </Col>
               </Row>

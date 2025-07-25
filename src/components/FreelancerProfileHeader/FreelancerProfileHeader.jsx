@@ -14,7 +14,8 @@ const FreelancerProfileHeader = ({
   packages,
   reviews = [],
   reviewsError = null,
-  onReviewSubmit
+  onReviewSubmit,
+  handleMessageClick
 }) => {
   const [selectedTab, setSelectedTab] = useState("Profile");
   const [isReviewFormOpen, setIsReviewFormOpen] = useState(false);
@@ -93,7 +94,7 @@ const FreelancerProfileHeader = ({
         )}
         {selectedTab === "Pricing & Packages" && (
           <div className="pricing-container">
-            <PricingPlans packages={packages} />
+            <PricingPlans packages={packages} handleMessageClick={handleMessageClick} />
           </div>
         )}
         {selectedTab === "Projects" && (
