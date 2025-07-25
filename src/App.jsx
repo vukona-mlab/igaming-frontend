@@ -25,12 +25,12 @@ import Projects from "./pages/projects/Projects";
 import ContactPage from "./pages/ContactPage/ContactPage";
 import { registerNotificationSW } from "./config/service-workers";
 import { useEffect } from "react";
-import { requestPermissionAndGetToken } from "./config/service-workers/notification-sw";
+//import { requestPermissionAndGetToken } from "./config/service-workers/index";
 function App() {
   useEffect(() => {
     //register service worker
-    requestPermissionAndGetToken()
-  }, [])
+    registerNotificationSW();
+  }, []);
   return (
     <div className="App">
       <Router>
