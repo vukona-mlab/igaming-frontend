@@ -14,7 +14,7 @@ import SectionContainer from "../../../components/SectionContainer";
 import NewPriceCard from "../../../components/PriceCard/NewPriceCard/NewPriceCard";
 import BACKEND_URL from "../../../config/backend-config";
 
-const ProfilePage = ({ }) => {
+const ProfilePage = ({}) => {
   const [formData, setFormData] = useState({
     name: "",
     surname: "",
@@ -33,22 +33,22 @@ const ProfilePage = ({ }) => {
   const [jobTitle, setJobTitle] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [projects, setProjects] = useState([]);
-  const [features, setFeatures] = useState([]);
+  const [benefits, setBenefits] = useState([]);
   const uid = localStorage.getItem("uid");
   const token = localStorage.getItem("token");
-  const [showPriceModal, setShowPriceModal] = useState(false)
-  const [currentPrice, setCurrentPrice] = useState(0)
-  const [currentBenefits, setCurrentBenefits] = useState([])
-  const [currentType, setCurrentType] = useState('Basic')
+  const [showPriceModal, setShowPriceModal] = useState(false);
+  const [currentPrice, setCurrentPrice] = useState(0);
+  const [currentBenefits, setCurrentBenefits] = useState([]);
+  const [currentType, setCurrentType] = useState("Basic");
   const url = BACKEND_URL;
   const role = localStorage.getItem("role");
   const [currentRole, setCurrentRole] = useState("freelancer");
   const [pricePackages, setPricePackages] = useState([
-    { name: 'Basic', price: 0, benefits: [] },
+    { name: "Basic", price: 0, benefits: [] },
     { name: "Standard", price: 0, benefits: [] },
     { name: "Premium", price: 0, benefits: [] },
-    { name: "Ultimate", price: 0, benefits: [] }
-  ])
+    { name: "Ultimate", price: 0, benefits: [] },
+  ]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -71,31 +71,31 @@ const ProfilePage = ({ }) => {
   };
 
   const handleCategoriesSubmit = (data) => {
-    console.log({ features });
     let arr = Object.keys(data.categories).filter((key) => {
       if (data.categories[key] === true) {
         return key;
       }
     });
-    let packages = [];
+    // let packages = [];
 
-    for (const [key, value] of Object.entries(data.prices)) {
-      packages.push({ type: key, price: value, features: [] });
-    }
-    if (features && features.length > 0) {
-      const updatedArr = packages.map((obj) => {
-        const found = features.find((feature) => feature.type === obj.type);
-        return { ...obj, features: found.features };
-      });
-      packages = updatedArr;
-    }
+    // for (const [key, value] of Object.entries(data.prices)) {
+    //   packages.push({ type: key, price: value, benefits: [] });
+    // }
+
+    // if (benefits && benefits.length > 0) {
+    //   const updatedArr = packages.map((obj) => {
+    //     const found = benefits.find((benefit) => benefit.type === obj.type);
+    //     return { ...obj, benefits: found.benefits };
+    //   });
+    //   packages = updatedArr;
+    // }
     updateUserProfile({
       ...formData,
       categories: arr || [],
-      packages: packages || [],
+      packages: pricePackages || [],
     });
     setFormData((prev) => ({ ...prev, categories: arr }));
-    setFormData((prev) => ({ ...prev, packages: packages }));
+    setFormData((prev) => ({ ...prev, packages: pricePackages }));
   };
   const showAlert = () => {
     Swal.fire({
@@ -137,15 +137,19 @@ const ProfilePage = ({ }) => {
           speciality:
             (data.user.specialities && data.user.specialities[0]) || "",
         }));
+        setPricePackages(data.user.packages);
+        console.log({ PP: data.user.packages });
+
         let obj = {};
         if (data.user && data.user.packages && data.user.packages.length > 0) {
           obj = data.user.packages.reduce(
-            (obj, item) => Object.assign(obj, { [item.type]: item.price }),
+            (obj, item) =>
+              Object.assign(obj, { [item.name.toLowerCase()]: item.price }),
             {}
           );
           console.log({ obj });
         }
-        setFeatures(data.user.packages);
+
         setFormData((prev) => ({
           ...prev,
           packages: obj || {},
@@ -166,11 +170,12 @@ const ProfilePage = ({ }) => {
     }
   };
   const updateUserProfile = async (data) => {
-    console.log({ forma: data });
     try {
       if (JSON.stringify(data) === "{}") {
         return;
       }
+      console.log("DATA ", data);
+
       const formData = new FormData();
       formData.append("name", data.name);
       formData.append("surname", data.surname);
@@ -181,20 +186,17 @@ const ProfilePage = ({ }) => {
       // formData.append("bio", formData.bio);
       formData.append("speciality", JSON.stringify([data.speciality || ""]));
       formData.append("categories", JSON.stringify(data.categories));
-      // formData.append("packages", JSON.stringify(data.packages || []));
+      //formData.append("packages", JSON.stringify(data.packages || []));
       // formData.append("jobTitle", formData.jobTitle);
       formData.append("profilePicture", image || "");
       const response = await fetch(`${url}/api/auth/users/${uid}/update`, {
         method: "PUT",
         headers: {
           Authorization: token,
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          ...data,
-          packages: pricePackages }),
+        body: JSON.stringify(data),
       });
-      console.log(response);
       if (response.ok) {
         const data = await response.json();
         console.log(data);
@@ -235,8 +237,9 @@ const ProfilePage = ({ }) => {
           icon: "success",
           confirmButtonText: "OK",
         }).then(() => {
-          navigate(`/${newRole === "client" ? "client" : "freelancer"
-            }-profile`);
+          navigate(
+            `/${newRole === "client" ? "client" : "freelancer"}-profile`
+          );
         });
       } else {
         throw new Error("Failed to update role");
@@ -255,82 +258,90 @@ const ProfilePage = ({ }) => {
     setSearchTerm(newTab);
   };
   const handleAddFeature = (feature) => {
-    let arr = [...features];
+    let arr = [...benefits];
     if (arr.length > 0) {
       arr = arr.map((obj) => {
         if (obj.type && obj.type === feature.type) {
-          return { ...obj, features: [...obj.features, feature.feature] };
+          return { ...obj, benefits: [...obj.benefits, feature.feature] };
         }
         return obj;
       });
     } else {
-      arr = [...arr, { type: feature.type, features: [feature.feature] }];
+      arr = [...arr, { type: feature.type, benefits: [feature.feature] }];
     }
-    setFeatures(arr);
+    setBenefits(arr);
   };
   const handleUpdateFeature = (feature) => {
-    let arr = [...features];
+    let arr = [...benefits];
     if (arr.length > 0) {
       arr = arr.map((obj) => {
         if (obj.type && obj.type === feature.type) {
-          let updatedArr = [...obj.features];
+          let updatedArr = [...obj.benefits];
           updatedArr[feature.index] = feature.feature;
-          return { ...obj, features: updatedArr };
+          return { ...obj, benefits: updatedArr };
         }
         return obj;
       });
     }
-    setFeatures(arr);
+    setBenefits(arr);
   };
   const handleDeleteFeature = (feature) => {
-    let arr = [...features];
+    let arr = [...benefits];
     if (arr.length > 0) {
       arr = arr.map((obj) => {
         if (obj.type && obj.type === feature.type) {
-          let updatedArr = obj.features.filter((f) => f !== feature.feature);
-          return { ...obj, features: updatedArr };
+          let updatedArr = obj.benefits.filter((f) => f !== feature.feature);
+          return { ...obj, benefits: updatedArr };
         }
         return obj;
       });
     }
-    setFeatures(arr);
+    setBenefits(arr);
   };
   const handleShowPriceModal = (name, price, benefits) => {
-    console.log('running...');
-    
+    console.log("running...");
+
     setCurrentPrice(price);
     setCurrentBenefits(benefits);
-    setCurrentType(name)
-    setShowPriceModal(true)
-  }
+    setCurrentType(name);
+    setShowPriceModal(true);
+  };
   useEffect(() => {
     console.log({ currentPrice, currentType, currentBenefits, showPriceModal });
-    
-  }, [showPriceModal])
+  }, [showPriceModal]);
   const handlePriceFormSubmit = (benefits, price, type) => {
-    console.log({ benefits, price, type});
-    setPricePackages(packages => {
-      return packages.map(pkg => {
-        if(type !== pkg.name) {
-          return pkg
+    console.log({ benefits, price, type });
+    setPricePackages((packages) => {
+      return packages.map((pkg) => {
+        if (type !== pkg.name) {
+          return pkg;
         } else {
-          return { name: type, price: price, benefits: benefits }
+          return { name: type, price: price, benefits: benefits };
         }
-      })
-    })
-  }
+      });
+    });
+  };
   useEffect(() => {
-    console.log({pricePackages});
-    
-  }, [pricePackages])
+    console.log({ pricePackages });
+  }, [pricePackages]);
   if (loading) return <div></div>;
   return (
     <>
       <Navbar />
       <ProfileSubNav showTransactions={false} />
       <SectionContainer>
-        <Container fluid style={{  }} className="p-0 m-0">
-          <NewPriceCard showModal={showPriceModal} setNewBenefitList={setCurrentBenefits} price={currentPrice} benefits={currentBenefits} type={currentType} handleFormSubmit={handlePriceFormSubmit} setShowModal={(name, price, benefits) => setShowPriceModal(name, price, benefits)}/>
+        <Container fluid style={{}} className="p-0 m-0">
+          <NewPriceCard
+            showModal={showPriceModal}
+            setNewBenefitList={setCurrentBenefits}
+            price={currentPrice}
+            benefits={currentBenefits}
+            type={currentType}
+            handleFormSubmit={handlePriceFormSubmit}
+            setShowModal={(name, price, benefits) =>
+              setShowPriceModal(name, price, benefits)
+            }
+          />
           <div className="div-btn-top p-2">
             <Button
               variant="dark"
@@ -344,7 +355,9 @@ const ProfilePage = ({ }) => {
           <div className="profile-edit d-flex justify-content-between align-items-center">
             <div className="welcome-message">
               {formData.displayName !== "" ? (
-                <h4 className="welcome-name">Welcome, {formData.displayName}</h4>
+                <h4 className="welcome-name">
+                  Welcome, {formData.displayName}
+                </h4>
               ) : (
                 <h4 className="welcome-name"></h4>
               )}
@@ -401,7 +414,7 @@ const ProfilePage = ({ }) => {
                     handleAddFeature={handleAddFeature}
                     handleUpdateFeature={handleUpdateFeature}
                     handleDeleteFeature={handleDeleteFeature}
-                    features={features}
+                    benefits={benefits}
                     showPriceModal={handleShowPriceModal}
                   />
                 </Col>
@@ -410,7 +423,6 @@ const ProfilePage = ({ }) => {
           </Row>
         </Container>
       </SectionContainer>
-
     </>
   );
 };

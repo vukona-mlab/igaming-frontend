@@ -29,7 +29,7 @@ const ProfilePage = () => {
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
   const [currentRole, setCurrentRole] = useState("client");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   useEffect(() => {
     getProfile();
   }, []);
@@ -75,13 +75,10 @@ const ProfilePage = () => {
   const getProfile = async () => {
     setLoading(true);
     try {
-      const response = await fetch(
-        `${BACKEND_URL}/api/auth/users/${uid}`,
-        {
-          method: "GET",
-          headers: { Authorization: token },
-        }
-      );
+      const response = await fetch(`${BACKEND_URL}/api/auth/users/${uid}`, {
+        method: "GET",
+        headers: { Authorization: token },
+      });
       if (response.ok) {
         const data = await response.json();
         console.log(data);
@@ -177,9 +174,9 @@ const ProfilePage = () => {
             icon: "success",
             confirmButtonText: "OK",
           }).then(() => {
-
-            navigate(`/${newRole === "client" ? "client" : "freelancer"
-              }-profile`);
+            navigate(
+              `/${newRole === "client" ? "client" : "freelancer"}-profile`
+            );
           });
         } else {
           throw new Error("Failed to update role");
@@ -204,7 +201,9 @@ const ProfilePage = () => {
           <div className="profile-edit d-flex justify-content-between align-items-center">
             <div className="welcome-message">
               {formData.displayName !== "" ? (
-                <h4 className="welcome-name">Welcome, {formData.displayName}</h4>
+                <h4 className="welcome-name">
+                  Welcome, {formData.displayName}
+                </h4>
               ) : (
                 <h4 className="welcome-name"></h4>
               )}
@@ -278,7 +277,6 @@ const ProfilePage = () => {
         )} */}
         </Container>
       </SectionContainer>
-
     </>
   );
 };

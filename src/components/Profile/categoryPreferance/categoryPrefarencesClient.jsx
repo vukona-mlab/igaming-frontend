@@ -52,6 +52,7 @@ const CategoryPreferences = ({ onSubmit, isUpdate, cancel, categoriesArr }) => {
   // Handle form submission
   const handleSubmit = () => {
     //  e.preventDefault();
+
     onSubmit(formData); // Pass formData to parent component
   };
   return (
