@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import { Form, Row, Col, Button, Container } from "react-bootstrap";
 import "./categoryPrefarances.css"; // Ensure this path is correct
@@ -12,7 +14,7 @@ const CategoryPreferences = ({
   handleUpdateFeature,
   handleDeleteFeature,
   features,
-  pricePackages,
+  pricePackages = [],
   showPriceModal,
 }) => {
   const [formData, setFormData] = useState({
@@ -192,7 +194,7 @@ const CategoryPreferences = ({
           <Col xs={12} md={5} className="mb-3">
             <h5 className="category-header">Price Plan</h5>
 
-            {pricePackages.length > 0 &&
+            {Array.isArray(pricePackages) && pricePackages.length > 0 &&
               pricePackages.map((pricePackage) => (
                 <Row className="mb-3" key={pricePackage.name}>
                   <Col xs={4}>

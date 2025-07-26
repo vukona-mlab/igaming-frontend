@@ -1,7 +1,7 @@
 const registerNotificationSW = () => {
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker
-      .register("./notification-sw.js", { scope: "/" })
+      .register("./notifications-sw.js", { scope: "/" })
       .then((registration) => {
         console.log("Service registered with scope: ", registration);
       })
