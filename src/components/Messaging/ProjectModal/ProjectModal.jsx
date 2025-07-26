@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./ProjectModal.css";
 import { io } from "socket.io-client";
-import DocumentIcon from '../../../assets/document-icon.svg';
-import PlanOptions from '../ProjectForm/PlanOptions/PlanOptions';
-import ProjectDescription from '../ProjectForm/ProjectDescription/ProjectDescription';
-import DocumentSection from '../ProjectForm/DocumentSection/DocumentSection';
+import DocumentIcon from "../../../assets/document-icon.svg";
+import PlanOptions from "../ProjectForm/PlanOptions/PlanOptions";
+import ProjectDescription from "../ProjectForm/ProjectDescription/ProjectDescription";
+import DocumentSection from "../ProjectForm/DocumentSection/DocumentSection";
 import BACKEND_URL from "../../../config/backend-config";
 
 const ProjectModal = ({
@@ -21,8 +21,10 @@ const ProjectModal = ({
     deadline: "",
     category: "Game Development",
     requirements: "",
+    inPlatform: true,
+    link: "",
   });
-  const [selectedPlan, setSelectedPlan] = useState('standard');
+  const [selectedPlan, setSelectedPlan] = useState("standard");
   const [totalBudget, setTotalBudget] = useState(0);
   const [freelancerPackages, setFreelancerPackages] = useState([]);
 
@@ -53,20 +55,25 @@ const ProjectModal = ({
     }
   }, [projectData?.freelancerId]);
 
-  const hasPackages = freelancerPackages && Array.isArray(freelancerPackages) && freelancerPackages.length > 0;
+  const hasPackages =
+    freelancerPackages &&
+    Array.isArray(freelancerPackages) &&
+    freelancerPackages.length > 0;
 
   const getSelectedPlanPrice = () => {
-    const selectedPackage = freelancerPackages.find(pkg => pkg.type === selectedPlan);
+    const selectedPackage = freelancerPackages.find(
+      (pkg) => pkg.type === selectedPlan
+    );
     return selectedPackage ? parseInt(selectedPackage.price) : 0;
   };
 
   useEffect(() => {
     const baseBudget = parseInt(formData.budget) || 0;
     const planAmount = hasPackages ? getSelectedPlanPrice() : 0;
-    
-    setFormData(prev => ({
+
+    setFormData((prev) => ({
       ...prev,
-      budget: (baseBudget + planAmount).toString()
+      budget: (baseBudget + planAmount).toString(),
     }));
   }, [selectedPlan, freelancerPackages, hasPackages]);
 
@@ -98,27 +105,24 @@ const ProjectModal = ({
       }
       console.log({ totalBudget: formData.budget });
       // return
-      const response = await fetch(
-        `${BACKEND_URL}/api/projects`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token,
-          },
-          body: JSON.stringify({
-            ...formData,
-            budget: formData.budget.toString(), // Use the total budget including plan amount
-            clientId: projectData.clientId,
-            freelancerId: projectData.freelancerId,
-            requirements: formData.requirements
-              .split(",")
-              .map((req) => req.trim()),
-            deadline: parseInt(formData.deadline),
-            chatId,
-          }),
-        }
-      );
+      const response = await fetch(`${BACKEND_URL}/api/projects`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        body: JSON.stringify({
+          ...formData,
+          budget: formData.budget.toString(), // Use the total budget including plan amount
+          clientId: projectData.clientId,
+          freelancerId: projectData.freelancerId,
+          requirements: formData.requirements
+            .split(",")
+            .map((req) => req.trim()),
+          deadline: parseInt(formData.deadline),
+          chatId,
+        }),
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -210,8 +214,14 @@ const ProjectModal = ({
     <div className="project-modal-overlay">
       <div className="project-modal">
         <div className="project-modal-header">
-          <h2>{isClientView ? "Service Level Agreement Details" : "Service Level Agreement"}</h2>
-          <button className="close-button" onClick={onClose}>×</button>
+          <h2>
+            {isClientView
+              ? "Service Level Agreement Details"
+              : "Service Level Agreement"}
+          </h2>
+          <button className="close-button" onClick={onClose}>
+            ×
+          </button>
         </div>
         <div className="project-modal-content">
           {isClientView ? (
@@ -219,7 +229,7 @@ const ProjectModal = ({
               <div className="sla-section">
                 <ProjectDescription />
 
-                <DocumentSection 
+                <DocumentSection
                   documentName="777SpiningGameRequirements.PDF"
                   documentIcon={DocumentIcon}
                 />
@@ -227,27 +237,37 @@ const ProjectModal = ({
                 <div className="price-section">
                   <div className="price-row">
                     <span>Price</span>
-                    <span>R{projectData.budget > 0 ? projectData.budget : 1000}</span>
-
+                    <span>
+                      R{projectData.budget > 0 ? projectData.budget : 1000}
+                    </span>
                   </div>
                   {hasPackages && (
                     <div className="price-row">
                       <span>Checkout price</span>
-                      <span>R{parseInt(projectData.budget) + getSelectedPlanPrice()}</span>
+                      <span>
+                        R{parseInt(projectData.budget) + getSelectedPlanPrice()}
+                      </span>
                     </div>
                   )}
                 </div>
 
                 <div className="button-group">
-                  <button className="decline-btn" onClick={handleReject}>Decline SLA</button>
-                  <button className="accept-btn" onClick={handleApprove}>Accept SLA</button>
+                  <button className="decline-btn" onClick={handleReject}>
+                    Decline SLA
+                  </button>
+                  <button className="accept-btn" onClick={handleApprove}>
+                    Accept SLA
+                  </button>
                 </div>
 
-                <p className="disclaimer">By accepting the SLA, you are confirming that every information on SLA is correct and valid.</p>
+                <p className="disclaimer">
+                  By accepting the SLA, you are confirming that every
+                  information on SLA is correct and valid.
+                </p>
               </div>
 
               <div className="pricing-section">
-                <PlanOptions 
+                <PlanOptions
                   selectedPlan={selectedPlan}
                   onPlanChange={setSelectedPlan}
                   planPrices={freelancerPackages}
@@ -256,7 +276,11 @@ const ProjectModal = ({
                   <div className="total-budget-section">
                     <div className="total-budget-row">
                       <span>Base Budget:</span>
-                      <span>R{(parseInt(formData.budget) - getSelectedPlanPrice()) || '0'}</span>
+                      <span>
+                        R
+                        {parseInt(formData.budget) - getSelectedPlanPrice() ||
+                          "0"}
+                      </span>
                     </div>
                     <div className="total-budget-row">
                       <span>Plan Amount:</span>
@@ -264,7 +288,7 @@ const ProjectModal = ({
                     </div>
                     <div className="total-budget-row total">
                       <span>Total Budget:</span>
-                      <span>R{formData.budget || '0'}</span>
+                      <span>R{formData.budget || "0"}</span>
                     </div>
                   </div>
                 )}
@@ -330,7 +354,9 @@ const ProjectModal = ({
                     onChange={handleChange}
                     required
                   >
-                    <option value="" disabled>Select a category</option>
+                    <option value="" disabled>
+                      Select a category
+                    </option>
                     {categories.map((category) => (
                       <option key={category} value={category}>
                         {category}
@@ -351,7 +377,11 @@ const ProjectModal = ({
                 </div>
 
                 <div className="button-group">
-                  <button type="button" className="decline-btn" onClick={onClose}>
+                  <button
+                    type="button"
+                    className="decline-btn"
+                    onClick={onClose}
+                  >
                     Cancel
                   </button>
                   <button type="submit" className="accept-btn">
@@ -361,7 +391,7 @@ const ProjectModal = ({
               </div>
 
               <div className="pricing-section">
-                <PlanOptions 
+                <PlanOptions
                   selectedPlan={selectedPlan}
                   onPlanChange={setSelectedPlan}
                   planPrices={freelancerPackages}
@@ -370,7 +400,11 @@ const ProjectModal = ({
                   <div className="total-budget-section">
                     <div className="total-budget-row">
                       <span>Base Budget:</span>
-                      <span>R{(parseInt(formData.budget) - getSelectedPlanPrice()) || '0'}</span>
+                      <span>
+                        R
+                        {parseInt(formData.budget) - getSelectedPlanPrice() ||
+                          "0"}
+                      </span>
                     </div>
                     <div className="total-budget-row">
                       <span>Plan Amount:</span>
@@ -378,7 +412,7 @@ const ProjectModal = ({
                     </div>
                     <div className="total-budget-row total">
                       <span>Total Budget:</span>
-                      <span>R{formData.budget || '0'}</span>
+                      <span>R{formData.budget || "0"}</span>
                     </div>
                   </div>
                 )}
