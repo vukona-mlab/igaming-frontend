@@ -77,11 +77,11 @@ const Projects = () => {
       let filteredProjects =
         role === "freelancer"
           ? response.data.projects.filter(
-            (project) => project.freelancerId === uid
-          )
+              (project) => project.freelancerId === uid
+            )
           : response.data.projects.filter(
-            (project) => project.clientId === uid
-          );
+              (project) => project.clientId === uid
+            );
       const updatedProjects = filteredProjects.map((project) => {
         let clientEmail = "";
         let freelancerEmail = "";
@@ -133,14 +133,11 @@ const Projects = () => {
 
   const fetchFreelancers = async () => {
     try {
-      const response = await axios.get(
-        `${BACKEND_URL}/api/freelancers`,
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
+      const response = await axios.get(`${BACKEND_URL}/api/freelancers`, {
+        headers: {
+          Authorization: token,
+        },
+      });
 
       return response.data.freelancers;
     } catch (error) {
@@ -159,9 +156,9 @@ const Projects = () => {
       <SectionContainer>
         <div className="pj-search-upload">
           <SearchBar onSearch={setSearchTerm} />
-          {role === "freelancer" && (
+          {/* {role === "freelancer" && (
             <button className="pj-upload-btn">Upload project</button>
-          )}
+          )} */}
         </div>
       </SectionContainer>
 
@@ -173,7 +170,6 @@ const Projects = () => {
           <SectionContainer>
             <div className="pj-no-data">No data</div>
           </SectionContainer>
-
         )}
       </div>
     </div>

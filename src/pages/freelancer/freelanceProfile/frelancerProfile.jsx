@@ -12,6 +12,7 @@ import ProfileSubNav from "../../../components/Profile/ProfileSubNav/ProfileSubN
 import { useNavigate } from "react-router-dom";
 import SectionContainer from "../../../components/SectionContainer";
 import NewPriceCard from "../../../components/PriceCard/NewPriceCard/NewPriceCard";
+import ProjectUpload from "../../../components/Projects/ProjectUpload/ProjectUpload";
 import BACKEND_URL from "../../../config/backend-config";
 
 const ProfilePage = ({}) => {
@@ -49,6 +50,9 @@ const ProfilePage = ({}) => {
     { name: "Premium", price: 0, benefits: [] },
     { name: "Ultimate", price: 0, benefits: [] },
   ]);
+  const [projectData, setProjectData] = useState(null);
+  const [showProjectModal, setShowProjectModal] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -105,7 +109,14 @@ const ProfilePage = ({}) => {
       confirmButtonText: "Cool",
     });
   };
-
+  const showProjectUploadAlert = () => {
+    Swal.fire({
+      title: "Well done!",
+      text: "Your project has been uploaded.",
+      icon: "success",
+      confirmButtonText: "Cool",
+    });
+  };
   const getProfile = async () => {
     setLoading(true);
     try {
@@ -137,8 +148,9 @@ const ProfilePage = ({}) => {
           speciality:
             (data.user.specialities && data.user.specialities[0]) || "",
         }));
-        setPricePackages(data.user.packages);
-        console.log({ PP: data.user.packages });
+        if (data.user.packages && data.user.packages.length > 0) {
+          setPricePackages(data.user.packages);
+        }
 
         let obj = {};
         if (data.user && data.user.packages && data.user.packages.length > 0) {
@@ -159,7 +171,7 @@ const ProfilePage = ({}) => {
           categories: data.user.categories || [],
         }));
         setCurrImage(data.user.profilePicture);
-        //setData(data);
+        setProjectData({ ...projectData, freelancerId: data.user.uid });
         // alert(data.message);
       } else {
         // Handle error
@@ -330,6 +342,15 @@ const ProfilePage = ({}) => {
       <Navbar />
       <ProfileSubNav showTransactions={false} />
       <SectionContainer>
+        {showProjectModal && projectData && (
+          <ProjectUpload
+            onClose={() => {
+              showProjectUploadAlert();
+              setShowProjectModal(false);
+            }}
+            projectData={projectData}
+          />
+        )}
         <Container fluid style={{}} className="p-0 m-0">
           <NewPriceCard
             showModal={showPriceModal}
@@ -342,7 +363,15 @@ const ProfilePage = ({}) => {
               setShowPriceModal(name, price, benefits)
             }
           />
-          <div className="div-btn-top p-2">
+          <div className="div-btn-top p-2 pr-upload-btns">
+            <Button
+              variant="dark"
+              className="add-my-documents"
+              onClick={() => setShowProjectModal(true)}
+              type="submit"
+            >
+              Upload Project
+            </Button>
             <Button
               variant="dark"
               className="add-my-documents"

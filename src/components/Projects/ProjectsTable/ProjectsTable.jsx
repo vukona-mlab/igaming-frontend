@@ -54,21 +54,18 @@ const ProjectsTable = ({ type, projects }) => {
           onSuccess: async (transaction) => {
             if (transaction.status === "success") {
               try {
-                const res = await fetch(
-                  `${BACKEND_URL}/api/payment/verify`,
-                  {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                      Authorization: token,
-                    },
-                    body: JSON.stringify({
-                      reference: transaction.reference,
-                      clientId: clientId,
-                      projectId: projectId,
-                    }),
-                  }
-                );
+                const res = await fetch(`${BACKEND_URL}/api/payment/verify`, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: token,
+                  },
+                  body: JSON.stringify({
+                    reference: transaction.reference,
+                    clientId: clientId,
+                    projectId: projectId,
+                  }),
+                });
 
                 const verificationData = await res.json();
                 if (res.ok) {
@@ -154,8 +151,8 @@ const ProjectsTable = ({ type, projects }) => {
                             ? project.freelancerEmail
                             : "N/A"
                           : project.clientEmail !== ""
-                            ? project.clientEmail
-                            : "N/A"}
+                          ? project.clientEmail
+                          : "N/A"}
                       </div>
                     </td>
 
@@ -164,7 +161,7 @@ const ProjectsTable = ({ type, projects }) => {
                     </td>
                     <td className="pj-t-data">
                       <div className="pj-project-requirements">
-                        {project.requirements ? project.requirements[0] : 'N/A'}
+                        {project.requirements ? project.requirements[0] : "N/A"}
                       </div>
                     </td>
                     <td className="pj-t-data pj-context-parent">
@@ -191,9 +188,14 @@ const ProjectsTable = ({ type, projects }) => {
                         current === project.id &&
                         (type === "freelancer" ? (
                           <div className="pj-context-menu" ref={menuRef}>
+                            {console.log(project.inPlatform)}
                             <div>Project Actions</div>
-                            <button>Mark as complete</button>
-                            <button>Edit SLA</button>
+                            {project.inPlatform && (
+                              <>
+                                <button>Mark as complete</button>
+                                <button>Edit SLA</button>
+                              </>
+                            )}
                             <button>Rate the service</button>
                           </div>
                         ) : (
@@ -211,18 +213,16 @@ const ProjectsTable = ({ type, projects }) => {
                               project.paymentStatus !== "completed" && (
                                 <button
                                   onClick={() => {
-                                    console.log({project});
-                                    
+                                    console.log({ project });
+
                                     handleTransaction(
                                       project.clientId,
                                       project.freelancerId,
                                       project.budget,
                                       project.clientEmail,
                                       project.id
-                                    )
-                                  }
-                                    
-                                  }
+                                    );
+                                  }}
                                 >
                                   Pay project
                                 </button>
@@ -238,7 +238,6 @@ const ProjectsTable = ({ type, projects }) => {
         </table>
       </div>
     </SectionContainer>
-
   );
 };
 
