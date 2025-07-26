@@ -164,6 +164,16 @@ const ClientLogin = () => {
           {successMessage && (
             <p className="success-message">{successMessage}</p>
           )}
+          
+
+          <div className="forgot-password-link">
+            <span
+              style={{ color: '#007bff', cursor: 'pointer', textDecoration: 'underline', fontSize: '15px', fontWeight: 500 }}
+              onClick={() => navigation('/reset-password')}
+            >
+              Forgot password?
+            </span>
+          </div>
 
           <LoadingButton onClick={handleLogin} text="Continue with email" />
           <GoogleSignInButton handleGoogleSignIn={handleGoogleSignIn} />

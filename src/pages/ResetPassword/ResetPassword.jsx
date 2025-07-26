@@ -10,12 +10,10 @@ const ResetPassword = () => {
   // State to manage form values and errors
   const [formData, setFormData] = useState({
     username: "",
-    phone: "",
   });
 
   const [errors, setErrors] = useState({
     username: "",
-    phone: "",
   });
   const navigation = useNavigate();
 
@@ -39,14 +37,6 @@ const ResetPassword = () => {
       isValid = false;
     }
 
-    if (!formData.phone.trim()) {
-      newErrors.phone = "Phone number is required.";
-      isValid = false;
-    } else if (!/^\d{10}$/.test(formData.phone)) {
-      newErrors.phone = "Enter a valid 10-digit phone number.";
-      isValid = false;
-    }
-
     setErrors(newErrors);
     return isValid;
   };
@@ -57,21 +47,13 @@ const ResetPassword = () => {
 
     setLoading(true);
     try {
-      // Simulate API call (wait for 2 seconds)
-
-      return new Promise((r) =>
-        sendPasswordResetEmail(auth, formData.username)
-          .then(() => {
-            setLoading(false);
-
-            alert("Password reset request submitted!");
-            r(true);
-          })
-          .catch((err) => {
-            console.log(err);
-          })
-      );
-    } finally {
+      await sendPasswordResetEmail(auth, formData.username);
+      setLoading(false);
+      alert("Password reset request submitted!");
+      navigation("/freelancer-signin");
+    } catch (err) {
+      setLoading(false);
+      console.log(err);
     }
   };
 
@@ -108,7 +90,7 @@ const ResetPassword = () => {
             {errors.username && <p className="error-text">{errors.username}</p>}
           </div>
 
-          {/* Phone Input */}
+          {/* Phone Input
           <div className="input-group">
             <label>Phone</label>
             <input
@@ -119,7 +101,7 @@ const ResetPassword = () => {
               placeholder="Enter phone number"
             />
             {errors.phone && <p className="error-text">{errors.phone}</p>}
-          </div>
+          </div> */}
 
           {/* Reset Button */}
           <LoadingButton

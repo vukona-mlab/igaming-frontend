@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./SignIn.css";
+// import "./SignIn.css";
 import InputForm from "../../../components/Auth/reusable-input-form/InputForm";
 import LoginRegisterButton from "../../../components/Auth/LoginRegisterButton/LoginRegisterButton";
 import EmailResetButton from "../../../components/Auth/EmailResetButton/Button";
@@ -15,8 +15,8 @@ export default function SignIn() {
   const [error, setError] = useState("");
   const navigation = useNavigate();
   function handleFormDataChange(e) {
-    const value = e.target.value;
-    setFormData(value);
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
 
     if (!value.trim()) {
       setError("This field is required.");
@@ -61,8 +61,6 @@ export default function SignIn() {
   };
   const handleGoogleSignIn = async () => {
     console.log({ deviceToken });
-    
-    return
     try {
       // Sign in with Google
       const result = await signInWithPopup(auth, googleProvider);
@@ -112,10 +110,18 @@ export default function SignIn() {
           </div>
           <InputForm
             formData={formData}
-            handleFormDataChange={setFormData}
+            handleFormDataChange={handleFormDataChange}
             label1={"username"}
             label2={"password"}
           />
+          <div className="forgot-password-link">
+            <span
+              style={{ color: '#007bff', cursor: 'pointer', textDecoration: 'underline', fontSize: '15px', fontWeight: 500 }}
+              onClick={() => navigation('/reset-password')}
+            >
+              Forgot password?
+            </span>
+          </div>
           <div className="email-button">
             <EmailResetButton text="Continue with email" func={handleSubmit} />
           </div>
