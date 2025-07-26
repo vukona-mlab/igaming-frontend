@@ -38,6 +38,15 @@ const FreelancerSignIn = () => {
   });
 
   const [successMessage, setSuccessMessage] = useState("");
+
+          <div style={{ marginTop: '-10px', marginBottom: '10px', textAlign: 'right' }}>
+            <span
+              style={{ color: '#007bff', cursor: 'pointer', textDecoration: 'underline', fontSize: '15px', fontWeight: 500 }}
+              onClick={() => navigation('/reset-password')}
+            >
+              Forgot password?
+            </span>
+          </div>
   const navigation = useNavigate();
 
   const handleGoogleSignIn = async () => {
@@ -139,6 +148,7 @@ const FreelancerSignIn = () => {
             SIGN IN
           </h2>
 
+
           {/* Pass handleFormDataChange to AuthForm */}
           <AuthForm
             formData={formData}
@@ -147,6 +157,14 @@ const FreelancerSignIn = () => {
             errors={errors}
           />
 
+          <div className="forgot-password-link">
+            <span
+              style={{ color: '#007bff', cursor: 'pointer', textDecoration: 'underline', fontSize: '15px', fontWeight: 500 }}
+              onClick={() => navigation('/reset-password')}
+            >
+              Forgot password?
+            </span>
+          </div>
           {/* Display validation errors */}
           {errors.username && (
             <p className="error-message">{errors.username}</p>
