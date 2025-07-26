@@ -1,0 +1,11 @@
+{
+  "firebaseConfig": {
+    "apiKey": "AIzaSyBT5DSGYayA1wg2ytvao_SCb52fpxYmxCI",
+    "authDomain": "research-igaming.firebaseapp.com",
+    "projectId": "research-igaming",
+    "storageBucket": "research-igaming.firebasestorage.app",
+    "messagingSenderId": "124345080434",
+    "appId": "1:124345080434:web:18f73d546bf69a0cce40eb",
+    "measurementId": "G-L56PG899EN"
+  }
+}
