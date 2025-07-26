@@ -52,11 +52,11 @@ const ChatBox = ({
   const typingTimeoutRef = useRef(null);
 
   useEffect(() => {
-    if (chatId) {
+    if (chatId && currentChat && chatId === currentChat.id) {
       fetchMessages();
       fetchProjectStatus();
     }
-  }, [chatId]);
+  }, [chatId, currentChat]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -105,34 +105,43 @@ const ChatBox = ({
   const fetchMessages = async (pageNum = 1, isInitial = true) => {
     try {
       setIsLoadingMore(true);
-      const response = await fetch(
-        `${BACKEND_URL}/api/chats/${chatId}?page=${pageNum}&limit=${MESSAGES_PER_PAGE}`,
-        {
-          headers: {
-            Authorization: `${localStorage.getItem("token")}`,
-          },
-        }
-      );
+
+      const chatUrl =
+        currentChat && currentChat.chatType
+          ? `${BACKEND_URL}/api/admin-chats/${chatId}/messages?page=${pageNum}&limit=${MESSAGES_PER_PAGE}`
+          : `${BACKEND_URL}/api/chats/${chatId}?page=${pageNum}&limit=${MESSAGES_PER_PAGE}`;
+      console.log({ currentChat, chatId, chatUrl });
+      const response = await fetch(chatUrl, {
+        headers: {
+          Authorization: `${localStorage.getItem("token")}`,
+        },
+      });
 
       if (!response.ok) {
         throw new Error("Failed to fetch messages");
       }
 
       const data = await response.json();
-      const url = (data.chat?.participants?.filter(
-        (part) => part.uid !== localStorage.getItem("uid")
-      )[0]?.photoURL) || "";
+      // console.log({ data });
+      const url =
+        data.chat?.participants?.filter(
+          (part) => part.uid !== localStorage.getItem("uid")
+        )[0]?.photoURL || "";
 
       setPhotoUrl(url);
-      
+
       // Update messages based on whether this is initial load or loading more
+      const msgData =
+        currentChat && currentChat.chatType
+          ? data.messages
+          : data.chat.messages;
       if (isInitial) {
-        setMessages(data.chat.messages);
+        setMessages(msgData);
       } else {
-        setMessages(prev => [...data.chat.messages, ...prev]);
+        setMessages((prev) => [...msgData, ...prev]);
       }
-      
-      setHasMore(data.chat.messages.length === MESSAGES_PER_PAGE);
+
+      setHasMore(msgData.length === MESSAGES_PER_PAGE);
     } catch (error) {
       console.error("Error fetching messages:", error);
     } finally {
@@ -151,7 +160,7 @@ const ChatBox = ({
           },
         }
       );
-      
+
       if (!response.ok) {
         if (response.status === 404) {
           // No project exists yet
@@ -160,7 +169,7 @@ const ChatBox = ({
         }
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const data = await response.json();
       if (data.project) {
         setProjectStatus(data.project);
@@ -287,22 +296,26 @@ const ChatBox = ({
 
   const groupMessagesByDate = (messages) => {
     const groups = {};
-    
-    messages.forEach(message => {
-      const date = new Date(message.createdAt?._seconds ? message.createdAt._seconds * 1000 : message.createdAt);
+
+    messages.forEach((message) => {
+      const date = new Date(
+        message.createdAt?._seconds
+          ? message.createdAt._seconds * 1000
+          : message.createdAt
+      );
       const dateStr = date.toDateString();
-      
+
       if (!groups[dateStr]) {
         groups[dateStr] = [];
       }
       groups[dateStr].push(message);
     });
-    
+
     return groups;
   };
 
   if (loading) return;
-  console.log({ otherParticipant, projectStatus });
+  // console.log({ chatId });
   return (
     <div className="f-chat-box">
       {!currentChat ? (
@@ -347,18 +360,21 @@ const ChatBox = ({
                 </div>
                 <div className="status-item">
                   <span className="status-label">Budget:</span>
-                  <span className="status-value">
-                    R{projectStatus.budget}
-                  </span>
+                  <span className="status-value">R{projectStatus.budget}</span>
                 </div>
               </div>
             </div>
           ) : (
             <div className="no-project-message">
               {userRole === "freelancer" ? (
-                <p>No active project. Create a project agreement to get started.</p>
+                <p>
+                  No active project. Create a project agreement to get started.
+                </p>
               ) : (
-                <p>No active project. Wait for the freelancer to create a project agreement.</p>
+                <p>
+                  No active project. Wait for the freelancer to create a project
+                  agreement.
+                </p>
               )}
             </div>
           )}
@@ -367,23 +383,25 @@ const ChatBox = ({
               <div className="loading">Loading messages...</div>
             ) : (
               <div className="f-messages-wrapper">
-                {Object.entries(groupMessagesByDate(messages)).map(([date, dateMessages]) => (
-                  <div key={date} className="message-date-group">
-                    <div className="date-divider">
-                      <span className="date-label">
-                        {new Date(date).toLocaleDateString(undefined, {
-                          weekday: 'long',
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric'
-                        })}
-                      </span>
+                {Object.entries(groupMessagesByDate(messages)).map(
+                  ([date, dateMessages]) => (
+                    <div key={date} className="message-date-group">
+                      <div className="date-divider">
+                        <span className="date-label">
+                          {new Date(date).toLocaleDateString(undefined, {
+                            weekday: "long",
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          })}
+                        </span>
+                      </div>
+                      {dateMessages.map((msg, i) => (
+                        <MessageCard key={i} message={msg} />
+                      ))}
                     </div>
-                    {dateMessages.map((msg, i) => (
-                      <MessageCard key={i} message={msg} />
-                    ))}
-                  </div>
-                ))}
+                  )
+                )}
                 <div ref={bottomRef}></div>
               </div>
             )}

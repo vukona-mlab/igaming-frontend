@@ -31,7 +31,7 @@ const MessagingPage = () => {
   useEffect(() => {
     // Update current chat when currentChatId changes
     if (currentChatId && chats.length > 0) {
-      const chat = chats.find(chat => chat.id === currentChatId);
+      const chat = chats.find((chat) => chat.id === currentChatId);
       setCurrentChat(chat);
 
       const currentUserId = localStorage.getItem("uid");
@@ -39,7 +39,7 @@ const MessagingPage = () => {
 
       // Find the client participant
       const client = chat?.participants?.find(
-        part => part.uid !== currentUserId
+        (part) => part.uid !== currentUserId
       );
 
       if (client) {
@@ -51,19 +51,21 @@ const MessagingPage = () => {
 
   useEffect(() => {
     // Request notification permission when component mounts
-    if (Notification.permission !== 'granted') {
+    if (Notification.permission !== "granted") {
       Notification.requestPermission();
     }
 
     const socket = io(BACKEND_URL);
 
-    socket.on('video-call-invitation', (data) => {
-      if (data.recipientId === localStorage.getItem('uid') &&
-        data.initiatorRole === 'client') {
-        if (Notification.permission === 'granted') {
-          const notification = new Notification('Video Call Invitation', {
+    socket.on("video-call-invitation", (data) => {
+      if (
+        data.recipientId === localStorage.getItem("uid") &&
+        data.initiatorRole === "client"
+      ) {
+        if (Notification.permission === "granted") {
+          const notification = new Notification("Video Call Invitation", {
             body: `${data.initiatorName} is inviting you to a video call`,
-            icon: '/path/to/notification-icon.png'
+            icon: "/path/to/notification-icon.png",
           });
 
           notification.onclick = () => {
@@ -98,12 +100,14 @@ const MessagingPage = () => {
         const data = await response.json();
         if (data.chats && data.chats.length > 0) {
           // Process the chats to ensure lastMessage is a string
-          const processedChats = data.chats.map(chat => ({
+          const processedChats = data.chats.map((chat) => ({
             ...chat,
-            lastMessage: typeof chat.lastMessage === 'object'
-              ? chat.lastMessage.text
-              : chat.lastMessage || 'No messages'
+            lastMessage:
+              typeof chat.lastMessage === "object"
+                ? chat.lastMessage.text
+                : chat.lastMessage || "No messages",
           }));
+          console.log("CHATS", { processedChats });
 
           setChats(processedChats);
 
@@ -120,10 +124,7 @@ const MessagingPage = () => {
     }
   };
 
-
-
-
-
+  console.log({ currentChatId, currentChat });
   return (
     <div className="MessagingPageF">
       <Navbar />
@@ -136,22 +137,19 @@ const MessagingPage = () => {
             setCurrentClientId={setCurrentClientId}
             setCurrentClientName={setCurrentClientName}
           />
-          {
-            chats.length === 0 ? (
-              <EmptyChatBox />
-            ) : (
-              currentChatId && (
-                <ChatBox
-                  chatId={currentChatId}
-                  currentChat={currentChat}
-                  currentClientId={currentClientId}
-                  currentClientName={currentClientName}
-                />
-              )
+          {chats.length === 0 ? (
+            <EmptyChatBox />
+          ) : (
+            currentChatId && (
+              <ChatBox
+                chatId={currentChatId}
+                currentChat={currentChat}
+                currentClientId={currentClientId}
+                currentClientName={currentClientName}
+              />
             )
-          }
+          )}
         </div>
-
       </SectionContainer>
       {showZoomModal && (
         <ZoomMeetingModal
@@ -161,7 +159,6 @@ const MessagingPage = () => {
           isInvitation={isInvitation}
         />
       )}
-
     </div>
   );
 };
