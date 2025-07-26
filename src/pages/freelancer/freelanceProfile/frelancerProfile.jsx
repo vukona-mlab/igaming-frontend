@@ -109,7 +109,14 @@ const ProfilePage = ({}) => {
       confirmButtonText: "Cool",
     });
   };
-
+  const showProjectUploadAlert = () => {
+    Swal.fire({
+      title: "Well done!",
+      text: "Your project has been uploaded.",
+      icon: "success",
+      confirmButtonText: "Cool",
+    });
+  };
   const getProfile = async () => {
     setLoading(true);
     try {
@@ -141,8 +148,9 @@ const ProfilePage = ({}) => {
           speciality:
             (data.user.specialities && data.user.specialities[0]) || "",
         }));
-        setPricePackages(data.user.packages || []);
-        console.log({ PP: data.user.packages });
+        if (data.user.packages && data.user.packages.length > 0) {
+          setPricePackages(data.user.packages);
+        }
 
         let obj = {};
         if (data.user && data.user.packages && data.user.packages.length > 0) {
@@ -337,8 +345,8 @@ const ProfilePage = ({}) => {
         {showProjectModal && projectData && (
           <ProjectUpload
             onClose={() => {
+              showProjectUploadAlert();
               setShowProjectModal(false);
-              setProjectData(null);
             }}
             projectData={projectData}
           />
@@ -355,7 +363,7 @@ const ProfilePage = ({}) => {
               setShowPriceModal(name, price, benefits)
             }
           />
-          <div className="div-btn-top p-2">
+          <div className="div-btn-top p-2 pr-upload-btns">
             <Button
               variant="dark"
               className="add-my-documents"

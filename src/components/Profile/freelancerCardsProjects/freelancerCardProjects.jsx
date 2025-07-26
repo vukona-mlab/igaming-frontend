@@ -17,13 +17,12 @@ const FreelancerProjectCards = ({ image, speciality }) => {
       {/* Card Body */}
       <Card.Body>
         <Card.Text className="card-text">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum diam metus, volutpat nec congue in
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum
+          diam metus, volutpat nec congue in
         </Card.Text>
 
         {/* Speciality Tag */}
-        <div className="text-input">
-          {speciality || "Creative and Design"}
-        </div>
+        <div className="text-input">{speciality || "Creative and Design"}</div>
       </Card.Body>
     </Card>
   );

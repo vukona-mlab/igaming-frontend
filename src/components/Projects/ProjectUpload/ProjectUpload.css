@@ -11,17 +11,17 @@
   z-index: 1000;
   padding: 2rem;
 }
-
 .pu-project-modal {
-  background: white;
+  background-color: white;
   border-radius: 12px;
-  width: 100%;
-  max-width: 1400px;
+  width: 60%;
+  max-width: 800px;
   max-height: 90vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  animation: modalSlideIn 0.3s ease-out;
 }
+
 .pu-project-modal-content {
   padding: 2rem;
   overflow-y: auto;
@@ -33,6 +33,12 @@
   padding: 2rem;
   max-width: 1600px;
   margin: 0 auto;
+}
+.pu-pdc-detail-section-one {
+  flex: 1;
+}
+.pu-pdc-detail-section-two {
+  flex: 2;
 }
 /* Portfolio Image */
 .pdc-portfolio-image {

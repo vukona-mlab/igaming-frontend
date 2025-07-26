@@ -10,6 +10,7 @@ export default function ProjectUpload({ onClose, projectData }) {
     budget: "",
     deadline: "",
     clientId: "",
+    requirements: "",
     category: "Game Development",
     link: "",
     inPlatform: false,
@@ -48,6 +49,11 @@ export default function ProjectUpload({ onClose, projectData }) {
         body: JSON.stringify({
           ...formData,
           freelancerId: uid,
+          budget: formData.budget.toString(), // Use the total budget including plan amount
+          requirements: formData.requirements
+            .split(",")
+            .map((req) => req.trim()),
+          deadline: parseInt(formData.deadline),
         }),
       });
 
@@ -108,7 +114,34 @@ export default function ProjectUpload({ onClose, projectData }) {
         </div>
         <div className="pu-project-modal-content">
           <form onSubmit={handleSubmit} className="pu-project-form-container">
-            <div className="sla-section">
+            <div className="pu-pdc-detail-section-one">
+              <div className="pdc-image-container">
+                {currentImage ? (
+                  <img
+                    src={currentImage}
+                    alt="Portfolio"
+                    className="pdc-portfolio-image"
+                  />
+                ) : (
+                  <div className="no-image">No Image</div>
+                )}
+
+                {/* Camera Icon Button */}
+                <div className="pdc-camera-upload">
+                  <div className="camera-icon" onClick={handleImageUpload}>
+                    <input
+                      type="file"
+                      id="fileInput"
+                      accept="image/*"
+                      hidden
+                      onChange={handleImageChange}
+                    />
+                    <CiCamera size={20} color="black" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="pu-pdc-detail-section-two">
               <div className="form-group">
                 <label>Title:</label>
                 <input
@@ -149,18 +182,29 @@ export default function ProjectUpload({ onClose, projectData }) {
                   ))}
                 </select>
               </div>
-              <div className="pdc-camera-upload">
-                <div className="camera-icon" onClick={handleImageUpload}>
-                  <input
-                    type="file"
-                    id="fileInput"
-                    accept="image/*"
-                    hidden
-                    onChange={handleImageChange}
-                  />
-                  <CiCamera size={20} color="black" />
-                </div>
+              <div className="form-group">
+                <label>Deadline (days):</label>
+                <input
+                  type="number"
+                  name="deadline"
+                  value={formData.deadline}
+                  onChange={handleChange}
+                  required
+                  min="1"
+                  placeholder="Number of days to complete the project"
+                />
               </div>
+              <div className="form-group">
+                <label>Requirements (comma-separated):</label>
+                <textarea
+                  name="requirements"
+                  value={formData.requirements}
+                  onChange={handleChange}
+                  placeholder="e.g., Responsive design, SEO optimization, Mobile-friendly, Cross-browser compatibility"
+                  required
+                />
+              </div>
+
               <div className="form-group">
                 <label>Link:</label>
                 <input

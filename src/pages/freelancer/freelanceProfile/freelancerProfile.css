@@ -11,3 +11,8 @@
   justify-content: flex-end;
   align-items: center;
 }
+
+.pr-upload-btns {
+  display: flex;
+  gap: 7px;
+}

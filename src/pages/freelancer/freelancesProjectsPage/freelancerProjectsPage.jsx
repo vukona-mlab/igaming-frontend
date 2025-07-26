@@ -8,7 +8,7 @@ import FreelancerProjectCards from "../../../components/Profile/freelancerCardsP
 import SectionHeader from "../../../components/Landing/section-header/SectionHeader";
 import FreelancerProfileHeader from "../../../components/FreelancerProfileHeader/FreelancerProfileHeader";
 import ReviewForm from "../../../components/Reviews/ReviewForm/ReviewForm";
-import './freelancerProjectPage.css'
+import "./freelancerProjectPage.css";
 import SectionContainer from "../../../components/SectionContainer";
 import BACKEND_URL from "../../../config/backend-config";
 
@@ -24,73 +24,95 @@ const FreelancerProjects = () => {
   const [currentTab, setCurrentTab] = useState("Profile");
   const navigation = useNavigate();
 
-  const location = useLocation()
-  console.log({ location });
-  const freelancer_id = location.pathname.split('/')[2]
-  console.log({ id: freelancer_id });
+  const location = useLocation();
+  //console.log({ location });
+  const freelancer_id = location.pathname.split("/")[2];
+  //console.log({ id: freelancer_id });
   useEffect(() => {
-    fetchProjects()
-    fetchReviews()
-    fetchFreelancerData()
-  }, [freelancer_id])
+    fetchProjects();
+    fetchReviews();
+    fetchFreelancerData();
+  }, [freelancer_id]);
   const fetchProjects = async () => {
     if (freelancer_id) {
-      console.log({ freelancer_id });
-      const response = await fetch(`${BACKEND_URL}/api/freelancers/projects/${freelancer_id}`)
+      //console.log({ freelancer_id });
+      const response = await fetch(
+        `${BACKEND_URL}/api/freelancers/projects/${freelancer_id}`
+      );
       if (response.ok) {
-        const data = await response.json()
-        console.log(console.log({ data: data}));
-        setProjects(data.data)
+        const data = await response.json();
+        //console.log(console.log({ data: data }));
+        setProjects(data.projects);
       }
     }
-
-  }
-  const fetchFreelancerData = async() => {
-    if(freelancer_id) {
-      const response = await fetch(`${BACKEND_URL}/api/freelancers/${freelancer_id}`)
+  };
+  const fetchFreelancerData = async () => {
+    if (freelancer_id) {
+      const response = await fetch(
+        `${BACKEND_URL}/api/freelancers/${freelancer_id}`
+      );
       if (response.ok) {
-        const freelanceData = await response.json()
-        console.log(console.log({ freelancerData: freelanceData }));
-        setFreelancerData(freelanceData)
+        const freelanceData = await response.json();
+        // console.log({ freelancerData: freelanceData });
+        setFreelancerData(freelanceData.freelancer);
       }
     }
-  }
-  const fetchReviews = async() => {
-    if(freelancer_id) {
+  };
+  const fetchReviews = async () => {
+    if (freelancer_id) {
       try {
-          console.log("Fetching reviews for freelancer:", freelancer_id);
-          const reviewsResponse = await fetch(`${BACKEND_URL}/api/reviews?freelancerId=${freelancer_id}`, {
-            headers: {
-              'Authorization': token
-            }
-          });
-
-          const reviewsData = await reviewsResponse.json();
-          console.log("Reviews response:", reviewsData);
-
-          if (reviewsResponse.ok) {
-            const allReviews = reviewsData.reviews || [];
-            const approvedReviews = allReviews.filter(review => review.status === "Approved");
-            setReviews(approvedReviews);
-            setReviewsError(null);
-            setLoading(false)
-          } else {
-            console.error("Reviews fetch failed:", reviewsData);
-            setReviews([]);
-            setReviewsError(reviewsData.error || "No approved reviews available at this time.");
-            setLoading(false)
-          }
-        } catch (reviewError) {
-          console.error("Error fetching reviews:", reviewError);
-          setReviews([]);
-          setReviewsError("There was a problem loading the reviews. Please try refreshing the page.");
-          setLoading(false)
+        let token = localStorage.getItem("token");
+        if (!token) {
+          console.log("No authentication token found");
+          setLoading(false);
+          return;
         }
+
+        if (!token.startsWith("Bearer ")) {
+          token = `Bearer ${token}`;
+        }
+        console.log("Fetching reviews for freelancer:", freelancer_id);
+        const reviewsResponse = await fetch(
+          `${BACKEND_URL}/api/reviews?freelancerId=${freelancer_id}`,
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
+
+        const reviewsData = await reviewsResponse.json();
+        console.log("Reviews response:", reviewsData);
+
+        if (reviewsResponse.ok) {
+          const allReviews = reviewsData.reviews || [];
+          const approvedReviews = allReviews.filter(
+            (review) => review.status === "Approved"
+          );
+          setReviews(approvedReviews);
+          setReviewsError(null);
+          setLoading(false);
+        } else {
+          console.error("Reviews fetch failed:", reviewsData);
+          setReviews([]);
+          setReviewsError(
+            reviewsData.error || "No approved reviews available at this time."
+          );
+          setLoading(false);
+        }
+      } catch (reviewError) {
+        console.error("Error fetching reviews:", reviewError);
+        setReviews([]);
+        setReviewsError(
+          "There was a problem loading the reviews. Please try refreshing the page."
+        );
+        setLoading(false);
+      }
     }
-  }
+  };
   useEffect(() => {
     // fetchProjects()
-    return
+    return;
     if (!freelancer_id) {
       setError("Freelancer ID is missing.");
       setLoading(false);
@@ -112,7 +134,9 @@ const FreelancerProjects = () => {
         }
 
         // Fetch freelancer data
-        const response = await fetch(`${BACKEND_URL}/api/freelancers/projects/`);
+        const response = await fetch(
+          `${BACKEND_URL}/api/freelancers/projects/`
+        );
         if (!response.ok) throw new Error("Failed to fetch freelancer data");
         const data = await response.json();
         console.log("Fetched Data:", data);
@@ -121,28 +145,32 @@ const FreelancerProjects = () => {
           throw new Error("Freelancer not found");
         }
 
-        const freelancer = data.freelancers.find(f => f.id.toString() === freelancer_id);
+        const freelancer = data.freelancers.find(
+          (f) => f.id.toString() === freelancer_id
+        );
         if (!freelancer) {
           throw new Error("Freelancer not found");
         }
 
         setFreelancerData({
           displayName: freelancer.displayName || "",
-          profilePicture: freelancer.profilePicture || "https://www.example.com/default-image.jpg",
+          profilePicture:
+            freelancer.profilePicture ||
+            "https://www.example.com/default-image.jpg",
           specialities: freelancer.specialities || [],
           id: freelancer.id,
-          packages: freelancer.packages || {}
+          packages: freelancer.packages || {},
         });
 
         // Transform projects data
         const transformedProjects = Array.isArray(freelancer.projects)
-          ? freelancer.projects.map(project => ({
-            id: project.id,
-            projectPicture: project.projectPicture || project.image,
-            projectName: project.projectName || project.name,
-            likes: project.likes || 0,
-            authorName: freelancer.displayName
-          }))
+          ? freelancer.projects.map((project) => ({
+              id: project.id,
+              projectPicture: project.projectPicture || project.image,
+              projectName: project.projectName || project.name,
+              likes: project.likes || 0,
+              authorName: freelancer.displayName,
+            }))
           : [];
 
         setProjects(transformedProjects);
@@ -150,37 +178,46 @@ const FreelancerProjects = () => {
         // Fetch reviews for the freelancer with authentication
         try {
           console.log("Fetching reviews for freelancer:", freelancer_id);
-          const reviewsResponse = await fetch(`${BACKEND_URL}/api/reviews?freelancerId=${freelancer_id}`, {
-            headers: {
-              'Authorization': token
+          const reviewsResponse = await fetch(
+            `${BACKEND_URL}/api/reviews?freelancerId=${freelancer_id}`,
+            {
+              headers: {
+                Authorization: token,
+              },
             }
-          });
+          );
 
           const reviewsData = await reviewsResponse.json();
           console.log("Reviews response:", reviewsData);
 
           if (reviewsResponse.ok) {
             const allReviews = reviewsData.reviews || [];
-            const approvedReviews = allReviews.filter(review => review.status === "Approved");
+            const approvedReviews = allReviews.filter(
+              (review) => review.status === "Approved"
+            );
             setReviews(approvedReviews);
             setReviewsError(null);
-            setLoading(false)
+            setLoading(false);
           } else {
             console.error("Reviews fetch failed:", reviewsData);
             setReviews([]);
-            setReviewsError(reviewsData.error || "No approved reviews available at this time.");
-            setLoading(false)
+            setReviewsError(
+              reviewsData.error || "No approved reviews available at this time."
+            );
+            setLoading(false);
           }
         } catch (reviewError) {
           console.error("Error fetching reviews:", reviewError);
           setReviews([]);
-          setReviewsError("There was a problem loading the reviews. Please try refreshing the page.");
-          setLoading(false)
+          setReviewsError(
+            "There was a problem loading the reviews. Please try refreshing the page."
+          );
+          setLoading(false);
         }
       } catch (err) {
         console.error("Error fetching data:", err);
         setError(err.message);
-        setLoading(false)
+        setLoading(false);
       } finally {
         setLoading(false);
       }
@@ -219,7 +256,9 @@ const FreelancerProjects = () => {
         freelancerId: freelancerId,
         clientId: uid,
         senderId: uid,
-        message: price ? `Hello! I'm interested in working with you, currently looking at the R${price} package.` : "Hello! I'm interested in working with you.",
+        message: price
+          ? `Hello! I'm interested in working with you, currently looking at the R${price} package.`
+          : "Hello! I'm interested in working with you.",
       };
 
       console.log("Sending chat request with data:", requestData);
@@ -259,9 +298,9 @@ const FreelancerProjects = () => {
       let token = localStorage.getItem("token");
       if (!token) {
         Swal.fire({
-          icon: 'error',
-          title: 'Authentication Required',
-          text: 'Please sign in to submit a review',
+          icon: "error",
+          title: "Authentication Required",
+          text: "Please sign in to submit a review",
         });
         return;
       }
@@ -274,9 +313,9 @@ const FreelancerProjects = () => {
 
       if (!clientId) {
         Swal.fire({
-          icon: 'error',
-          title: 'Client Login Required',
-          text: 'You must be logged in as a client to submit a review',
+          icon: "error",
+          title: "Client Login Required",
+          text: "You must be logged in as a client to submit a review",
         });
         return;
       }
@@ -285,28 +324,28 @@ const FreelancerProjects = () => {
         clientId,
         freelancerId: freelancer_id,
         stars,
-        message
+        message,
       };
 
       console.log("Submitting review:", reviewData);
 
       // Show loading state
       Swal.fire({
-        title: 'Submitting Review',
-        text: 'Please wait...',
+        title: "Submitting Review",
+        text: "Please wait...",
         allowOutsideClick: false,
         didOpen: () => {
           Swal.showLoading();
-        }
+        },
       });
 
       const response = await fetch(`${BACKEND_URL}/api/reviews`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: token
+          Authorization: token,
         },
-        body: JSON.stringify(reviewData)
+        body: JSON.stringify(reviewData),
       });
 
       if (!response.ok) {
@@ -319,26 +358,31 @@ const FreelancerProjects = () => {
 
       // Show success message with SweetAlert
       Swal.fire({
-        icon: 'success',
-        title: 'Review Submitted!',
-        text: 'Your review has been submitted and is pending approval.',
-        confirmButtonText: 'Great!',
-        confirmButtonColor: '#4CAF50',
+        icon: "success",
+        title: "Review Submitted!",
+        text: "Your review has been submitted and is pending approval.",
+        confirmButtonText: "Great!",
+        confirmButtonColor: "#4CAF50",
       });
 
       // Refresh reviews after submission to show pending review
       try {
-        const refreshedReviewsResponse = await fetch(`${BACKEND_URL}/api/reviews?freelancerId=${freelancer_id}`, {
-          headers: {
-            'Authorization': token
+        const refreshedReviewsResponse = await fetch(
+          `${BACKEND_URL}/api/reviews?freelancerId=${freelancer_id}`,
+          {
+            headers: {
+              Authorization: token,
+            },
           }
-        });
+        );
 
         if (refreshedReviewsResponse.ok) {
           const refreshedReviewsData = await refreshedReviewsResponse.json();
           const allReviews = refreshedReviewsData.reviews || [];
           // We can show all reviews including pending ones, or filter to approved only
-          const approvedReviews = allReviews.filter(review => review.status === "Approved");
+          const approvedReviews = allReviews.filter(
+            (review) => review.status === "Approved"
+          );
           setReviews(approvedReviews);
           setReviewsError(null);
         }
@@ -350,34 +394,38 @@ const FreelancerProjects = () => {
 
       // Show error message with SweetAlert
       Swal.fire({
-        icon: 'error',
-        title: 'Review Submission Failed',
+        icon: "error",
+        title: "Review Submission Failed",
         text: error.message || "Failed to submit review. Please try again.",
       });
     }
   };
   useEffect(() => {
     console.log({ freelancerData });
-    
-  }, [freelancerData])
+  }, [freelancerData]);
 
   return (
     <>
       <Navbar />
       <SectionContainer padding={20}>
         <Container fluid className="main-container">
-
           <div className="content-wrapper">
             <div className="d-flex justify-content-between align-items-center my-4 name-free p-2">
               <h1 className="m-0">{freelancerData?.displayName}'s Profile</h1>
-              <Button variant="dark" className="buttona-message" onClick={() => handleMessageClick(freelancerData?.id)}>Message</Button>
+              <Button
+                variant="dark"
+                className="buttona-message"
+                onClick={() => handleMessageClick(freelancerData?.id)}
+              >
+                Message
+              </Button>
             </div>
 
             {loading && <Alert variant="info">Loading projects...</Alert>}
             {error && <Alert variant="danger">{error}</Alert>}
 
             {!loading && !error && (
-              <Row style={{ width: '100%', margin: 'auto' }}>
+              <Row style={{ width: "100%", margin: "auto" }}>
                 {shouldShowSidebar && (
                   <Col md={3} className="sidebar-col">
                     {freelancerData && (
@@ -389,7 +437,10 @@ const FreelancerProjects = () => {
                   </Col>
                 )}
 
-                <Col md={shouldShowSidebar ? 9 : 12} style={{ backgroundColor: "#0000" }}>
+                <Col
+                  md={shouldShowSidebar ? 9 : 12}
+                  style={{ backgroundColor: "#0000" }}
+                >
                   <FreelancerProfileHeader
                     searchTerm={freelancerData?.displayName}
                     onTabChange={handleTabChange}
@@ -398,7 +449,9 @@ const FreelancerProjects = () => {
                     reviews={reviews}
                     reviewsError={reviewsError}
                     onReviewSubmit={handleReviewSubmit}
-                    handleMessageClick={(price) => handleMessageClick(freelancerData?.id, price)}
+                    handleMessageClick={(price) =>
+                      handleMessageClick(freelancerData?.id, price)
+                    }
                   />
                 </Col>
               </Row>
@@ -406,7 +459,6 @@ const FreelancerProjects = () => {
           </div>
         </Container>
       </SectionContainer>
-
     </>
   );
 };

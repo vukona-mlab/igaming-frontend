@@ -15,7 +15,7 @@ const FreelancerProfileHeader = ({
   reviews = [],
   reviewsError = null,
   onReviewSubmit,
-  handleMessageClick
+  handleMessageClick,
 }) => {
   const [selectedTab, setSelectedTab] = useState("Profile");
   const [isReviewFormOpen, setIsReviewFormOpen] = useState(false);
@@ -74,19 +74,20 @@ const FreelancerProfileHeader = ({
               {reviewsError ? (
                 <div className="reviews-error">
                   <p>{reviewsError}</p>
-                  <p className="reviews-error-subtext">Reviews will be displayed here once available.</p>
+                  <p className="reviews-error-subtext">
+                    Reviews will be displayed here once available.
+                  </p>
                 </div>
               ) : reviews.length > 0 ? (
                 reviews.map((review) => (
-                  <ReviewCard
-                    key={review.id}
-                    review={review}
-                  />
+                  <ReviewCard key={review.id} review={review} />
                 ))
               ) : (
                 <div className="no-reviews">
                   <p>No reviews yet</p>
-                  <p className="no-reviews-subtext">Be the first to review this freelancer!</p>
+                  <p className="no-reviews-subtext">
+                    Be the first to review this freelancer!
+                  </p>
                 </div>
               )}
             </div>
@@ -94,7 +95,10 @@ const FreelancerProfileHeader = ({
         )}
         {selectedTab === "Pricing & Packages" && (
           <div className="pricing-container">
-            <PricingPlans packages={packages} handleMessageClick={handleMessageClick} />
+            <PricingPlans
+              packages={packages}
+              handleMessageClick={handleMessageClick}
+            />
           </div>
         )}
         {selectedTab === "Projects" && (
@@ -105,7 +109,7 @@ const FreelancerProfileHeader = ({
                   key={project.id}
                   projectPicture={
                     project.projectPicture ||
-                    "https://via.placeholder.com/350x300"
+                    "../../../public/assets/Card3-B1ym43EU.png"
                   }
                   projectName={project.projectName}
                   likes={project.likes || 0}

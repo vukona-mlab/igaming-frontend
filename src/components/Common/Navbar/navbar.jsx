@@ -20,23 +20,21 @@ function NavBar() {
   const navigation = useNavigate();
 
   useEffect(() => {
-    if (uid !== "") {
+    if (uid !== "" && uid !== null) {
       getProfile();
     }
   }, [uid]);
   const getProfile = async () => {
     setLoading(true);
     try {
-      const response = await fetch(
-        `${BACKEND_URL}/api/auth/users/${uid}`,
-        {
-          method: "GET",
-          headers: { Authorization: token },
-        }
-      );
+      const response = await fetch(`${BACKEND_URL}/api/auth/users/${uid}`, {
+        method: "GET",
+        headers: { Authorization: token },
+      });
       if (response.ok) {
         const data = await response.json();
-        setProfilePicture(data.user.profilePicture);
+        console.log("DISCOVERY", { data });
+        setProfilePicture(data.user.profilePicture || "");
       }
       setLoading(false);
     } catch (error) {
@@ -45,9 +43,12 @@ function NavBar() {
   };
 
   return (
-    <SectionContainer containerColor={'#f8f9fa'} backgroundColor="#f8f9fa">
-      <Navbar expand="lg" className="bg-body-tertiary" >
-        <Container fluid style={{ display: 'flex', justifyContent: 'space-around'}}>
+    <SectionContainer containerColor={"#f8f9fa"} backgroundColor="#f8f9fa">
+      <Navbar expand="lg" className="bg-body-tertiary">
+        <Container
+          fluid
+          style={{ display: "flex", justifyContent: "space-around" }}
+        >
           <Navbar.Brand href="#">
             <div className="nav-logo">
               <img
@@ -65,10 +66,7 @@ function NavBar() {
               style={{ maxHeight: "100px" }}
               navbarScroll
             >
-              <Nav.Link
-                href="/#landing"
-                className="nav-link"
-              >
+              <Nav.Link href="/#landing" className="nav-link">
                 <div className="text">Home</div>
               </Nav.Link>
               <Nav.Link href="/#about" className="nav-link">
@@ -83,10 +81,14 @@ function NavBar() {
             </Nav>
           </Navbar.Collapse>
           <div className="placeholder">
-            {profilePicture !== "" ? (
+            {token !== "" && token !== null ? (
               <div style={{ display: "flex", gap: "15px" }}>
                 <img
-                  src={profilePicture}
+                  src={
+                    profilePicture !== ""
+                      ? profilePicture
+                      : "../../../public/images/profile.png"
+                  }
                   alt="User"
                   className="user-profile"
                   onClick={() => navigation("/profile")}
