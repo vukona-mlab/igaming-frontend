@@ -1,14 +1,14 @@
 import React from "react";
 import "./MessageCard.css";
-import { Link } from 'react-router-dom';
-import { BsCameraVideo } from 'react-icons/bs';
+import { Link } from "react-router-dom";
+import { BsCameraVideo } from "react-icons/bs";
 
 const MessageCard = ({ message }) => {
-  const isCurrentUser = message.senderId === localStorage.getItem('uid');
-  
+  const isCurrentUser = message.senderId === localStorage.getItem("uid");
+
   const formatTimestamp = (timestamp) => {
-    if (!timestamp) return '';
-    
+    if (!timestamp) return "";
+
     let date;
     // Handle Firestore timestamp
     if (timestamp?._seconds) {
@@ -23,39 +23,43 @@ const MessageCard = ({ message }) => {
     yesterday.setDate(yesterday.getDate() - 1);
 
     // Format time
-    const timeString = date.toLocaleTimeString([], { 
-      hour: '2-digit', 
-      minute: '2-digit'
+    const timeString = date.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
     });
 
     // If message is from today
     if (date.toDateString() === now.toDateString()) {
       return `Today at ${timeString}`;
     }
-    
+
     // If message is from yesterday
     if (date.toDateString() === yesterday.toDateString()) {
       return `Yesterday at ${timeString}`;
     }
-    
+
     // If message is from this year
     if (date.getFullYear() === now.getFullYear()) {
-      return date.toLocaleDateString([], {
-        month: 'short',
-        day: 'numeric',
-      }) + ` at ${timeString}`;
+      return (
+        date.toLocaleDateString([], {
+          month: "short",
+          day: "numeric",
+        }) + ` at ${timeString}`
+      );
     }
-    
+
     // If message is from a different year
-    return date.toLocaleDateString([], {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    }) + ` at ${timeString}`;
+    return (
+      date.toLocaleDateString([], {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      }) + ` at ${timeString}`
+    );
   };
 
   const handleJoinMeeting = (url) => {
-    window.open(url, '_blank', 'width=1000,height=600');
+    window.open(url, "_blank", "width=1000,height=600");
   };
 
   const renderAttachments = () => {
@@ -64,6 +68,7 @@ const MessageCard = ({ message }) => {
     }
 
     return message.attachments.map((attachment, index) => {
+      console.log({ attachment });
       if (attachment.type.includes("image")) {
         return (
           <div key={index} className="attachment-image">
@@ -71,8 +76,12 @@ const MessageCard = ({ message }) => {
           </div>
         );
       }
-      
-      if (attachment.type.includes("application") || attachment.type.includes("audio")) {
+
+      if (
+        attachment.type.includes("text") ||
+        attachment.type.includes("application") ||
+        attachment.type.includes("audio")
+      ) {
         return (
           <div key={index} className="attachment-file">
             <a
@@ -86,15 +95,16 @@ const MessageCard = ({ message }) => {
           </div>
         );
       }
-      
+
       return null;
     });
   };
 
   const renderMessageContent = () => {
-    if (message.type === 'zoom-meeting') {
-      const isHost = message.meetingDetails.initiator_id === localStorage.getItem('uid');
-      
+    if (message.type === "zoom-meeting") {
+      const isHost =
+        message.meetingDetails.initiator_id === localStorage.getItem("uid");
+
       return (
         <div className="zoom-meeting-message">
           <div className="zoom-meeting-header">
@@ -103,11 +113,11 @@ const MessageCard = ({ message }) => {
           </div>
           <div className="zoom-meeting-details">
             <p className="host-info">
-              Host: {message.meetingDetails.host_name} {isHost && '(You)'}
+              Host: {message.meetingDetails.host_name} {isHost && "(You)"}
             </p>
             <p>Meeting ID: {message.meetingDetails.meeting_id}</p>
             <p>Password: {message.meetingDetails.password}</p>
-            <button 
+            <button
               className="join-meeting-btn"
               onClick={() => handleJoinMeeting(message.meetingDetails.join_url)}
             >
@@ -123,21 +133,15 @@ const MessageCard = ({ message }) => {
   return (
     <div
       className={`MessageCard ${isCurrentUser ? "right" : "left"} ${
-        message.type === 'project_creation' ? 'project-message' : ''
+        message.type === "project_creation" ? "project-message" : ""
       }`}
     >
       <div className="message-wrapper">
         <div className="message-bubble">
-          <div className="message-content">
-            {renderMessageContent()}
-          </div>
-          <div className="attachments-container">
-            {renderAttachments()}
-          </div>
+          <div className="message-content">{renderMessageContent()}</div>
+          <div className="attachments-container">{renderAttachments()}</div>
         </div>
-        <div className="message-time">
-          {formatTimestamp(message.createdAt)}
-        </div>
+        <div className="message-time">{formatTimestamp(message.createdAt)}</div>
       </div>
     </div>
   );

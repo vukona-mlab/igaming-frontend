@@ -13,6 +13,8 @@ import EmptyChatBox from "../../../components/Messaging/ChatBox/EmptyChatBox";
 const MessagingPage = () => {
   const [loading, setLoading] = useState(false);
   const [chats, setChats] = useState([]);
+  const [filteredChats, setFilteredChats] = useState([]);
+
   const [currentChatId, setCurrentChatId] = useState("");
   const [currentChat, setCurrentChat] = useState(null);
   const [currentClientId, setCurrentClientId] = useState("");
@@ -20,6 +22,10 @@ const MessagingPage = () => {
   const [showZoomModal, setShowZoomModal] = useState(false);
   const [meetingDetails, setMeetingDetails] = useState(null);
   const [isInvitation, setIsInvitation] = useState(false);
+  const [isReports, setIsReports] = useState(false);
+  const [isAdmins, setIsAdmins] = useState(false);
+  const [current, setCurrent] = useState("Chats");
+  const [adminUsers, setAdminUsers] = useState([]);
 
   const token = localStorage.getItem("token");
   // const url = import.meta.env.VITE_API_URL;
@@ -27,7 +33,42 @@ const MessagingPage = () => {
   useEffect(() => {
     getAllChats();
   }, []);
-
+  useEffect(() => {
+    fetchAdmins();
+  }, []);
+  useEffect(() => {
+    chats.map((chat) => {
+      if (chat.tags && chat.tags.length > 0) {
+        const tags = chat.tags;
+        tags.map((tag) => {
+          if (tag == "report") {
+            setIsReports(true);
+          }
+          if (tag == "admin") {
+            setIsAdmins(true);
+          }
+        });
+      }
+    });
+  }, [chats]);
+  useEffect(() => {
+    const filteredChats =
+      chats.length > 0 && current == "Chats"
+        ? chats.filter((chat) => !chat.hasOwnProperty("tags"))
+        : current == "Admin"
+        ? chats.filter(
+            (chat) => chat.tags && chat.tags.some((tag) => tag === "admin")
+          )
+        : chats.filter(
+            (chat) => chat.tags && chat.tags.some((tag) => tag === "report")
+          );
+    if (filteredChats.length > 0) {
+      setFilteredChats(filteredChats);
+    } else {
+      setFilteredChats(chats);
+    }
+    console.log({ chats, filteredChats });
+  }, [chats, current]);
   useEffect(() => {
     // Update current chat when currentChatId changes
     if (currentChatId && chats.length > 0) {
@@ -47,7 +88,7 @@ const MessagingPage = () => {
         setCurrentClientId(client.uid || "");
       }
     }
-  }, [currentChatId, chats]);
+  }, [currentChatId, chats, filteredChats]);
 
   useEffect(() => {
     // Request notification permission when component mounts
@@ -123,6 +164,100 @@ const MessagingPage = () => {
       setLoading(false);
     }
   };
+  const handleAdminChat = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        console.error("No authentication token found");
+        return;
+      }
+
+      // Fetch admin profile first
+      const adminId = adminUsers[0].id;
+      const adminProfile = adminUsers[0];
+      if (!adminProfile) {
+        console.error("Failed to fetch admin profile");
+        return;
+      }
+
+      console.log("Admin profile data:", adminProfile); // Debug log
+
+      const response = await fetch(`${BACKEND_URL}/api/admin-chats`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        body: JSON.stringify({
+          targetId: adminId,
+          chatType: "client-admin",
+          initialMessage: "Hello",
+          tags: ["admin"],
+        }),
+      });
+      const data = await response.json();
+      console.log({ data });
+      if (!response.ok) {
+        if (response.status === 401) {
+          console.error("Authentication failed");
+          return;
+        }
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+    } catch (error) {
+      console.error("Error creating chat:", error);
+    }
+  };
+
+  const fetchAdmins = async () => {
+    try {
+      const currentUserId = localStorage.getItem("uid");
+
+      setLoading(true);
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        console.error("No authentication token found");
+        return;
+      }
+
+      const cleanToken = token.startsWith("Bearer ")
+        ? token
+        : `Bearer ${token}`;
+
+      const response = await fetch(`${BACKEND_URL}/api/auth/admin/all/public`, {
+        headers: {
+          Authorization: cleanToken,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          console.error("Authentication failed");
+          return;
+        }
+        if (response.status === 404) {
+          console.error("Admin endpoint not found. Please check the API URL.");
+          return;
+        }
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      // Filter out the current user from the admin list
+      const filteredAdmins = data.admins.filter(
+        (admin) => admin.id !== currentUserId
+      );
+      console.log({ filteredAdmins });
+      setAdminUsers(filteredAdmins);
+    } catch (error) {
+      console.error("Error fetching admins:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   console.log({ currentChatId, currentChat });
   return (
@@ -132,10 +267,15 @@ const MessagingPage = () => {
       <SectionContainer>
         <div className="messagePageContainer">
           <PeopleComponent
-            people={chats}
+            people={filteredChats}
             setcurrentChatId={setCurrentChatId}
             setCurrentClientId={setCurrentClientId}
             setCurrentClientName={setCurrentClientName}
+            isReports={isReports}
+            isAdmins={isAdmins}
+            current={current}
+            setCurrent={setCurrent}
+            handleAdminChat={handleAdminChat}
           />
           {chats.length === 0 ? (
             <EmptyChatBox />
