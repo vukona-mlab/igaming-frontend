@@ -194,7 +194,8 @@ const CategoryPreferences = ({
           <Col xs={12} md={5} className="mb-3">
             <h5 className="category-header">Price Plan</h5>
 
-            {Array.isArray(pricePackages) && pricePackages.length > 0 &&
+            {Array.isArray(pricePackages) &&
+              pricePackages.length > 0 &&
               pricePackages.map((pricePackage) => (
                 <Row className="mb-3" key={pricePackage.name}>
                   <Col xs={4}>
@@ -271,11 +272,11 @@ const CategoryPreferences = ({
           </Col>
         </Row>
       </Form>
-      <input
+      {/* <input
         type="button"
         value={"change"}
         onClick={() => showPriceModal("Basic", 500, [])}
-      />
+      /> */}
     </Container>
   );
 };

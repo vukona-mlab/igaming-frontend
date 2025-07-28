@@ -40,7 +40,11 @@ const FreelancerCard = ({
     <div className="freelancer-card">
       <div className="freelancer-profile">
         <img
-          src={profilePicture}
+          src={
+            profilePicture !== ""
+              ? profilePicture
+              : "../../../public/images/profile.png"
+          }
           alt={`${name}'s profile`}
           className="profile-picture"
         />

@@ -3,7 +3,11 @@ import "./ProjectUpload.css";
 import BACKEND_URL from "../../../config/backend-config";
 import { CiCamera } from "react-icons/ci"; // Import the camera icon
 
-export default function ProjectUpload({ onClose, projectData }) {
+export default function ProjectUpload({
+  onClose,
+  projectData,
+  showProjectUploadAlert,
+}) {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -80,6 +84,7 @@ export default function ProjectUpload({ onClose, projectData }) {
         if (!res.ok) {
           throw new Error("Failed to upload files");
         }
+        showProjectUploadAlert();
         onClose();
       }
     } catch (error) {

@@ -128,7 +128,7 @@ const ProfilePage = ({}) => {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
         setJobTitle(data.user.jobTitle);
         setFormData((prev) => ({ ...prev, name: data.user.name }));
         setFormData((prev) => ({ ...prev, surname: data.user.surname }));
@@ -159,7 +159,7 @@ const ProfilePage = ({}) => {
               Object.assign(obj, { [item.name.toLowerCase()]: item.price }),
             {}
           );
-          console.log({ obj });
+          // console.log({ obj });
         }
 
         setFormData((prev) => ({
@@ -186,7 +186,7 @@ const ProfilePage = ({}) => {
       if (JSON.stringify(data) === "{}") {
         return;
       }
-      console.log("DATA ", data);
+      // console.log("DATA ", data);
 
       const formData = new FormData();
       formData.append("name", data.name);
@@ -211,7 +211,7 @@ const ProfilePage = ({}) => {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
 
         // Show SweetAlert after successful update
         showAlert();
@@ -297,21 +297,9 @@ const ProfilePage = ({}) => {
     }
     setBenefits(arr);
   };
-  const handleDeleteFeature = (feature) => {
-    let arr = [...benefits];
-    if (arr.length > 0) {
-      arr = arr.map((obj) => {
-        if (obj.type && obj.type === feature.type) {
-          let updatedArr = obj.benefits.filter((f) => f !== feature.feature);
-          return { ...obj, benefits: updatedArr };
-        }
-        return obj;
-      });
-    }
-    setBenefits(arr);
-  };
+
   const handleShowPriceModal = (name, price, benefits) => {
-    console.log("running...");
+    console.log("running...", price);
 
     setCurrentPrice(price);
     setCurrentBenefits(benefits);
@@ -319,10 +307,9 @@ const ProfilePage = ({}) => {
     setShowPriceModal(true);
   };
   useEffect(() => {
-    console.log({ currentPrice, currentType, currentBenefits, showPriceModal });
+    // console.log({ currentPrice, currentType, currentBenefits, showPriceModal });
   }, [showPriceModal]);
   const handlePriceFormSubmit = (benefits, price, type) => {
-    console.log({ benefits, price, type });
     setPricePackages((packages) => {
       return packages.map((pkg) => {
         if (type !== pkg.name) {
@@ -334,7 +321,7 @@ const ProfilePage = ({}) => {
     });
   };
   useEffect(() => {
-    console.log({ pricePackages });
+    // console.log({ pricePackages });
   }, [pricePackages]);
   if (loading) return <div></div>;
   return (
@@ -345,10 +332,10 @@ const ProfilePage = ({}) => {
         {showProjectModal && projectData && (
           <ProjectUpload
             onClose={() => {
-              showProjectUploadAlert();
               setShowProjectModal(false);
             }}
             projectData={projectData}
+            showProjectUploadAlert={showProjectUploadAlert}
           />
         )}
         <Container fluid style={{}} className="p-0 m-0">
@@ -441,8 +428,6 @@ const ProfilePage = ({}) => {
                     packagesObj={formData.packages}
                     pricePackages={pricePackages}
                     handleAddFeature={handleAddFeature}
-                    handleUpdateFeature={handleUpdateFeature}
-                    handleDeleteFeature={handleDeleteFeature}
                     benefits={benefits}
                     showPriceModal={handleShowPriceModal}
                   />
