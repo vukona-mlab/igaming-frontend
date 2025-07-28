@@ -25,16 +25,22 @@ import Projects from "./pages/projects/Projects";
 import ContactPage from "./pages/ContactPage/ContactPage";
 import { registerNotificationSW } from "./config/service-workers";
 import { useEffect } from "react";
+import { ProfileCompletionProvider } from "./components/Common/ProfileCompletionContext";
+import ProfileCompletionModal from "./components/Common/ProfileCompletionModal";
+import BACKEND_URL from "./config/backend-config";
 //import { requestPermissionAndGetToken } from "./config/service-workers/index";
 function App() {
   useEffect(() => {
     //register service worker
     registerNotificationSW();
   }, []);
+  const uid = localStorage.getItem("uid");
+  const token = localStorage.getItem("token");
   return (
-    <div className="App">
+    <ProfileCompletionProvider>
       <Router>
         <div className="App">
+          <ProfileCompletionModal uid={uid} token={token} BACKEND_URL={BACKEND_URL} />
           <Routes>
             <Route exact path="/" element={<LandingPage />} />
             <Route exact path="/discovery" element={<DiscoveryPage />}>
@@ -87,7 +93,7 @@ function App() {
           </Routes>
         </div>
       </Router>
-    </div>
+    </ProfileCompletionProvider>
   );
 }
 

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import withProfileCheck from "../../../components/Common/withProfileCheck";
 import "./MessagingPageF.css";
 import Navbar from "../../../components/Common/Navbar/navbar";
 import ProfileSubNav from "../../../components/Profile/ProfileSubNav/ProfileSubNav";
@@ -10,7 +11,8 @@ import BACKEND_URL from "../../../config/backend-config";
 import SectionContainer from "../../../components/SectionContainer";
 import EmptyChatBox from "../../../components/Messaging/ChatBox/EmptyChatBox";
 
-const MessagingPage = () => {
+const PROFILE_REQUIREMENTS = ["name", "email", "profilePicture"];
+const MessagingPage = (props) => {
   const [loading, setLoading] = useState(false);
   const [chats, setChats] = useState([]);
   const [filteredChats, setFilteredChats] = useState([]);
@@ -305,4 +307,4 @@ const MessagingPage = () => {
   );
 };
 
-export default MessagingPage;
+export default withProfileCheck(MessagingPage, PROFILE_REQUIREMENTS);

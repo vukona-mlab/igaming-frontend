@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import withProfileCheck from "../../../components/Common/withProfileCheck";
 import { Container, Row, Col } from "react-bootstrap";
 import ProfileCard from "../../../components/Profile/portfolioCard/portfolioCard"; // Import ProfileCard component
 import ProfileForm from "../../../components/Profile/profileForm/profileForm"; // Import ProfileForm component
@@ -15,7 +16,8 @@ import NewPriceCard from "../../../components/PriceCard/NewPriceCard/NewPriceCar
 import ProjectUpload from "../../../components/Projects/ProjectUpload/ProjectUpload";
 import BACKEND_URL from "../../../config/backend-config";
 
-const ProfilePage = ({}) => {
+const PROFILE_REQUIREMENTS = ["name", "email", "profilePicture"];
+const ProfilePage = (props) => {
   const [formData, setFormData] = useState({
     name: "",
     surname: "",
@@ -441,4 +443,36 @@ const ProfilePage = ({}) => {
   );
 };
 
-export default ProfilePage;
+const WrappedProfilePage = (props) => {
+  const [formData, setFormData] = useState({
+    name: "",
+    surname: "",
+    email: "",
+    displayName: "",
+    phone: "",
+    dateOfBirth: "",
+    speciality: "",
+    categories: [],
+    packages: {},
+  });
+  // ...existing code...
+  // move all state and logic from ProfilePage here
+  return <ProfilePage {...props} formData={formData} setFormData={setFormData} />;
+};
+export default (props) => {
+  const [formData, setFormData] = React.useState({
+    name: "",
+    surname: "",
+    email: "",
+    displayName: "",
+    phone: "",
+    dateOfBirth: "",
+    speciality: "",
+    categories: [],
+    packages: {},
+  });
+  return withProfileCheck(
+    () => <WrappedProfilePage {...props} formData={formData} setFormData={setFormData} />, 
+    PROFILE_REQUIREMENTS
+  )({ ...props, userProfile: formData });
+};

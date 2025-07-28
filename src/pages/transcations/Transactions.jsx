@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import withProfileCheck from "../../components/Common/withProfileCheck";
 import { Button } from "react-bootstrap";
 import "./Transactions.css";
 import Navbar from "../../components/Common/Navbar/navbar";
@@ -7,7 +8,8 @@ import TransactionsSection from "../../components/Payments/TransactionsSection/T
 import BankingDetailsSection from "../../components/Payments/BankingDetailsSection/BankingDetailsSection"
 import TabsHeader from "../../components/Payments/TabsHeader/TabsHeader";
 import SectionContainer from "../../components/SectionContainer";
-const Transactions = () => {
+const PROFILE_REQUIREMENTS = ["name", "email", "profilePicture"];
+const Transactions = (props) => {
   const [tab, setTab] = useState("Bank Details");
   const role = localStorage.getItem('role')
   return (
@@ -46,4 +48,4 @@ const Transactions = () => {
   );
 };
 
-export default Transactions;
+export default withProfileCheck(Transactions, PROFILE_REQUIREMENTS);

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import withProfileCheck from "../../../components/Common/withProfileCheck";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Container, Row, Col, Button, Alert } from "react-bootstrap";
 import Swal from "sweetalert2";
@@ -12,7 +13,8 @@ import "./freelancerProjectPage.css";
 import SectionContainer from "../../../components/SectionContainer";
 import BACKEND_URL from "../../../config/backend-config";
 
-const FreelancerProjects = () => {
+const PROFILE_REQUIREMENTS = ["name", "email", "profilePicture"];
+const FreelancerProjects = (props) => {
   // const { freelancer_id } = useParams();
   const [projects, setProjects] = useState([]);
   const [reviews, setReviews] = useState([]);
@@ -463,4 +465,4 @@ const FreelancerProjects = () => {
   );
 };
 
-export default FreelancerProjects;
+export default withProfileCheck(FreelancerProjects, PROFILE_REQUIREMENTS);

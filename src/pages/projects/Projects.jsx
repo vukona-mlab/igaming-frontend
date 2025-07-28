@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import withProfileCheck from "../../components/Common/withProfileCheck";
 import "./Projects.css";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import Navbar from "../../components/Common/Navbar/navbar";
@@ -11,7 +12,8 @@ import PaystackPop from "@paystack/inline-js";
 import BACKEND_URL from "../../config/backend-config";
 import SectionContainer from "../../components/SectionContainer";
 
-const Projects = () => {
+const PROFILE_REQUIREMENTS = ["name", "email", "profilePicture"];
+const Projects = (props) => {
   const [projects, setProjects] = useState([]);
   const [filter, setFilter] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -176,4 +178,4 @@ const Projects = () => {
   );
 };
 
-export default Projects;
+export default withProfileCheck(Projects, PROFILE_REQUIREMENTS);

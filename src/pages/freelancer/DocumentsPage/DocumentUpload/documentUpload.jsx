@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import withProfileCheck from "../../../../components/Common/withProfileCheck";
 import { FaFileUpload, FaEye, FaTrash } from "react-icons/fa";
 import { Container, Button, Form, Table } from "react-bootstrap";
 import Navbar from "../../../../components/Common/Navbar/navbar";
@@ -7,7 +8,8 @@ import "./documentUpload.css";
 import { useNavigate } from "react-router-dom";
 import BACKEND_URL from "../../../../config/backend-config";
 
-const DocumentUpload = () => {
+const PROFILE_REQUIREMENTS = ["name", "email", "profilePicture"];
+const DocumentUpload = (props) => {
   const navigation = useNavigate();
   // Predefined document types as an object
   const documentTypes = {
@@ -217,4 +219,4 @@ const DocumentUpload = () => {
   );
 };
 
-export default DocumentUpload;
+export default withProfileCheck(DocumentUpload, PROFILE_REQUIREMENTS);

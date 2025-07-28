@@ -1,11 +1,13 @@
 import React, { useState } from "react";
+import withProfileCheck from "../../../../components/Common/withProfileCheck";
 import NavBar from "../../../../components/Common/Navbar/navbar";
 import DocumentsHeader from "../../../../components/Documents/DocumentsHeader/DocumentsHeaderTabs";
 import styles from "./DocumentsView.module.css";
 import { useNavigate } from "react-router-dom";
 import DocumentsTable from "../../../../components/Documents/DocumentsTable/DocumentsTable";
 
-const DocumentsView = () => {
+const PROFILE_REQUIREMENTS = ["name", "email", "profilePicture"];
+const DocumentsView = (props) => {
   
   const [activeTab, setActiveTab] = useState("approved");  // Track active tab status
   const navigate = useNavigate();
@@ -50,4 +52,4 @@ const DocumentsView = () => {
   );
 };
 
-export default DocumentsView;
+export default withProfileCheck(DocumentsView, PROFILE_REQUIREMENTS);
