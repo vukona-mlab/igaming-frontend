@@ -62,13 +62,15 @@ const MessagingPage = () => {
         : chats.filter(
             (chat) => chat.tags && chat.tags.some((tag) => tag === "report")
           );
-    if (filteredChats.length > 0) {
-      setFilteredChats(filteredChats);
-    } else {
-      setFilteredChats(chats);
-    }
+    setFilteredChats(filteredChats);
+
+    // if (filteredChats.length > 0) {
+    //   setFilteredChats(filteredChats);
+    // } else {
+    //   setFilteredChats(chats);
+    // }
     console.log({ chats, filteredChats });
-  }, [chats, current]);
+  }, [chats, current, currentChatId]);
   useEffect(() => {
     // Update current chat when currentChatId changes
     if (currentChatId && chats.length > 0) {
@@ -277,7 +279,7 @@ const MessagingPage = () => {
             setCurrent={setCurrent}
             handleAdminChat={handleAdminChat}
           />
-          {chats.length === 0 ? (
+          {filteredChats.length === 0 ? (
             <EmptyChatBox />
           ) : (
             currentChatId && (

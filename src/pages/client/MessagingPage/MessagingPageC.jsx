@@ -70,11 +70,13 @@ const MessagingPageC = () => {
         : chats.filter(
             (chat) => chat.tags && chat.tags.some((tag) => tag === "report")
           );
-    if (filteredChats.length > 0) {
-      setFilteredChats(filteredChats);
-    } else {
-      setFilteredChats(chats);
-    }
+    setFilteredChats(filteredChats);
+
+    // if (filteredChats.length > 0) {
+    //   setFilteredChats(filteredChats);
+    // } else {
+    //   setFilteredChats(chats);
+    // }
     console.log({ chats, filteredChats });
   }, [chats, current]);
   useEffect(() => {
