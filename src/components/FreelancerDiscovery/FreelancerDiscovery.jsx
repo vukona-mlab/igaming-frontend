@@ -6,7 +6,8 @@ import "./FreelancerDiscovery.css";
 import { useNavigate } from "react-router-dom";
 import SectionContainer from "../SectionContainer";
 import BACKEND_URL from "../../config/backend-config";
-const FreelancerDiscovery = ({ searchQuery }) => {
+
+const FreelancerDiscovery = ({ searchQuery, catergory }) => {
   const [freelancers, setFreelancers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -14,7 +15,19 @@ const FreelancerDiscovery = ({ searchQuery }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [pageSize, setPageSize] = useState(30);
-
+  const catergories = {
+    GameDevelopment: ["gameart", "gamedesigners"],
+    CreativeAndDesign: [
+      "animation",
+      "charactermodeling",
+      "uiuxdesign",
+      "imageediting",
+    ],
+    AudioAndMusic: [],
+    QualityAssurance: [],
+    ComplianceAndLegal: [],
+    ContentAndMarketing: ["typography"],
+  };
   const navigation = useNavigate();
 
   useEffect(() => {
@@ -146,26 +159,49 @@ const FreelancerDiscovery = ({ searchQuery }) => {
   };
 
   const filteredFreelancers = freelancers.filter((freelancer) => {
-    if (!searchQuery.trim()) return true; // Show all when no search query
+    if (!searchQuery.trim() && catergory == "") return true; // Show all when no search query
 
-    const searchLower = searchQuery.toLowerCase();
-    const displayName = (
-      freelancer.displayName || "Anonymous Freelancer"
-    ).toLowerCase();
-    const jobTitle = (freelancer.jobTitle || "Freelancer").toLowerCase();
+    let searchBool = false;
+    let filterBool = false;
 
-    // Check for multiple search terms
-    const searchTerms = searchLower.split(" ");
+    if (searchQuery.trim()) {
+      const searchLower = searchQuery.toLowerCase();
+      const displayName = (
+        freelancer.displayName || "Anonymous Freelancer"
+      ).toLowerCase();
+      const jobTitle = (freelancer.jobTitle || "Freelancer").toLowerCase();
 
-    return searchTerms.every((term) => {
-      // Check if searching for "anonymous" specifically
-      if (term === "anonymous" && displayName.includes("anonymous")) {
-        return true;
-      }
+      // Check for multiple search terms
+      const searchTerms = searchLower.split(" ");
 
-      // Check if the term matches either name or job title
-      return displayName.includes(term) || jobTitle.includes(term);
-    });
+      searchBool = searchTerms.every((term) => {
+        // Check if searching for "anonymous" specifically
+        if (term === "anonymous" && displayName.includes("anonymous")) {
+          return true;
+        }
+
+        // Check if the term matches either name or job title
+        return displayName.includes(term) || jobTitle.includes(term);
+      });
+    }
+    if (catergory !== "") {
+      const filterTerms = catergories[catergory.replace(/-/g, "")];
+      const arr =
+        freelancer.categories && freelancer.categories.length > 0
+          ? freelancer.categories.map(function (item) {
+              return item.toLowerCase();
+            })
+          : [];
+      filterBool = filterTerms.every((term) => {
+        // Check if the term matches either name or job title
+        return arr.length > 0 ? arr.includes(term) : false;
+      });
+    }
+    return !searchQuery.trim()
+      ? filterBool
+      : catergory == ""
+      ? searchBool
+      : searchBool && filterBool;
   });
 
   if (loading) {
@@ -196,48 +232,59 @@ const FreelancerDiscovery = ({ searchQuery }) => {
 
   return (
     <SectionContainer>
-      <div style={{ padding: '20px' }}>
+      <div style={{ padding: "20px" }}>
         <div className="freelancer-discovery">
-          {rows.map((row, rowIndex) => (
-            <div key={rowIndex} className="freelancer-row">
-              {row.map((freelancer) => (
-                <div
-                  key={freelancer.id}
-                  className="freelancer-card-wrapper"
-                  onClick={() => navigation(`/discovery/${freelancer.id}`)}
-                >
-                  <FreelancerCard
-                    profilePicture={freelancer.profilePicture || defaultProfile}
-                    name={freelancer.displayName || "Anonymous Freelancer"}
-                    jobTitle={freelancer.jobTitle || "Freelancer"}
-                    projectsCompleted={freelancer.projects?.length || 0}
-                    rating={4.5}
-                    messageIcon={messageIcon}
-                    onMessageClick={() => handleMessageClick(freelancer.id)}
-                  />
-                  {/* Hover message */}
-                  <div className="hover-message">Click image to view more</div>
-                </div>
-              ))}
-            </div>
-          ))}
+          {rows.length > 0 ? (
+            rows.map((row, rowIndex) => (
+              <div key={rowIndex} className="freelancer-row">
+                {row.map((freelancer) => (
+                  <div
+                    key={freelancer.id}
+                    className="freelancer-card-wrapper"
+                    onClick={() => navigation(`/discovery/${freelancer.id}`)}
+                  >
+                    <FreelancerCard
+                      profilePicture={
+                        freelancer.profilePicture || defaultProfile
+                      }
+                      name={freelancer.displayName || "Anonymous Freelancer"}
+                      jobTitle={freelancer.jobTitle || "Freelancer"}
+                      projectsCompleted={freelancer.projects?.length || 0}
+                      rating={4.5}
+                      messageIcon={messageIcon}
+                      onMessageClick={() => handleMessageClick(freelancer.id)}
+                    />
+                    {/* Hover message */}
+                    <div className="hover-message">
+                      Click image to view more
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ))
+          ) : (
+            <div>No users found</div>
+          )}
           {/* Pagination Controls */}
-          <div className="pagination">
-            <button onClick={handlePrevious} disabled={currentPage === 1}>
-              Previous
-            </button>
-            <span>
-              Page {currentPage} of {totalPages}
-            </span>
-            <button onClick={handleNext} disabled={currentPage === totalPages}>
-              Next
-            </button>
-          </div>
+          {rows.length > 0 && (
+            <div className="pagination">
+              <button onClick={handlePrevious} disabled={currentPage === 1}>
+                Previous
+              </button>
+              <span>
+                Page {currentPage} of {totalPages}
+              </span>
+              <button
+                onClick={handleNext}
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </button>
+            </div>
+          )}
         </div>
       </div>
-
     </SectionContainer>
-
   );
 };
 
