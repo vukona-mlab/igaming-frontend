@@ -153,6 +153,10 @@ const ChatHeader = ({ currentChat }) => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
+      if (data && data.message == "Existing chat found") {
+        alert("Ongoing report exists");
+      }
+
       // const participantData = {
       //   id: adminId,
       //   name: adminProfile.displayName || adminProfile.name || "Admin",
@@ -362,7 +366,7 @@ const ChatHeader = ({ currentChat }) => {
     }
     setShowMenu(false);
   };
-
+  console.log({ currentChat });
   return (
     <>
       <div className="chat-header">
@@ -407,14 +411,18 @@ const ChatHeader = ({ currentChat }) => {
           </button>
           {showMenu && (
             <div className="context-menu" ref={menuRef}>
-              {isFreelancer && (
-                <button onClick={handleCreateProject}>
-                  Create Project Agreement
-                </button>
-              )}
+              {isFreelancer &&
+                currentChat &&
+                !currentChat.hasOwnProperty("chatType") && (
+                  <button onClick={handleCreateProject}>
+                    Create Project Agreement
+                  </button>
+                )}
               <button onClick={handleEndChat}>End Chat</button>
               <button onClick={handleDeleteChat}>Delete Chat</button>
-              <button onClick={handleReportUser}>Report User</button>
+              {currentChat && !currentChat.hasOwnProperty("chatType") && (
+                <button onClick={handleReportUser}>Report User</button>
+              )}
             </div>
           )}
         </div>

@@ -144,6 +144,7 @@ export default function ProjectUpload({
                     <CiCamera size={20} color="black" />
                   </div>
                 </div>
+                <div>Upload Thumbnail</div>
               </div>
             </div>
             <div className="pu-pdc-detail-section-two">
@@ -217,7 +218,7 @@ export default function ProjectUpload({
                   name="link"
                   value={formData.link}
                   onChange={handleChange}
-                  placeholder="Link to live project"
+                  placeholder="e.g. Link to live project"
                 />
               </div>
 
