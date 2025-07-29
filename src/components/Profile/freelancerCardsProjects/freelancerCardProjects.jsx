@@ -2,7 +2,7 @@ import React from "react";
 import { Card } from "react-bootstrap";
 import "./freelancerCardProject.css";
 
-const FreelancerProjectCards = ({ image, speciality }) => {
+const FreelancerProjectCards = ({ image, specialities, bio }) => {
   return (
     <Card className="portfolio-card">
       {/* Image Container */}
@@ -17,12 +17,11 @@ const FreelancerProjectCards = ({ image, speciality }) => {
       {/* Card Body */}
       <Card.Body>
         <Card.Text className="card-text">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum
-          diam metus, volutpat nec congue in
+          {bio || "No bio available for this freelancer."}
         </Card.Text>
 
         {/* Speciality Tag */}
-        <div className="text-input">{speciality || "Creative and Design"}</div>
+        <div className="text-input">{specialities || "Creative and Design"}</div> 
       </Card.Body>
     </Card>
   );

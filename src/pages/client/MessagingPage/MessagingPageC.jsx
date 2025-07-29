@@ -10,7 +10,11 @@ import io from "socket.io-client";
 import ZoomMeetingModal from "../../../components/Messaging/ZoomMeetingModal/ZoomMeetingModal";
 import SectionContainer from "../../../components/SectionContainer";
 import BACKEND_URL from "../../../config/backend-config";
-import { BsCameraVideo, BsPersonCircle, BsThreeDotsVertical } from "react-icons/bs";
+import {
+  BsCameraVideo,
+  BsPersonCircle,
+  BsThreeDotsVertical,
+} from "react-icons/bs";
 import EmptyChatBox from "../../../components/Messaging/ChatBox/EmptyChatBox";
 
 const MessagingPageC = () => {
@@ -26,6 +30,10 @@ const MessagingPageC = () => {
   const [showZoomModal, setShowZoomModal] = useState(false);
   const [meetingDetails, setMeetingDetails] = useState(null);
   const [isInvitation, setIsInvitation] = useState(false);
+  const [isReports, setIsReports] = useState(false);
+  const [isAdmins, setIsAdmins] = useState(false);
+  const [current, setCurrent] = useState("Chats");
+  const [adminUsers, setAdminUsers] = useState([]);
 
   const token = localStorage.getItem("token");
   const url = BACKEND_URL;
@@ -33,7 +41,44 @@ const MessagingPageC = () => {
   useEffect(() => {
     getAllChats();
   }, []);
+  useEffect(() => {
+    fetchAdmins();
+  }, []);
+  useEffect(() => {
+    chats.map((chat) => {
+      if (chat.tags && chat.tags.length > 0) {
+        const tags = chat.tags;
+        tags.map((tag) => {
+          if (tag == "report") {
+            setIsReports(true);
+          }
+          if (tag == "admin") {
+            setIsAdmins(true);
+          }
+        });
+      }
+    });
+  }, [chats]);
+  useEffect(() => {
+    const filteredChats =
+      chats.length > 0 && current == "Chats"
+        ? chats.filter((chat) => !chat.hasOwnProperty("tags"))
+        : current == "Admin"
+        ? chats.filter(
+            (chat) => chat.tags && chat.tags.some((tag) => tag === "admin")
+          )
+        : chats.filter(
+            (chat) => chat.tags && chat.tags.some((tag) => tag === "report")
+          );
+    setFilteredChats(filteredChats);
 
+    // if (filteredChats.length > 0) {
+    //   setFilteredChats(filteredChats);
+    // } else {
+    //   setFilteredChats(chats);
+    // }
+    console.log({ chats, filteredChats });
+  }, [chats, current]);
   useEffect(() => {
     if (currentChatId && chats.length > 0) {
       const chat = chats.find((chat) => chat.id === currentChatId);
@@ -48,24 +93,26 @@ const MessagingPageC = () => {
         setCurrentFreelancerId(freelancer.uid || "");
       }
     }
-  }, [currentChatId, chats]);
+  }, [currentChatId, chats, filteredChats]);
 
   useEffect(() => {
     // Request notification permission when component mounts
-    if (Notification.permission !== 'granted') {
+    if (Notification.permission !== "granted") {
       Notification.requestPermission();
     }
 
     const socket = io(url);
 
-    socket.on('video-call-invitation', (data) => {
-      if (data.recipientId === localStorage.getItem('uid') &&
-        data.initiatorRole === 'freelancer') {
+    socket.on("video-call-invitation", (data) => {
+      if (
+        data.recipientId === localStorage.getItem("uid") &&
+        data.initiatorRole === "freelancer"
+      ) {
         // Show browser notification
-        if (Notification.permission === 'granted') {
-          const notification = new Notification('Video Call Invitation', {
+        if (Notification.permission === "granted") {
+          const notification = new Notification("Video Call Invitation", {
             body: `${data.initiatorName} is inviting you to a video call`,
-            icon: '/path/to/notification-icon.png'
+            icon: "/path/to/notification-icon.png",
           });
 
           notification.onclick = () => {
@@ -120,15 +167,12 @@ const MessagingPageC = () => {
   const getAllChats = async () => {
     try {
       setLoading(true);
-      const response = await fetch(
-        `${url || BACKEND_URL}/api/chats`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
+      const response = await fetch(`${url || BACKEND_URL}/api/chats`, {
+        method: "GET",
+        headers: {
+          Authorization: token,
+        },
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -171,6 +215,100 @@ const MessagingPageC = () => {
       );
     }
   };
+  const handleAdminChat = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        console.error("No authentication token found");
+        return;
+      }
+
+      // Fetch admin profile first
+      const adminId = adminUsers[0].id;
+      const adminProfile = adminUsers[0];
+      if (!adminProfile) {
+        console.error("Failed to fetch admin profile");
+        return;
+      }
+
+      console.log("Admin profile data:", adminProfile); // Debug log
+
+      const response = await fetch(`${BACKEND_URL}/api/admin-chats`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        body: JSON.stringify({
+          targetId: adminId,
+          chatType: "client-admin",
+          initialMessage: "Hello",
+          tags: ["admin"],
+        }),
+      });
+      const data = await response.json();
+      console.log({ data });
+      if (!response.ok) {
+        if (response.status === 401) {
+          console.error("Authentication failed");
+          return;
+        }
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+    } catch (error) {
+      console.error("Error creating chat:", error);
+    }
+  };
+
+  const fetchAdmins = async () => {
+    try {
+      const currentUserId = localStorage.getItem("uid");
+
+      setLoading(true);
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        console.error("No authentication token found");
+        return;
+      }
+
+      const cleanToken = token.startsWith("Bearer ")
+        ? token
+        : `Bearer ${token}`;
+
+      const response = await fetch(`${BACKEND_URL}/api/auth/admin/all/public`, {
+        headers: {
+          Authorization: cleanToken,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          console.error("Authentication failed");
+          return;
+        }
+        if (response.status === 404) {
+          console.error("Admin endpoint not found. Please check the API URL.");
+          return;
+        }
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      // Filter out the current user from the admin list
+      const filteredAdmins = data.admins.filter(
+        (admin) => admin.id !== currentUserId
+      );
+      console.log({ filteredAdmins });
+      setAdminUsers(filteredAdmins);
+    } catch (error) {
+      console.error("Error fetching admins:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (loading) {
     return <div className="loading">Loading...</div>;
@@ -191,23 +329,25 @@ const MessagingPageC = () => {
             setcurrentChatId={setCurrentChatId}
             setCurrentClientId={setCurrentFreelancerId}
             setCurrentClientName={setCurrentFreelancerName}
+            isReports={isReports}
+            isAdmins={isAdmins}
+            current={current}
+            setCurrent={setCurrent}
+            handleAdminChat={handleAdminChat}
           />
-          {
-            filteredChats.length === 0 ? (
-              <EmptyChatBox />
-            ) : (
-              currentChatId && (
-                <ChatBox
-                  chatId={currentChatId}
-                  currentChat={currentChat}
-                  currentClientId={currentFreelancerId}
-                  currentClientName={currentFreelancerName}
-                  onEscrowClick={handleEscrow}
-                />
-              )
+          {filteredChats.length === 0 ? (
+            <EmptyChatBox />
+          ) : (
+            currentChatId && (
+              <ChatBox
+                chatId={currentChatId}
+                currentChat={currentChat}
+                currentClientId={currentFreelancerId}
+                currentClientName={currentFreelancerName}
+                onEscrowClick={handleEscrow}
+              />
             )
-          }
-
+          )}
         </div>
         {showEscrowModal && escrowData && (
           <EscrowForm
@@ -228,7 +368,6 @@ const MessagingPageC = () => {
           />
         )}
       </SectionContainer>
-
     </div>
   );
 };

@@ -79,6 +79,18 @@
   width: 24px;
   height: 24px;
 }
+.btns {
+  display: flex;
+  align-items: center;
+}
+.del {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+}
 .textarea {
   height: 100px;
   width: 100%;

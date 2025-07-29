@@ -52,11 +52,13 @@ const ChatBox = ({
   const typingTimeoutRef = useRef(null);
 
   useEffect(() => {
-    if (chatId) {
+    if (chatId && currentChat && chatId === currentChat.id) {
       fetchMessages();
-      fetchProjectStatus();
+      if (!currentChat && currentChat.chatType) {
+        fetchProjectStatus();
+      }
     }
-  }, [chatId]);
+  }, [chatId, currentChat]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -105,34 +107,55 @@ const ChatBox = ({
   const fetchMessages = async (pageNum = 1, isInitial = true) => {
     try {
       setIsLoadingMore(true);
-      const response = await fetch(
-        `${BACKEND_URL}/api/chats/${chatId}?page=${pageNum}&limit=${MESSAGES_PER_PAGE}`,
-        {
-          headers: {
-            Authorization: `${localStorage.getItem("token")}`,
-          },
-        }
-      );
+
+      const chatUrl =
+        currentChat && currentChat.chatType
+          ? `${BACKEND_URL}/api/admin-chats/${chatId}/messages?page=${pageNum}&limit=${MESSAGES_PER_PAGE}`
+          : `${BACKEND_URL}/api/chats/${chatId}?page=${pageNum}&limit=${MESSAGES_PER_PAGE}`;
+      const response = await fetch(chatUrl, {
+        headers: {
+          Authorization: `${localStorage.getItem("token")}`,
+        },
+      });
 
       if (!response.ok) {
         throw new Error("Failed to fetch messages");
       }
 
       const data = await response.json();
-      const url = (data.chat?.participants?.filter(
-        (part) => part.uid !== localStorage.getItem("uid")
-      )[0]?.photoURL) || "";
+      // console.log({ data });
+      const url =
+        data.chat?.participants?.filter(
+          (part) => part.uid !== localStorage.getItem("uid")
+        )[0]?.photoURL || "";
 
       setPhotoUrl(url);
-      
+
       // Update messages based on whether this is initial load or loading more
-      if (isInitial) {
-        setMessages(data.chat.messages);
-      } else {
-        setMessages(prev => [...data.chat.messages, ...prev]);
+      let msgData =
+        currentChat && currentChat.chatType
+          ? data.messages
+          : data.chat.messages;
+
+      if (currentChat && currentChat.chatType) {
+        msgData = (msgData || []).sort((a, b) => {
+          const timeA = a.createdAt?._seconds
+            ? a.createdAt._seconds * 1000
+            : new Date(a.createdAt).getTime();
+          const timeB = b.createdAt?._seconds
+            ? b.createdAt._seconds * 1000
+            : new Date(b.createdAt).getTime();
+          return timeA - timeB;
+        });
       }
-      
-      setHasMore(data.chat.messages.length === MESSAGES_PER_PAGE);
+
+      if (isInitial) {
+        setMessages(msgData);
+      } else {
+        setMessages((prev) => [...msgData, ...prev]);
+      }
+
+      setHasMore(msgData.length === MESSAGES_PER_PAGE);
     } catch (error) {
       console.error("Error fetching messages:", error);
     } finally {
@@ -151,7 +174,7 @@ const ChatBox = ({
           },
         }
       );
-      
+
       if (!response.ok) {
         if (response.status === 404) {
           // No project exists yet
@@ -160,7 +183,7 @@ const ChatBox = ({
         }
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const data = await response.json();
       if (data.project) {
         setProjectStatus(data.project);
@@ -205,28 +228,90 @@ const ChatBox = ({
       console.error("Error sending message:", error);
     }
   };
+  const sendAdminMessage = async (text, files, fileIcon) => {
+    try {
+      let attachments = [];
+      if (files) {
+        attachments = await handleFileUploadAdmin(files || []);
+      }
 
+      // Get the current user's role from localStorage
+
+      const userRole = localStorage.getItem("role"); // Get the first role from the roles array
+
+      const response = await fetch(
+        `${BACKEND_URL}/api/admin-chats/${chatId}/messages`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+          body: JSON.stringify({
+            message: text || "",
+            type: "text",
+            attachments: attachments || [],
+            senderId: uid,
+            senderName: currentClientName,
+            isAdminChat: false,
+            senderRole: userRole,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Server response:", response.status, errorText);
+        console.error("Request details:", {
+          chatId,
+          currentClientId,
+          currentClientName,
+          userRole,
+          participants: currentChat?.participants,
+        });
+        throw new Error(`Failed to send message: ${errorText}`);
+      }
+
+      // Clear input after successful send
+      setText("");
+      setFiles(null);
+      setFileIcon(null);
+    } catch (error) {
+      console.error("Error sending message:", error);
+      // You might want to show an error message to the user here
+    }
+  };
   const handleFileUpload = async (files) => {
     if (!files.length) return [];
     setIsUploading(true);
+    const arr = Array.from(files);
 
     try {
-      console.log("Starting file upload for chat:", chatId);
-      const uploadPromises = Array.from(files).map(async (file) => {
-        const storageRef = ref(
-          storage,
-          `chat-attachments/${chatId}/${Date.now()}-${file.name}`
-        );
-        await uploadBytes(storageRef, file);
-        const url = await getDownloadURL(storageRef);
-        return {
-          name: file.name,
-          type: file.type,
-          url: url,
-        };
-      });
+      console.log("Starting file upload for chat:", arr, chatId);
+      const formData = new FormData();
 
-      return await Promise.all(uploadPromises);
+      if (arr.length > 0) {
+        arr.forEach((file) => {
+          formData.append("files", file);
+        });
+      }
+
+      const response = await fetch(
+        `${BACKEND_URL}/api/chats/${chatId}/upload`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: token,
+          },
+          body: formData,
+        }
+      );
+      const result = await response.json();
+      console.log({ result });
+      if (!response.ok) {
+        throw new Error("Failed to send message");
+      }
+      return result.updatedFiles;
     } catch (error) {
       console.error("Error uploading files:", error);
       return [];
@@ -234,7 +319,44 @@ const ChatBox = ({
       setIsUploading(false);
     }
   };
+  const handleFileUploadAdmin = async (files) => {
+    if (!files.length) return [];
+    setIsUploading(true);
+    const arr = Array.from(files);
 
+    try {
+      console.log("Starting file upload for chat:", arr, chatId);
+      const formData = new FormData();
+
+      if (arr.length > 0) {
+        arr.forEach((file) => {
+          formData.append("files", file);
+        });
+      }
+
+      const response = await fetch(
+        `${BACKEND_URL}/api/admin-chats/${chatId}/upload`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: token,
+          },
+          body: formData,
+        }
+      );
+      const result = await response.json();
+      console.log({ result });
+      if (!response.ok) {
+        throw new Error("Failed to send message");
+      }
+      return result.updatedFiles;
+    } catch (error) {
+      console.error("Error uploading files:", error);
+      return [];
+    } finally {
+      setIsUploading(false);
+    }
+  };
   const handleEscrowClick = () => {
     setShowEscrowModal(true);
   };
@@ -287,22 +409,26 @@ const ChatBox = ({
 
   const groupMessagesByDate = (messages) => {
     const groups = {};
-    
-    messages.forEach(message => {
-      const date = new Date(message.createdAt?._seconds ? message.createdAt._seconds * 1000 : message.createdAt);
+
+    messages.forEach((message) => {
+      const date = new Date(
+        message.createdAt?._seconds
+          ? message.createdAt._seconds * 1000
+          : message.createdAt
+      );
       const dateStr = date.toDateString();
-      
+
       if (!groups[dateStr]) {
         groups[dateStr] = [];
       }
       groups[dateStr].push(message);
     });
-    
+
     return groups;
   };
 
   if (loading) return;
-  console.log({ otherParticipant, projectStatus });
+  // console.log({ chatId });
   return (
     <div className="f-chat-box">
       {!currentChat ? (
@@ -347,18 +473,21 @@ const ChatBox = ({
                 </div>
                 <div className="status-item">
                   <span className="status-label">Budget:</span>
-                  <span className="status-value">
-                    R{projectStatus.budget}
-                  </span>
+                  <span className="status-value">R{projectStatus.budget}</span>
                 </div>
               </div>
             </div>
           ) : (
             <div className="no-project-message">
               {userRole === "freelancer" ? (
-                <p>No active project. Create a project agreement to get started.</p>
+                <p>
+                  No active project. Create a project agreement to get started.
+                </p>
               ) : (
-                <p>No active project. Wait for the freelancer to create a project agreement.</p>
+                <p>
+                  No active project. Wait for the freelancer to create a project
+                  agreement.
+                </p>
               )}
             </div>
           )}
@@ -367,23 +496,25 @@ const ChatBox = ({
               <div className="loading">Loading messages...</div>
             ) : (
               <div className="f-messages-wrapper">
-                {Object.entries(groupMessagesByDate(messages)).map(([date, dateMessages]) => (
-                  <div key={date} className="message-date-group">
-                    <div className="date-divider">
-                      <span className="date-label">
-                        {new Date(date).toLocaleDateString(undefined, {
-                          weekday: 'long',
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric'
-                        })}
-                      </span>
+                {Object.entries(groupMessagesByDate(messages)).map(
+                  ([date, dateMessages]) => (
+                    <div key={date} className="message-date-group">
+                      <div className="date-divider">
+                        <span className="date-label">
+                          {new Date(date).toLocaleDateString(undefined, {
+                            weekday: "long",
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          })}
+                        </span>
+                      </div>
+                      {dateMessages.map((msg, i) => (
+                        <MessageCard key={i} message={msg} />
+                      ))}
                     </div>
-                    {dateMessages.map((msg, i) => (
-                      <MessageCard key={i} message={msg} />
-                    ))}
-                  </div>
-                ))}
+                  )
+                )}
                 <div ref={bottomRef}></div>
               </div>
             )}
@@ -396,7 +527,11 @@ const ChatBox = ({
               setFileIcon={setFileIcon}
               text={text}
               setText={setText}
-              sendMessage={sendMessage}
+              sendMessage={
+                currentChat && currentChat.chatType
+                  ? sendAdminMessage
+                  : sendMessage
+              }
             />
           </div>
 

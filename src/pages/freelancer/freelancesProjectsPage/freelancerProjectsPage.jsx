@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import withProfileCheck from "../../../components/Common/withProfileCheck";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Container, Row, Col, Button, Alert } from "react-bootstrap";
 import Swal from "sweetalert2";
@@ -12,7 +13,7 @@ import "./freelancerProjectPage.css";
 import SectionContainer from "../../../components/SectionContainer";
 import BACKEND_URL from "../../../config/backend-config";
 
-const FreelancerProjects = () => {
+const FreelancerProjects = (props) => {
   // const { freelancer_id } = useParams();
   const [projects, setProjects] = useState([]);
   const [reviews, setReviews] = useState([]);
@@ -22,6 +23,7 @@ const FreelancerProjects = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [currentTab, setCurrentTab] = useState("Profile");
+  const [bio, setBio] = useState("");
   const navigation = useNavigate();
 
   const location = useLocation();
@@ -53,7 +55,8 @@ const FreelancerProjects = () => {
       );
       if (response.ok) {
         const freelanceData = await response.json();
-        // console.log({ freelancerData: freelanceData });
+        console.log({ freelancerData: freelanceData.freelancer.bio });
+        setBio(freelanceData.freelancer.bio);
         setFreelancerData(freelanceData.freelancer);
       }
     }
@@ -112,12 +115,14 @@ const FreelancerProjects = () => {
   };
   useEffect(() => {
     // fetchProjects()
-    return;
+    // return;
     if (!freelancer_id) {
       setError("Freelancer ID is missing.");
       setLoading(false);
       return;
     }
+
+    console.log("Fetching freelancer projects and data..." + freelancerData) ;
 
     const fetchData = async () => {
       try {
@@ -432,6 +437,7 @@ const FreelancerProjects = () => {
                       <FreelancerProjectCards
                         image={freelancerData.profilePicture}
                         specialities={freelancerData.specialities}
+                        bio={bio}
                       />
                     )}
                   </Col>
@@ -440,6 +446,7 @@ const FreelancerProjects = () => {
                 <Col
                   md={shouldShowSidebar ? 9 : 12}
                   style={{ backgroundColor: "#0000" }}
+                  he
                 >
                   <FreelancerProfileHeader
                     searchTerm={freelancerData?.displayName}
@@ -463,4 +470,4 @@ const FreelancerProjects = () => {
   );
 };
 
-export default FreelancerProjects;
+export default withProfileCheck(FreelancerProjects);

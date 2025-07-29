@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import withProfileCheck from "../../../components/Common/withProfileCheck";
 import { Container, Row, Col } from "react-bootstrap";
 import ProfileCard from "../../../components/Profile/portfolioCard/portfolioCard"; // Import ProfileCard component
 import ProfileForm from "../../../components/Profile/profileForm/profileForm"; // Import ProfileForm component
@@ -15,7 +16,7 @@ import NewPriceCard from "../../../components/PriceCard/NewPriceCard/NewPriceCar
 import ProjectUpload from "../../../components/Projects/ProjectUpload/ProjectUpload";
 import BACKEND_URL from "../../../config/backend-config";
 
-const ProfilePage = ({}) => {
+const ProfilePage = (props) => {
   const [formData, setFormData] = useState({
     name: "",
     surname: "",
@@ -128,7 +129,7 @@ const ProfilePage = ({}) => {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
         setJobTitle(data.user.jobTitle);
         setFormData((prev) => ({ ...prev, name: data.user.name }));
         setFormData((prev) => ({ ...prev, surname: data.user.surname }));
@@ -159,7 +160,7 @@ const ProfilePage = ({}) => {
               Object.assign(obj, { [item.name.toLowerCase()]: item.price }),
             {}
           );
-          console.log({ obj });
+          // console.log({ obj });
         }
 
         setFormData((prev) => ({
@@ -186,7 +187,7 @@ const ProfilePage = ({}) => {
       if (JSON.stringify(data) === "{}") {
         return;
       }
-      console.log("DATA ", data);
+      // console.log("DATA ", data);
 
       const formData = new FormData();
       formData.append("name", data.name);
@@ -211,7 +212,7 @@ const ProfilePage = ({}) => {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
 
         // Show SweetAlert after successful update
         showAlert();
@@ -297,21 +298,9 @@ const ProfilePage = ({}) => {
     }
     setBenefits(arr);
   };
-  const handleDeleteFeature = (feature) => {
-    let arr = [...benefits];
-    if (arr.length > 0) {
-      arr = arr.map((obj) => {
-        if (obj.type && obj.type === feature.type) {
-          let updatedArr = obj.benefits.filter((f) => f !== feature.feature);
-          return { ...obj, benefits: updatedArr };
-        }
-        return obj;
-      });
-    }
-    setBenefits(arr);
-  };
+
   const handleShowPriceModal = (name, price, benefits) => {
-    console.log("running...");
+    console.log("running...", price);
 
     setCurrentPrice(price);
     setCurrentBenefits(benefits);
@@ -319,10 +308,9 @@ const ProfilePage = ({}) => {
     setShowPriceModal(true);
   };
   useEffect(() => {
-    console.log({ currentPrice, currentType, currentBenefits, showPriceModal });
+    // console.log({ currentPrice, currentType, currentBenefits, showPriceModal });
   }, [showPriceModal]);
   const handlePriceFormSubmit = (benefits, price, type) => {
-    console.log({ benefits, price, type });
     setPricePackages((packages) => {
       return packages.map((pkg) => {
         if (type !== pkg.name) {
@@ -334,7 +322,7 @@ const ProfilePage = ({}) => {
     });
   };
   useEffect(() => {
-    console.log({ pricePackages });
+    // console.log({ pricePackages });
   }, [pricePackages]);
   if (loading) return <div></div>;
   return (
@@ -345,10 +333,10 @@ const ProfilePage = ({}) => {
         {showProjectModal && projectData && (
           <ProjectUpload
             onClose={() => {
-              showProjectUploadAlert();
               setShowProjectModal(false);
             }}
             projectData={projectData}
+            showProjectUploadAlert={showProjectUploadAlert}
           />
         )}
         <Container fluid style={{}} className="p-0 m-0">
@@ -441,8 +429,6 @@ const ProfilePage = ({}) => {
                     packagesObj={formData.packages}
                     pricePackages={pricePackages}
                     handleAddFeature={handleAddFeature}
-                    handleUpdateFeature={handleUpdateFeature}
-                    handleDeleteFeature={handleDeleteFeature}
                     benefits={benefits}
                     showPriceModal={handleShowPriceModal}
                   />
@@ -456,4 +442,20 @@ const ProfilePage = ({}) => {
   );
 };
 
-export default ProfilePage;
+const WrappedProfilePage = (props) => {
+  const [formData, setFormData] = useState({
+    name: "",
+    surname: "",
+    email: "",
+    displayName: "",
+    phone: "",
+    dateOfBirth: "",
+    speciality: "",
+    categories: [],
+    packages: {},
+  });
+  // ...existing code...
+  // move all state and logic from ProfilePage here
+  return <ProfilePage {...props} formData={formData} setFormData={setFormData} />;
+};
+export default withProfileCheck(ProfilePage);

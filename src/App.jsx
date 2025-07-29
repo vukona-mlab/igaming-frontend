@@ -25,6 +25,8 @@ import Projects from "./pages/projects/Projects";
 import ContactPage from "./pages/ContactPage/ContactPage";
 import { registerNotificationSW } from "./config/service-workers";
 import { useEffect } from "react";
+import { ProfileCompletionProvider } from "./components/Common/ProfileCompletionContext";
+import ProfileCompletionModal from "./components/Common/ProfileCompletionModal";
 //import { requestPermissionAndGetToken } from "./config/service-workers/index";
 function App() {
   useEffect(() => {
@@ -32,9 +34,10 @@ function App() {
     registerNotificationSW();
   }, []);
   return (
-    <div className="App">
+    <ProfileCompletionProvider>
       <Router>
         <div className="App">
+          <ProfileCompletionModal />
           <Routes>
             <Route exact path="/" element={<LandingPage />} />
             <Route exact path="/discovery" element={<DiscoveryPage />}>
@@ -87,7 +90,7 @@ function App() {
           </Routes>
         </div>
       </Router>
-    </div>
+    </ProfileCompletionProvider>
   );
 }
 

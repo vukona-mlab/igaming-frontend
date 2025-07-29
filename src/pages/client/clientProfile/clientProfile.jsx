@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import withProfileCheck from "../../../components/Common/withProfileCheck";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import ProfileCard from "../../../components/Profile/portfolioCard/portfolioCard"; // Import ProfileCard component
 import ProfileForm from "../../../components/Profile/profileForm/profileFormClient"; // Import ProfileForm component
@@ -11,7 +12,7 @@ import ProfileSubNav from "../../../components/Profile/ProfileSubNav/ProfileSubN
 import SectionContainer from "../../../components/SectionContainer";
 import BACKEND_URL from "../../../config/backend-config";
 import { useNavigate } from "react-router-dom";
-const ProfilePage = () => {
+const ProfilePage = (props) => {
   const [formData, setFormData] = useState({
     name: "",
     surname: "",
@@ -281,4 +282,18 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+const WrappedProfilePage = (props) => {
+  const [formData, setFormData] = useState({
+    name: "",
+    surname: "",
+    email: "",
+    displayName: "",
+    phone: "",
+    dateOfBirth: "",
+    categories: [],
+  });
+  // ...existing code...
+  // move all state and logic from ProfilePage here
+  return <ProfilePage {...props} formData={formData} setFormData={setFormData} />;
+};
+export default withProfileCheck(ProfilePage);
