@@ -11,7 +11,6 @@ import BACKEND_URL from "../../../config/backend-config";
 import SectionContainer from "../../../components/SectionContainer";
 import EmptyChatBox from "../../../components/Messaging/ChatBox/EmptyChatBox";
 
-const PROFILE_REQUIREMENTS = ["name", "email", "profilePicture"];
 const MessagingPage = (props) => {
   const [loading, setLoading] = useState(false);
   const [chats, setChats] = useState([]);
@@ -307,4 +306,4 @@ const MessagingPage = (props) => {
   );
 };
 
-export default withProfileCheck(MessagingPage, PROFILE_REQUIREMENTS);
+export default withProfileCheck(MessagingPage);

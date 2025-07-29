@@ -16,7 +16,6 @@ import NewPriceCard from "../../../components/PriceCard/NewPriceCard/NewPriceCar
 import ProjectUpload from "../../../components/Projects/ProjectUpload/ProjectUpload";
 import BACKEND_URL from "../../../config/backend-config";
 
-const PROFILE_REQUIREMENTS = ["name", "email", "profilePicture"];
 const ProfilePage = (props) => {
   const [formData, setFormData] = useState({
     name: "",
@@ -459,20 +458,4 @@ const WrappedProfilePage = (props) => {
   // move all state and logic from ProfilePage here
   return <ProfilePage {...props} formData={formData} setFormData={setFormData} />;
 };
-export default (props) => {
-  const [formData, setFormData] = React.useState({
-    name: "",
-    surname: "",
-    email: "",
-    displayName: "",
-    phone: "",
-    dateOfBirth: "",
-    speciality: "",
-    categories: [],
-    packages: {},
-  });
-  return withProfileCheck(
-    () => <WrappedProfilePage {...props} formData={formData} setFormData={setFormData} />, 
-    PROFILE_REQUIREMENTS
-  )({ ...props, userProfile: formData });
-};
+export default withProfileCheck(ProfilePage);

@@ -8,7 +8,6 @@ import "./documentUpload.css";
 import { useNavigate } from "react-router-dom";
 import BACKEND_URL from "../../../../config/backend-config";
 
-const PROFILE_REQUIREMENTS = ["name", "email", "profilePicture"];
 const DocumentUpload = (props) => {
   const navigation = useNavigate();
   // Predefined document types as an object
@@ -219,4 +218,4 @@ const DocumentUpload = (props) => {
   );
 };
 
-export default withProfileCheck(DocumentUpload, PROFILE_REQUIREMENTS);
+export default withProfileCheck(DocumentUpload);

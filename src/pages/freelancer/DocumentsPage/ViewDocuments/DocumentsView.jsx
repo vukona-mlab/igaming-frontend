@@ -6,7 +6,6 @@ import styles from "./DocumentsView.module.css";
 import { useNavigate } from "react-router-dom";
 import DocumentsTable from "../../../../components/Documents/DocumentsTable/DocumentsTable";
 
-const PROFILE_REQUIREMENTS = ["name", "email", "profilePicture"];
 const DocumentsView = (props) => {
   
   const [activeTab, setActiveTab] = useState("approved");  // Track active tab status
@@ -52,4 +51,4 @@ const DocumentsView = (props) => {
   );
 };
 
-export default withProfileCheck(DocumentsView, PROFILE_REQUIREMENTS);
+export default withProfileCheck(DocumentsView);

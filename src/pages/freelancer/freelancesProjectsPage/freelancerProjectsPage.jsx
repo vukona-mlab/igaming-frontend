@@ -13,7 +13,6 @@ import "./freelancerProjectPage.css";
 import SectionContainer from "../../../components/SectionContainer";
 import BACKEND_URL from "../../../config/backend-config";
 
-const PROFILE_REQUIREMENTS = ["name", "email", "profilePicture"];
 const FreelancerProjects = (props) => {
   // const { freelancer_id } = useParams();
   const [projects, setProjects] = useState([]);
@@ -24,6 +23,7 @@ const FreelancerProjects = (props) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [currentTab, setCurrentTab] = useState("Profile");
+  const [bio, setBio] = useState("");
   const navigation = useNavigate();
 
   const location = useLocation();
@@ -55,7 +55,8 @@ const FreelancerProjects = (props) => {
       );
       if (response.ok) {
         const freelanceData = await response.json();
-        // console.log({ freelancerData: freelanceData });
+        console.log({ freelancerData: freelanceData.freelancer.bio });
+        setBio(freelanceData.freelancer.bio);
         setFreelancerData(freelanceData.freelancer);
       }
     }
@@ -114,12 +115,14 @@ const FreelancerProjects = (props) => {
   };
   useEffect(() => {
     // fetchProjects()
-    return;
+    // return;
     if (!freelancer_id) {
       setError("Freelancer ID is missing.");
       setLoading(false);
       return;
     }
+
+    console.log("Fetching freelancer projects and data..." + freelancerData) ;
 
     const fetchData = async () => {
       try {
@@ -434,6 +437,7 @@ const FreelancerProjects = (props) => {
                       <FreelancerProjectCards
                         image={freelancerData.profilePicture}
                         specialities={freelancerData.specialities}
+                        bio={bio}
                       />
                     )}
                   </Col>
@@ -442,6 +446,7 @@ const FreelancerProjects = (props) => {
                 <Col
                   md={shouldShowSidebar ? 9 : 12}
                   style={{ backgroundColor: "#0000" }}
+                  he
                 >
                   <FreelancerProfileHeader
                     searchTerm={freelancerData?.displayName}
@@ -465,4 +470,4 @@ const FreelancerProjects = (props) => {
   );
 };
 
-export default withProfileCheck(FreelancerProjects, PROFILE_REQUIREMENTS);
+export default withProfileCheck(FreelancerProjects);

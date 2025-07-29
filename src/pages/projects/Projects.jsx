@@ -12,7 +12,6 @@ import PaystackPop from "@paystack/inline-js";
 import BACKEND_URL from "../../config/backend-config";
 import SectionContainer from "../../components/SectionContainer";
 
-const PROFILE_REQUIREMENTS = ["name", "email", "profilePicture"];
 const Projects = (props) => {
   const [projects, setProjects] = useState([]);
   const [filter, setFilter] = useState("");
@@ -178,4 +177,4 @@ const Projects = (props) => {
   );
 };
 
-export default withProfileCheck(Projects, PROFILE_REQUIREMENTS);
+export default withProfileCheck(Projects);

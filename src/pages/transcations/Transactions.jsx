@@ -8,7 +8,6 @@ import TransactionsSection from "../../components/Payments/TransactionsSection/T
 import BankingDetailsSection from "../../components/Payments/BankingDetailsSection/BankingDetailsSection"
 import TabsHeader from "../../components/Payments/TabsHeader/TabsHeader";
 import SectionContainer from "../../components/SectionContainer";
-const PROFILE_REQUIREMENTS = ["name", "email", "profilePicture"];
 const Transactions = (props) => {
   const [tab, setTab] = useState("Bank Details");
   const role = localStorage.getItem('role')
@@ -48,4 +47,4 @@ const Transactions = (props) => {
   );
 };
 
-export default withProfileCheck(Transactions, PROFILE_REQUIREMENTS);
+export default withProfileCheck(Transactions);
