@@ -427,7 +427,7 @@ const ChatBox = ({
     return groups;
   };
 
-  if (loading) return;
+  if (loading) return <div className="f-chat-box"></div>;
   // console.log({ chatId });
   return (
     <div className="f-chat-box">

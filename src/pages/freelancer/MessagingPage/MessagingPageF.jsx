@@ -279,6 +279,7 @@ const MessagingPage = () => {
             setCurrent={setCurrent}
             handleAdminChat={handleAdminChat}
           />
+
           {filteredChats.length === 0 ? (
             <EmptyChatBox />
           ) : (

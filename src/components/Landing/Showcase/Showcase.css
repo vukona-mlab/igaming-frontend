@@ -75,7 +75,13 @@
   height: 495px;
   border-radius: 20px;
 }
-
+.sc-contact {
+  display: flex;
+  justify-content: flex-end;
+}
+.sc-contact-btn {
+  border: none;
+}
 @media screen and (max-width: 768px) {
   .showcase-images img {
     visibility: hidden;
