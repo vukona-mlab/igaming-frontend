@@ -57,7 +57,6 @@ const ChatInput = ({
           size="sm"
           value={text}
           onChange={(e) => setText(e.target.value)}
-
         />
 
         {/* Show Camera Icon when input is empty, else show Send Icon */}
@@ -71,11 +70,11 @@ const ChatInput = ({
           </button>
         ) : (
           <label htmlFor="camera-upload" className="icon-button">
-            <img
+            {/* <img
               src="/images/camera-icon.svg"
               alt="Camera"
               className="camera-icon-img"
-            />
+            /> */}
           </label>
         )}
 

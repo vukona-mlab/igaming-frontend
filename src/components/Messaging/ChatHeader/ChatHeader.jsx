@@ -95,6 +95,14 @@ const ChatHeader = ({ currentChat }) => {
       confirmButtonText: "Cool",
     });
   };
+  const showReportAlert = () => {
+    Swal.fire({
+      title: "Success!",
+      text: "The report has been lodged with the admin.",
+      icon: "success",
+      confirmButtonText: "Cool",
+    });
+  };
   const handleCreateProject = () => {
     if (!otherParticipant?.uid) {
       console.error("No other participant found");
@@ -193,6 +201,7 @@ const ChatHeader = ({ currentChat }) => {
       }
       if (data && data.message == "Existing chat found") {
         alert("Ongoing report exists");
+      } else {
       }
       setShowReport(false);
     } catch (error) {
