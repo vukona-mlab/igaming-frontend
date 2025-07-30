@@ -82,7 +82,6 @@ const ProfilePage = (props) => {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
 
         setFormData({
           name: data.user.name,
@@ -294,6 +293,8 @@ const WrappedProfilePage = (props) => {
   });
   // ...existing code...
   // move all state and logic from ProfilePage here
-  return <ProfilePage {...props} formData={formData} setFormData={setFormData} />;
+  return (
+    <ProfilePage {...props} formData={formData} setFormData={setFormData} />
+  );
 };
 export default withProfileCheck(ProfilePage);

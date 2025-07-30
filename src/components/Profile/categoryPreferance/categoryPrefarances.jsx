@@ -17,6 +17,7 @@ const CategoryPreferences = ({
   pricePackages = [],
   showPriceModal,
 }) => {
+  console.log({ categoriesArr });
   const [formData, setFormData] = useState({
     categories: {
       graphicDesign:

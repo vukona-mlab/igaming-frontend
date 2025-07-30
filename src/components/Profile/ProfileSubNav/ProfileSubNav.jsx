@@ -16,10 +16,10 @@ export default function ProfileSubNav() {
     <SectionContainer containerColor="black">
       <div className="ProfileSubNav">
         <div className="p-subnav-content">
-          <div className="p-subnav-link">
+          {/* <div className="p-subnav-link">
             <img src={Dashboard} className="dashboard-icon" />
             <div>Dashboard</div>
-          </div>
+          </div> */}
           <div
             className="p-subnav-link"
             onClick={() => {
@@ -58,7 +58,5 @@ export default function ProfileSubNav() {
         </div>
       </div>
     </SectionContainer>
-
-
   );
 }

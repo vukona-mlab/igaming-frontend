@@ -98,6 +98,7 @@ const ProfilePage = (props) => {
       ...formData,
       categories: arr || [],
       packages: pricePackages || [],
+      phoneNumber: formData.phone,
     });
     setFormData((prev) => ({ ...prev, categories: arr }));
     setFormData((prev) => ({ ...prev, packages: pricePackages }));
@@ -147,7 +148,9 @@ const ProfilePage = (props) => {
         setFormData((prev) => ({
           ...prev,
           speciality:
-            (data.user.specialities && data.user.specialities[0]) || "",
+            data.user.specialities && typeof data.user.specialities == "string"
+              ? data.user.specialities
+              : data.user.specialities[0],
         }));
         if (data.user.packages && data.user.packages.length > 0) {
           setPricePackages(data.user.packages);
@@ -190,18 +193,33 @@ const ProfilePage = (props) => {
       // console.log("DATA ", data);
 
       const formData = new FormData();
-      formData.append("name", data.name);
-      formData.append("surname", data.surname);
-      formData.append("displayName", data.displayName);
-      formData.append("phoneNumber", data.phone);
-      formData.append("email", data.email);
-      formData.append("dateOfBirth", data.dateOfBirth);
+      // formData.append("name", data.name);
+      // formData.append("surname", data.surname);
+      // formData.append("displayName", data.displayName);
+      // formData.append("phoneNumber", data.phone);
+      // formData.append("email", data.email);
+      // formData.append("dateOfBirth", data.dateOfBirth);
       // formData.append("bio", formData.bio);
-      formData.append("speciality", JSON.stringify([data.speciality || ""]));
-      formData.append("categories", JSON.stringify(data.categories));
+      // formData.append("speciality", JSON.stringify([data.speciality || ""]));
+      // formData.append("categories", JSON.stringify(data.categories));
       //formData.append("packages", JSON.stringify(data.packages || []));
       // formData.append("jobTitle", formData.jobTitle);
       formData.append("profilePicture", image || "");
+      if (image) {
+        const response = await fetch(`${url}/api/auth/users/${uid}/update`, {
+          method: "PUT",
+          headers: {
+            Authorization: token,
+          },
+          body: formData,
+        });
+        if (response.ok) {
+          const data = await response.json();
+        } else {
+          // Handle error
+        }
+      }
+
       const response = await fetch(`${url}/api/auth/users/${uid}/update`, {
         method: "PUT",
         headers: {
@@ -456,6 +474,8 @@ const WrappedProfilePage = (props) => {
   });
   // ...existing code...
   // move all state and logic from ProfilePage here
-  return <ProfilePage {...props} formData={formData} setFormData={setFormData} />;
+  return (
+    <ProfilePage {...props} formData={formData} setFormData={setFormData} />
+  );
 };
 export default withProfileCheck(ProfilePage);
