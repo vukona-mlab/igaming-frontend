@@ -3,6 +3,7 @@ import "./PeopleComponent.css";
 import PersonCard from "../PersonCard/PersonCard";
 import { BsChatDots, BsPeople } from "react-icons/bs";
 import { TbMessageReport } from "react-icons/tb";
+import { HiOutlineFlag } from "react-icons/hi2";
 const PeopleComponent = ({
   people,
   setcurrentChatId,
@@ -84,7 +85,7 @@ const PeopleComponent = ({
             className="toggle-view-btn"
             onClick={() => setCurrent("Reports")}
           >
-            <TbMessageReport />
+            <HiOutlineFlag />
           </button>
         )}
 

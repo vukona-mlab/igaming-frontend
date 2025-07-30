@@ -79,7 +79,6 @@ export default function ProjectUpload({
           }
         );
         const d = await res.json();
-        console.log({ d });
 
         if (!res.ok) {
           throw new Error("Failed to upload files");

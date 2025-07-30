@@ -33,7 +33,6 @@ function NavBar() {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log("DISCOVERY", { data });
         setProfilePicture(data.user.profilePicture || "");
       }
       setLoading(false);

@@ -10,6 +10,7 @@ import { io } from "socket.io-client";
 import ProjectModal from "../ProjectModal/ProjectModal";
 import ZoomMeetingModal from "../ZoomMeetingModal/ZoomMeetingModal";
 import BACKEND_URL from "../../../config/backend-config";
+import Swal from "sweetalert2";
 
 const url = BACKEND_URL;
 const socket = io(url, { transports: ["websocket"] });
@@ -28,11 +29,19 @@ const ChatHeader = ({ currentChat }) => {
   const [adminUsers, setAdminUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [userProfiles, setUserProfiles] = useState({});
-
+  const [showReport, setShowReport] = useState(false);
+  const [reportReason, setReportReason] = useState("");
   // Get user role and ID from localStorage
   const userRole = localStorage.getItem("role");
   const currentUserId = localStorage.getItem("uid");
   const isFreelancer = userRole === "freelancer";
+
+  const reasons = [
+    "Harassment or bullying",
+    "Spam or misleading",
+    "Legal issue",
+    "Harmful or dangerous acts",
+  ];
 
   // Find the current user and other participant
   const currentUser = currentChat?.participants?.find(
@@ -78,7 +87,14 @@ const ChatHeader = ({ currentChat }) => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
+  const showChatDeleteAlert = () => {
+    Swal.fire({
+      title: "Success!",
+      text: "The chat has been deleted.",
+      icon: "success",
+      confirmButtonText: "Cool",
+    });
+  };
   const handleCreateProject = () => {
     if (!otherParticipant?.uid) {
       console.error("No other participant found");
@@ -108,8 +124,31 @@ const ChatHeader = ({ currentChat }) => {
     setShowMenu(false);
   };
 
-  const handleDeleteChat = () => {
+  const handleDeleteChat = async () => {
     // TODO: Implement delete chat logic
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No authentication token found");
+        return;
+      }
+      const response = await fetch(
+        `${BACKEND_URL}/api/chats/${currentChat.id}/delete-chat`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+        }
+      );
+      const data = await response.json();
+      console.log({ data });
+      if (!response.ok) {
+        throw new Error("Failed to delete chat");
+      }
+      showChatDeleteAlert();
+    } catch (error) {}
     setShowMenu(false);
   };
   const handleReportUser = async () => {
@@ -128,8 +167,6 @@ const ChatHeader = ({ currentChat }) => {
         return;
       }
 
-      console.log("Admin profile data:", adminProfile); // Debug log
-
       const response = await fetch(`${url}/api/admin-chats`, {
         method: "POST",
         headers: {
@@ -139,12 +176,14 @@ const ChatHeader = ({ currentChat }) => {
         body: JSON.stringify({
           targetId: adminId,
           chatType: "client-admin",
-          initialMessage: "Report",
+          initialMessage: reportReason != "" ? reportReason : "Report",
           tags: ["report"],
+          chatReportId: currentChat.id,
         }),
       });
       const data = await response.json();
       console.log({ data });
+
       if (!response.ok) {
         if (response.status === 401) {
           console.error("Authentication failed");
@@ -152,18 +191,10 @@ const ChatHeader = ({ currentChat }) => {
         }
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
       if (data && data.message == "Existing chat found") {
         alert("Ongoing report exists");
       }
-
-      // const participantData = {
-      //   id: adminId,
-      //   name: adminProfile.displayName || adminProfile.name || "Admin",
-      //   profilePicture: adminProfile.profilePicture,
-      //   activeStatus: adminProfile.activeStatus,
-      // };
-      // console.log("Participant data being passed:", participantData); // Debug log
+      setShowReport(false);
     } catch (error) {
       console.error("Error creating chat:", error);
     }
@@ -265,7 +296,6 @@ const ChatHeader = ({ currentChat }) => {
       const filteredAdmins = data.admins.filter(
         (admin) => admin.id !== currentUserId
       );
-      console.log({ filteredAdmins });
       setAdminUsers(filteredAdmins);
     } catch (error) {
       console.error("Error fetching admins:", error);
@@ -366,9 +396,54 @@ const ChatHeader = ({ currentChat }) => {
     }
     setShowMenu(false);
   };
-  console.log({ currentChat });
+
   return (
     <>
+      {showReport && (
+        <div className="report-container">
+          <div className="report-form-modal">
+            <div className="report-form">
+              <div className="project-modal-header">
+                <h2>Whats happening</h2>
+                <button
+                  className="close-button"
+                  onClick={() => setShowReport(false)}
+                >
+                  ×
+                </button>
+              </div>
+              {reasons.map((reason, i) => (
+                <div key={i}>
+                  <div className="radio-group">
+                    <input
+                      type="radio"
+                      id={reason}
+                      name="reason"
+                      onChange={() => setReportReason(reason)}
+                    />
+
+                    <div className="label-price-group">
+                      <span className="reason">{reason}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              <div className="button-group">
+                <button
+                  type="button"
+                  className="decline-btn"
+                  onClick={() => setShowReport(false)}
+                >
+                  Cancel
+                </button>
+                <button className="accept-btn" onClick={handleReportUser}>
+                  Report
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="chat-header">
         <div className="chat-header-left">
           <div className="avatar-wrapper">
@@ -421,7 +496,7 @@ const ChatHeader = ({ currentChat }) => {
               <button onClick={handleEndChat}>End Chat</button>
               <button onClick={handleDeleteChat}>Delete Chat</button>
               {currentChat && !currentChat.hasOwnProperty("chatType") && (
-                <button onClick={handleReportUser}>Report User</button>
+                <button onClick={() => setShowReport(true)}>Report User</button>
               )}
             </div>
           )}
