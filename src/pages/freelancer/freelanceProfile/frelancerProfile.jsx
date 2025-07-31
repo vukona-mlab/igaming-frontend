@@ -193,17 +193,7 @@ const ProfilePage = (props) => {
       // console.log("DATA ", data);
 
       const formData = new FormData();
-      // formData.append("name", data.name);
-      // formData.append("surname", data.surname);
-      // formData.append("displayName", data.displayName);
-      // formData.append("phoneNumber", data.phone);
-      // formData.append("email", data.email);
-      // formData.append("dateOfBirth", data.dateOfBirth);
-      // formData.append("bio", formData.bio);
-      // formData.append("speciality", JSON.stringify([data.speciality || ""]));
-      // formData.append("categories", JSON.stringify(data.categories));
-      //formData.append("packages", JSON.stringify(data.packages || []));
-      // formData.append("jobTitle", formData.jobTitle);
+
       formData.append("profilePicture", image || "");
       if (image) {
         const response = await fetch(`${url}/api/auth/users/${uid}/update`, {
