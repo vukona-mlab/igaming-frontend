@@ -18,7 +18,6 @@ import {
 import EmptyChatBox from "../../../components/Messaging/ChatBox/EmptyChatBox";
 import ProfileCompletionModal from "../../../components/Common/ProfileCompletionModal";
 import { useProfileCompletionContext } from "../../../components/Common/ProfileCompletionContext";
-
 import Swal from "sweetalert2";
 
 const MessagingPageC = () => {
