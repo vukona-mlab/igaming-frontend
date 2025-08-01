@@ -1,0 +1,349 @@
+/* ProfileCompletionModal.css */
+
+/* Override Bootstrap modal styles */
+.profile-completion-modal .modal-dialog {
+  max-width: 500px;
+  margin: 1.75rem auto;
+}
+
+.profile-completion-modal .modal-content {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    background: #ffffff;
+}
+
+
+
+/* Custom Header Styles */
+.profile-completion-modal .custom-header {
+    background: #000000;
+    color: #fff;
+    border: none;
+    padding: 2rem 2rem 1.5rem;
+    position: relative;
+    color: white;
+}
+
+.profile-completion-modal .header-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.profile-completion-modal .header-icon {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 12px;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.profile-completion-modal .header-text {
+    flex: 1;
+}
+
+.profile-completion-modal .custom-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: white;
+}
+
+.profile-completion-modal .header-subtitle {
+  margin: 0.25rem 0 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+}
+
+.profile-completion-modal .custom-close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 8px;
+  padding: 8px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+}
+
+.profile-completion-modal .custom-close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+/* Custom Body Styles */
+.profile-completion-modal .custom-body {
+  padding: 2rem;
+  background: #ffffff;
+}
+
+.profile-completion-modal .main-description {
+  color: #64748b;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.profile-completion-modal .missing-fields-section {
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.profile-completion-modal .missing-fields-title {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  color: #92400e;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.profile-completion-modal .missing-fields-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.profile-completion-modal .missing-field-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.profile-completion-modal .field-indicator {
+  background: #f59e0b;
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.profile-completion-modal .field-name {
+  color: #92400e;
+  font-weight: 500;
+}
+
+.profile-completion-modal .benefits-section {
+  background: #f0f9ff;
+  border: 1px solid #0ea5e9;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.profile-completion-modal .benefits-title {
+  color: #0c4a6e;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.profile-completion-modal .benefits-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.profile-completion-modal .benefit-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #0c4a6e;
+  font-weight: 500;
+}
+
+/* Custom Footer Styles */
+.profile-completion-modal .custom-footer {
+  background: #f8fafc;
+  border: none;
+  padding: 1.5rem 2rem;
+}
+
+.profile-completion-modal .footer-actions {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+/* Custom Button Styles */
+.profile-completion-modal .btn-custom {
+  border: none;
+  border-radius: 10px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.profile-completion-modal .btn-secondary-custom {
+  background: #e2e8f0;
+  color: #475569;
+}
+
+.profile-completion-modal .btn-secondary-custom:hover {
+  background: #cbd5e1;
+  color: #334155;
+  transform: translateY(-1px);
+}
+
+.profile-completion-modal .btn-primary-custom {
+  background: #000000;
+  color: white;
+  min-width: 160px;
+}
+
+.profile-completion-modal .btn-primary-custom:hover {
+  background: #1f2937;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Loading State Styles */
+.profile-completion-modal .loading-body {
+  padding: 3rem 2rem;
+  text-align: center;
+  background: #ffffff;
+}
+
+.profile-completion-modal .loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.profile-completion-modal .custom-spinner {
+  position: relative;
+  width: 50px;
+  height: 50px;
+}
+
+.profile-completion-modal .spinner-ring {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #e2e8f0;
+  border-top: 4px solid #6366f1;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.profile-completion-modal .loading-text {
+  color: #374151;
+  font-weight: 600;
+  margin: 0;
+}
+
+.profile-completion-modal .loading-subtext {
+  color: #6b7280;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+/* Error State Styles */
+.profile-completion-modal.error-modal .modal-content {
+  border: 2px solid #fecaca;
+}
+
+.profile-completion-modal .error-header {
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  border: none;
+  padding: 2rem 2rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.profile-completion-modal .error-icon {
+  background: rgba(239, 68, 68, 0.1);
+  padding: 12px;
+  border-radius: 12px;
+}
+
+.profile-completion-modal .error-title {
+  color: #dc2626;
+  font-weight: 700;
+  margin: 0;
+  flex: 1;
+}
+
+.profile-completion-modal .error-body {
+  padding: 2rem;
+}
+
+.profile-completion-modal .error-message {
+  color: #374151;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.profile-completion-modal .error-details {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin: 0;
+  font-family: 'Monaco', 'Menlo', monospace;
+  background: #f3f4f6;
+  padding: 0.75rem;
+  border-radius: 8px;
+}
+
+.profile-completion-modal .error-footer {
+  background: #f8fafc;
+  border: none;
+  padding: 1.5rem 2rem;
+  justify-content: flex-end;
+}
+
+/* Responsive Design */
+@media (max-width: 576px) {
+  .profile-completion-modal .modal-dialog {
+    margin: 0.5rem;
+    max-width: none;
+  }
+  
+  .profile-completion-modal .custom-header,
+  .profile-completion-modal .custom-body,
+  .profile-completion-modal .custom-footer {
+    padding: 1.5rem;
+  }
+  
+  .profile-completion-modal .footer-actions {
+    flex-direction: column;
+  }
+  
+  .profile-completion-modal .btn-custom {
+    width: 100%;
+  }
+}
+
+/* Animation for modal entrance */
+.profile-completion-modal .modal.fade .modal-dialog {
+  transform: scale(0.8);
+  transition: transform 0.3s ease-out;
+}
+
+.profile-completion-modal .modal.show .modal-dialog {
+  transform: scale(1);
+}

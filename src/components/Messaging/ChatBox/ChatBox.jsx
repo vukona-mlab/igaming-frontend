@@ -10,6 +10,7 @@ import ProjectModal from "../ProjectModal/ProjectModal";
 import ProjectDetails from "../ProjectDetails/ProjectDetails";
 import EscrowForm from "../../Escrow/EscrowForm";
 import BACKEND_URL from "../../../config/backend-config";
+import { useProfileCompletionContext } from '../../../components/Common/ProfileCompletionContext';
 
 const ChatBox = ({
   chatId,
@@ -50,6 +51,7 @@ const ChatBox = ({
   const messagesContainerRef = useRef(null);
   const MESSAGES_PER_PAGE = 20;
   const typingTimeoutRef = useRef(null);
+  const { isProfileComplete } = useProfileCompletionContext();
 
   useEffect(() => {
     if (chatId && currentChat && chatId === currentChat.id) {
@@ -532,6 +534,7 @@ const ChatBox = ({
                   ? sendAdminMessage
                   : sendMessage
               }
+              isProfileComplete={isProfileComplete}
             />
           </div>
 

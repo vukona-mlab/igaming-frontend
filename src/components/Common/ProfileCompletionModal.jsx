@@ -1,7 +1,9 @@
+// ProfileCompletionModal.js - Styled version
 import React from 'react';
 import { Modal, Button, Spinner } from 'react-bootstrap';
 import { useProfileCompletionContext } from './ProfileCompletionContext';
 import { useNavigate } from 'react-router-dom';
+import './ProfileCompletionModal.css';
 
 const FIELD_LABELS = {
   name: 'Full Name',
@@ -16,26 +18,57 @@ const ProfileCompletionModal = () => {
     closeModal,
     missingFields,
     userProfile,
-    loading
+    loading,
+    error
   } = useProfileCompletionContext();
   const navigate = useNavigate();
 
-  // Only allow navigation to profile, not dismiss, if missingFields exist
-  const mustUpdate = missingFields && missingFields.length > 0;
-
-  const handleUpdateProfile = () => {
+  const handleClose = () => {
     closeModal();
-    navigate('/profile');
   };
 
-  // Show loading spinner while fetching data
+  const handleUpdateProfile = () => {
+    // If you want to navigate to profile, keep this:
+    navigate('/profile');
+    closeModal();
+  };
+
+  // Loading state
   if (loading) {
     return (
-      <Modal show={isModalOpen} centered backdrop="static">
-        <Modal.Body className="text-center">
-          <Spinner animation="border" role="status" />
-          <p className="mt-2">Checking your profile...</p>
-        </Modal.Body>
+      <Modal show={isModalOpen} centered backdrop={true} onHide={handleClose} className="profile-completion-modal">
+        <div className="loading-body">
+          <div className="loading-container">
+            <div className="custom-spinner">
+              <div className="spinner-ring"></div>
+            </div>
+            <div>
+              <p className="loading-text">Checking your profile...</p>
+              <p className="loading-subtext">Please wait a moment.</p>
+            </div>
+          </div>
+        </div>
+      </Modal>
+    );
+  }
+
+  // Error state
+  if (error && isModalOpen) {
+    return (
+      <Modal show={isModalOpen} onHide={handleClose} centered className="profile-completion-modal error-modal">
+        <div className="error-header">
+          <span className="error-icon">⚠️</span>
+          <span className="error-title">Error</span>
+        </div>
+        <div className="error-body">
+          <p className="error-message">Failed to check profile completion.</p>
+          <pre className="error-details">{error}</pre>
+        </div>
+        <div className="error-footer footer-actions">
+          <Button className="btn-custom btn-secondary-custom" onClick={handleClose}>
+            Close
+          </Button>
+        </div>
       </Modal>
     );
   }
@@ -43,39 +76,62 @@ const ProfileCompletionModal = () => {
   return (
     <Modal
       show={isModalOpen}
-      onHide={mustUpdate ? undefined : closeModal}
+      onHide={handleClose}
       centered
-      backdrop="static"
-      keyboard={!mustUpdate}
+      backdrop={true}
+      keyboard={true}
+      className="profile-completion-modal"
     >
-      <Modal.Header closeButton={!mustUpdate}>
-        <Modal.Title>Complete Your Profile</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <p>Please complete your profile to access all features and maximize your experience.</p>
+      <div className="custom-header">
+        <div className="header-content">
+          <span className="header-icon">👤</span>
+          <div className="header-text">
+            <h2 className="custom-title">Complete Your Profile</h2>
+            <p className="header-subtitle">Unlock all features and maximize your experience.</p>
+          </div>
+          <button className="custom-close-btn" onClick={handleClose} aria-label="Close">×</button>
+        </div>
+      </div>
+      <div className="custom-body">
+        <p className="main-description">
+          Please complete your profile to access all features and maximize your experience.
+        </p>
         {missingFields && missingFields.length > 0 && (
-          <div className="mt-3">
-            <p className="mb-2"><strong>Missing required information:</strong></p>
-            <ul className="list-unstyled">
+          <div className="missing-fields-section">
+            <div className="missing-fields-title">
+              <span>⚡</span>
+              <span>Missing required information:</span>
+            </div>
+            <div className="missing-fields-list">
               {missingFields.map(field => (
-                <li key={field} className="text-danger">
-                  • {FIELD_LABELS[field] || field}
-                </li>
+                <div key={field} className="missing-field-item">
+                  <span className="field-indicator">!</span>
+                  <span className="field-name">{FIELD_LABELS[field] || field}</span>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
         )}
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="primary" onClick={handleUpdateProfile}>
-          Complete Profile
-        </Button>
-        {!mustUpdate && (
-          <Button variant="secondary" onClick={closeModal}>
+        <div className="benefits-section">
+          <div className="benefits-title">Why complete your profile?</div>
+          <div className="benefits-list">
+            <div className="benefit-item">🔒 Access protected features</div>
+            <div className="benefit-item">🚀 Get discovered by clients</div>
+            <div className="benefit-item">💬 Enable messaging and transactions</div>
+            <div className="benefit-item">🏆 Build trust and credibility</div>
+          </div>
+        </div>
+      </div>
+      <div className="custom-footer">
+        <div className="footer-actions">
+          <Button className="btn-custom btn-primary-custom" onClick={handleUpdateProfile}>
+            Complete Profile
+          </Button>
+          <Button className="btn-custom btn-secondary-custom" onClick={handleClose}>
             Later
           </Button>
-        )}
-      </Modal.Footer>
+        </div>
+      </div>
     </Modal>
   );
 };

@@ -26,7 +26,7 @@ import ContactPage from "./pages/ContactPage/ContactPage";
 import { registerNotificationSW } from "./config/service-workers";
 import { useEffect } from "react";
 import { ProfileCompletionProvider } from "./components/Common/ProfileCompletionContext";
-import ProfileCompletionModal from "./components/Common/ProfileCompletionModal";
+//import ProfileCompletionModal from "./components/Common/ProfileCompletionModal";
 //import { requestPermissionAndGetToken } from "./config/service-workers/index";
 function App() {
   useEffect(() => {
@@ -37,7 +37,7 @@ function App() {
     <ProfileCompletionProvider>
       <Router>
         <div className="App">
-          <ProfileCompletionModal />
+          {/* <ProfileCompletionModal /> Removed: modal now only appears on protected pages */}
           <Routes>
             <Route exact path="/" element={<LandingPage />} />
             <Route exact path="/discovery" element={<DiscoveryPage />}>
