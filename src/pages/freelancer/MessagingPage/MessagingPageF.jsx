@@ -65,9 +65,7 @@ const MessagingPage = (props) => {
         : chats.filter(
             (chat) => chat.tags && chat.tags.some((tag) => tag === "report")
           );
-    if (filteredChats.length > 0) {
-      setCurrentChatId(filteredChats[0].id);
-    }
+
     setFilteredChats(filteredChats);
 
     // if (filteredChats.length > 0) {
@@ -156,20 +154,22 @@ const MessagingPage = (props) => {
                 ? chat.lastMessage.text
                 : chat.lastMessage || "No messages",
           }));
-          console.log("CHATS", { processedChats });
           const adminChats = processedChats.filter(
             (chat) =>
               chat.tags && chat.tags.length > 0 && chat.tags[0] == "admin"
           );
-          console.log("CHATS", { adminChats });
 
           setFirstAdminChat(adminChats.length > 0 ? false : true);
+
           setChats(processedChats);
 
           // Set initial chat if available
           if (processedChats.length > 0) {
             setCurrentChatId(processedChats[0].id);
           }
+          // if (filteredChats.length > 0) {
+          //   setCurrentChatId(filteredChats[0].id);
+          // }
         }
       }
     } catch (error) {

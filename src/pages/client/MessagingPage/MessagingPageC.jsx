@@ -16,6 +16,7 @@ import {
   BsThreeDotsVertical,
 } from "react-icons/bs";
 import EmptyChatBox from "../../../components/Messaging/ChatBox/EmptyChatBox";
+import Swal from "sweetalert2";
 
 const MessagingPageC = () => {
   const [loading, setLoading] = useState(false);
@@ -34,6 +35,7 @@ const MessagingPageC = () => {
   const [isAdmins, setIsAdmins] = useState(false);
   const [current, setCurrent] = useState("Chats");
   const [adminUsers, setAdminUsers] = useState([]);
+  const [firstAdminChat, setFirstAdminChat] = useState(false);
 
   const token = localStorage.getItem("token");
   const url = BACKEND_URL;
@@ -184,6 +186,12 @@ const MessagingPageC = () => {
                 ? chat.lastMessage.text
                 : chat.lastMessage || "No messages",
           }));
+          const adminChats = processedChats.filter(
+            (chat) =>
+              chat.tags && chat.tags.length > 0 && chat.tags[0] == "admin"
+          );
+
+          setFirstAdminChat(adminChats.length > 0 ? false : true);
 
           setChats(processedChats);
           setFilteredChats(processedChats);
@@ -217,44 +225,60 @@ const MessagingPageC = () => {
   };
   const handleAdminChat = async () => {
     try {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        console.error("No authentication token found");
-        return;
+      let confimation;
+      if (firstAdminChat) {
+        confimation = await Swal.fire({
+          title: "Are you sure?",
+          text: "You are about to open a chat with the admin.",
+          icon: "warning",
+          buttons: true, // Shows both "Cancel" and "OK" buttons
+          dangerMode: true, // Styles the "OK" button as dangerous (red)
+        });
       }
+      console.log({ confimation });
+      if (confimation.isConfirmed) {
+        const token = localStorage.getItem("token");
 
-      // Fetch admin profile first
-      const adminId = adminUsers[0].id;
-      const adminProfile = adminUsers[0];
-      if (!adminProfile) {
-        console.error("Failed to fetch admin profile");
-        return;
-      }
-
-      console.log("Admin profile data:", adminProfile); // Debug log
-
-      const response = await fetch(`${BACKEND_URL}/api/admin-chats`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-        body: JSON.stringify({
-          targetId: adminId,
-          chatType: "client-admin",
-          initialMessage: "Hello",
-          tags: ["admin"],
-        }),
-      });
-      const data = await response.json();
-      console.log({ data });
-      if (!response.ok) {
-        if (response.status === 401) {
-          console.error("Authentication failed");
+        if (!token) {
+          console.error("No authentication token found");
           return;
         }
-        throw new Error(`HTTP error! status: ${response.status}`);
+
+        // Fetch admin profile first
+        const adminId = adminUsers[0].id;
+        const adminProfile = adminUsers[0];
+        if (!adminProfile) {
+          console.error("Failed to fetch admin profile");
+          return;
+        }
+
+        console.log("Admin profile data:", adminProfile); // Debug log
+
+        const response = await fetch(`${BACKEND_URL}/api/admin-chats`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+          body: JSON.stringify({
+            targetId: adminId,
+            chatType: "client-admin",
+            initialMessage: "Hello",
+            tags: ["admin"],
+          }),
+        });
+        const data = await response.json();
+        console.log({ data });
+        if (!response.ok) {
+          if (response.status === 401) {
+            console.error("Authentication failed");
+            return;
+          }
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        getAllChats();
+        setCurrent("Admin");
+      } else {
       }
     } catch (error) {
       console.error("Error creating chat:", error);
