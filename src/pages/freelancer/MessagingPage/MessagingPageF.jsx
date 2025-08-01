@@ -10,6 +10,8 @@ import io from "socket.io-client";
 import BACKEND_URL from "../../../config/backend-config";
 import SectionContainer from "../../../components/SectionContainer";
 import EmptyChatBox from "../../../components/Messaging/ChatBox/EmptyChatBox";
+import Swal from "sweetalert2";
+import { get } from "react-scroll/modules/mixins/scroller";
 
 const MessagingPage = (props) => {
   const [loading, setLoading] = useState(false);
@@ -27,7 +29,7 @@ const MessagingPage = (props) => {
   const [isAdmins, setIsAdmins] = useState(false);
   const [current, setCurrent] = useState("Chats");
   const [adminUsers, setAdminUsers] = useState([]);
-
+  const [firstAdminChat, setFirstAdminChat] = useState(false);
   const token = localStorage.getItem("token");
   // const url = import.meta.env.VITE_API_URL;
 
@@ -63,6 +65,9 @@ const MessagingPage = (props) => {
         : chats.filter(
             (chat) => chat.tags && chat.tags.some((tag) => tag === "report")
           );
+    if (filteredChats.length > 0) {
+      setCurrentChatId(filteredChats[0].id);
+    }
     setFilteredChats(filteredChats);
 
     // if (filteredChats.length > 0) {
@@ -152,7 +157,13 @@ const MessagingPage = (props) => {
                 : chat.lastMessage || "No messages",
           }));
           console.log("CHATS", { processedChats });
+          const adminChats = processedChats.filter(
+            (chat) =>
+              chat.tags && chat.tags.length > 0 && chat.tags[0] == "admin"
+          );
+          console.log("CHATS", { adminChats });
 
+          setFirstAdminChat(adminChats.length > 0 ? false : true);
           setChats(processedChats);
 
           // Set initial chat if available
@@ -169,44 +180,59 @@ const MessagingPage = (props) => {
   };
   const handleAdminChat = async () => {
     try {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        console.error("No authentication token found");
-        return;
+      let confimation;
+      if (firstAdminChat) {
+        confimation = await Swal.fire({
+          title: "Are you sure?",
+          text: "You are about to open a chat with the admin.",
+          icon: "warning",
+          buttons: true, // Shows both "Cancel" and "OK" buttons
+          dangerMode: true, // Styles the "OK" button as dangerous (red)
+        });
       }
+      if (confimation.isConfirmed) {
+        const token = localStorage.getItem("token");
 
-      // Fetch admin profile first
-      const adminId = adminUsers[0].id;
-      const adminProfile = adminUsers[0];
-      if (!adminProfile) {
-        console.error("Failed to fetch admin profile");
-        return;
-      }
-
-      console.log("Admin profile data:", adminProfile); // Debug log
-
-      const response = await fetch(`${BACKEND_URL}/api/admin-chats`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-        body: JSON.stringify({
-          targetId: adminId,
-          chatType: "client-admin",
-          initialMessage: "Hello",
-          tags: ["admin"],
-        }),
-      });
-      const data = await response.json();
-      console.log({ data });
-      if (!response.ok) {
-        if (response.status === 401) {
-          console.error("Authentication failed");
+        if (!token) {
+          console.error("No authentication token found");
           return;
         }
-        throw new Error(`HTTP error! status: ${response.status}`);
+
+        // Fetch admin profile first
+        const adminId = adminUsers[0].id;
+        const adminProfile = adminUsers[0];
+        if (!adminProfile) {
+          console.error("Failed to fetch admin profile");
+          return;
+        }
+
+        console.log("Admin profile data:", adminProfile); // Debug log
+
+        const response = await fetch(`${BACKEND_URL}/api/admin-chats`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+          body: JSON.stringify({
+            targetId: adminId,
+            chatType: "client-admin",
+            initialMessage: "Hello",
+            tags: ["admin"],
+          }),
+        });
+        const data = await response.json();
+        console.log({ data });
+        if (!response.ok) {
+          if (response.status === 401) {
+            console.error("Authentication failed");
+            return;
+          }
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        getAllChats();
+        setCurrent("Admin");
+      } else {
       }
     } catch (error) {
       console.error("Error creating chat:", error);
