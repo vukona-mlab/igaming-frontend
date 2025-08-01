@@ -98,7 +98,7 @@ const ChatHeader = ({ currentChat }) => {
   const showReportAlert = () => {
     Swal.fire({
       title: "Success!",
-      text: "The report has been lodged with the admin.",
+      text: "The report has been logged with the admin.",
       icon: "success",
       confirmButtonText: "Cool",
     });
@@ -202,6 +202,7 @@ const ChatHeader = ({ currentChat }) => {
       if (data && data.message == "Existing chat found") {
         alert("Ongoing report exists");
       } else {
+        showReportAlert();
       }
       setShowReport(false);
     } catch (error) {
