@@ -113,6 +113,13 @@ const FreelancerProjects = (props) => {
       }
     }
   };
+  const showError = () => {
+    Swal.fire({
+      title: "Oops...",
+      text: "Cannot send message to yourself.",
+      icon: "error",
+    });
+  };
   useEffect(() => {
     // fetchProjects()
     // return;
@@ -122,7 +129,7 @@ const FreelancerProjects = (props) => {
       return;
     }
 
-    console.log("Fetching freelancer projects and data..." + freelancerData) ;
+    console.log("Fetching freelancer projects and data..." + freelancerData);
 
     const fetchData = async () => {
       try {
@@ -256,7 +263,10 @@ const FreelancerProjects = (props) => {
       }
 
       const uid = localStorage.getItem("uid");
-
+      if (uid == freelancerId) {
+        showError();
+        return;
+      }
       const requestData = {
         freelancerId: freelancerId,
         clientId: uid,
@@ -457,7 +467,7 @@ const FreelancerProjects = (props) => {
                     reviewsError={reviewsError}
                     onReviewSubmit={handleReviewSubmit}
                     handleMessageClick={(price) =>
-                      handleMessageClick(freelancerData?.id, price)
+                      handleMessageClick(freelancerData?.id, null)
                     }
                   />
                 </Col>

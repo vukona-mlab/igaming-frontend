@@ -73,11 +73,11 @@ const ChatInput = ({
           </button>
         ) : (
           <label htmlFor="camera-upload" className="icon-button">
-            <img
+            {/* <img
               src="/images/camera-icon.svg"
               alt="Camera"
               className="camera-icon-img"
-            />
+            /> */}
           </label>
         )}
 

@@ -6,6 +6,7 @@ import "./FreelancerDiscovery.css";
 import { useNavigate } from "react-router-dom";
 import SectionContainer from "../SectionContainer";
 import BACKEND_URL from "../../config/backend-config";
+import Swal from "sweetalert2";
 
 const FreelancerDiscovery = ({ searchQuery, catergory }) => {
   const [freelancers, setFreelancers] = useState([]);
@@ -36,6 +37,13 @@ const FreelancerDiscovery = ({ searchQuery, catergory }) => {
     window.addEventListener("resize", updateColumns);
     return () => window.removeEventListener("resize", updateColumns);
   }, [currentPage, pageSize]);
+  const showError = () => {
+    Swal.fire({
+      title: "Oops...",
+      text: "Cannot send message to yourself.",
+      icon: "error",
+    });
+  };
 
   const updateColumns = () => {
     const width = window.innerWidth;
@@ -123,6 +131,11 @@ const FreelancerDiscovery = ({ searchQuery, catergory }) => {
       }
 
       const uid = localStorage.getItem("uid");
+
+      if (uid == freelancerId) {
+        showError();
+        return;
+      }
 
       const requestData = {
         freelancerId: freelancerId,

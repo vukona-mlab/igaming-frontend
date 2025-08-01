@@ -480,18 +480,22 @@ const ChatBox = ({
               </div>
             </div>
           ) : (
-            <div className="no-project-message">
-              {userRole === "freelancer" ? (
-                <p>
-                  No active project. Create a project agreement to get started.
-                </p>
-              ) : (
-                <p>
-                  No active project. Wait for the freelancer to create a project
-                  agreement.
-                </p>
-              )}
-            </div>
+            currentChat &&
+            !currentChat.hasOwnProperty("chatType") && (
+              <div className="no-project-message">
+                {userRole === "freelancer" ? (
+                  <p>
+                    No active project. Create a project agreement to get
+                    started.
+                  </p>
+                ) : (
+                  <p>
+                    No active project. Wait for the freelancer to create a
+                    project agreement.
+                  </p>
+                )}
+              </div>
+            )
           )}
           <div className="f-messages-container">
             {loading ? (
