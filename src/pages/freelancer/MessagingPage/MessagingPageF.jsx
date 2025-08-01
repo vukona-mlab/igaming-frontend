@@ -12,8 +12,12 @@ import SectionContainer from "../../../components/SectionContainer";
 import EmptyChatBox from "../../../components/Messaging/ChatBox/EmptyChatBox";
 import Swal from "sweetalert2";
 import { get } from "react-scroll/modules/mixins/scroller";
+import { CheckLg } from "react-bootstrap-icons";
+import ProfileCompletionModal from "../../../components/Common/ProfileCompletionModal";
+import { useProfileCompletionContext } from '../../../components/Common/ProfileCompletionContext';
 
 const MessagingPage = (props) => {
+  const { isProfileComplete, isModalOpen } = useProfileCompletionContext();
   const [loading, setLoading] = useState(false);
   const [chats, setChats] = useState([]);
   const [filteredChats, setFilteredChats] = useState([]);
@@ -143,8 +147,9 @@ const MessagingPage = (props) => {
         },
       });
 
+      const data = await response.json();
+      console.log("Fetched chats data:", data);
       if (response.ok) {
-        const data = await response.json();
         if (data.chats && data.chats.length > 0) {
           // Process the chats to ensure lastMessage is a string
           const processedChats = data.chats.map((chat) => ({
@@ -290,7 +295,22 @@ const MessagingPage = (props) => {
 
   console.log({ currentChatId, currentChat });
   return (
-    <div className="MessagingPageF">
+    <div className="MessagingPageF" style={{ position: 'relative' }}>
+      {/* Banner if profile is incomplete */}
+      {!isProfileComplete && (
+        <div style={{
+          background: '#f3f4f6',
+          color: '#92400e',
+          padding: '1rem',
+          borderRadius: '8px',
+          marginBottom: '1rem',
+          textAlign: 'center',
+          fontWeight: 600,
+          fontSize: '1rem'
+        }}>
+          Messaging is disabled until your profile is complete.
+        </div>
+      )}
       <Navbar />
       <ProfileSubNav />
       <SectionContainer>
@@ -329,6 +349,12 @@ const MessagingPage = (props) => {
           isInvitation={isInvitation}
         />
       )}
+      {/* Modal only appears on this page */}
+      <ProfileCompletionModal />
+      {/* Grey-out effect for main content */}
+      <div style={!isProfileComplete ? { opacity: 0.5, pointerEvents: 'none' } : {}}>
+        {/* ...existing content, e.g. SectionContainer, chat UI... */}
+      </div>
     </div>
   );
 };

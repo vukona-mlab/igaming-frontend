@@ -38,6 +38,8 @@ const MessagingPageC = () => {
   const [adminUsers, setAdminUsers] = useState([]);
   const [firstAdminChat, setFirstAdminChat] = useState(false);
 
+  const { isProfileComplete, isModalOpen } = useProfileCompletionContext();
+
   const token = localStorage.getItem("token");
   const url = BACKEND_URL;
 
@@ -340,7 +342,24 @@ const MessagingPageC = () => {
   }
 
   return (
-    <div className="MessagingPageC">
+    <div className="MessagingPageC" style={{ position: "relative" }}>
+      {/* Banner if profile is incomplete */}
+      {!isProfileComplete && (
+        <div
+          style={{
+            background: "#f3f4f6",
+            color: "#92400e",
+            padding: "1rem",
+            borderRadius: "8px",
+            marginBottom: "1rem",
+            textAlign: "center",
+            fontWeight: 600,
+            fontSize: "1rem",
+          }}
+        >
+          Messaging is disabled until your profile is complete.
+        </div>
+      )}
       <Navbar />
       <ProfileSubNav />
       <SectionContainer>
@@ -392,6 +411,17 @@ const MessagingPageC = () => {
             isInvitation={isInvitation}
           />
         )}
+        <ProfileCompletionModal />
+        {/* Grey-out effect for main content */}
+        <div
+          style={
+            !isProfileComplete
+              ? { opacity: 0.5, pointerEvents: "none" }
+              : {}
+          }
+        >
+          {/* ...existing content, e.g. SectionContainer, chat UI... */}
+        </div>
       </SectionContainer>
     </div>
   );

@@ -11,6 +11,7 @@ const ChatInput = ({
   text,
   setText,
   sendMessage,
+  isProfileComplete
 }) => {
   const handleFileChange = (event) => {
     setFiles(event.target.files);
@@ -30,7 +31,7 @@ const ChatInput = ({
   };
 
   return (
-    <div className="chat-input-container">
+    <div className="chat-input-container" style={!isProfileComplete ? { opacity: 0.5, pointerEvents: 'none' } : {}}>
       <div className="chat-input">
         {/* File Icon */}
         <label htmlFor="file-upload" className="icon-button">
@@ -47,6 +48,7 @@ const ChatInput = ({
           accept="image/*,.pdf,.doc,.docx"
           style={{ display: "none" }}
           onChange={handleFileChange}
+          disabled={!isProfileComplete}
         />
 
         {/* Message Input */}
@@ -57,11 +59,12 @@ const ChatInput = ({
           size="sm"
           value={text}
           onChange={(e) => setText(e.target.value)}
+          disabled={!isProfileComplete}
         />
 
         {/* Show Camera Icon when input is empty, else show Send Icon */}
         {text || files ? (
-          <button className="icon-button send-button" onClick={handleSendClick}>
+          <button className="icon-button send-button" onClick={handleSendClick} disabled={!isProfileComplete}>
             <img
               src="/images/send-icon.png"
               alt="Send"

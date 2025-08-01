@@ -11,8 +11,12 @@ import axios from "axios";
 import PaystackPop from "@paystack/inline-js";
 import BACKEND_URL from "../../config/backend-config";
 import SectionContainer from "../../components/SectionContainer";
+import ProfileCompletionModal from '../../components/Common/ProfileCompletionModal';
+import { useProfileCompletionContext } from '../../components/Common/ProfileCompletionContext';
 
 const Projects = (props) => {
+  const { isProfileComplete, isModalOpen } = useProfileCompletionContext();
+  const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
   const [filter, setFilter] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -21,8 +25,6 @@ const Projects = (props) => {
   const [freelancers, setFreelancers] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  const navigate = useNavigate();
 
   const role = localStorage.getItem("role");
   const token = localStorage.getItem("token");
@@ -151,20 +153,36 @@ const Projects = (props) => {
 
   console.log({ projects });
   return (
-    <div className="Projects">
+    <div className="Projects" style={{ position: 'relative' }}>
       <Navbar />
       <ProfileSubNav />
       <SectionContainer>
-        <div className="pj-search-upload">
+        {/* Banner if profile is incomplete */}
+        {!isProfileComplete && (
+          <div style={{
+            background: '#f3f4f6',
+            color: '#92400e',
+            padding: '1rem',
+            borderRadius: '8px',
+            marginBottom: '1rem',
+            textAlign: 'center',
+            fontWeight: 600,
+            fontSize: '1rem'
+          }}>
+            Actions are disabled until your profile is complete.
+          </div>
+        )}
+        <div className="pj-search-upload" style={!isProfileComplete ? { opacity: 0.5, pointerEvents: 'none' } : {}}>
           <SearchBar onSearch={setSearchTerm} />
           {/* {role === "freelancer" && (
-            <button className="pj-upload-btn">Upload project</button>
+            <button className="pj-upload-btn" disabled={!isProfileComplete} style={!isProfileComplete ? { opacity: 0.5, cursor: 'not-allowed' } : {}}>
+              Upload project
+            </button>
           )} */}
         </div>
       </SectionContainer>
-
       <ProjectsTabsHeader handleTabChange={setFilter} />
-      <div className="pj-main-container">
+      <div className="pj-main-container" style={!isProfileComplete ? { opacity: 0.5, pointerEvents: 'none' } : {}}>
         {filteredData.length > 0 ? (
           <ProjectsTable type={role} projects={filteredData} />
         ) : (
@@ -173,6 +191,9 @@ const Projects = (props) => {
           </SectionContainer>
         )}
       </div>
+      {/* Modal only appears on this page */}
+      <ProfileCompletionModal />
+      {/* Overlay removed: only grey-out and banner remain */}
     </div>
   );
 };

@@ -8,13 +8,32 @@ import TransactionsSection from "../../components/Payments/TransactionsSection/T
 import BankingDetailsSection from "../../components/Payments/BankingDetailsSection/BankingDetailsSection"
 import TabsHeader from "../../components/Payments/TabsHeader/TabsHeader";
 import SectionContainer from "../../components/SectionContainer";
+import ProfileCompletionModal from "../../components/Common/ProfileCompletionModal";
+import { useProfileCompletionContext } from "../../components/Common/ProfileCompletionContext";
+
 const Transactions = (props) => {
   const [tab, setTab] = useState("Bank Details");
+  const { isProfileComplete, isModalOpen } = useProfileCompletionContext();
   const role = localStorage.getItem('role')
   return (
-    <div className="Transactions">
+    <div className="Transactions" style={{ position: 'relative' }}>
       <Navbar />
       <ProfileSubNav />
+      {/* Banner if profile is incomplete */}
+      {!isProfileComplete && (
+        <div style={{
+          background: '#f3f4f6',
+          color: '#92400e',
+          padding: '1rem',
+          borderRadius: '8px',
+          marginBottom: '1rem',
+          textAlign: 'center',
+          fontWeight: 600,
+          fontSize: '1rem'
+        }}>
+          Transactions are disabled until your profile is complete.
+        </div>
+      )}
       <SectionContainer>
         <div className="transaction-page-sections">
           {
@@ -42,7 +61,11 @@ const Transactions = (props) => {
           }
         </div>
       </SectionContainer >
-
+      <ProfileCompletionModal />
+      {/* Grey-out effect for main content */}
+      <div style={!isProfileComplete ? { opacity: 0.5, pointerEvents: 'none' } : {}}>
+        {/* Existing content, e.g. SectionContainer, transaction UI... */}
+      </div>
     </div >
   );
 };

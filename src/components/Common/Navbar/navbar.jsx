@@ -7,13 +7,21 @@ import Navbar from "react-bootstrap/Navbar";
 import "./navbar.css";
 import SearchBar from "../../SearchBar/SearchBar";
 import { FaSearch } from "react-icons/fa";
-import LogoutButton from "../LogoutButton/LogoutButton";
+// import LogoutButton from "../LogoutButton/LogoutButton";
+import LogoutConfirmationModal from "../LogoutConfirmationModal";
+import { FiLogOut } from "react-icons/fi";
+import { io } from "socket.io-client";
+// import BACKEND_URL from "../../../config/backend-config";
+import { handleLogout } from "../../../config/firebase";
 import { useLocation } from "react-router-dom";
 import SectionContainer from "../../SectionContainer";
 import BACKEND_URL from "../../../config/backend-config";
 function NavBar() {
+  // ...existing code...
+  const socket = io(BACKEND_URL, { transports: ["websocket"] });
   const [profilePicture, setProfilePicture] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const location = useLocation();
   const uid = localStorage.getItem("uid");
   const token = localStorage.getItem("token");
@@ -39,6 +47,31 @@ function NavBar() {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  // Logout logic
+  const handleLogoutClick = () => {
+    setShowLogoutModal(true);
+  };
+  const handleLogoutConfirm = async () => {
+    setShowLogoutModal(false);
+    // Update active status on server
+    socket.emit("active-status-update", {
+      uid: localStorage.getItem("uid"),
+      activeStatus: false,
+    });
+    // Call actual logout logic
+    const success = await handleLogout();
+    if (success) {
+      navigation("/client-signin");
+    } else {
+      // fallback: clear localStorage and redirect
+      localStorage.clear();
+      navigation("/client-signin");
+    }
+  };
+  const handleLogoutCancel = () => {
+    setShowLogoutModal(false);
   };
 
   return (
@@ -92,7 +125,21 @@ function NavBar() {
                   className="user-profile"
                   onClick={() => navigation("/profile")}
                 />
-                <LogoutButton />
+                {/* Show logout icon/text, only trigger modal on click */}
+                <button
+                  className="logout-btn"
+                  style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center" }}
+                  onClick={handleLogoutClick}
+                  aria-label="Logout"
+                >
+                  <FiLogOut size={24} style={{ marginRight: 4 }} />
+                  <span style={{ fontWeight: 500 }}>Logout</span>
+                </button>
+                <LogoutConfirmationModal
+                  show={showLogoutModal}
+                  onConfirm={handleLogoutConfirm}
+                  onCancel={handleLogoutCancel}
+                />
               </div>
             ) : (
               <FaSearch className="search-icon" />
