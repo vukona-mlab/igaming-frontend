@@ -1,8 +1,8 @@
 /* Custom Checkbox Styling */
 .custom-checkbox input[type="checkbox"] {
   appearance: none;
-  width: 18px;
-  height: 18px;
+  width: 25px;
+  height: 25px;
   border: 1px solid gray;
   border-radius: 4px;
   cursor: pointer;
@@ -123,4 +123,201 @@ button:hover {
   align-items: center;
   z-index: 1200;
   backdrop-filter: blur(5px);
+}
+
+
+/* Consistent spacing for category headers */
+.category-header {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1rem !important;
+  min-height: 1.5rem;
+}
+
+/* Checkbox groups with consistent spacing */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; /* Consistent spacing between checkboxes */
+}
+
+.checkbox-item {
+  /* display: flex; */
+  align-items: center;
+  min-height: 1.5rem; /* Ensures consistent line height */
+}
+
+/* Custom checkbox styling for consistency */
+.custom-checkbox {
+  margin: 0;
+}
+
+.custom-checkbox .form-check-input {
+  margin-top: 0;
+  vertical-align: middle;
+}
+
+.custom-checkbox .form-check-label {
+  margin-left: 0.5rem;
+  line-height: 1.5;
+  vertical-align: middle;
+  text-transform: capitalize;
+  font-size: 0.9rem;
+}
+
+/* Price package section styling */
+.price-package-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.price-package-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  /* gap: 1rem; */
+  align-items: center;
+  /* min-height: 2.5rem; Ensures consistent height for all rows */
+  padding: 0.25rem 0;
+}
+
+.price-checkbox {
+  display: flex;
+  align-items: center;
+}
+
+.price-input {
+  display: flex;
+  align-items: center;
+}
+
+.price-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+}
+
+/* Custom input styling */
+.custom-input {
+  border: 1px solid #ced4da;
+  border-radius: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.custom-input:focus {
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.custom-input-noline {
+  border: none;
+  background: transparent;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
+.custom-input-noline:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Edit icon styling */
+.cat-edit-icon {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.cat-edit-icon:hover {
+  transform: scale(1.1);
+}
+
+/* Button styling */
+.cancel-button, .update-button {
+  padding: 0.5rem 1.5rem;
+  font-size: 0.9rem;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease;
+}
+
+.cancel-button {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  color: #6c757d;
+}
+
+.cancel-button:hover {
+  background-color: #e9ecef;
+  border-color: #adb5bd;
+}
+
+.update-button {
+  background-color: #212529;
+  border-color: #212529;
+}
+
+.update-button:hover {
+  background-color: #1c1f23;
+  border-color: #1a1d20;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .price-package-item {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    text-align: left;
+  }
+  
+  .price-checkbox, .price-input, .price-action {
+    justify-content: flex-start;
+  }
+  
+  .checkbox-group {
+    gap: 0.5rem;
+  }
+  
+  .price-package-group {
+    gap: 0.75rem;
+  }
+}
+
+/* Ensure all columns start at the same vertical position */
+.align-items-start {
+  align-items: flex-start !important;
+}
+
+/* Make invisible header take up the same space as visible ones */
+.invisible {
+  visibility: hidden;
+}
+
+/* Override Bootstrap's default form-check margins */
+.form-check {
+  margin-bottom: 0 !important;
+  padding-left: 1.5em;
+}
+
+/* Ensure consistent checkbox and label alignment */
+.form-check-input:checked[type=checkbox] {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+}
+
+.form-check-input {
+  width: 1.25em;
+  height: 1.25em;
+  margin-top: 0.125em;
+  vertical-align: top;
+  background-color: #fff;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  border: 1px solid rgba(0,0,0,.25);
+  appearance: none;
+  color-adjust: exact;
 }

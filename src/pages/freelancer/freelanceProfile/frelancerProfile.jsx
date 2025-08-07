@@ -377,7 +377,7 @@ const ProfilePage = (props) => {
               Add Document
             </Button>
           </div>
-          <div className="profile-edit d-flex justify-content-between align-items-center">
+          <div className="profile-edit d-flex justify-content-between align-items-center ps-0">
             <div className="welcome-message">
               {formData.displayName !== "" ? (
                 <h4 className="welcome-name">
@@ -450,22 +450,4 @@ const ProfilePage = (props) => {
   );
 };
 
-const WrappedProfilePage = (props) => {
-  const [formData, setFormData] = useState({
-    name: "",
-    surname: "",
-    email: "",
-    displayName: "",
-    phone: "",
-    dateOfBirth: "",
-    speciality: "",
-    categories: [],
-    packages: {},
-  });
-  // ...existing code...
-  // move all state and logic from ProfilePage here
-  return (
-    <ProfilePage {...props} formData={formData} setFormData={setFormData} />
-  );
-};
 export default withProfileCheck(ProfilePage);

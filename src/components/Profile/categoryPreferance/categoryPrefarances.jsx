@@ -134,7 +134,7 @@ const CategoryPreferences = ({
     e.preventDefault();
     onSubmit(formData); // Pass formData to parent component
   };
-  return (
+return (
     <Container>
       {showFeature && (
         <div className="feature-details-modal-overlay">
@@ -149,117 +149,118 @@ const CategoryPreferences = ({
           />
         </div>
       )}
-      <Form onSubmit={handleSubmit}>
-        <Row className="mb-4">
+      <Form onSubmit={handleSubmit} className="px-5 py-1">
+        <Row className="mb-4 align-items-start">
           {/* First Column */}
           <Col xs={12} md={3} className="mb-3">
-            <h5 className="category-header">Categories Preferences</h5>
-            {["graphicDesign", "uiUxDesign", "animation", "imageEditing"].map(
-              (category) => (
-                <Form.Check
-                  key={category}
-                  type="checkbox"
-                  label={category.replace(/([A-Z])/g, " $1")}
-                  name={category}
-                  className="custom-checkbox"
-                  checked={formData.categories[category]}
-                  onChange={handleCheckboxChange}
-                  disabled={!isUpdate}
-                />
-              )
-            )}
+            <h5 className="category-header mb-3">Categories Preferences</h5>
+            <div className="checkbox-group">
+              {["graphicDesign", "uiUxDesign", "animation", "imageEditing"].map(
+                (category) => (
+                  <div key={category} className="checkbox-item">
+                    <Form.Check
+                      type="checkbox"
+                      label={category.replace(/([A-Z])/g, " $1")}
+                      name={category}
+                      className="custom-checkbox"
+                      checked={formData.categories[category]}
+                      onChange={handleCheckboxChange}
+                      disabled={!isUpdate}
+                    />
+                  </div>
+                )
+              )}
+            </div>
           </Col>
 
           {/* Middle Column */}
-          <Col xs={12} md={3} className="mb-3 mt-5">
-            {[
-              "gameArt",
-              "characterModeling",
-              "gameDesigners",
-              "typography",
-            ].map((category) => (
-              <Form.Check
-                key={category}
-                type="checkbox"
-                label={category.replace(/([A-Z])/g, " $1")}
-                name={category}
-                className="custom-checkbox"
-                checked={formData.categories[category]}
-                onChange={handleCheckboxChange}
-                disabled={!isUpdate}
-              />
-            ))}
+          <Col xs={12} md={3} className="mb-3">
+            <h5 className="category-header mb-3 invisible">Hidden Header</h5>
+            <div className="checkbox-group">
+              {[
+                "gameArt",
+                "characterModeling",
+                "gameDesigners",
+                "typography",
+              ].map((category) => (
+                <div key={category} className="checkbox-item">
+                  <Form.Check
+                    type="checkbox"
+                    label={category.replace(/([A-Z])/g, " $1")}
+                    name={category}
+                    className="custom-checkbox"
+                    checked={formData.categories[category]}
+                    onChange={handleCheckboxChange}
+                    disabled={!isUpdate}
+                  />
+                </div>
+              ))}
+            </div>
           </Col>
 
           {/* Third Column */}
-          <Col xs={12} md={5} className="mb-3">
-            <h5 className="category-header">Price Plan</h5>
-
-            {Array.isArray(pricePackages) &&
-              pricePackages.length > 0 &&
-              pricePackages.map((pricePackage) => (
-                <Row className="mb-3" key={pricePackage.name}>
-                  <Col xs={4}>
-                    <Form.Check
-                      type="checkbox"
-                      label={pricePackage.name}
-                      name={pricePackage.name.toLowerCase()}
-                      className="custom-checkbox"
-                      onChange={handleSpeedUpChange}
-                      disabled={!isUpdate}
-                      checked={
-                        formData.speedUp[pricePackage.name.toLowerCase()]
-                      }
-                    />
-                  </Col>
-                  <Col xs={4}>
-                    <Form.Text
-                      type="text"
-                      placeholder="Enter price"
-                      name={pricePackage.name}
-                      value={pricePackage.price}
-                      onChange={handlePriceChange}
-                      className={
-                        !isUpdate ? "custom-input-noline" : "custom-input"
-                      }
-                      disabled={
-                        !formData.speedUp[pricePackage.name.toLowerCase()] ||
-                        !isUpdate
-                      } // Disable input if checkbox is not selected
-                    />
-                  </Col>
-                  <Col xs={4}>
-                    {isUpdate &&
-                      formData.speedUp[pricePackage.name.toLowerCase()] && (
-                        <img
-                          src="/images/eyecon.png"
-                          className="cat-edit-icon"
-                          onClick={() => {
-                            showPriceModal(
-                              pricePackage.name,
-                              pricePackage.price,
-                              pricePackage.benefits
-                            );
-                          }}
-                        />
-                      )}
-                  </Col>
-                </Row>
-              ))}
+          <Col xs={12} md={6} className="mb-3">
+            <h5 className="category-header mb-3">Price Plan</h5>
+            <div className="price-package-group">
+              {Array.isArray(pricePackages) &&
+                pricePackages.length > 0 &&
+                pricePackages.map((pricePackage) => (
+                  <div className="price-package-item" key={pricePackage.name}>
+                    <div className="price-checkbox">
+                      <Form.Check
+                        type="checkbox"
+                        label={pricePackage.name}
+                        name={pricePackage.name.toLowerCase()}
+                        className="custom-checkbox"
+                        onChange={handleSpeedUpChange}
+                        disabled={!isUpdate}
+                        checked={
+                          formData.speedUp[pricePackage.name.toLowerCase()]
+                        }
+                      />
+                    </div>
+                    <div className="price-input">
+                      {/* <Form.Control
+                        type="text"
+                        placeholder="Enter price"
+                        name={pricePackage.name}
+                        value={pricePackage.price}
+                        onChange={handlePriceChange}
+                        className={
+                          !isUpdate ? "custom-input-noline" : "custom-input"
+                        }
+                        disabled={
+                          !formData.speedUp[pricePackage.name.toLowerCase()] ||
+                          !isUpdate
+                        }
+                      /> */}
+                    </div>
+                    <div className="price-action">
+                      {isUpdate &&
+                        formData.speedUp[pricePackage.name.toLowerCase()] && (
+                          <img
+                            src="/images/eyecon.png"
+                            className="cat-edit-icon"
+                            onClick={() => {
+                              showPriceModal(
+                                pricePackage.name,
+                                pricePackage.price,
+                                pricePackage.benefits
+                              );
+                            }}
+                            alt="Edit"
+                          />
+                        )}
+                    </div>
+                  </div>
+                ))}
+            </div>
           </Col>
         </Row>
 
         {/* Buttons */}
-        {/* <Row className="justify-content-end mt-4">
-          <Col xs={12} className="text-right">
-            <Button className="cancel-button me-4">Cancel</Button>
-            <Button variant="dark" className="update-button" type="submit">
-              Update
-            </Button>
-          </Col>
-        </Row> */}
         <Row className="justify-content-end mt-4">
-          <Col xs={12} className="text-right">
+          <Col xs={12} className="text-end">
             {isUpdate && (
               <Button className="cancel-button me-4" onClick={cancel}>
                 Cancel
@@ -273,11 +274,6 @@ const CategoryPreferences = ({
           </Col>
         </Row>
       </Form>
-      {/* <input
-        type="button"
-        value={"change"}
-        onClick={() => showPriceModal("Basic", 500, [])}
-      /> */}
     </Container>
   );
 };
