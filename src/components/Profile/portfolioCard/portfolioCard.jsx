@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Card, Button, Form } from "react-bootstrap";
 import { CiCamera } from "react-icons/ci";
+import { FiEdit2 } from "react-icons/fi"; // Add this import for the edit icon
 import "./PortfolioCard.css";
 
 const PortfolioCard = ({ jobTitle, image, handleImageChange, isUpdate }) => {
@@ -183,60 +184,82 @@ const PortfolioCard = ({ jobTitle, image, handleImageChange, isUpdate }) => {
     setEditMode(false);
   };
 
-  const handleDeleteBio = async () => {
-    if (!window.confirm("Are you sure you want to delete your bio?")) {
-      return;
-    }
-
-    try {
-      setLoading(true);
-      const token = localStorage.getItem("token");
-      
-      if (!token) {
-        alert("Please log in to delete your bio");
-        return;
-      }
-      
-      const response = await fetch("http://localhost:8000/api/user/bio", {
-        method: "DELETE",
-        headers: {
-              "Authorization": token || undefined,
-        },
-        credentials: "include",
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
-        setBio("");
-        setHasBio(false);
-        setEditMode(false);
-      } else {
-        // Handle both JSON and text responses
-        const contentType = response.headers.get('content-type');
-        let errorMessage = 'Request failed';
-        
-        if (contentType && contentType.includes('application/json')) {
-          const errorData = await response.json();
-          errorMessage = errorData.error || errorMessage;
-        } else {
-          errorMessage = await response.text() || errorMessage;
-        }
-        
-        if (response.status === 401) {
-          alert("Authentication failed. Please log in again.");
-        } else {
-          alert(errorMessage);
-        }
-      }
-    } catch (error) {
-      console.error("Error deleting bio:", error);
-      alert("Error deleting bio. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
+    <>
+    <Card.Body>
+        {bioLoading ? (
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 40 }}>
+            <img src="/images/load.gif" alt="Loading" style={{ width: 25, height: 25 }} />
+          </div>
+        ) : (
+          <>
+            {/* Bio section with edit functionality */}
+            <div className="bio-section">
+              {editMode ? (
+                <Form.Control
+                  as="textarea"
+                  value={bioInput}
+                  onChange={e => setBioInput(e.target.value)}
+                  maxLength={500}
+                  placeholder="Enter your bio (max 500 characters)"
+                  rows={4}
+                  autoFocus
+                />
+              ) : (
+                <div className="d-flex justify-content-between align-items-start">
+                  <Card.Text 
+                    className={`card-text flex-grow-1 ${!bio ? 'text-muted' : ''}`}
+                    style={{ cursor: 'pointer', margin: 0 }} 
+                    onClick={handleEditBio}
+                  >
+                    {bio || "Add Bio...."}
+                  </Card.Text>
+                  <Button
+                    variant="link"
+                    className="p-1 ms-2"
+                    onClick={handleEditBio}
+                    style={{ 
+                      lineHeight: 1,
+                      color: '#6c757d',
+                      textDecoration: 'none',
+                      fontSize: '14px'
+                    }}
+                    title={bio ? "Edit bio" : "Add bio"}
+                  >
+                    <FiEdit2 size={16} />
+                  </Button>
+                </div>
+              )}
+
+              {editMode && (
+                <div className="bio-actions mt-2">
+                  <Button 
+                    variant="success" 
+                    size="sm"
+                    onClick={handleSaveBio}
+                    disabled={loading}
+                    className="me-2"
+                  >
+                    {loading ? "Saving..." : "Save"}
+                  </Button>
+                  <Button 
+                    variant="secondary" 
+                    size="sm"
+                    onClick={handleCancelEdit}
+                    disabled={loading}
+                  >
+                    Cancel
+                  </Button>
+                  <small className="text-muted ms-2">
+                    {bioInput.length}/500 characters
+                  </small>
+                </div>
+              )}
+            </div>
+            {/* <input className="text-input mt-2" type="text" value={jobTitle} readOnly /> */}
+          </>
+        )}
+      </Card.Body>
     <Card className="portfolio-card">
       {/* Image Container */}
       <div className="image-container">
@@ -253,60 +276,13 @@ const PortfolioCard = ({ jobTitle, image, handleImageChange, isUpdate }) => {
             hidden
             onChange={handleImageChange}
           />
-          <CiCamera size={20} color="black" />
+          <CiCamera size={25} color="black" />
         </div>
       </div>
-      <Card.Body>
-        {bioLoading ? (
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 40 }}>
-            <img src="/images/load.gif" alt="Loading" style={{ width: 25, height: 25 }} />
-          </div>
-        ) : (
-          <>
-            <Card.Text className="card-text" style={{ cursor: 'pointer' }} onClick={handleEditBio}>
-              {editMode ? (
-                <Form.Control
-                  as="textarea"
-                  value={bioInput}
-                  onChange={e => setBioInput(e.target.value)}
-                  maxLength={1000}
-                  placeholder="Enter your bio (max 1000 characters)"
-                  rows={1}
-                  autoFocus
-                />
-              ) : (
-                bio || "Add Bio...."
-              )}
-            </Card.Text>
-            {editMode && (
-              <div className="bio-actions mt-2">
-                <Button 
-                  variant="success" 
-                  onClick={handleSaveBio}
-                  disabled={loading}
-                  className="me-2"
-                >
-                  {loading ? "Saving..." : "Save"}
-                </Button>
-                <Button 
-                  variant="secondary" 
-                  onClick={handleCancelEdit}
-                  disabled={loading}
-                >
-                  Cancel
-                </Button>
-                <small className="text-muted ms-2">
-                  {bioInput.length}/1000 characters
-                </small>
-              </div>
-            )}
-            <input className="text-input mt-2" type="text" value={jobTitle} readOnly />
-          </>
-        )}
-      </Card.Body>
+      
     </Card>
+          </>
   );
-};// In your parent/profile component
-
+};
 
 export default PortfolioCard;

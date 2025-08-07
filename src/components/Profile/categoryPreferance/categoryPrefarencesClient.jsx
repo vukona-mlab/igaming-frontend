@@ -55,86 +55,84 @@ const CategoryPreferences = ({ onSubmit, isUpdate, cancel, categoriesArr }) => {
 
     onSubmit(formData); // Pass formData to parent component
   };
-  return (
-    <Container>
-      <Form>
-        <Row className="mb-4 frow">
-          {/* First Column */}
-          <Col xs={12} md={4} className="mb-3">
-            <h5 className="category-header">Category Preferences</h5>
-            {["graphicDesign", "uiUxDesign", "animation", "imageEditing"].map(
-              (category) => (
-                <Form.Check
-                  key={category}
-                  type="checkbox"
-                  label={category.replace(/([A-Z])/g, " $1")}
-                  name={category}
-                  className="custom-checkbox"
-                  checked={formData.categories[category]}
-                  onChange={handleCheckboxChange}
-                  disabled={!isUpdate}
-                />
-              )
-            )}
-          </Col>
+return (
+ <Container>
+   <Form>
+     <Row className="mb-4 align-items-start">
+       {/* First Column */}
+       <Col xs={12} md={3} className="mb-3">
+         <h5 className="category-header mb-3">Category Preferences</h5>
+         <div className="checkbox-group">
+           {["graphicDesign", "uiUxDesign", "animation", "imageEditing"].map(
+             (category) => (
+               <div key={category} className="checkbox-item">
+                 <Form.Check
+                   type="checkbox"
+                   label={category.replace(/([A-Z])/g, " $1")}
+                   name={category}
+                   className="custom-checkbox"
+                   checked={formData.categories[category]}
+                   onChange={handleCheckboxChange}
+                   disabled={!isUpdate}
+                 />
+               </div>
+             )
+           )}
+         </div>
+       </Col>
 
-          {/* Second Column */}
-          <Col xs={12} md={4} className="mb-3 mt-5">
-            {[
-              "gameArt",
-              "characterModeling",
-              "gameDesigners",
-              "typography",
-            ].map((category) => (
-              <Form.Check
-                key={category}
-                type="checkbox"
-                label={category.replace(/([A-Z])/g, " $1")}
-                name={category}
-                className="custom-checkbox"
-                checked={formData.categories[category]}
-                onChange={handleCheckboxChange}
-                disabled={!isUpdate}
-              />
-            ))}
-          </Col>
-        </Row>
+       {/* Second Column */}
+       <Col xs={12} md={3} className="mb-3">
+         <h5 className="category-header mb-3 invisible">Hidden Header</h5>
+         <div className="checkbox-group">
+           {[
+             "gameArt",
+             "characterModeling",
+             "gameDesigners",
+             "typography",
+           ].map((category) => (
+             <div key={category} className="checkbox-item">
+               <Form.Check
+                 type="checkbox"
+                 label={category.replace(/([A-Z])/g, " $1")}
+                 name={category}
+                 className="custom-checkbox"
+                 checked={formData.categories[category]}
+                 onChange={handleCheckboxChange}
+                 disabled={!isUpdate}
+               />
+             </div>
+           ))}
+         </div>
+       </Col>
 
-        {/* <Row className="justify-content-end mt-4">
-          <Col xs={12} className="text-right">
-            {isUpdate && (
-              <Button className="cancel-button me-4" onClick={cancel}>
-                Cancel
-              </Button>
-            )}
-            {isUpdate && (
-              <Button variant="dark" className="update-button" type="submit">
-                Update
-              </Button>
-            )}
-          </Col>
-        </Row> */}
-      </Form>
-      {isUpdate && (
-        <div className="profile-buttons-container">
-          <Button
-            variant="secondary"
-            onClick={cancel}
-            className="cancel-button"
-          >
-            Cancel
-          </Button>
-          <Button
-            variant="dark"
-            onClick={() => handleSubmit()}
-            className="update-button"
-          >
-            Update
-          </Button>
-        </div>
-      )}
-    </Container>
-  );
+       {/* Empty Third Column for consistency */}
+       <Col xs={12} md={6} className="mb-3">
+         {/* This column can be used for future content or left empty */}
+       </Col>
+     </Row>
+   </Form>
+   
+   {isUpdate && (
+     <div className="profile-buttons-container">
+       <Button
+         variant="secondary"
+         onClick={cancel}
+         className="cancel-button"
+       >
+         Cancel
+       </Button>
+       <Button
+         variant="dark"
+         onClick={() => handleSubmit()}
+         className="update-button"
+       >
+         Update
+       </Button>
+     </div>
+   )}
+ </Container>
+);
 };
 
 export default CategoryPreferences;

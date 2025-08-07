@@ -16,6 +16,7 @@ const ProfilePage = (props) => {
   const [formData, setFormData] = useState({
     name: "",
     surname: "",
+    bio: "",
     email: "",
     displayName: "",
     phone: "",
@@ -86,6 +87,7 @@ const ProfilePage = (props) => {
         setFormData({
           name: data.user.name,
           surname: data.user.surname,
+          bio: data.user.bio || "",
           email: data.user.email,
           displayName: data.user.displayName,
           phone: data.user.phoneNumber,
@@ -107,6 +109,7 @@ const ProfilePage = (props) => {
       const formData = new FormData();
       formData.append("name", data.name);
       formData.append("surname", data.surname);
+      formData.append("bio", data.bio || "");
       formData.append("displayName", data.displayName);
       formData.append("phoneNumber", data.phone);
       formData.append("email", data.email);
@@ -198,7 +201,7 @@ const ProfilePage = (props) => {
       <ProfileSubNav showTransactions={true} />
       <SectionContainer>
         <Container fluid style={{}}>
-          <div className="profile-edit d-flex justify-content-between align-items-center">
+          <div className="profile-edit d-flex justify-content-between align-items-center ps-0">
             <div className="welcome-message">
               {formData.displayName !== "" ? (
                 <h4 className="welcome-name">
@@ -235,6 +238,7 @@ const ProfilePage = (props) => {
                 formData={{
                   name: formData.name,
                   surname: formData.surname,
+                  bio: formData.bio,
                   displayName: formData.displayName,
                   phone: formData.phone || "",
                   email: formData.email || "",
@@ -244,7 +248,7 @@ const ProfilePage = (props) => {
                 isUpdate={isUpdate} // Pass isUpdate as a prop
               />
               <Row>
-                <Col>
+                <Col md={12} className="px-5 py-1">
                   <CategoryPreferences
                     onSubmit={handleCategoriesSubmit}
                     isUpdate={isUpdate}
@@ -281,20 +285,4 @@ const ProfilePage = (props) => {
   );
 };
 
-const WrappedProfilePage = (props) => {
-  const [formData, setFormData] = useState({
-    name: "",
-    surname: "",
-    email: "",
-    displayName: "",
-    phone: "",
-    dateOfBirth: "",
-    categories: [],
-  });
-  // ...existing code...
-  // move all state and logic from ProfilePage here
-  return (
-    <ProfilePage {...props} formData={formData} setFormData={setFormData} />
-  );
-};
 export default withProfileCheck(ProfilePage);
