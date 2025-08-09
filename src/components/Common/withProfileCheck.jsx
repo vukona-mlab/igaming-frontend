@@ -1,9 +1,10 @@
+/* eslint-disable react/prop-types */
 // withProfileCheck.js
 import React, { useEffect } from 'react';
 import { useProfileCompletionContext } from './ProfileCompletionContext';
 
 // Black bouncing balls loader component
-const LoadingSpinner = ({ text = 'Checking profile...' }) => {
+const LoadingSpinner = ({ text = 'Loading, Please Wait..!' }) => {
   return (
     <>
       <style>
@@ -39,7 +40,7 @@ const LoadingSpinner = ({ text = 'Checking profile...' }) => {
             <div className="bounce-ball bounce-ball-3"></div>
           </div>
           <h5 className="text-dark fw-semibold mb-2">{text}</h5>
-          <p className="text-muted small mb-0">This will only take a moment</p>
+          <p className="text-muted small mb-0">Stay Encouraged.</p>
         </div>
       </div>
     </>
@@ -177,7 +178,7 @@ const withProfileCheck = (WrappedComponent, options = {}) => {
     // Show loading state
     if (loading) {
       return options.loadingComponent || (
-        <LoadingSpinner text={options.loadingText || 'Checking profile...'} />
+        <LoadingSpinner text={options.loadingText || 'Please Wait...'} />
       );
     }
 

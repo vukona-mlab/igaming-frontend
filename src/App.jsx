@@ -26,6 +26,7 @@ import ContactPage from "./pages/ContactPage/ContactPage";
 import { registerNotificationSW } from "./config/service-workers";
 import { useEffect } from "react";
 import { ProfileCompletionProvider } from "./components/Common/ProfileCompletionContext";
+
 //import ProfileCompletionModal from "./components/Common/ProfileCompletionModal";
 //import { requestPermissionAndGetToken } from "./config/service-workers/index";
 function App() {

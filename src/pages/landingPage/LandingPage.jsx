@@ -13,6 +13,8 @@ import SpeechBubble from "../../components/Landing/TestimonialsSection/SpeechBub
 import TestimonialsSection from "../../components/Landing/TestimonialsSection/TestimonialsSection";
 import GetStarted from "../../components/Landing/GetStartedSection/GetStarted";
 import ContactPage from "../ContactPage/ContactPage";
+import { Chat } from "react-bootstrap-icons";
+import ChatBot from "../../components/ChatBot/ChatBot";
 function LandingPage() {
   useEffect(() => {
     console.log('on landing');
@@ -32,6 +34,7 @@ function LandingPage() {
       <TestimonialsSection />
       <FAQSection />
       <Footer />
+      <ChatBot />
     </>
   );
 }
