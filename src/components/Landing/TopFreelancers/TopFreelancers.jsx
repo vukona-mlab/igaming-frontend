@@ -39,6 +39,7 @@ const TopFreelancers = () => {
   };
   if (loading) return;
   return (
+    
     <section className={styles.TopFreelancers}>
       <SectionHeader text="Top Freelancers" />
       <SectionTitle
