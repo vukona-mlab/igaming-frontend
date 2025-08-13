@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import "./ChatBot.css";
+import BACKEND_URL from "../../config/backend-config";
 
 const ChatBot = () => {
     const [chatBotOpen, setChatBotOpen] = useState(false);
@@ -41,7 +42,6 @@ const ChatBot = () => {
     const chatbotRef = useRef(null);
     const messagesEndRef = useRef(null);
     
-    const BACKEND_URL = import.meta.env?.VITE_API_URL;
     const token = typeof localStorage !== 'undefined' ? localStorage.getItem("token") : null;
     const uid = typeof localStorage !== 'undefined' ? localStorage.getItem("uid") : null;
 
