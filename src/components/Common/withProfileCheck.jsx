@@ -2,6 +2,7 @@
 // withProfileCheck.js
 import React, { useEffect } from 'react';
 import { useProfileCompletionContext } from './ProfileCompletionContext';
+import BACKEND_URL from '../../config/backend-config';
 
 // Black bouncing balls loader component
 const LoadingSpinner = ({ text = 'Loading, Please Wait..!' }) => {
@@ -161,7 +162,6 @@ const withProfileCheck = (WrappedComponent, options = {}) => {
     } = useProfileCompletionContext();
 
     // You'll need to define your BACKEND_URL - could be from env or config
-    const BACKEND_URL = import.meta.env.VITE_API_URL;
 
     useEffect(() => {
       // Check if we have auth data in localStorage

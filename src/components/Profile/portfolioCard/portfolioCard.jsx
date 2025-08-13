@@ -3,6 +3,7 @@ import { Card, Button, Form } from "react-bootstrap";
 import { CiCamera } from "react-icons/ci";
 import { FiEdit2 } from "react-icons/fi"; // Add this import for the edit icon
 import "./PortfolioCard.css";
+import BACKEND_URL from "../../../config/backend-config";
 
 const PortfolioCard = ({ jobTitle, image, handleImageChange, isUpdate }) => {
   const [currentImage, setCurrentImage] = useState(image);
@@ -28,7 +29,7 @@ const PortfolioCard = ({ jobTitle, image, handleImageChange, isUpdate }) => {
           setBioLoading(false);
           return;
         }
-        const response = await fetch("http://localhost:8000/api/user/bio", {
+        const response = await fetch(`${BACKEND_URL}/api/user/bio`, {
           method: "GET",
           credentials: "include",
           headers: {
@@ -85,7 +86,7 @@ const PortfolioCard = ({ jobTitle, image, handleImageChange, isUpdate }) => {
       // Determine if we need to create or update based on hasBio
       const method = hasBio ? "PUT" : "POST";
       
-      const response = await fetch("http://localhost:8000/api/user/bio", {
+      const response = await fetch(`${BACKEND_URL}/api/user/bio`, {
         method: method,
         headers: {
           "Content-Type": "application/json",
@@ -121,7 +122,7 @@ const PortfolioCard = ({ jobTitle, image, handleImageChange, isUpdate }) => {
         // Handle specific backend error cases
         if (errorData && response.status === 400 && errorMessage.includes("Bio already exists")) {
           // Backend says bio exists, so try PUT instead
-          const updateResponse = await fetch("http://localhost:8000/api/user/bio", {
+          const updateResponse = await fetch(`${BACKEND_URL}/api/user/bio`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
@@ -145,7 +146,7 @@ const PortfolioCard = ({ jobTitle, image, handleImageChange, isUpdate }) => {
           }
         } else if (errorData && response.status === 404 && errorMessage.includes("Bio not found")) {
           // Backend says bio doesn't exist, so try POST instead
-          const createResponse = await fetch("http://localhost:8000/api/user/bio", {
+          const createResponse = await fetch(`${BACKEND_URL}/api/user/bio`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
