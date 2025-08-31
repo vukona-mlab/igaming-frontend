@@ -15,6 +15,7 @@ import SectionContainer from "../../../components/SectionContainer";
 import NewPriceCard from "../../../components/PriceCard/NewPriceCard/NewPriceCard";
 import ProjectUpload from "../../../components/Projects/ProjectUpload/ProjectUpload";
 import BACKEND_URL from "../../../config/backend-config";
+import { useProfileCompletionContext } from "../../../components/Common/ProfileCompletionContext";
 
 const ProfilePage = (props) => {
   const [formData, setFormData] = useState({
@@ -53,6 +54,7 @@ const ProfilePage = (props) => {
   ]);
   const [projectData, setProjectData] = useState(null);
   const [showProjectModal, setShowProjectModal] = useState(false);
+  const { isProfileComplete, isModalOpen, blocked } = useProfileCompletionContext();
 
   const navigate = useNavigate();
 
@@ -335,6 +337,22 @@ const ProfilePage = (props) => {
   if (loading) return <div></div>;
   return (
     <>
+      {isProfileComplete && blocked && (
+        <div
+          style={{
+            background: "#f3f4f6",
+            color: "#92400e",
+            padding: "1rem",
+            borderRadius: "8px",
+            marginBottom: "1rem",
+            textAlign: "center",
+            fontWeight: 600,
+            fontSize: "1rem",
+          }}
+        >
+          Your account is blocked, please talk to admin to see how to unlock it. Many features will be disabled while your account is blocked.
+        </div>
+      )}
       <Navbar />
       <ProfileSubNav showTransactions={false} />
       <SectionContainer>

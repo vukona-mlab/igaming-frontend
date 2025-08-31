@@ -7,6 +7,7 @@ export const ProfileCompletionProvider = ({ children }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [missingFields, setMissingFields] = useState([]);
   const [userProfile, setUserProfile] = useState(null);
+  const blocked = userProfile?.blocked || false
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isProfileComplete, setIsProfileComplete] = useState(null);
@@ -283,7 +284,7 @@ export const ProfileCompletionProvider = ({ children }) => {
     loading,
     error,
     isProfileComplete,
-    
+    blocked,
     // Actions
     checkProfileCompletion,
     handleApiError,
@@ -302,7 +303,8 @@ export const ProfileCompletionProvider = ({ children }) => {
     hasUserProfile: !!userProfile,
     loading,
     hasError: !!error,
-    isProfileComplete
+    isProfileComplete,
+    blocked
   });
 
   return (

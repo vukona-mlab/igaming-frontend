@@ -158,9 +158,14 @@ const withProfileCheck = (WrappedComponent, options = {}) => {
       isProfileComplete,
       loading,
       userProfile,
-      error
+      error,
+      blocked
     } = useProfileCompletionContext();
-
+    console.log('checking profile eligibility');
+    console.log({ userProfile });
+    console.log({ blocked});
+    
+    
     // You'll need to define your BACKEND_URL - could be from env or config
 
     useEffect(() => {

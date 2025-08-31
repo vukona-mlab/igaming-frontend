@@ -5,11 +5,11 @@ import styles from "../../Landing/FAQ/Accordian.module.css";
 // import styles from "C:\Users\vukon\development\mlab\codetribe\Pretoria\research-igaming\research-igaming-frontend\src\components\Landing\FAQ\Accordian.module.css"
 import ArrowDropDown from "../../../assets/arrow-drop-down-48px.svg";
 
-const TransactionDetails = ({ title, price, description, requirements, message, reference, date, func, buttonText, showButton }) => {
+const TransactionDetails = ({ title, price, description, requirements, message, reference, date, func, buttonText, showButton, disabled }) => {
   // console.log({ buttonText, lg, date, sm });
   const [isActive, setActive] = useState(false);
   const handleClick = () => setActive(!isActive);
-  if(message) return (
+  if (message) return (
     <div className="transaction-details">
       <span className="td-message">{message}</span>
     </div>
@@ -22,7 +22,7 @@ const TransactionDetails = ({ title, price, description, requirements, message, 
           {
             showButton ? (
               <button className="td-btn" onClick={func}>
-                {buttonText} {" " + price} 
+                {buttonText} {" " + price}
               </button>
             ) : (
               <span>R {price}</span>
@@ -42,8 +42,12 @@ const TransactionDetails = ({ title, price, description, requirements, message, 
         <div className="td-date-delete">
           {/* <div className="td-date">{date}</div> */}
           {
-            showButton && (
+            showButton && !disabled ? (
               <button className="td-btn" onClick={func}>
+                {buttonText}
+              </button>
+            ) : (
+              <button className="td-btn disabled">
                 {buttonText}
               </button>
             )

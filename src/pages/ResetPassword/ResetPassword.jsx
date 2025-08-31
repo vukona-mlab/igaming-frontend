@@ -73,7 +73,7 @@ const ResetPassword = () => {
 
         <div className="reset-form">
           <h2 className="reset-title">
-            <span className="red-line"></span> WELCOME <br />
+            <span className="client-red-line"></span> WELCOME <br />
             RESET PASSWORD
           </h2>
 
@@ -109,6 +109,7 @@ const ResetPassword = () => {
             text="Reset"
             disabled={loading}
           />
+
         </div>
       </div>
 

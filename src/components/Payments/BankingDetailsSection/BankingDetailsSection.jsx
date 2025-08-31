@@ -3,7 +3,7 @@ import './bankingDetails.css';
 import AddDetails from "../../Payments/AddDetailsForm/AddDetails"
 import BankingCard from "../../Payments/BankingCard/BankingCard"
 
-export default function BankingDetailsSection(){
+export default function BankingDetailsSection({ disabled }){
     const bankDetails =[ {
         bankName: "STANDARD BANK",
         accountNumber: "*******8754",
@@ -20,7 +20,7 @@ export default function BankingDetailsSection(){
     return(
         <div>
         <h3 className="details-text mt-3">Bank Details</h3>
-        <AddDetails addCard={handleCardAdd} setHideCards={setHideCards} />
+        <AddDetails addCard={handleCardAdd} setHideCards={setHideCards} disabled={disabled} />
         <BankingCard cards={bankCards} setBankCards={setBankCards} hideCards={hideCards}/>
        {/*  {bankDetails.map((bank, index) => (
           <div className="bank-details" key={index}>

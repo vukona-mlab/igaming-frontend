@@ -6,10 +6,15 @@ import FreelancerDiscovery from "../../components/FreelancerDiscovery/Freelancer
 import "./DiscoveryPage.css";
 import { useParams, Outlet } from "react-router-dom";
 import SectionContainer from "../../components/SectionContainer";
+import { useProfileCompletionContext } from "../../components/Common/ProfileCompletionContext";
 const DiscoveryPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const { freelancer_id } = useParams();
   const [catergory, setCatergory] = useState("");
+  const { isProfileComplete, isModalOpen, blocked } = useProfileCompletionContext();
+
+  console.log({ isProfileComplete, blocked });
+  
   const handleSearch = (query) => {
     setSearchQuery(query);
   };
@@ -26,6 +31,22 @@ const DiscoveryPage = () => {
   }
   return (
     <div className="discovery-page">
+              {isProfileComplete && blocked && (
+          <div
+            style={{
+              background: "#f3f4f6",
+              color: "#92400e",
+              padding: "1rem",
+              borderRadius: "8px",
+              marginBottom: "1rem",
+              textAlign: "center",
+              fontWeight: 600,
+              fontSize: "1rem",
+            }}
+          >
+            Your account is blocked, please talk to admin to see how to unlock it. Many features will be disabled while your account is blocked.
+          </div>
+        )}
       <div className="navigation-container">
         <NavBar />
         <SubNavBar />
@@ -39,7 +60,7 @@ const DiscoveryPage = () => {
 
       <div className="section-divider"></div>
 
-      <FreelancerDiscovery searchQuery={searchQuery} catergory={catergory} />
+      <FreelancerDiscovery searchQuery={searchQuery} catergory={catergory} disabled={blocked}/>
     </div>
   );
 };

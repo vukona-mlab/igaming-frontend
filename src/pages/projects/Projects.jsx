@@ -15,7 +15,7 @@ import ProfileCompletionModal from '../../components/Common/ProfileCompletionMod
 import { useProfileCompletionContext } from '../../components/Common/ProfileCompletionContext';
 
 const Projects = (props) => {
-  const { isProfileComplete, isModalOpen } = useProfileCompletionContext();
+  const { isProfileComplete, isModalOpen, blocked } = useProfileCompletionContext();
   const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
   const [filter, setFilter] = useState("");
@@ -80,11 +80,11 @@ const Projects = (props) => {
       let filteredProjects =
         role === "freelancer"
           ? response.data.projects.filter(
-              (project) => project.freelancerId === uid
-            )
+            (project) => project.freelancerId === uid
+          )
           : response.data.projects.filter(
-              (project) => project.clientId === uid
-            );
+            (project) => project.clientId === uid
+          );
       const updatedProjects = filteredProjects.map((project) => {
         let clientEmail = "";
         let freelancerEmail = "";
@@ -154,6 +154,22 @@ const Projects = (props) => {
   console.log({ projects });
   return (
     <div className="Projects" style={{ position: 'relative' }}>
+      {isProfileComplete && blocked && (
+        <div
+          style={{
+            background: "#f3f4f6",
+            color: "#92400e",
+            padding: "1rem",
+            borderRadius: "8px",
+            marginBottom: "1rem",
+            textAlign: "center",
+            fontWeight: 600,
+            fontSize: "1rem",
+          }}
+        >
+          Your account is blocked, please talk to admin to see how to unlock it. Many features will be disabled while your account is blocked.
+        </div>
+      )}
       <Navbar />
       <ProfileSubNav />
       <SectionContainer>
@@ -172,6 +188,7 @@ const Projects = (props) => {
             Actions are disabled until your profile is complete.
           </div>
         )}
+
         <div className="pj-search-upload" style={!isProfileComplete ? { opacity: 0.5, pointerEvents: 'none' } : {}}>
           <SearchBar onSearch={setSearchTerm} />
           {/* {role === "freelancer" && (

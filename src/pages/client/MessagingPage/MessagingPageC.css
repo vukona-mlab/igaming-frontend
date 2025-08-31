@@ -1,11 +1,12 @@
 .MessagingPageC {
   min-height: 100vh;
   background: #fff;
+  overflow: hidden;
 }
 
 .messagePageContainer {
   width: 100%;
-  height: calc(100vh - 84px - 46px - 92px - 40px);
+  height: calc(100px - 84px - 46px - 92px);
   /* margin: 25px auto; */
   display: flex;
   justify-content: center;

@@ -2,7 +2,7 @@ import React from "react";
 import "./TransactionsSection.css";
 import FuturePaymentsSection from "../FuturePaymentsSection/FuturePaymentsSection";
 import TransactionHistory from "../TransactionHistory/TransactionHistory";
-const TransactionsSection = ({}) => {
+const TransactionsSection = ({disabled}) => {
   return (
     <div className="TransactionsSection">
       {/* <div className="tss-header">
@@ -10,7 +10,7 @@ const TransactionsSection = ({}) => {
         <button className="deposit-btn">Deposit</button>
       </div>
       <FuturePaymentsSection futurePayments="0.00" /> */}
-      <TransactionHistory totalAmount="0.00" />
+      <TransactionHistory totalAmount="0.00" disabled={disabled} />
     </div>
   );
 };
