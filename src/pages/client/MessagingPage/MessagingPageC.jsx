@@ -39,7 +39,7 @@ const MessagingPageC = () => {
   const [adminUsers, setAdminUsers] = useState([]);
   const [firstAdminChat, setFirstAdminChat] = useState(false);
 
-  const { isProfileComplete, isModalOpen } = useProfileCompletionContext();
+  const { isProfileComplete, isModalOpen, blocked } = useProfileCompletionContext();
 
   const token = localStorage.getItem("token");
   const url = BACKEND_URL;
@@ -70,10 +70,10 @@ const MessagingPageC = () => {
       chats.length > 0 && current == "Chats"
         ? chats.filter((chat) => !chat.hasOwnProperty("tags"))
         : current == "Admin"
-        ? chats.filter(
+          ? chats.filter(
             (chat) => chat.tags && chat.tags.some((tag) => tag === "admin")
           )
-        : chats.filter(
+          : chats.filter(
             (chat) => chat.tags && chat.tags.some((tag) => tag === "report")
           );
     setFilteredChats(filteredChats);
@@ -341,7 +341,6 @@ const MessagingPageC = () => {
   if (loading) {
     return <div className="loading">Loading...</div>;
   }
-
   return (
     <div className="MessagingPageC" style={{ position: "relative" }}>
       {/* Banner if profile is incomplete */}
@@ -359,6 +358,22 @@ const MessagingPageC = () => {
           }}
         >
           Messaging is disabled until your profile is complete.
+        </div>
+      )}
+      {isProfileComplete && blocked && (
+        <div
+          style={{
+            background: "#f3f4f6",
+            color: "#92400e",
+            padding: "1rem",
+            borderRadius: "8px",
+            marginBottom: "1rem",
+            textAlign: "center",
+            fontWeight: 600,
+            fontSize: "1rem",
+          }}
+        >
+          Messaging is disabled while your account is blocked.
         </div>
       )}
       <Navbar />
@@ -390,6 +405,7 @@ const MessagingPageC = () => {
                 currentClientId={currentFreelancerId}
                 currentClientName={currentFreelancerName}
                 onEscrowClick={handleEscrow}
+                disabled={disabled}
               />
             )
           )}

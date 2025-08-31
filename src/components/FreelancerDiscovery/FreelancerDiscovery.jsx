@@ -8,7 +8,7 @@ import SectionContainer from "../SectionContainer";
 import BACKEND_URL from "../../config/backend-config";
 import Swal from "sweetalert2";
 
-const FreelancerDiscovery = ({ searchQuery, catergory }) => {
+const FreelancerDiscovery = ({ searchQuery, catergory, disabled }) => {
   const [freelancers, setFreelancers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -266,6 +266,7 @@ const FreelancerDiscovery = ({ searchQuery, catergory }) => {
                       rating={4.5}
                       messageIcon={messageIcon}
                       onMessageClick={() => handleMessageClick(freelancer.id)}
+                      disabled={disabled}
                     />
                     {/* Hover message */}
                     <div className="hover-message">

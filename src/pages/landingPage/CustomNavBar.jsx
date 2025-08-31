@@ -4,6 +4,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Form from "react-bootstrap/Form";
 import "./customNavbar.css";
+import { Link } from "react-router-dom";
 
 function CustomNavBar() {
   const [showSearch, setShowSearch] = useState(false);
@@ -25,8 +26,10 @@ function CustomNavBar() {
         </Navbar.Brand>
 
         <Nav className="me-auto custom-navbar">
-          <Nav.Link className="nav-link active" href="#home">
-            Home
+          <Nav.Link className="nav-link active">
+            <Link to={"#home"}>
+              Home
+            </Link>
           </Nav.Link>
           <Nav.Link className="nav-link" href="#features">
             About

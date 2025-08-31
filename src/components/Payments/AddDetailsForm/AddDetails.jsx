@@ -5,7 +5,7 @@ import "./AddDetails.css";
 import BACKEND_URL from "../../../config/backend-config";
 //import Bankingdetails from"../../../components/Payments/BankingDetailsSection/BankingDetailsSection"
 //type, bank_code, account_number, name
-const AddBankDetailsForm = ({ setHideCards }) => {
+const AddBankDetailsForm = ({ setHideCards, disabled }) => {
   const [accountNumber, setAccountNumber] = useState("");
   const [name, setName] = useState("");
   const [type, setType] = useState("basa");
@@ -102,7 +102,7 @@ const AddBankDetailsForm = ({ setHideCards }) => {
           text: "Banking details have been added successfully.",
           confirmButtonText: "Okay",
         });
-        
+
       } else {
         console.error(
           "Error submitting data:",
@@ -129,72 +129,80 @@ const AddBankDetailsForm = ({ setHideCards }) => {
     <div className="outer-diving">
       <div className="btn-adit-me">
         {/*<h2 className="text-gray-500 text-lg mb-4">Bank Details</h2>*/}
-        <Button variant="dark" onClick={() => { setShowForm(!showForm); setHideCards(!showForm)}}>
-          {showForm ? "Close Form" : "Add Card"}
-        </Button>
+        {disabled ? (
+          <Button variant="dark" style={{ opacity: 0.5 }}>
+            Add Card
+          </Button>
+        ) : (
+          <Button variant="dark" onClick={() => { setShowForm(!showForm); setHideCards(!showForm) }}>
+            {showForm ? "Close Form" : "Add Card"}
+          </Button>
+        )}
       </div>
 
-      {showForm && (
-        <div className="bank-form">
-          <Form onSubmit={handleSubmit}>
-            {/* Form Fields */}
-            <Form.Control
-              type="text"
-              placeholder="Account Number"
-              className="input-field mb-3"
-              value={accountNumber}
-              onChange={(e) => setAccountNumber(e.target.value)}
-            />
-
-            <Form.Control
-              type="text"
-              placeholder="Account holder name"
-              className="input-field mb-3"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-
-            <Form.Group className="mb-3">
-              <Form.Label>Select Bank</Form.Label>
+      {
+        showForm && (
+          <div className="bank-form">
+            <Form onSubmit={handleSubmit}>
+              {/* Form Fields */}
               <Form.Control
-                as="select"
-                onChange={(e) => setBankCode(e.target.value)}
-              >
-                <option value="">Select a Bank</option>
-                {banks &&
-                  banks.length > 0 &&
-                  banks.map((bank) => (
-                    <option key={bank.id} value={bank.code}>
-                      {bank.name}
-                    </option>
-                  ))}
-              </Form.Control>
-            </Form.Group>
-            <Form.Control
-              type="text"
-              placeholder="Type"
-              className="input-field mb-3"
-              value={type}
-              readOnly // Keeps the default as "ZA"
-            />
+                type="text"
+                placeholder="Account Number"
+                className="input-field mb-3"
+                value={accountNumber}
+                onChange={(e) => setAccountNumber(e.target.value)}
+              />
 
-            {/* Buttons */}
-            <div className="button-group">
-              <Button
-                variant="light"
-                className="cancel-btn"
-                onClick={() => { setShowForm(false); setHideCards(!showForm)}}
-              >
-                Cancel
-              </Button>
-              <Button variant="dark" type="submit" className="submit-btn">
-                Submit
-              </Button>
-            </div>
-          </Form>
-        </div>
-      )}
-    </div>
+              <Form.Control
+                type="text"
+                placeholder="Account holder name"
+                className="input-field mb-3"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+
+              <Form.Group className="mb-3">
+                <Form.Label>Select Bank</Form.Label>
+                <Form.Control
+                  as="select"
+                  onChange={(e) => setBankCode(e.target.value)}
+                >
+                  <option value="">Select a Bank</option>
+                  {banks &&
+                    banks.length > 0 &&
+                    banks.map((bank) => (
+                      <option key={bank.id} value={bank.code}>
+                        {bank.name}
+                      </option>
+                    ))}
+                </Form.Control>
+              </Form.Group>
+              <Form.Control
+                type="text"
+                placeholder="Type"
+                className="input-field mb-3"
+                value={type}
+                readOnly // Keeps the default as "ZA"
+              />
+
+              {/* Buttons */}
+              <div className="button-group">
+                <Button
+                  variant="light"
+                  className="cancel-btn"
+                  onClick={() => { setShowForm(false); setHideCards(!showForm) }}
+                >
+                  Cancel
+                </Button>
+                <Button variant="dark" type="submit" className="submit-btn">
+                  Submit
+                </Button>
+              </div>
+            </Form>
+          </div>
+        )
+      }
+    </div >
   );
 };
 

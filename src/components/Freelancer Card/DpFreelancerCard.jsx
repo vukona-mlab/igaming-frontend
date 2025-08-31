@@ -4,14 +4,15 @@ import { AiOutlineStar } from 'react-icons/ai';
 import Button from '../Button/MessageButton';
 import './DpFreelancerCard.css';
 
-const FreelancerCard = ({ 
-  profilePicture, 
-  name, 
-  jobTitle, 
-  projectsCompleted, 
+const FreelancerCard = ({
+  profilePicture,
+  name,
+  jobTitle,
+  projectsCompleted,
   rating,
   messageIcon,
-  onMessageClick 
+  onMessageClick,
+  disabled
 }) => {
   const renderStars = () => {
     const stars = [];
@@ -35,14 +36,14 @@ const FreelancerCard = ({
     }
 
     return stars;
-  };
+  };  
 
   return (
     <div className="dp-freelancer-card">
       <div className="dp-freelancer-profile">
-        <img 
-          src={profilePicture} 
-          alt={`${name}'s profile`} 
+        <img
+          src={profilePicture}
+          alt={`${name}'s profile`}
           className="dp-profile-picture"
         />
       </div>
@@ -57,11 +58,19 @@ const FreelancerCard = ({
             </div>
           </div>
         </div>
-        <button className="dp-message-button" onClick={onMessageClick}>
-          <img src={messageIcon} alt="Message" className="dp-message-icon" />
-        </button>
+        {
+          disabled ? (
+            <button className="dp-message-button disabled">
+              <img src={messageIcon} alt="Message" className="dp-message-icon" />
+            </button>
+          ) : (
+            <button className="dp-message-button" onClick={onMessageClick}>
+              <img src={messageIcon} alt="Message" className="dp-message-icon" />
+            </button>
+          )
+        }
       </div>
-    </div>
+    </div >
   );
 };
 

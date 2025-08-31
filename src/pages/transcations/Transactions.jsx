@@ -13,10 +13,26 @@ import { useProfileCompletionContext } from "../../components/Common/ProfileComp
 
 const Transactions = (props) => {
   const [tab, setTab] = useState("Bank Details");
-  const { isProfileComplete, isModalOpen } = useProfileCompletionContext();
+  const { isProfileComplete, isModalOpen, blocked } = useProfileCompletionContext();
   const role = localStorage.getItem('role')
   return (
     <div className="Transactions" style={{ position: 'relative' }}>
+      {isProfileComplete && blocked && (
+        <div
+          style={{
+            background: "#f3f4f6",
+            color: "#92400e",
+            padding: "1rem",
+            borderRadius: "8px",
+            marginBottom: "1rem",
+            textAlign: "center",
+            fontWeight: 600,
+            fontSize: "1rem",
+          }}
+        >
+          Your account is blocked, please talk to admin to see how to unlock it. Many features will be disabled while your account is blocked.
+        </div>
+      )}
       <Navbar />
       <ProfileSubNav />
       {/* Banner if profile is incomplete */}
@@ -43,7 +59,7 @@ const Transactions = (props) => {
                   fieldOne="Bank Details"
                 />
 
-                {tab === "Bank Details" && <BankingDetailsSection /> }
+                {tab === "Bank Details" && <BankingDetailsSection disabled={blocked} />}
               </>
 
             ) : (
@@ -54,7 +70,7 @@ const Transactions = (props) => {
                   handleTabChange={setTab}
                 />
 
-                {tab === "Bank Details" ? <BankingDetailsSection /> : <TransactionsSection />}
+                {tab === "Bank Details" ? <BankingDetailsSection disabled={blocked} /> : <TransactionsSection disabled={blocked}/>}
               </>
 
             )

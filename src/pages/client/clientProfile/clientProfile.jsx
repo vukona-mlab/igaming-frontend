@@ -12,6 +12,7 @@ import ProfileSubNav from "../../../components/Profile/ProfileSubNav/ProfileSubN
 import SectionContainer from "../../../components/SectionContainer";
 import BACKEND_URL from "../../../config/backend-config";
 import { useNavigate } from "react-router-dom";
+import { useProfileCompletionContext } from "../../../components/Common/ProfileCompletionContext";
 const ProfilePage = (props) => {
   const [formData, setFormData] = useState({
     name: "",
@@ -31,6 +32,8 @@ const ProfilePage = (props) => {
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
   const [currentRole, setCurrentRole] = useState("client");
+  const { isProfileComplete, isModalOpen, blocked } = useProfileCompletionContext();
+
   const navigate = useNavigate();
   useEffect(() => {
     getProfile();
@@ -197,6 +200,22 @@ const ProfilePage = (props) => {
   if (loading) return <div></div>;
   return (
     <>
+      {isProfileComplete && blocked && (
+        <div
+          style={{
+            background: "#f3f4f6",
+            color: "#92400e",
+            padding: "1rem",
+            borderRadius: "8px",
+            marginBottom: "1rem",
+            textAlign: "center",
+            fontWeight: 600,
+            fontSize: "1rem",
+          }}
+        >
+          Your account is blocked, please talk to admin to see how to unlock it. Many features will be disabled while your account is blocked.
+        </div>
+      )}
       <Navbar />
       <ProfileSubNav showTransactions={true} />
       <SectionContainer>

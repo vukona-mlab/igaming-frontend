@@ -59,7 +59,7 @@ const CompletedProjects = ({ completedProjects, role }) => {
 
   )
 }
-const PendingProjects = ({ pendingProjects, role }) => {
+const PendingProjects = ({ pendingProjects, role, disabled }) => {
   return (
     <>
       <ProjectHeading title={role === "client" ? "Projects Waiting for Funding" : "Earning"} />
@@ -89,6 +89,7 @@ const PendingProjects = ({ pendingProjects, role }) => {
                 project.id
               )}
               showButton={true}
+              disabled={disabled}
             />
           })
         }
@@ -104,7 +105,7 @@ const PendingProjects = ({ pendingProjects, role }) => {
   )
 
 }
-const TransactionHistory = ({ totalAmount, isClient, project }) => {
+const TransactionHistory = ({ totalAmount, isClient, project, disabled }) => {
   const role = localStorage.getItem("role");
   const clientId = localStorage.getItem("uid");
   const token = localStorage.getItem("token");
@@ -286,8 +287,8 @@ const TransactionHistory = ({ totalAmount, isClient, project }) => {
         </div>
         <div className="th-value">ZAR R{totalAmount}</div>
       </div> */}
-      <PendingProjects pendingProjects={pendingProjects} role={role} />
-      <CompletedProjects completedProjects={completedProjects} role={role} />
+      <PendingProjects pendingProjects={pendingProjects} role={role} disabled={disabled}/>
+      <CompletedProjects completedProjects={completedProjects} role={role }disabled={disabled} />
       {/* <div className="th-title">
         {role === "client" ? "Transfer" : "Earning"} History
       </div>

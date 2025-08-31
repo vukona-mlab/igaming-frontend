@@ -137,3 +137,7 @@
 .dp-message-button:hover {
   background-color: #2d2d2d;
 } 
+
+.disabled {
+  opacity: 0.5;
+}
