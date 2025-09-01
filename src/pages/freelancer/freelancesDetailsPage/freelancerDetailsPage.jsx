@@ -9,11 +9,11 @@ import FreelancerProjectCards from "../../../components/Profile/freelancerCardsP
 import SectionHeader from "../../../components/Landing/section-header/SectionHeader";
 import FreelancerProfileHeader from "../../../components/FreelancerProfileHeader/FreelancerProfileHeader";
 import ReviewForm from "../../../components/Reviews/ReviewForm/ReviewForm";
-import "./freelancerProjectPage.css";
+import "./freelancerDetailsPage.css";
 import SectionContainer from "../../../components/SectionContainer";
 import BACKEND_URL from "../../../config/backend-config";
 
-const FreelancerProjects = (props) => {
+const FreelancerDetails = (props) => {
   // const { freelancer_id } = useParams();
   const [projects, setProjects] = useState([]);
   const [reviews, setReviews] = useState([]);
@@ -29,7 +29,7 @@ const FreelancerProjects = (props) => {
   const location = useLocation();
   //console.log({ location });
   const freelancer_id = location.pathname.split("/")[2];
-  //console.log({ id: freelancer_id });
+  console.log({ id: freelancer_id });
   useEffect(() => {
     fetchProjects();
     fetchReviews();
@@ -245,8 +245,9 @@ const FreelancerProjects = (props) => {
   const handleMessageClick = async (freelancerId, price) => {
     try {
       console.log("Freelancer data received:", { freelancerId });
-
-      if (!freelancerId) {
+      
+      // returns
+      if (!freelancer_id) {
         console.error("FreelancerId is missing");
         return;
       }
@@ -268,11 +269,11 @@ const FreelancerProjects = (props) => {
         return;
       }
       const requestData = {
-        freelancerId: freelancerId,
+        freelancerId: freelancer_id,
         clientId: uid,
         senderId: uid,
         message: price
-          ? `Hello! I'm interested in working with you, currently looking at the R${price} package.`
+          ? `Hello! I'm interested in working with you, currently looking at the ${price} package.`
           : "Hello! I'm interested in working with you.",
       };
 
@@ -467,7 +468,7 @@ const FreelancerProjects = (props) => {
                     reviewsError={reviewsError}
                     onReviewSubmit={handleReviewSubmit}
                     handleMessageClick={(price) =>
-                      handleMessageClick(freelancerData?.id, null)
+                      handleMessageClick(freelancerData?.id, price)
                     }
                   />
                 </Col>
@@ -480,4 +481,4 @@ const FreelancerProjects = (props) => {
   );
 };
 
-export default withProfileCheck(FreelancerProjects);
+export default withProfileCheck(FreelancerDetails);

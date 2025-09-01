@@ -405,7 +405,7 @@ const MessagingPageC = () => {
                 currentClientId={currentFreelancerId}
                 currentClientName={currentFreelancerName}
                 onEscrowClick={handleEscrow}
-                disabled={disabled}
+                disabled={blocked}
               />
             )
           )}

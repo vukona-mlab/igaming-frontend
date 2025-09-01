@@ -89,7 +89,7 @@ const FreelancerDiscovery = ({ searchQuery, catergory, disabled }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `${BACKEND_URL}/api/freelancers/projects?page=${currentPage}&pageSize=${pageSize}`,
+        `${BACKEND_URL}/api/freelancers?page=${currentPage}&pageSize=${pageSize}`,
         {
           headers: {
             Authorization: token,
