@@ -56,7 +56,12 @@ const ChatBox = ({
   useEffect(() => {
     if (chatId && currentChat && chatId === currentChat.id) {
       fetchMessages();
+      console.log('messages');
+      
       if (!currentChat && currentChat.chatType) {
+        fetchProjectStatus();
+      } else {
+        console.log('cant fix this');
         fetchProjectStatus();
       }
     }
@@ -167,6 +172,8 @@ const ChatBox = ({
   };
 
   const fetchProjectStatus = async () => {
+    console.log(' getting project status');
+    
     try {
       const response = await fetch(
         `${BACKEND_URL}/api/projects/chat/${chatId}`,
@@ -187,6 +194,8 @@ const ChatBox = ({
       }
 
       const data = await response.json();
+      console.log({ data });
+      
       if (data.project) {
         setProjectStatus(data.project);
       } else {
@@ -437,7 +446,7 @@ const ChatBox = ({
         <div className="no-chat-message">Select a chat to start messaging</div>
       ) : (
         <>
-          <ChatHeader currentChat={currentChat} />
+          <ChatHeader currentChat={currentChat} projectStatus={projectStatus} />
           {projectStatus ? (
             <div className="project-status-container">
               <div className="project-status-header">

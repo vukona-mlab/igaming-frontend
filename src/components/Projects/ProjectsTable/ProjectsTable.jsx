@@ -20,7 +20,9 @@ const ProjectsTable = ({ type, projects }) => {
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
   const token = localStorage.getItem("token");
-
+  const concludeProject = () => {
+    
+  }
   const handleTransaction = async (
     clientId,
     freelancerId,
@@ -192,7 +194,7 @@ const ProjectsTable = ({ type, projects }) => {
                             <div>Project Actions</div>
                             {project.inPlatform && (
                               <>
-                                <button>Mark as complete</button>
+                                <button onClick={concludeProject}>Mark as complete</button>
                                 <button>Edit SLA</button>
                               </>
                             )}
