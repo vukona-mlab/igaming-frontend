@@ -14,7 +14,7 @@ import ProtectedRouteReg from "./components/Protected/ProtectedReg";
 import ProtectedRoutes from "./components/Protected/ProtectedRoutes";
 import ProtectRole from "./components/Protected/ProtectRole";
 import DiscoveryPage from "./pages/DiscoveryPage/DiscoveryPage";
-import FreelancerProjects from "./pages/freelancer/freelancesProjectsPage/freelancerProjectsPage";
+import FreelancerDetails from "./pages/freelancer/freelancesDetailsPage/freelancerDetailsPage";
 import MessagingPageF from "./pages/freelancer/MessagingPage/MessagingPageF";
 import EscrowPage from "./pages/EscrowPage/EscrowPage";
 import MessagingPageC from "./pages/client/MessagingPage/MessagingPageC";
@@ -42,7 +42,7 @@ function App() {
           <Routes>
             <Route exact path="/" element={<LandingPage />} />
             <Route exact path="/discovery" element={<DiscoveryPage />}>
-              <Route path=":freelancer_id" element={<FreelancerProjects />} />
+              <Route path=":freelancer_id" element={<FreelancerDetails />} />
             </Route>
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/contact" element={<ContactPage />} />

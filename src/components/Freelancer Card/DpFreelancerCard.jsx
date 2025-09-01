@@ -37,7 +37,9 @@ const FreelancerCard = ({
 
     return stars;
   };  
-
+  const handleBlockedState = (e) => {
+    // e.stopPropagation()
+  }
   return (
     <div className="dp-freelancer-card">
       <div className="dp-freelancer-profile">
@@ -60,7 +62,7 @@ const FreelancerCard = ({
         </div>
         {
           disabled ? (
-            <button className="dp-message-button disabled">
+            <button className="dp-message-button disabled" onClick={handleBlockedState}>
               <img src={messageIcon} alt="Message" className="dp-message-icon" />
             </button>
           ) : (
