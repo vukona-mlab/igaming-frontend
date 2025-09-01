@@ -15,7 +15,7 @@ import Swal from "sweetalert2";
 const url = BACKEND_URL;
 const socket = io(url, { transports: ["websocket"] });
 
-const ChatHeader = ({ currentChat }) => {
+const ChatHeader = ({ currentChat, projectStatus }) => {
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
@@ -35,7 +35,7 @@ const ChatHeader = ({ currentChat }) => {
   const userRole = localStorage.getItem("role");
   const currentUserId = localStorage.getItem("uid");
   const isFreelancer = userRole === "freelancer";
-
+  
   const reasons = [
     "Harassment or bullying",
     "Spam or misleading",
