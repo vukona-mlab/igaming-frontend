@@ -8,7 +8,7 @@ import SectionContainer from "../SectionContainer";
 import BACKEND_URL from "../../config/backend-config";
 import Swal from "sweetalert2";
 
-const FreelancerDiscovery = ({ searchQuery, catergory, disabled }) => {
+const FreelancerDiscovery = ({ searchQuery, category, disabled }) => {
   const [freelancers, setFreelancers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -16,23 +16,15 @@ const FreelancerDiscovery = ({ searchQuery, catergory, disabled }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [pageSize, setPageSize] = useState(30);
-  const catergories = {
-    GameDevelopment: ["gameart", "gamedesigners"],
-    CreativeAndDesign: [
-      "animation",
-      "charactermodeling",
-      "uiuxdesign",
-      "imageediting",
-    ],
-    AudioAndMusic: [],
-    QualityAssurance: [],
-    ComplianceAndLegal: [],
-    ContentAndMarketing: ["typography"],
-  };
+
   const navigation = useNavigate();
 
   useEffect(() => {
+    setLoading(true)
     fetchFreelancers();
+  }, [searchQuery, category])
+  useEffect(() => {
+
     updateColumns();
     window.addEventListener("resize", updateColumns);
     return () => window.removeEventListener("resize", updateColumns);
@@ -89,7 +81,7 @@ const FreelancerDiscovery = ({ searchQuery, catergory, disabled }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `${BACKEND_URL}/api/freelancers?page=${currentPage}&pageSize=${pageSize}`,
+        `${BACKEND_URL}/api/freelancers?category=${category}&search=${searchQuery}&page=${currentPage}&pageSize=${pageSize}`,
         {
           headers: {
             Authorization: token,
@@ -171,51 +163,51 @@ const FreelancerDiscovery = ({ searchQuery, catergory, disabled }) => {
     }
   };
 
-  const filteredFreelancers = freelancers.filter((freelancer) => {
-    if (!searchQuery.trim() && catergory == "") return true; // Show all when no search query
+  // const filteredFreelancers = freelancers.filter((freelancer) => {
+  //   if (!searchQuery.trim() && catergory == "") return true; // Show all when no search query
 
-    let searchBool = false;
-    let filterBool = false;
+  //   let searchBool = false;
+  //   let filterBool = false;
 
-    if (searchQuery.trim()) {
-      const searchLower = searchQuery.toLowerCase();
-      const displayName = (
-        freelancer.displayName || "Anonymous Freelancer"
-      ).toLowerCase();
-      const jobTitle = (freelancer.jobTitle || "Freelancer").toLowerCase();
+  //   if (searchQuery.trim()) {
+  //     const searchLower = searchQuery.toLowerCase();
+  //     const displayName = (
+  //       freelancer.displayName || "Anonymous Freelancer"
+  //     ).toLowerCase();
+  //     const jobTitle = (freelancer.jobTitle || "Freelancer").toLowerCase();
 
-      // Check for multiple search terms
-      const searchTerms = searchLower.split(" ");
+  //     // Check for multiple search terms
+  //     const searchTerms = searchLower.split(" ");
 
-      searchBool = searchTerms.every((term) => {
-        // Check if searching for "anonymous" specifically
-        if (term === "anonymous" && displayName.includes("anonymous")) {
-          return true;
-        }
+  //     searchBool = searchTerms.every((term) => {
+  //       // Check if searching for "anonymous" specifically
+  //       if (term === "anonymous" && displayName.includes("anonymous")) {
+  //         return true;
+  //       }
 
-        // Check if the term matches either name or job title
-        return displayName.includes(term) || jobTitle.includes(term);
-      });
-    }
-    if (catergory !== "") {
-      const filterTerms = catergories[catergory.replace(/-/g, "")];
-      const arr =
-        freelancer.categories && freelancer.categories.length > 0
-          ? freelancer.categories.map(function (item) {
-              return item.toLowerCase();
-            })
-          : [];
-      filterBool = filterTerms.every((term) => {
-        // Check if the term matches either name or job title
-        return arr.length > 0 ? arr.includes(term) : false;
-      });
-    }
-    return !searchQuery.trim()
-      ? filterBool
-      : catergory == ""
-      ? searchBool
-      : searchBool && filterBool;
-  });
+  //       // Check if the term matches either name or job title
+  //       return displayName.includes(term) || jobTitle.includes(term);
+  //     });
+  //   }
+  //   if (catergory !== "") {
+  //     const filterTerms = catergories[catergory.replace(/-/g, "")];
+  //     const arr =
+  //       freelancer.categories && freelancer.categories.length > 0
+  //         ? freelancer.categories.map(function (item) {
+  //             return item.toLowerCase();
+  //           })
+  //         : [];
+  //     filterBool = filterTerms.every((term) => {
+  //       // Check if the term matches either name or job title
+  //       return arr.length > 0 ? arr.includes(term) : false;
+  //     });
+  //   }
+  //   return !searchQuery.trim()
+  //     ? filterBool
+  //     : catergory == ""
+  //     ? searchBool
+  //     : searchBool && filterBool;
+  // });
 
   if (loading) {
     return <div className="freelancer-discovery-loading">Loading...</div>;
@@ -227,8 +219,10 @@ const FreelancerDiscovery = ({ searchQuery, catergory, disabled }) => {
 
   // Group freelancers into rows based on current column count
   const rows = [];
-  for (let i = 0; i < filteredFreelancers.length; i += columns) {
-    rows.push(filteredFreelancers.slice(i, i + columns));
+  console.log({ freelancers });
+  
+  for (let i = 0; i < freelancers.length; i += columns) {
+    rows.push(freelancers.slice(i, i + columns));
   }
 
   const handleNext = () => {
@@ -250,8 +244,10 @@ const FreelancerDiscovery = ({ searchQuery, catergory, disabled }) => {
           {rows.length > 0 ? (
             rows.map((row, rowIndex) => (
               <div key={rowIndex} className="freelancer-row">
-                {row.map((freelancer) => (
-                  <div
+                {row.map((freelancer) => {
+                  console.log({ freelancer });
+                  
+                  return <div
                     key={freelancer.id}
                     className="freelancer-card-wrapper"
                     onClick={() => navigation(`/discovery/${freelancer.id}`)}
@@ -273,7 +269,7 @@ const FreelancerDiscovery = ({ searchQuery, catergory, disabled }) => {
                       Click image to view more
                     </div>
                   </div>
-                ))}
+                })}
               </div>
             ))
           ) : (

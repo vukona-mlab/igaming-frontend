@@ -81,7 +81,7 @@ function NavBar() {
           fluid
           style={{ display: "flex", justifyContent: "space-around" }}
         >
-          <Navbar.Brand href="#">
+          <Navbar.Brand href="/">
             <div className="nav-logo">
               <img
                 src="/images/logo-ri-express.png"
