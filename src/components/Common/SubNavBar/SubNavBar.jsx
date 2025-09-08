@@ -1,36 +1,36 @@
 import React, { useEffect } from "react";
 import "./SubNavBar.css";
 import SectionContainer from "../../SectionContainer";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 export default function SubNavBar() {
-  const navigation = useNavigate();
-  const paths = [
-    "#Game-Development",
-    "#Creative-And-Design",
-    "#Audio-And-Music",
-    "#Quality-Assurance",
-    "#Compliance-And-Legal",
-    "#Content-And-Marketing",
-  ];
-  const pathname = window.location.pathname;
-  const hash = window.location.hash;
-  useEffect(() => {
-    if (pathname == "/" && paths.includes(hash)) {
-      navigation("/discovery" + hash);
-    }
-  }, [pathname, hash]);
+  // const navigation = useNavigate();
+  // const paths = [
+  //   "#Game-Development",
+  //   "#Creative-And-Design",
+  //   "#Audio-And-Music",
+  //   "#Quality-Assurance",
+  //   "#Compliance-And-Legal",
+  //   "#Content-And-Marketing",
+  // ];
+  // const pathname = window.location.pathname;
+  // const hash = window.location.hash;
+  // useEffect(() => {
+  //   if (pathname == "/" && paths.includes(hash)) {
+  //     navigation("/discovery" + hash);
+  //   }
+  // }, [pathname, hash]);
 
   return (
     <SectionContainer containerColor={"black"}>
       <div className="subnav">
         <div className="subnav-content">
-          <a href="#Game-Development">Game Development</a>
-          <a href="#Creative-And-Design">Creative and Design</a>
-          <a href="#Audio-And-Music">Audio and Music</a>
-          <a href="#Quality-Assurance">Quality Assurance</a>
-          <a href="#Compliance-And-Legal">Compliance and Legal</a>
-          <a href="#Content-And-Marketing">Content and Marketing</a>
+          <Link to={'/discovery?category=game development'}>Game Development</Link>
+          <Link to={'/discovery?category=creative and design'}>Creative and Design</Link>
+          <Link to={'/discovery?category=audio and music'}>Audio and Music</Link>
+          <Link to={'/discovery?category=quality assurance'}>Quality Assurance</Link>
+          <Link to={'/discovery?category=compliance and legal'}>Compliance and Legal</Link>
+          <Link to={'/discovery?category=content and marketing'}>Content and Marketing</Link>
         </div>
       </div>
     </SectionContainer>
