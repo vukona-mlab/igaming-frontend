@@ -10,7 +10,7 @@ import { FaDiscord } from "react-icons/fa";
 import SubNavBar from "../../components/Common/SubNavBar/SubNavBar";
 import Footer from "../footer/Footer";
 
-export default function ContactPage() {
+export default function ContactPage({setName, setSurname, setEmail, setSubject, setMessage, setPhoneNumber, handleQuerySubmit }) {
   const [formData, handleFormDataChange] = useState({})
     const handleChange = (e) => {
     handleFormDataChange({ ...formData, [e.target.name]: e.target.value });
@@ -96,7 +96,7 @@ export default function ContactPage() {
             </div>
           </div>
           <div className="right-c">
-            <form onSubmit={handleFormSubmit}>
+            <form>
               <div className="input-container-c">
                 <div className="input-left">
                   <label htmlFor="fname" className="name-email">
@@ -108,7 +108,7 @@ export default function ContactPage() {
                     id="fname"
                     name="fname"
                     className="input-field-c"
-                    onChange={handleChange}
+                    onChange={(ev) => setName(ev.target.value)}
                   />
                   <br />
                   <label htmlFor="email" className="name-email">
@@ -120,7 +120,7 @@ export default function ContactPage() {
                     id="email"
                     name="email"
                     className="input-field-c"
-                    onChange={handleChange}
+                    onChange={(ev) => setEmail(ev.target.value)}
                   />
                 </div>
                 <div className="input-right">
@@ -133,7 +133,7 @@ export default function ContactPage() {
                     id="lname"
                     name="lname"
                     className="input-field-c"
-                    onChange={handleChange}
+                    onChange={(ev) => setSurname(ev.target.value)}
                   />
                   <br />
                   <label htmlFor="phoneNumber" className="last-number">
@@ -145,7 +145,7 @@ export default function ContactPage() {
                     id="phoneNumber"
                     name="phoneNumber"
                     className="input-field-c"
-                    onChange={handleChange}
+                    onChange={(ev) => setPhoneNumber(ev.target.value)}
                   />
                 </div>
               </div>
@@ -160,7 +160,7 @@ export default function ContactPage() {
                     placeholder="Write write your subject"
                     style={{ height: "50px", padding: 10 }}
                     className="message-c"
-                    onChange={handleChange}
+                    onChange={(ev) => setSubject(ev.target.value)}
                   />
                 </div>
                 <div className="message-box-c">
@@ -173,9 +173,9 @@ export default function ContactPage() {
                     placeholder="Write write your message.."
                     style={{ height: "200px" }}
                     className="message-c"
-                    onChange={handleChange}
+                    onChange={(ev) => setMessage(ev.target.value)}
                   />
-                  <input type="submit" className="send-button-c" value={"Send Message"} />
+                  <input type="button" className="send-button-c" value={"Send Message"} onClick={handleQuerySubmit}/>
                   {/* <div className="send-button-c" onClick={handleFormSubmission}>Send Message</div> */}
                 </div>
               </div>

@@ -47,7 +47,7 @@ function App() {
             </Route>
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/contact" element={<ContactPage />} />
-            <Route path="/anonymous-chat" element={<AnonymousChat />} />
+            <Route path="/anonymous-chat/:id" element={<AnonymousChat />} />
             <Route element={<ProtectedRouteReg />}>
               <Route
                 exact

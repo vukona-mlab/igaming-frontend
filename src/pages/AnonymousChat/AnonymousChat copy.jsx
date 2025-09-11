@@ -140,6 +140,7 @@ const AnonymousChat = () => {
                         isAdmins={isAdmins}
                         current={current}
                         setCurrent={setCurrent}
+                        // handleAdminChat={handleAdminCha}
                     />
                     {filteredChats.length === 0 ? (
                         <EmptyChatBox />
