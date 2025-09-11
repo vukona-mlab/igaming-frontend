@@ -26,6 +26,7 @@ import ContactPage from "./pages/ContactPage/ContactPage";
 import { registerNotificationSW } from "./config/service-workers";
 import { useEffect } from "react";
 import { ProfileCompletionProvider } from "./components/Common/ProfileCompletionContext";
+import AnonymousChat from "./pages/AnonymousChat/AnonymousChat";
 
 //import ProfileCompletionModal from "./components/Common/ProfileCompletionModal";
 //import { requestPermissionAndGetToken } from "./config/service-workers/index";
@@ -46,7 +47,7 @@ function App() {
             </Route>
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/contact" element={<ContactPage />} />
-
+            <Route path="/anonymous-chat/:id" element={<AnonymousChat />} />
             <Route element={<ProtectedRouteReg />}>
               <Route
                 exact
