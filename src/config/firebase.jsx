@@ -10,7 +10,7 @@ import {
 } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
-import { getMessaging } from "firebase/messaging";
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -32,7 +32,7 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const initAuth = async () => {
-  
+
   await setPersistence(auth, inMemoryPersistence);
 }
 initAuth()
@@ -54,5 +54,28 @@ const handleLogout = async () => {
     return false;
   }
 };
+export const requestNotificationPermission = async () => {
+  try {
+    const permission = await Notification.requestPermission();
+    if (permission === "granted") {
+      const token = await getToken(messaging, {
+        vapidKey: "BLISWaaajm3rDfzJUtWAkC7ZyN1UoL6owRUEGuJ3h4je6qtUj3L5MCbkYlzhyYjlFobpEoR10OcaAnFGrJLCT1A"
+      });
+      console.log("FCM token:", token);
+      if (token) {
+        localStorage.setItem("rig-dev-token", token)
+        const deviceToken = localStorage.getItem("rig-dev-token")
+        console.log({ deviceToken });
+      }
+
+
+    } else {
+      console.log("Notification permission not granted");
+    }
+  } catch (err) {
+    console.error("Error getting notification permission", err);
+  }
+};
+
 
 export { auth, db, storage, googleProvider, handleLogout, messaging };

@@ -63,7 +63,6 @@ function LandingPage() {
     signInAnonymously(auth).catch(console.error);
 
     const unsub = onAuthStateChanged(auth, (u) => {
-      console.log({ uid: u.uid });
       if (u) setUser(u);
     });
 
