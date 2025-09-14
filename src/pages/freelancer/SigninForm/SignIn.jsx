@@ -27,7 +27,7 @@ export default function SignIn() {
 
   const handleSubmit = async () => {
     //e.preventDefault();
-
+    const deviceToken = localStorage.getItem("rig-dev-token")
     if (!error) {
       // Submit form
       try {
@@ -60,7 +60,7 @@ export default function SignIn() {
     }
   };
   const handleGoogleSignIn = async () => {
-    console.log({ deviceToken });
+    const deviceToken = localStorage.getItem("rig-dev-token")
     try {
       // Sign in with Google
       const result = await signInWithPopup(auth, googleProvider);
@@ -76,7 +76,7 @@ export default function SignIn() {
         },
         body: JSON.stringify({ idToken, deviceToken }),
       });
-      
+
       const data = await response.json();
       if (response.ok) {
         localStorage.setItem("token", data.token);

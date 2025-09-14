@@ -11,7 +11,7 @@ import { io } from "socket.io-client";
 import BACKEND_URL from "../../../config/backend-config";
 const url = BACKEND_URL;
 const socket = io(url, { transports: ["websocket"] });
-const deviceToken = localStorage.getItem("rig-dev-token")
+
 
 // Validation functions
 export const validatePassword = (password) => {
@@ -43,6 +43,7 @@ const ClientLogin = () => {
   const navigation = useNavigate();
 
   const handleGoogleSignIn = async () => {
+    const deviceToken = localStorage.getItem("rig-dev-token")
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const idToken = await result.user.getIdToken();
@@ -77,6 +78,7 @@ const ClientLogin = () => {
   };
 
   const handleLogin = async () => {
+    const deviceToken = localStorage.getItem("rig-dev-token")
     const emailError = validateEmail(formData.username);
     const passwordError = validatePassword(formData.password);
 
@@ -164,7 +166,7 @@ const ClientLogin = () => {
           {successMessage && (
             <p className="success-message">{successMessage}</p>
           )}
-          
+
 
           <div className="forgot-password-link">
             <span

@@ -23,17 +23,27 @@ import Document from "./pages/freelancer/DocumentsPage/DocumentUpload/documentUp
 import DocumentView from "./pages/freelancer/DocumentsPage/ViewDocuments/DocumentsView";
 import Projects from "./pages/projects/Projects";
 import ContactPage from "./pages/ContactPage/ContactPage";
-import { registerNotificationSW } from "./config/service-workers";
 import { useEffect } from "react";
 import { ProfileCompletionProvider } from "./components/Common/ProfileCompletionContext";
 import AnonymousChat from "./pages/AnonymousChat/AnonymousChat";
+import { requestNotificationPermission, setupForegroundNotifications } from "./config/firebase";
 
 //import ProfileCompletionModal from "./components/Common/ProfileCompletionModal";
 //import { requestPermissionAndGetToken } from "./config/service-workers/index";
 function App() {
   useEffect(() => {
     //register service worker
-    registerNotificationSW();
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/firebase-messaging-sw.js")
+        .then((registration) => {
+          console.log("SW registered:", registration);
+        })
+        .catch((err) => {
+          console.error("SW registration failed:", err);
+        });
+    }
+    setupForegroundNotifications()
+    requestNotificationPermission();
   }, []);
   return (
     <ProfileCompletionProvider>

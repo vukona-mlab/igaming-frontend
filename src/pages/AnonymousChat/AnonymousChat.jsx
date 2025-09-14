@@ -88,37 +88,37 @@ export default function AnonymousChat() {
         }
     }
     return (
-        <div className="chat-container">
+        <div className="achat-container">
             <NavBar />
             {/* Header */}
-            <div className="chat-header">Anonymous Chat</div>
+            <div className="achat-header">Anonymous Chat</div>
 
             {/* Messages */}
-            <div className="chat-messages">
+            <div className="achat-messages">
                 {messages.map((m) => (
                     <div
                         key={m.id}
-                        className={`chat-message ${m.sender === user?.uid ? "own-message" : "other-message"
+                        className={`achat-message ${m.sender === user?.uid ? "own-message" : "other-message"
                             }`}
                     >
-                        <div className="chat-sender">{m.sender === user?.uid ? "You" : "Admin"}</div>
+                        <div className="achat-sender">{m.sender === user?.uid ? "You" : "Admin"}</div>
                         <div>{m.text}</div>
                     </div>
                 ))}
             </div>
 
             {/* Input */}
-            <div className="chat-input-container">
+            <div className="achat-input-container">
                 <input
                     type="text"
-                    className="chat-input"
+                    className="achat-input"
                     value={active ? input : "Chat has been closed"}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Type a message..."
                     onKeyDown={handleKeyDown}
                     disabled={!active}
                 />
-                <button onClick={handleSend} className="chat-button" disabled={!active}>
+                <button onClick={handleSend} className="achat-button" disabled={!active}>
                     Send
                 </button>
             </div>

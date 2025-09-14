@@ -59,11 +59,10 @@ function LandingPage() {
   }
 
   useEffect(() => {
-    console.log('on landing');
+    // console.log('on landing');
     signInAnonymously(auth).catch(console.error);
 
     const unsub = onAuthStateChanged(auth, (u) => {
-      console.log({ uid: u.uid });
       if (u) setUser(u);
     });
 
