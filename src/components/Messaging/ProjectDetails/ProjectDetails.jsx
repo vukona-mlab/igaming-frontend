@@ -72,7 +72,7 @@ const ProjectDetails = ({ project, onClose, isClient }) => {
       if (action === "reject" || action === "delete") {
         // Delete the project if rejected by client or deleted by freelancer
         const response = await fetch(
-          `${BACKEND_URL}/api/projects/${project.id}`,
+          `${BACKEND_URL}/api/projects/${project.id}?freelancerId=${freelancerId}`,
           {
             method: "DELETE",
             headers: {
@@ -105,7 +105,7 @@ const ProjectDetails = ({ project, onClose, isClient }) => {
               "Content-Type": "application/json",
               Authorization: token,
             },
-            body: JSON.stringify({ status: "approved" }),
+            body: JSON.stringify({ status: "approved", freelancerId }),
           }
         );
 
@@ -166,6 +166,7 @@ const ProjectDetails = ({ project, onClose, isClient }) => {
                       reference: transaction.reference,
                       clientId: clientId,
                       projectId: project.id,
+                      freelancerId
                     }),
                   }
                 );

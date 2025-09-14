@@ -27,7 +27,7 @@ const TopFreelancers = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(response);
+        // console.log(response);
 
         setFreelancers(data.freelancers.slice(0, 3));
       }

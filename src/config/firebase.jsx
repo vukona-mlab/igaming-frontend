@@ -77,5 +77,17 @@ export const requestNotificationPermission = async () => {
   }
 };
 
+export const setupForegroundNotifications = () => {
+  onMessage(messaging, (payload) => {
+    console.log("Foreground message received:", payload);
+
+    if (Notification.permission === "granted" && payload.notification) {
+      new Notification(payload.notification.title, {
+        body: payload.notification.body,
+        icon: "assets/logo-ri-express-Ba8m9nT1.png"
+      });
+    }
+  });
+};
 
 export { auth, db, storage, googleProvider, handleLogout, messaging };

@@ -26,13 +26,23 @@ import ContactPage from "./pages/ContactPage/ContactPage";
 import { useEffect } from "react";
 import { ProfileCompletionProvider } from "./components/Common/ProfileCompletionContext";
 import AnonymousChat from "./pages/AnonymousChat/AnonymousChat";
-import { requestNotificationPermission } from "./config/firebase";
+import { requestNotificationPermission, setupForegroundNotifications } from "./config/firebase";
 
 //import ProfileCompletionModal from "./components/Common/ProfileCompletionModal";
 //import { requestPermissionAndGetToken } from "./config/service-workers/index";
 function App() {
   useEffect(() => {
     //register service worker
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/firebase-messaging-sw.js")
+        .then((registration) => {
+          console.log("SW registered:", registration);
+        })
+        .catch((err) => {
+          console.error("SW registration failed:", err);
+        });
+    }
+    setupForegroundNotifications()
     requestNotificationPermission();
   }, []);
   return (
