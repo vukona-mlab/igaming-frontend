@@ -1,0 +1,49 @@
+.question {
+  font-weight: 700;
+  font-size: 20px;
+
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.answer {
+  background-color: #ebebeb;
+  border-radius: 5px;
+  padding: 25px;
+  box-shadow: 2px 2px 5px #0000000d;
+}
+
+.answerTitle {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.answerDescription {
+  font-size: 16px;
+  font-weight: 400;
+}
+.accordianDiv {
+  box-shadow: 5px 5px 10px #0000000d;
+  height: 75px;
+  border-radius: 5px;
+  margin: 25px 0px;
+  padding: 5px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.arrowIconDown {
+  width: 32px;
+  height: 32px;
+  color: #898b8e;
+  cursor: pointer;
+  padding: 4px;
+}
+.arrowIconUp {
+  width: 32px;
+  height: 32px;
+  color: #898b8e;
+  transform: rotate(180deg);
+  cursor: pointer;
+  padding: 4px;
+}

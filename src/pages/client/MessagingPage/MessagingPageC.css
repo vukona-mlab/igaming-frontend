@@ -1,0 +1,71 @@
+.MessagingPageC {
+  min-height: 100vh;
+  background: #fff;
+  overflow: hidden;
+}
+
+.messagePageContainer {
+  width: 100%;
+  height: calc(100px - 84px - 46px - 92px);
+  /* margin: 25px auto; */
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  position: relative;
+  z-index: 1;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .messagePageContainer {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .PeopleComponent {
+    width: 100% !important;
+    margin-bottom: 15px;
+  }
+
+  .f-chat-box {
+    width: 100%;
+    height: calc(70vh - 10px);
+  }
+}
+
+.MessagingPageC .search-container {
+  width: 100%;
+  max-width: 537px;
+  margin-left: 1% !important;
+}
+
+/* Modal overlay styles */
+.escrow-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1100;
+}
+
+/* Adjust modal width for messaging page */
+.escrow-modal {
+  width: 90%;
+  max-width: 1000px;
+  margin: 20px auto;
+}

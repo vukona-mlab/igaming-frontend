@@ -1,0 +1,53 @@
+/* SubNavBar Styles */
+.subnav {
+  width: 100%;
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Navigation Content */
+.subnav-content {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  max-width: calc(1500px - 24px);
+  padding: 10px 0;
+}
+
+/* Navigation Links */
+.subnav-content a {
+  color: white;
+  text-decoration: none;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  padding: 12px 16px;
+  transition: all 0.3s ease;
+}
+
+/* Hover Effect */
+.subnav-content a:hover {
+  background-color: white;
+  color: black;
+  border-radius: 4px;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .subnav-content {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+  }
+  
+  .subnav-content a {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+  }
+}

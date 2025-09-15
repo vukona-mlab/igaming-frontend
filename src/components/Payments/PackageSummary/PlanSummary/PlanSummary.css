@@ -1,0 +1,141 @@
+/* Plan Section Styles */
+.plan-section {
+    flex: 1;
+    max-width: 400px;
+  }
+  
+  .plan-section h2 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 30px;
+    margin-bottom: 1rem;
+    color: rgba(0,0,0,1);
+  }
+  
+  .plan-card {
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 1.5rem;
+  }
+  
+  .plan-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .check-circle {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .check-circle img {
+    width: 28px;
+    height: 28px;
+  }
+  
+  
+  .plan-info h3 {
+    font-size: 1.2rem;
+    margin: 0;
+    color: #333;
+  }
+  
+  .plan-info p {
+    color: #666;
+    margin: 0.25rem 0 0 0;
+  }
+  
+  .benefits h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  
+  .benefits ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .benefits li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    color: #666;
+  }
+  
+  .benefits li img {
+    width: 24px;
+    height: 24px;
+  }
+/* Plan Section Styles */
+.plan-section {
+    flex: 1;
+    max-width: 400px;
+  }
+  
+  .plan-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  
+  .plan-card {
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 1.5rem;
+  }
+  
+  .plan-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  
+  
+  .plan-info h3 {
+    font-size: 1.2rem;
+    margin: 0;
+    color: #333;
+  }
+  
+  .plan-info p {
+    color: #666;
+    margin: 0.25rem 0 0 0;
+  }
+  
+  .benefits h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  
+  .benefits ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .benefits li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    color: #666;
+  }
+  
+  .benefits li img {
+    width: 24px;
+    height: 24px;
+  }
+    

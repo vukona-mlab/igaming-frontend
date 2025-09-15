@@ -1,0 +1,75 @@
+/* Form Container */
+.auth-form {
+  width: 80% !important;
+  border: none !important;
+  background: none !important;
+  padding: 50px !important;
+}
+
+/* Labels */
+.form-label {
+  transition: all 0.3s ease;
+  font-weight: 500 !important;
+  font-family: "Poppins", sans-serif !important;
+  letter-spacing: -0.02em !important;
+}
+
+/* Input Fields */
+.form-control-grey {
+  border: 2px solid #069bd6;
+  border-radius: 5px !important;
+  width: 90% !important;
+  background-color: rgba(211, 211, 211, 0.486) !important;
+  transition: border 0.3s ease-in-out;
+}
+
+/* Focus Style */
+.form-control-grey:focus {
+  border: 2px solid #069bd6 !important;
+  box-shadow: none !important;
+  border-radius: 5px !important;
+}
+
+/* Base border with 2px thickness */
+.form-control-grey {
+  border: 2px solid #069bd6;
+  box-shadow: none !important;
+  border-radius: 5px !important;
+  width: 100% !important;
+  background-color: rgba(211, 211, 211, 0.486) !important;
+  transition: border 0.3s ease-in-out;
+}
+
+.input-group-wrapper {
+  position: relative;
+  width: 100% !important;
+}
+
+.input-group-wrapper .form-control-grey {
+  width: 100% !important;
+}
+
+.input-group-wrapper .btn-eye {
+  position: absolute;
+  right: 10px;
+}
+
+
+@media screen and (max-width: 425px) {
+  .auth-form {
+    width: 100% !important;
+  }
+}
+
+.error-border {
+  border-color: red !important;
+}
+
+.form-control.is-invalid {
+  padding-right: 2.25rem;
+}
+
+.invalid-feedback {
+  display: none !important;
+  margin-right: 10px;
+}

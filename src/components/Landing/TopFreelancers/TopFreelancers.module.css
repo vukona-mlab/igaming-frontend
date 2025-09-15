@@ -1,0 +1,23 @@
+.TopFreelancers {
+  margin: auto;
+  padding: 0px 10%;
+}
+
+.sectionBody {
+  display: flex;
+  justify-content:center;
+  /* align-items: flex-end; */
+  /* flex-wrap: wrap; */
+}
+
+@media (max-width: 768px) {
+  .sectionBody {
+    flex-wrap: wrap;
+  }
+}
+
+.sectionButton {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0px 100px;
+}

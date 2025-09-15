@@ -1,0 +1,33 @@
+.about-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    /* Full viewport height */
+    padding: 50px 0;
+    background: #f8f9fa;
+    /* Light background */
+}
+
+.about-section .container {
+    position: relative;
+    background-image: url('/images/FacelessDummy.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    color: black;
+    max-width: 900px;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-color: rgba(211, 211, 211, 0.6);
+    /* Light grey overlay */
+    filter: brightness(0.7);
+    /* Darkens the image to blend with grey */
+}

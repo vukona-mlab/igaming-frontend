@@ -1,0 +1,36 @@
+importScripts(
+    "https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"
+);
+importScripts(
+    "https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.js"
+);
+
+const firebaseConfig = {
+    apiKey: 'AIzaSyBT5DSGYayA1wg2ytvao_SCb52fpxYmxCI',
+    authDomain: 'research-igaming.firebaseapp.com',
+    projectId: 'research-igaming',
+    storageBucket: 'research-igaming.firebasestorage.app',
+    messagingSenderId: '124345080434',
+    appId: '1:124345080434:web:18f73d546bf69a0cce40eb',
+    measurementId: 'G-L56PG899EN'
+};
+
+firebase.initializeApp(firebaseConfig);
+const messaging = firebase.messaging();
+console.log(messaging);
+
+messaging.onBackgroundMessage(function (payload) {
+    // console.log("Received background message ", payload);
+
+    const notificationTitle = payload.notification.title;
+    const notificationOptions = {
+        body: payload.notification.body,
+        logo: "public/assets/logo-ri-express-Ba8m9nT1.png"
+    };
+
+    self.registration.showNotification(
+        notificationTitle,
+        notificationOptions
+    );
+});
+

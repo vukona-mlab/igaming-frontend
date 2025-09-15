@@ -1,0 +1,122 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+.showcase-section {
+  /* padding: 60px 0; */
+}
+
+.showcase-content {
+  padding: 40px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.showcase-text {
+  max-width: 34%;
+  /* margin-top: -13%; */
+}
+.showcase-text h2 {
+  font-size: 36px;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 20px;
+}
+
+.showcase-text p {
+  color: #575f66;
+  font-size: 20px;
+  margin-bottom: 35px;
+  font-family: "Poppins";
+  width: 100%;
+  line-height: 30px;
+  font-size: 400;
+}
+
+.toggle-buttons .btn {
+  margin-top: 30%;
+  margin-right: 10px;
+  border-radius: 15px;
+  padding: 15px 20px;
+  width: 159px;
+}
+
+.showcase-images {
+  display: flex;
+  gap: 20px;
+}
+
+/* General styles for all images */
+.showcase-images img {
+  width: 242px;
+  height: 495px;
+  object-fit: cover;
+  border-radius: 40px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+/* Individual adjustments for each image */
+.img-card-1 {
+  width: 242px;
+  height: 495px;
+  border-radius: 40px;
+}
+
+.img-card-2 {
+  margin-top: 16%;
+  width: 241px;
+  height: 495px;
+  border-radius: 40px;
+}
+
+.img-card-3 {
+  width: 260px;
+  height: 495px;
+  border-radius: 20px;
+}
+.sc-contact {
+  display: flex;
+  justify-content: flex-end;
+}
+.sc-contact-btn {
+  border: none;
+}
+@media screen and (max-width: 768px) {
+  .showcase-images img {
+    visibility: hidden;
+    width: 0;
+    height: 0;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .showcase-images {
+    display: none; /* Hides all the images on small screens */
+  }
+
+  .showcase-text {
+    max-width: 70%;
+    margin-top: -13%;
+    margin-left: 13%;
+  }
+}
+
+@media screen and (max-width: 1120px) {
+  .showcase-content {
+    margin-top: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .showcase-images img {
+    width: 142px;
+    height: 295px;
+    object-fit: cover;
+    border-radius: 40px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+  }
+}

@@ -1,0 +1,177 @@
+.footer {
+    background-color: white;
+    color: #333;
+    padding: 40px 20px;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    border-top: 1px solid #ddd;
+    padding-top: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+
+/* Ensuring headings and lists align properly */
+
+.footer-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 30%;
+    /* Adjust width for better layout */
+}
+
+h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    /* Remove extra padding */
+    margin: 0;
+    /* Remove extra margin */
+}
+
+ul li {
+    margin-bottom: 15px;
+    margin-left: -30px;
+}
+
+
+/* Quick Links */
+
+.quick-link {
+    text-decoration: none;
+    color: #333;
+    cursor: pointer;
+}
+
+.quick-link:hover {
+    text-decoration: underline;
+    color: #ff4500;
+}
+
+
+/* Categories */
+
+.category-item {
+    cursor: pointer;
+}
+
+.category-item:hover {
+    color: #ff4500;
+    font-weight: bold;
+}
+
+
+/* Subscription Section */
+
+.subscribe-section {
+    width: 100%;
+    max-width: 500px;
+    align-self: flex-start;
+    margin-top: 0;
+}
+
+.subscribe-section input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.subscribe-button {
+    width: 27%;
+    padding: 5px;
+    background-color: white;
+    color: black;
+    border: 1px solid rgb(116, 113, 113);
+    border-bottom: 3px solid black;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 3%;
+    transition: background 0.3s, transform 0.2s;
+    text-align: center;
+}
+
+.subscribe-button:hover {
+    background-color: #f0f0f0;
+}
+
+
+/* Footer Bottom */
+
+
+/* Footer Logo */
+
+
+/*------------------------------- */
+
+
+/* Footer Bottom */
+
+.footer-bottom {
+    /* Center content horizontally */
+    text-align: center;
+    padding-top: 0px;
+    font-size: 14px;
+    margin-top: -45px;
+    text-align: center;
+    margin-left: 40%;
+    /* Ensure text is centered */
+}
+
+.footer-logo-container {
+    display: flex;
+    justify-content: center;
+    margin-right: 80%;
+    margin-top: 40px;
+    /* Space between logo and text */
+}
+
+
+/* Footer Logo */
+
+.footer-logo {
+    width: 150px;
+    /* Adjust size if needed */
+    height: auto;
+    transition: opacity 0.3s ease;
+    /* Pushes the logo to the left */
+}
+
+.footer-logo:hover {
+    opacity: 0.8;
+}
+
+
+/* Responsive Design */
+
+@media screen and (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .footer-section {
+        width: 100%;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .subscribe-section {
+        max-width: 100%;
+    }
+    .subscribe-button {
+        width: 100%;
+    }
+}

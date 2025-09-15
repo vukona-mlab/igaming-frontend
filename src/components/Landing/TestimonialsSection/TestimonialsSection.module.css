@@ -1,0 +1,31 @@
+.TestimonialsSection {
+  /* width: 90%;
+  margin: 15px auto; */
+  font-family: "Poppins";
+}
+.TestimonialsHeader {
+  text-align: center;
+  margin: 45px 0px;
+}
+.TestimonialsTitle {
+  font-size: 40px;
+  font-weight: 500;
+  color: #171717;
+}
+
+.TestimonialsSpan {
+  color: #b90909;
+}
+
+.TestimonialsSubTitle {
+  color: #171717;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.sectionBody {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}

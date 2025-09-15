@@ -1,0 +1,18 @@
+/* 
+.welcome-message{
+  display: flex;
+  justify-content: flex-start;
+} */
+
+.div-btn-top {
+  width: 100%;
+  /* background-color: blue; */
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.pr-upload-btns {
+  display: flex;
+  gap: 7px;
+}

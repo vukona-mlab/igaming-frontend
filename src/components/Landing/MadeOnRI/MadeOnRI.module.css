@@ -1,0 +1,17 @@
+.MadeOnRI {
+  /* width: 90%;
+  margin: 15px auto; */
+}
+
+.sectionBody {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  min-height: 650px;
+  flex-wrap: wrap;
+}
+.sectionButton {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0px 100px;
+}

@@ -1,0 +1,75 @@
+.bank-form {
+  padding: 20px;
+  border-radius: 8px;
+  background: #fff;
+  width: 30%;
+  min-width: 300px;
+  text-align: left;
+  margin-left: 0;
+}
+
+/* Style inputs and dropdown */
+.input-field,
+.custom-dropdown .dropdown-toggle {
+  width: 100%;
+  height: 40px;
+  border: none; /* Remove all borders */
+  border-bottom: 1px solid black; /* Add only bottom border */
+  border-radius: 0; /* Remove rounded corners */
+  background-color: white;
+  padding: 8px;
+  outline: none; /* Remove focus outline */
+}
+
+/* Dropdown styling */
+.custom-dropdown .dropdown-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.custom-dropdown .dropdown-menu {
+  width: 100%;
+}
+
+/* Remove default dropdown arrow */
+.dropdown-toggle::after {
+  display: none !important;
+}
+
+/* Dropdown icon */
+.arrow-icon {
+  width: 15px;
+  height: 15px;
+}
+
+/* Button Group - Align buttons to the right with spacing */
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+}
+.cancel-btn{
+  border: none;
+  color: red;
+  background-color: white;
+}
+.submit-btn{
+  border-radius: 12px;
+  padding-left: 20px !important;
+  padding-right: 20px;
+  background-color: #000000;
+  gap: 10px;
+}
+
+.btn-adit-me{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.outer-diving{
+  width: 100%;
+
+}

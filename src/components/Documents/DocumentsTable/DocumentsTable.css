@@ -1,0 +1,74 @@
+.overlord{
+  border: solid 2px #e6e6e6;
+  border-radius: 12px;
+  overflow: hidden;
+
+}
+
+.table-container{
+  width:100%;
+  text-align: center;
+  padding-left: 30px;
+}
+
+.table-heading{
+  background-color: #F7F7F7;
+  border-radius: 12px !important;
+  padding-left: 10px;
+  width: 100%;
+
+  
+}
+
+.t-heading{
+    font-family: 'Poppins';
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 150%;
+    color: #7c7c7c;
+}
+
+.t-data{
+    font-family: 'Poppins';
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 150%;
+    color: #b2b2b2;
+}
+
+  .t-heading, .t-data {
+    padding: 12px;
+    text-align: left;
+    /* border-bottom: 1px solid #ddd; */
+  }
+
+  .action-buttons{
+    display: flex;
+    gap: 8px;
+  }
+
+  .view-button{
+    background-color: #333333;
+    color: #FFFFFF;
+    border-radius: 10px;
+    padding:7px 16px 10px 16px;
+    width: 72px;
+    height: 32px;
+    text-align: center;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  .delete-button{
+    background-color: #b90909;
+    color: #FFFFFF;
+    border-radius: 10px;
+    padding:7px 16px 15px 16px;
+    width: 72px;
+    height: 32px;
+    text-align: center;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+  }

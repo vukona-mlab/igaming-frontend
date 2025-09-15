@@ -1,0 +1,92 @@
+/* Form Container */
+.auth-form {
+  width: 80% !important;
+  border: none !important;
+  background: none !important;
+  padding: 50px !important;
+}
+
+/* Labels */
+.form-label {
+  transition: all 0.3s ease;
+  font-weight: 500 !important;
+  font-family: "Poppins", sans-serif !important;
+  letter-spacing: -0.02em !important;
+}
+
+/* Input Fields */
+.form-control-grey {
+  border: 2px solid #069bd6;
+  border-radius: 5px !important;
+  width: 90% !important;
+  background-color: rgba(211, 211, 211, 0.486) !important;
+  transition: border 0.3s ease-in-out;
+}
+
+/* Focus Style */
+.form-control-grey:focus {
+  border: 2px solid #069bd6 !important;
+  box-shadow: none !important;
+  border-radius: 5px !important;
+}
+
+/* Base border with 2px thickness */
+.form-control-grey {
+  border: 2px solid #069bd6;
+  box-shadow: none !important;
+  border-radius: 5px !important;
+  width: 100% !important;
+  background-color: rgba(211, 211, 211, 0.486) !important;
+  transition: border 0.3s ease-in-out;
+}
+
+.input-group-wrapper {
+  position: relative;
+  width: 100% !important;
+}
+
+.input-group-wrapper .form-control-grey {
+  width: 100% !important;
+}
+
+.input-group-wrapper .btn-eye {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.job-interest-options {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.job-interest-option {
+  padding: 10px;
+  border-radius: 5px;
+  background-color: rgba(211, 211, 211, 0.486);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  width: 100% !important;
+  margin-bottom: 2px;
+}
+
+.job-interest-option:hover,
+.job-interest-option.selected {
+  border-color: #069bd6;
+}
+@media screen and (max-width: 425px) {
+  .auth-form {
+    width: 95% !important;
+  }
+}
+
+.form-control.is-invalid {
+  border-color: red !important;
+}
+
+.form-control.is-invalid:focus {
+  box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25) !important;
+}

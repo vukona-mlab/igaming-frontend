@@ -1,0 +1,65 @@
+.form-fields {
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input {
+  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: rgba(242, 245, 246, 1);
+  transition: border-color 0.2s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: rgba(185,9,9,0.3);
+  border-width: 3px;
+}
+
+.project-ref {
+  background-color: #f8f9fa !important;
+  color: #666;
+}
+
+.project-ref:focus {
+  border-color: #e0e0e0 !important;
+  box-shadow: none !important;
+}
+
+.card-input-container {
+  position: relative;
+}
+
+.card-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 24px;
+}
+
+.card-details-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.card-details-row .form-group {
+  flex: 1;
+} 

@@ -1,0 +1,52 @@
+.loading-button {
+  background-color: black;
+  color: white;
+  width: 100% ;
+
+  min-width: 270px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 20px;
+  font-size: 16px;
+  position: relative;
+}
+
+.loading-button:disabled {
+  cursor: not-allowed;
+}
+
+/* Style for the GIF loader */
+
+.loader-gif {
+  filter: brightness(0) invert(1);
+  animation:spin 1.8s infinite ease
+}
+
+/* @-moz-keyframes spin {
+  100% { -moz-transform: rotate(60deg); } 
+} */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+
+  /* 0% { transform: rotate(0deg);}
+  20% { transform: rotate(60deg);}
+  40% { transform: rotate(120deg);}
+  50% { transform: rotate(180deg);}
+  60% { transform: rotate(240deg);}
+  80% { transform: rotate(300deg);}
+
+  100% {
+      transform:rotate(360deg); 
+  }; */
+
+}
