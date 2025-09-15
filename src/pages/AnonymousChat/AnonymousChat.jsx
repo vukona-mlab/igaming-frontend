@@ -6,6 +6,7 @@ import "./AnonymousChat.css"; // 👈 import plain CSS
 import { auth, db } from "../../config/firebase";
 import NavBar from "../../components/Common/Navbar/navbar";
 import { useParams } from "react-router-dom";
+import SectionContainer from "../../components/SectionContainer";
 
 export default function AnonymousChat() {
     const [user, setUser] = useState(null);
@@ -90,38 +91,40 @@ export default function AnonymousChat() {
     return (
         <div className="achat-container">
             <NavBar />
-            {/* Header */}
-            <div className="achat-header">Anonymous Chat</div>
+            <SectionContainer>
+                {/* Header */}
+                <div className="achat-header">Anonymous Chat</div>
 
-            {/* Messages */}
-            <div className="achat-messages">
-                {messages.map((m) => (
-                    <div
-                        key={m.id}
-                        className={`achat-message ${m.sender === user?.uid ? "own-message" : "other-message"
-                            }`}
-                    >
-                        <div className="achat-sender">{m.sender === user?.uid ? "You" : "Admin"}</div>
-                        <div>{m.text}</div>
-                    </div>
-                ))}
-            </div>
+                {/* Messages */}
+                <div className="achat-messages">
+                    {messages.map((m) => (
+                        <div
+                            key={m.id}
+                            className={`achat-message ${m.sender === user?.uid ? "own-message" : "other-message"
+                                }`}
+                        >
+                            <div className="achat-sender">{m.sender === user?.uid ? "You" : "Admin"}</div>
+                            <div>{m.text}</div>
+                        </div>
+                    ))}
+                </div>
 
-            {/* Input */}
-            <div className="achat-input-container">
-                <input
-                    type="text"
-                    className="achat-input"
-                    value={active ? input : "Chat has been closed"}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="Type a message..."
-                    onKeyDown={handleKeyDown}
-                    disabled={!active}
-                />
-                <button onClick={handleSend} className="achat-button" disabled={!active}>
-                    Send
-                </button>
-            </div>
+                {/* Input */}
+                <div className="achat-input-container">
+                    <input
+                        type="text"
+                        className="achat-input"
+                        value={active ? input : "Chat has been closed"}
+                        onChange={(e) => setInput(e.target.value)}
+                        placeholder="Type a message..."
+                        onKeyDown={handleKeyDown}
+                        disabled={!active}
+                    />
+                    <button onClick={handleSend} className="achat-button" disabled={!active}>
+                        Send
+                    </button>
+                </div>
+            </SectionContainer>
         </div>
     );
 }
