@@ -6,6 +6,7 @@ import SeeMoreButton from "../SeeMoreButton/SeeMoreButton";
 import SectionTitle from "../SectionTitle/SectionTitle";
 import { useNavigate } from "react-router";
 import BACKEND_URL from "../../../config/backend-config";
+import SectionContainer from "../../SectionContainer";
 
 const TopFreelancers = () => {
   const [loading, setLoading] = useState(true);
@@ -39,34 +40,36 @@ const TopFreelancers = () => {
   };
   if (loading) return;
   return (
-    
-    <section className={styles.TopFreelancers}>
-      <SectionHeader text="Top Freelancers" />
-      <SectionTitle
-        title="Our Best"
-        subtitle="Given their ability and rankings, these are the outstanding freelancers we have."
-        span="freelancers"
-      />
-      <div className={styles.sectionBody}>
-        {freelancers &&
-          freelancers.map((freelancer, i) => (
-            <FreelancerCard
-              key={i}
-              profilePicture={freelancer.profilePicture}
-              name={freelancer.displayName}
-              jobTitle={freelancer.jobTitle}
-              projectsCompleted={freelancer.projects?.length ?? 0 }
-              rating={freelancer.rating}
-            />
-          ))}
-      </div>
-      <div className={styles.sectionButton}>
-        <SeeMoreButton
-          text="See more"
-          onClick={() => navigation("/discovery")}
+    <SectionContainer>
+      <section className={styles.TopFreelancers}>
+        <SectionHeader text="Top Freelancers" />
+        <SectionTitle
+          title="Our Best"
+          subtitle="Given their ability and rankings, these are the outstanding freelancers we have."
+          span="freelancers"
         />
-      </div>
-    </section>
+        <div className={styles.sectionBody}>
+          {freelancers &&
+            freelancers.map((freelancer, i) => (
+              <FreelancerCard
+                key={i}
+                profilePicture={freelancer.profilePicture}
+                name={freelancer.displayName}
+                jobTitle={freelancer.jobTitle}
+                projectsCompleted={freelancer.projects?.length ?? 0}
+                rating={freelancer.rating}
+              />
+            ))}
+        </div>
+        <div className={styles.sectionButton}>
+          <SeeMoreButton
+            text="See more"
+            onClick={() => navigation("/discovery")}
+          />
+        </div>
+      </section>
+    </SectionContainer>
+
   );
 };
 
