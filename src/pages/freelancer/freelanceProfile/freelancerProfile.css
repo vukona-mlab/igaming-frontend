@@ -8,7 +8,8 @@
   width: 100%;
   /* background-color: blue; */
   display: flex;
-  justify-content: flex-end;
+  padding: 3rem;
+  justify-content: end;
   align-items: center;
 }
 

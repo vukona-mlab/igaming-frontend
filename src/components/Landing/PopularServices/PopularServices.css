@@ -1,6 +1,7 @@
 .popular-services {
-  /* width: 85%; */
-  /* margin: auto; */
+  justify-content: center;
+  align-items: center;
+  margin: auto;
 }
 
 .services-container {

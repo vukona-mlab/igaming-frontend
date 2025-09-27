@@ -7,41 +7,50 @@ import "./DiscoveryPage.css";
 import { useParams, Outlet, useSearchParams, useNavigate } from "react-router-dom";
 import SectionContainer from "../../components/SectionContainer";
 import { useProfileCompletionContext } from "../../components/Common/ProfileCompletionContext";
-const DiscoveryPage = () => {
-  // const [searchQuery, setSearchQuery] = useState("");
-  const { freelancer_id } = useParams();
-  const [searchParams] = useSearchParams()
-  const navigate = useNavigate()
-  const { query, category } = Object.fromEntries(searchParams)
-  // console.log({ category, query });
-  // const [catergory, setCatergory] = useState("");
-  const { isProfileComplete, isModalOpen, blocked } = useProfileCompletionContext();
+import { Spinner } from "react-bootstrap";
 
-  // console.log({ isProfileComplete, blocked });
-  // useEffect(() => {
-  //   const { search, category } = Object.fromEntries(searchParams)
-  //   console.log({ category, search });
-  // }, [searchParams])
+const DiscoveryPage = () => {
+  const { freelancer_id } = useParams();
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const { query, category } = Object.fromEntries(searchParams);
+  const { isProfileComplete, isModalOpen, blocked } = useProfileCompletionContext();
+  const [loading, setLoading] = useState(true);
+
   const handleSearch = (query) => {
     if (query.trim() !== "") {
       if (category) {
-        navigate(`/discovery?category=${category}&search=${query}`)
+        navigate(`/discovery?category=${category}&search=${query}`);
       } else {
-        navigate(`/discovery?search=${query}`)
+        navigate(`/discovery?search=${query}`);
       }
     } else {
       if (category) {
-        navigate(`/discovery?category=${category}`)
+        navigate(`/discovery?category=${category}`);
       } else {
-        navigate(`/discovery`)
+        navigate(`/discovery`);
       }
     }
-
-
   };
+
+  useEffect(() => {
+    // Simulate small delay for loader effect (or remove if not needed)
+    const timer = setTimeout(() => setLoading(false), 300); 
+    return () => clearTimeout(timer);
+  }, []);
+
   if (freelancer_id !== "" && typeof freelancer_id !== "undefined") {
     return <Outlet />;
   }
+
+  if (loading) {
+    return (
+      <div className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
+        <Spinner animation="border" variant="primary" />
+      </div>
+    );
+  }
+
   return (
     <div className="discovery-page">
       {isProfileComplete && blocked && (

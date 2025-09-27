@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import ServicesCard from "../../ServicesCard/ServicesCard";
 import SectionHeader from "../section-header/SectionHeader";
 import SeeMoreButton from "../SeeMoreButton/SeeMoreButton";

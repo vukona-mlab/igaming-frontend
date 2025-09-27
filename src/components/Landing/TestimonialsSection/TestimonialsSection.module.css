@@ -1,6 +1,6 @@
 .TestimonialsSection {
-  /* width: 90%;
-  margin: 15px auto; */
+  
+  margin: 25px auto; 
   font-family: "Poppins";
 }
 .TestimonialsHeader {
@@ -25,7 +25,7 @@
 
 .sectionBody {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: flex-end;
   flex-wrap: wrap;
 }

@@ -12,7 +12,7 @@ const About = () => {
           <p className="lead">
             <b> RI Experts is a premier freelance platform dedicated
               exclusively to professionals in the gaming industry.
-              Whether you're an experienced consultant, a skilled
+              Whether you’re an experienced consultant, a skilled
               developer, a compliance expert, or a creative marketer,
               RI Experts provides a space where your expertise meets
               businesses looking for specialised talent.

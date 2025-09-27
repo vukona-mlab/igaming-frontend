@@ -1,5 +1,5 @@
 import React from "react";
-import "./getStarted.css";
+import "./getStarted.css";  
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -28,6 +28,7 @@ export default function GetStarted() {
                 <div className="img-card">
                   <img
                     src="/images/red-magnifying-img.png"
+                    alt=""
                     width="300"
                   ></img>
                 </div>

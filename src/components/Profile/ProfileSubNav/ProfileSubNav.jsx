@@ -23,7 +23,7 @@ export default function ProfileSubNav() {
           <div
             className="p-subnav-link"
             onClick={() => {
-              console.log("testt");
+              console.log("test");
               navigation(
                 localStorage.getItem("role") === "freelancer"
                   ? "/messaging-freelancer"

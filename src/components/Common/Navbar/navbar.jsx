@@ -53,23 +53,58 @@ function NavBar() {
   const handleLogoutClick = () => {
     setShowLogoutModal(true);
   };
-  const handleLogoutConfirm = async () => {
-    setShowLogoutModal(false);
-    // Update active status on server
-    socket.emit("active-status-update", {
-      uid: localStorage.getItem("uid"),
-      activeStatus: false,
-    });
-    // Call actual logout logic
-    const success = await handleLogout();
-    if (success) {
+  // const handleLogoutConfirm = async () => {
+  //   setShowLogoutModal(false);
+  //   // Update active status on server
+  //   socket.emit("active-status-update", {
+  //     uid: localStorage.getItem("uid"),
+  //     activeStatus: false,
+  //   });
+  //   // Call actual logout logic
+  //   const success = await handleLogout();
+  //   if (success) {
+  //     navigation("/freelancer-signin");
+  //   } else {
+  //     // fallback: clear localStorage and redirect
+  //     localStorage.clear();
+  //     navigation("/freelancer-signin");
+  //   }
+  // };
+
+
+const handleLogoutConfirm = async () => {
+  setShowLogoutModal(false);
+
+  // Update active status on server
+  socket.emit("active-status-update", {
+    uid: localStorage.getItem("uid"),
+    activeStatus: false,
+  });
+
+  const success = await handleLogout();
+
+  // Determine redirect based on role
+  const role = localStorage.getItem("role"); // "freelancer" or "client"
+  localStorage.clear(); // clear everything after logout
+
+  if (success) {
+    if (role === "client") {
       navigation("/client-signin");
     } else {
-      // fallback: clear localStorage and redirect
-      localStorage.clear();
-      navigation("/client-signin");
+      navigation("/freelancer-signin");
     }
-  };
+  } else {
+    // fallback redirect if logout fails
+    if (role === "freelancer") {
+      navigation("/client-signin");
+    } else {
+      navigation("/freelancer-signin");
+    }
+  }
+};
+
+
+
   const handleLogoutCancel = () => {
     setShowLogoutModal(false);
   };
@@ -129,7 +164,7 @@ function NavBar() {
                 <button
                   className="logout-btn"
                   style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center" }}
-                  onClick={handleLogoutClick}
+                   onClick={() => handleLogoutClick(localStorage.getItem("role"))}
                   aria-label="Logout"
                 >
                   <FiLogOut size={24} style={{ marginRight: 4 }} />
