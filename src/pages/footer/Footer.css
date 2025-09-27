@@ -2,14 +2,16 @@
   background-color: white;
   color: #333;
   font-family: Arial, sans-serif;
+  
 }
 
 .foot-container {
   border-top: 1px solid #ddd;
-  padding-top: 40px;
+  margin: auto;
+  padding: 16px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: flex-start;
 }
 

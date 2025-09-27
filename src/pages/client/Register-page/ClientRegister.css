@@ -1,24 +1,26 @@
 .client-register-container {
   display: flex;
+  overflow: hidden;
   height: 100vh;
   background: #fff;
   position: relative;
-  align-items: stretch;
   width: 100% !important;
 }
 
 .client-register-left {
   flex: 55%;
+  overflow-x: hidden;
   width: 55% !important;
   background: #fff;
   padding: 50px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  position: relative;
-  height: 100%;
+  /* position: relative; */
+  height: auto;
+
   margin-top: 0;
-  width: 100% !important;
+  /* width: 100% !important; */
   align-items: center !important;
 }
 
@@ -148,3 +150,4 @@
     align-items: center;
   }
 }
+

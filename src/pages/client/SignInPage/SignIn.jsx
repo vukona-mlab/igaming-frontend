@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { FiArrowRight } from "react-icons/fi";
+import Swal from "sweetalert2";
 import LoadingButton from "../../../components/Common/ButtonLoader/LoadingButton";
 import GoogleSignInButton from "../../../components/Auth/googleSignButton/googleSign";
 import AuthForm from "../../../components/Auth/reusable-input-form/InputForm";
@@ -9,24 +10,9 @@ import { auth, googleProvider } from "../../../config/firebase";
 import { signInWithPopup } from "firebase/auth";
 import { io } from "socket.io-client";
 import BACKEND_URL from "../../../config/backend-config";
+
 const url = BACKEND_URL;
 const socket = io(url, { transports: ["websocket"] });
-
-
-// Validation functions
-export const validatePassword = (password) => {
-  if (!password.match(/^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$/)) {
-    return "Password must be at least 6 characters, with a number, one uppercase letter, and a special character";
-  }
-  return "";
-};
-
-export const validateEmail = (email) => {
-  if (!email.match(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/)) {
-    return "Invalid email format";
-  }
-  return "";
-};
 
 const ClientLogin = () => {
   const [formData, setFormData] = useState({
@@ -39,19 +25,24 @@ const ClientLogin = () => {
     password: "",
   });
 
-  const [successMessage, setSuccessMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigate();
 
   const handleGoogleSignIn = async () => {
-    const deviceToken = localStorage.getItem("rig-dev-token")
+    const deviceToken = localStorage.getItem("rig-dev-token");
     try {
+      setLoading(true);
+      Swal.fire({
+        title: "Signing in with Google...",
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading(),
+      });
+
       const result = await signInWithPopup(auth, googleProvider);
       const idToken = await result.user.getIdToken();
       const response = await fetch(`${BACKEND_URL}/api/auth/google`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ idToken, deviceToken }),
       });
 
@@ -65,11 +56,30 @@ const ClientLogin = () => {
         localStorage.setItem("token", data.token);
         localStorage.setItem("uid", data.user.uid);
         localStorage.setItem("role", data.user.roles[0]);
+
+        Swal.fire({
+          icon: "success",
+          title: "Google sign-in successful!",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+
         navigation("/profile");
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Google Sign-In Failed",
+          text: data.message || "Please try again.",
+        });
       }
     } catch (error) {
-      console.error("Error:", error);
-      alert("Error signing in: " + error.message);
+      Swal.fire({
+        icon: "error",
+        title: "Error signing in",
+        text: error.message,
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -78,54 +88,68 @@ const ClientLogin = () => {
   };
 
   const handleLogin = async () => {
-    const deviceToken = localStorage.getItem("rig-dev-token")
-    const emailError = validateEmail(formData.username);
-    const passwordError = validatePassword(formData.password);
+    const deviceToken = localStorage.getItem("rig-dev-token");
+    setLoading(true);
 
-    if (emailError || passwordError) {
-      setErrors({ username: emailError, password: passwordError });
-      return;
-    }
+    Swal.fire({
+      title: "Logging in...",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
 
-    console.log({ formData });
+    try {
+      const res = await fetch(`${BACKEND_URL}/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: formData.username,
+          password: formData.password,
+          deviceToken: deviceToken,
+        }),
+      });
 
-    return new Promise(async (r) => {
-      try {
-        const res = await fetch(`${BACKEND_URL}/api/auth/login`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: formData.username,
-            password: formData.password,
-            deviceToken: deviceToken
-          }),
+      const data = await res.json();
+      if (res.ok) {
+        socket.emit("active-status-update", {
+          uid: data.user.uid,
+          activeStatus: true,
         });
 
-        const data = await res.json();
-        if (res.ok) {
-          console.log({ data });
-          setSuccessMessage("Login successful! Redirecting...");
-          setTimeout(() => {
-            socket.emit("active-status-update", {
-              uid: data.user.uid,
-              activeStatus: true,
-            });
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("uid", data.user.uid);
+        localStorage.setItem("role", data.user.roles[0]);
 
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("uid", data.user.uid);
-            localStorage.setItem("role", data.user.roles[0]);
+        Swal.fire({
+          icon: "success",
+          title: "Login successful!",
+          timer: 2000,
+          showConfirmButton: false,
+        });
 
-            navigation("/profile");
-          }, 2000);
-          r(true);
-        }
-      } catch (err) {
-        console.log(err);
-        r(false);
+        setTimeout(() => {
+          navigation("/profile");
+        }, 1500);
+
+        return true;
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Login failed",
+          text: data.message || "Invalid email or password.",
+        });
+        setErrors({ username: "", password: data.message || "Login failed" });
+        return false;
       }
-    });
+    } catch (err) {
+      Swal.fire({
+        icon: "error",
+        title: "Something went wrong",
+        text: err.message,
+      });
+      return false;
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -146,15 +170,13 @@ const ClientLogin = () => {
             SIGN IN
           </h2>
 
-          {/* Pass handleFormDataChange to AuthForm */}
           <AuthForm
             formData={formData}
-            handleFormDataChange={setFormData} // passing setFormData to InputForm
+            handleFormDataChange={setFormData}
             onSubmit={handleFormSubmit}
             errors={errors}
           />
 
-          {/* Display validation errors */}
           {errors.username && (
             <p className="error-message">{errors.username}</p>
           )}
@@ -162,23 +184,32 @@ const ClientLogin = () => {
             <p className="error-message">{errors.password}</p>
           )}
 
-          {/* Display success message */}
-          {successMessage && (
-            <p className="success-message">{successMessage}</p>
-          )}
-
-
           <div className="forgot-password-link">
             <span
-              style={{ color: '#007bff', cursor: 'pointer', textDecoration: 'underline', fontSize: '15px', fontWeight: 500 }}
-              onClick={() => navigation('/reset-password')}
+              style={{
+                color: "#007bff",
+                cursor: "pointer",
+                textDecoration: "underline",
+                fontSize: "15px",
+                fontWeight: 500,
+              }}
+              onClick={() =>
+                navigation("/reset-password", { state: { role: "client" } })
+              }
             >
               Forgot password?
             </span>
           </div>
 
-          <LoadingButton onClick={handleLogin} text="Continue with email" />
-          <GoogleSignInButton handleGoogleSignIn={handleGoogleSignIn} />
+          <LoadingButton
+            onClick={handleLogin}
+            text={loading ? "Please wait..." : "Continue with email"}
+            disabled={loading}
+          />
+          <GoogleSignInButton
+            handleGoogleSignIn={handleGoogleSignIn}
+            disabled={loading}
+          />
         </div>
       </div>
 

@@ -17,127 +17,89 @@ const FreelancerDiscovery = ({ searchQuery, category, disabled }) => {
   const [totalPages, setTotalPages] = useState(1);
   const [pageSize, setPageSize] = useState(30);
 
-  const navigation = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    setLoading(true)
     fetchFreelancers();
-  }, [searchQuery, category])
-  useEffect(() => {
+  }, [searchQuery, category, currentPage]);
 
+  useEffect(() => {
     updateColumns();
     window.addEventListener("resize", updateColumns);
     return () => window.removeEventListener("resize", updateColumns);
-  }, [currentPage, pageSize]);
-  const showError = () => {
+  }, []);
+
+  const showError = (message) => {
     Swal.fire({
       title: "Oops...",
-      text: "Cannot send message to yourself.",
+      text: message,
       icon: "error",
     });
   };
 
   const updateColumns = () => {
     const width = window.innerWidth;
-    const height = window.innerHeight;
-
-    // Check for specific device dimensions first
-    if (
-      (width === 1920 && height === 1080) ||
-      (width === 1366 && height === 768) ||
-      (width === 1210 && height === 784)
-    ) {
-      setColumns(3); // Common laptop resolutions
-    } else if (
-      (width === 1440 && height === 970) ||
-      (width === 1440 && height === 838)
-    ) {
-      setColumns(3); // 1440px width devices
-    } else if (
-      (width === 1280 && height === 800) ||
-      (width === 1114 && height === 705)
-    ) {
-      setColumns(3); // MacBook Air and similar devices
-    } else if (width === 800 && height === 1280) {
-      setColumns(2); // 800x1280 devices
-    } else if (width >= 820 && width <= 1180) {
-      setColumns(2); // iPad Air
-    } else if (width <= 600) {
-      setColumns(1);
-    } else if (width <= 900) {
-      setColumns(2);
-    } else if (width >= 768 && width <= 970) {
-      setColumns(2); // Specific iPad/Tablet size
-    } else if (width >= 971 && width <= 1024) {
-      setColumns(3); // Laptop
-    } else if (width <= 1200) {
-      setColumns(3);
-    } else {
-      setColumns(4); // Default for larger screens
-    }
+    if (width <= 600) setColumns(1);
+    else if (width <= 900) setColumns(2);
+    else if (width <= 1200) setColumns(3);
+    else setColumns(4);
   };
 
   const fetchFreelancers = async () => {
+    setLoading(true);
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
         `${BACKEND_URL}/api/freelancers?category=${category}&search=${searchQuery}&page=${currentPage}&pageSize=${pageSize}`,
         {
           headers: {
-            Authorization: token,
+            Authorization: token ? `Bearer ${token}` : "",
           },
         }
       );
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch freelancers");
-      }
+      if (!response.ok) throw new Error("Failed to fetch freelancers");
 
       const data = await response.json();
       setFreelancers(data.freelancers);
+      setTotalPages(Math.ceil(data.totalCount / pageSize) || 1);
       setLoading(false);
     } catch (err) {
       setError(err.message);
       setLoading(false);
+      showError(err.message || "Failed to load freelancers");
     }
   };
 
   const handleMessageClick = async (freelancerId) => {
     try {
-      console.log("Freelancer data received:", { freelancerId });
-
-      if (!freelancerId) {
-        console.error("FreelancerId is missing");
-        return;
-      }
+      if (!freelancerId) return;
 
       let token = localStorage.getItem("token");
       if (!token) {
-        alert("Please sign in to send messages");
-        navigation("/client-signin");
+        Swal.fire({
+          icon: "warning",
+          title: "Sign In Required",
+          text: "Please sign in to send messages",
+        });
+        navigate("/client-signin");
         return;
       }
 
-      if (!token.startsWith("Bearer ")) {
-        token = `Bearer ${token}`;
-      }
-
+      if (!token.startsWith("Bearer ")) token = `Bearer ${token}`;
       const uid = localStorage.getItem("uid");
 
-      if (uid == freelancerId) {
-        showError();
+      if (uid === freelancerId) {
+        showError("Cannot send message to yourself.");
         return;
       }
 
       const requestData = {
-        freelancerId: freelancerId,
+        freelancerId,
         clientId: uid,
         senderId: uid,
-        message: "Hello! I'm interested in working with you.", // Add initial message
+        message: "Hello! I'm interested in working with you.",
       };
-
-      console.log("Sending chat request with data:", requestData);
-      console.log("Using authorization token:", token);
 
       const response = await fetch(`${BACKEND_URL}/api/chats`, {
         method: "POST",
@@ -148,94 +110,41 @@ const FreelancerDiscovery = ({ searchQuery, category, disabled }) => {
         body: JSON.stringify(requestData),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to create chat");
-      }
+      if (!response.ok) throw new Error("Failed to create chat");
 
       const data = await response.json();
-      console.log("Chat created successfully:", data);
-
-      // Navigate to messaging page with the new chat ID
-      navigation(`/messaging-client/${data.chatId}`);
-    } catch (error) {
-      console.error("Error creating chat:", error);
-      alert("Failed to create chat. Please try again.");
+      Swal.fire({
+        icon: "success",
+        title: "Chat Created",
+        text: "You can now chat with this freelancer.",
+      }).then(() => {
+        navigate(`/messaging-client/${data.chatId}`);
+      });
+    } catch (err) {
+      showError(err.message || "Failed to create chat.");
     }
   };
 
-  // const filteredFreelancers = freelancers.filter((freelancer) => {
-  //   if (!searchQuery.trim() && catergory == "") return true; // Show all when no search query
-
-  //   let searchBool = false;
-  //   let filterBool = false;
-
-  //   if (searchQuery.trim()) {
-  //     const searchLower = searchQuery.toLowerCase();
-  //     const displayName = (
-  //       freelancer.displayName || "Anonymous Freelancer"
-  //     ).toLowerCase();
-  //     const jobTitle = (freelancer.jobTitle || "Freelancer").toLowerCase();
-
-  //     // Check for multiple search terms
-  //     const searchTerms = searchLower.split(" ");
-
-  //     searchBool = searchTerms.every((term) => {
-  //       // Check if searching for "anonymous" specifically
-  //       if (term === "anonymous" && displayName.includes("anonymous")) {
-  //         return true;
-  //       }
-
-  //       // Check if the term matches either name or job title
-  //       return displayName.includes(term) || jobTitle.includes(term);
-  //     });
-  //   }
-  //   if (catergory !== "") {
-  //     const filterTerms = catergories[catergory.replace(/-/g, "")];
-  //     const arr =
-  //       freelancer.categories && freelancer.categories.length > 0
-  //         ? freelancer.categories.map(function (item) {
-  //             return item.toLowerCase();
-  //           })
-  //         : [];
-  //     filterBool = filterTerms.every((term) => {
-  //       // Check if the term matches either name or job title
-  //       return arr.length > 0 ? arr.includes(term) : false;
-  //     });
-  //   }
-  //   return !searchQuery.trim()
-  //     ? filterBool
-  //     : catergory == ""
-  //     ? searchBool
-  //     : searchBool && filterBool;
-  // });
-
   if (loading) {
-    return <div className="freelancer-discovery-loading">Loading...</div>;
+    return (
+      <div className="freelancer-discovery-loading">
+        <div className="spinner"></div>
+      </div>
+    );
   }
 
   if (error) {
     return <div className="freelancer-discovery-error">Error: {error}</div>;
   }
 
-  // Group freelancers into rows based on current column count
+  // Group freelancers into rows based on columns
   const rows = [];
-  console.log({ freelancers });
-  
   for (let i = 0; i < freelancers.length; i += columns) {
     rows.push(freelancers.slice(i, i + columns));
   }
 
-  const handleNext = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const handlePrevious = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
+  const handleNext = () => currentPage < totalPages && setCurrentPage(currentPage + 1);
+  const handlePrevious = () => currentPage > 1 && setCurrentPage(currentPage - 1);
 
   return (
     <SectionContainer>
@@ -244,18 +153,14 @@ const FreelancerDiscovery = ({ searchQuery, category, disabled }) => {
           {rows.length > 0 ? (
             rows.map((row, rowIndex) => (
               <div key={rowIndex} className="freelancer-row">
-                {row.map((freelancer) => {
-                  console.log({ freelancer });
-                  
-                  return <div
+                {row.map((freelancer) => (
+                  <div
                     key={freelancer.id}
                     className="freelancer-card-wrapper"
-                    onClick={() => navigation(`/discovery/${freelancer.id}`)}
+                    onClick={() => navigate(`/discovery/${freelancer.id}`)}
                   >
                     <FreelancerCard
-                      profilePicture={
-                        freelancer.profilePicture || defaultProfile
-                      }
+                      profilePicture={freelancer.profilePicture || defaultProfile}
                       name={freelancer.displayName || "Anonymous Freelancer"}
                       jobTitle={freelancer.jobTitle || "Freelancer"}
                       projectsCompleted={freelancer.projects?.length || 0}
@@ -264,18 +169,15 @@ const FreelancerDiscovery = ({ searchQuery, category, disabled }) => {
                       onMessageClick={() => handleMessageClick(freelancer.id)}
                       disabled={disabled}
                     />
-                    {/* Hover message */}
-                    <div className="hover-message">
-                      Click image to view more
-                    </div>
+                    <div className="hover-message">Click image to view more</div>
                   </div>
-                })}
+                ))}
               </div>
             ))
           ) : (
             <div>No users found</div>
           )}
-          {/* Pagination Controls */}
+
           {rows.length > 0 && (
             <div className="pagination">
               <button onClick={handlePrevious} disabled={currentPage === 1}>
@@ -284,10 +186,7 @@ const FreelancerDiscovery = ({ searchQuery, category, disabled }) => {
               <span>
                 Page {currentPage} of {totalPages}
               </span>
-              <button
-                onClick={handleNext}
-                disabled={currentPage === totalPages}
-              >
+              <button onClick={handleNext} disabled={currentPage === totalPages}>
                 Next
               </button>
             </div>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import withProfileCheck from "../../../components/Common/withProfileCheck";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { Container, Row, Col, Button, Alert } from "react-bootstrap";
+import { Container, Row, Col, Button, Alert, Spinner } from "react-bootstrap";
 import Swal from "sweetalert2";
 import Navbar from "../../../components/Common/Navbar/navbar";
 import ProjectCard from "../../../components/Profile/FreelancerProjects/ProjectCard";
@@ -253,11 +253,16 @@ const FreelancerDetails = (props) => {
       }
 
       let token = localStorage.getItem("token");
-      if (!token) {
-        alert("Please sign in to send messages");
-        navigation("/client-signin");
-        return;
-      }
+    if (!token) {
+      Swal.fire({
+        icon: "warning",
+        title: "Sign In Required",
+        text: "Please sign in to send messages",
+        confirmButtonColor: "#3085d6",
+      });
+      navigation("/client-signin");
+      return;
+    }
 
       if (!token.startsWith("Bearer ")) {
         token = `Bearer ${token}`;
@@ -302,6 +307,10 @@ const FreelancerDetails = (props) => {
       alert("Failed to create chat. Please try again.");
     }
   };
+ 
+
+
+
 
   const handleTabChange = (tab) => {
     setCurrentTab(tab);
@@ -423,42 +432,42 @@ const FreelancerDetails = (props) => {
   return (
     <>
       <Navbar />
-      <SectionContainer padding={20}>
-        <Container fluid className="main-container">
-          <div className="content-wrapper">
-            <div className="d-flex justify-content-between align-items-center my-4 name-free p-2">
-              <h1 className="m-0">{freelancerData?.displayName}'s Profile</h1>
-              <Button
-                variant="dark"
-                className="buttona-message"
-                onClick={() => handleMessageClick(freelancerData?.id)}
-              >
-                Message
-              </Button>
-            </div>
+      {loading ? (
+        <div
+          className="d-flex justify-content-center align-items-center"
+          style={{ height: "80vh" }}
+        >
+          <Spinner animation="border" variant="primary" />
+        </div>
+      ) : (
+        <SectionContainer padding={20}>
+          <Container fluid className="main-container">
+            <div className="content-wrapper">
+              <div className="d-flex justify-content-between align-items-center my-4 name-free p-2">
+                <h1 className="m-0">{freelancerData?.displayName}'s Profile</h1>
+                <Button
+                  variant="dark"
+                  className="buttona-message"
+                  onClick={() => handleMessageClick(freelancerData?.id)}
+                >
+                  Message
+                </Button>
+              </div>
 
-            {loading && <Alert variant="info">Loading projects...</Alert>}
-            {error && <Alert variant="danger">{error}</Alert>}
+              {error && <Alert variant="danger">{error}</Alert>}
 
-            {!loading && !error && (
               <Row style={{ width: "100%", margin: "auto" }}>
-                {shouldShowSidebar && (
+                {shouldShowSidebar && freelancerData && (
                   <Col md={3} className="sidebar-col">
-                    {freelancerData && (
-                      <FreelancerProjectCards
-                        image={freelancerData.profilePicture}
-                        specialities={freelancerData.specialities}
-                        bio={bio}
-                      />
-                    )}
+                    <FreelancerProjectCards
+                      image={freelancerData.profilePicture}
+                      specialities={freelancerData.specialities}
+                      bio={bio}
+                    />
                   </Col>
                 )}
 
-                <Col
-                  md={shouldShowSidebar ? 9 : 12}
-                  style={{ backgroundColor: "#0000" }}
-                  he
-                >
+                <Col md={shouldShowSidebar ? 9 : 12}>
                   <FreelancerProfileHeader
                     searchTerm={freelancerData?.displayName}
                     onTabChange={handleTabChange}
@@ -466,17 +475,16 @@ const FreelancerDetails = (props) => {
                     packages={freelancerData?.packages}
                     reviews={reviews}
                     reviewsError={reviewsError}
-                    onReviewSubmit={handleReviewSubmit}
                     handleMessageClick={(price) =>
                       handleMessageClick(freelancerData?.id, price)
                     }
                   />
                 </Col>
               </Row>
-            )}
-          </div>
-        </Container>
-      </SectionContainer>
+            </div>
+          </Container>
+        </SectionContainer>
+      )}
     </>
   );
 };

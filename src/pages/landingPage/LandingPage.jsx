@@ -9,16 +9,17 @@ import Showcase from "../../components/Landing/Showcase/Showcase";
 import TopFreelancers from "../../components/Landing/TopFreelancers/TopFreelancers";
 import MadeOnRI from "../../components/Landing/MadeOnRI/MadeOnRI";
 import FAQSection from "../../components/Landing/FAQSection/FAQSection";
-import SpeechBubble from "../../components/Landing/TestimonialsSection/SpeechBubble";
+// import SpeechBubble from "../../components/Landing/TestimonialsSection/SpeechBubble";
 import TestimonialsSection from "../../components/Landing/TestimonialsSection/TestimonialsSection";
 import GetStarted from "../../components/Landing/GetStartedSection/GetStarted";
 import ContactPage from "../ContactPage/ContactPage";
-import { Chat } from "react-bootstrap-icons";
+// import { Chat } from "react-bootstrap-icons";
 import ChatBot from "../../components/ChatBot/ChatBot";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { onAuthStateChanged, signInAnonymously } from "firebase/auth";
 import { auth, db } from "../../config/firebase";
 import { useNavigate } from "react-router-dom";
+import { ClassNames } from "@emotion/react";
 function LandingPage() {
   const [user, setUser] = useState(null);
   const [name, setName] = useState('')

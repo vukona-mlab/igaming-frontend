@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default function SectionContainer({ children, containerColor, backgroundColor='transparent', padding, className }) {
-    const pd = padding ? padding * 2 : 24
+    // const pd = padding ? padding * 2 : 24
 
     return (
         <div style={{ width: '100%', backgroundColor: containerColor }}>

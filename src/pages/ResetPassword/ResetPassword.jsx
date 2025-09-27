@@ -1,70 +1,70 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router";
-
-import { FiArrowRight } from "react-icons/fi"; // Import the arrow icon
+import { useNavigate, useLocation } from "react-router";
+import { FiArrowRight } from "react-icons/fi";
 import LoadingButton from "../../components/Common/ButtonLoader/LoadingButton";
+import Swal from "sweetalert2";
 import "./ResetPassword.css";
 import { auth } from "../../config/firebase";
 import { sendPasswordResetEmail } from "firebase/auth";
+
 const ResetPassword = () => {
-  // State to manage form values and errors
-  const [formData, setFormData] = useState({
-    username: "",
-  });
-
-  const [errors, setErrors] = useState({
-    username: "",
-  });
-  const navigation = useNavigate();
-
+  const [formData, setFormData] = useState({ username: "" });
+  const [errors, setErrors] = useState({ username: "" });
   const [loading, setLoading] = useState(false);
 
-  // Handle input changes
+  const navigate = useNavigate();
+  const location = useLocation();
+  const role = location.state?.role || "freelancer";
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-
-    // Clear errors when user types
     setErrors({ ...errors, [e.target.name]: "" });
   };
 
-  // Validate form fields
   const handleValidation = () => {
     let newErrors = {};
     let isValid = true;
-
     if (!formData.username.trim()) {
       newErrors.username = "Username is required.";
       isValid = false;
     }
-
     setErrors(newErrors);
     return isValid;
   };
 
-  // Handle form submission
   const handleReset = async () => {
     if (!handleValidation()) return;
-
     setLoading(true);
     try {
       await sendPasswordResetEmail(auth, formData.username);
       setLoading(false);
-      alert("Password reset request submitted!");
-      navigation("/freelancer-signin");
+      Swal.fire({
+        icon: "success",
+        title: "Password Reset",
+        text: "Password reset email sent successfully!",
+        confirmButtonColor: "#3085d6",
+      }).then(() => {
+        navigate(role === "client" ? "/client-signin" : "/freelancer-signin");
+      });
     } catch (err) {
       setLoading(false);
-      console.log(err);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: err.message || "Something went wrong!",
+        confirmButtonColor: "#d33",
+      });
     }
   };
 
   return (
     <div className="reset-container">
-      {/* Left Section */}
       <div className="reset-left">
-        {/* Register Button */}
         <button
           className="register-btn"
-          onClick={() => navigation("/freelancer-register")}
+          onClick={() =>
+            navigate(role === "client" ? "/client-register" : "/freelancer-register")
+          }
         >
           <b>
             Register <FiArrowRight className="register-arrow" />
@@ -77,7 +77,6 @@ const ResetPassword = () => {
             RESET PASSWORD
           </h2>
 
-          {/* Username Input */}
           <div className="input-group">
             <label>Username</label>
             <input
@@ -90,35 +89,16 @@ const ResetPassword = () => {
             {errors.username && <p className="error-text">{errors.username}</p>}
           </div>
 
-          {/* Phone Input
-          <div className="input-group">
-            <label>Phone</label>
-            <input
-              type="text"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              placeholder="Enter phone number"
-            />
-            {errors.phone && <p className="error-text">{errors.phone}</p>}
-          </div> */}
-
-          {/* Reset Button */}
           <LoadingButton
             onClick={handleReset}
-            text="Reset"
+            text={loading ? "Processing..." : "Reset"}
             disabled={loading}
           />
-
         </div>
       </div>
 
-      {/* Right Section */}
       <div className="reset-right">
-        <img
-          src="/images/ri-experts.jpg"
-          alt="Woman with digital interface"
-        />
+        <img src="/images/ri-experts.jpg" alt="Woman with digital interface" />
       </div>
     </div>
   );
