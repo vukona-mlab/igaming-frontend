@@ -148,12 +148,13 @@ const ProfilePage = (props) => {
           dateOfBirth: data.user.dateOfBirth,
         }));
         setFormData((prev) => ({
-          ...prev,
-          speciality:
-            data.user.specialities && typeof data.user.specialities == "string"
-              ? data.user.specialities
-              : data.user.specialities[0],
-        }));
+  ...prev,
+  // Check if specialities exist and are an array with at least one element
+  speciality:
+    data.user.specialities && Array.isArray(data.user.specialities) && data.user.specialities.length > 0
+      ? data.user.specialities[0] // If yes, take the first speciality
+      : data.user.specialities || "", // Otherwise, fallback to the string value or empty string
+}));
         if (data.user.packages && data.user.packages.length > 0) {
           setPricePackages(data.user.packages);
         }
