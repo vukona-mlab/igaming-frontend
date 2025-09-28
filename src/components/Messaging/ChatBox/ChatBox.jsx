@@ -11,6 +11,7 @@ import ProjectDetails from "../ProjectDetails/ProjectDetails";
 import EscrowForm from "../../Escrow/EscrowForm";
 import BACKEND_URL from "../../../config/backend-config";
 import { useProfileCompletionContext } from '../../../components/Common/ProfileCompletionContext';
+import ClientProjectModal from "../ProjectModal/ClientProjectModal";
 
 const ChatBox = ({
   chatId,
@@ -57,7 +58,7 @@ const ChatBox = ({
     if (chatId && currentChat && chatId === currentChat.id) {
       fetchMessages();
       console.log('messages');
-      
+
       if (!currentChat && currentChat.chatType) {
         fetchProjectStatus();
       } else {
@@ -173,7 +174,7 @@ const ChatBox = ({
 
   const fetchProjectStatus = async () => {
     console.log(' getting project status');
-    
+
     try {
       const response = await fetch(
         `${BACKEND_URL}/api/projects/chat/${chatId}`,
@@ -195,7 +196,7 @@ const ChatBox = ({
 
       const data = await response.json();
       console.log({ data });
-      
+
       if (data.project) {
         setProjectStatus(data.project);
       } else {
@@ -565,8 +566,16 @@ const ChatBox = ({
             )}
 
           {/* Existing Project Modal */}
-          {showProjectModal && (
+          {showProjectModal && userRole === "client" ? (
             <ProjectModal
+              isOpen={showProjectModal}
+              onClose={() => setShowProjectModal(false)}
+              projectData={projectData}
+              chatId={chatId}
+              isClientView={userRole === "client"}
+            />
+          ) : (
+            <ClientProjectModal
               isOpen={showProjectModal}
               onClose={() => setShowProjectModal(false)}
               projectData={projectData}

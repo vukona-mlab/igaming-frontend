@@ -35,7 +35,8 @@ const ChatHeader = ({ currentChat, projectStatus }) => {
   const userRole = localStorage.getItem("role");
   const currentUserId = localStorage.getItem("uid");
   const isFreelancer = userRole === "freelancer";
-  
+  console.log({ isFreelancer });
+
   const reasons = [
     "Harassment or bullying",
     "Spam or misleading",
@@ -156,7 +157,7 @@ const ChatHeader = ({ currentChat, projectStatus }) => {
         throw new Error("Failed to delete chat");
       }
       showChatDeleteAlert();
-    } catch (error) {}
+    } catch (error) { }
     setShowMenu(false);
   };
   const handleReportUser = async () => {
@@ -475,9 +476,9 @@ const ChatHeader = ({ currentChat, projectStatus }) => {
             <span className="user-status">
               {!activeStatus
                 ? `Last seen ${new Date(
-                    otherParticipant?.lastSeen?._seconds ||
-                      otherParticipant?.lastSeen
-                  ).toLocaleString()}`
+                  otherParticipant?.lastSeen?._seconds ||
+                  otherParticipant?.lastSeen
+                ).toLocaleString()}`
                 : "Online"}
             </span>
           </div>
@@ -496,6 +497,13 @@ const ChatHeader = ({ currentChat, projectStatus }) => {
           </button>
           {showMenu && (
             <div className="context-menu" ref={menuRef}>
+              {!isFreelancer &&
+                currentChat &&
+                !currentChat.hasOwnProperty("chatType") && (
+                  <button onClick={handleCreateProject}>
+                    View Project SLA
+                  </button>
+                )}
               {isFreelancer &&
                 currentChat &&
                 !currentChat.hasOwnProperty("chatType") && (
