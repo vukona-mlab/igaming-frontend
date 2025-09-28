@@ -27,7 +27,7 @@ const ProjectModal = ({
   const [selectedPlan, setSelectedPlan] = useState("Standard");
   const [totalBudget, setTotalBudget] = useState(0);
   const [freelancerPackages, setFreelancerPackages] = useState([]);
-  const price = freelancerPackages?.find(pkg => pkg.name === selectedPlan).price
+  const price = freelancerPackages?.find(pkg => pkg.name === selectedPlan)?.price ?? 0
   // Fetch freelancer's packages when component mounts
   useEffect(() => {
     const fetchFreelancerPackages = async () => {
@@ -71,12 +71,14 @@ const ProjectModal = ({
   };
 
   useEffect(() => {
-    const baseBudget = parseInt(formData.budget) || 0;
+    const projectBudget = parseInt(formData.budget) || 0;
     const planAmount = hasPackages ? getSelectedPlanPrice() : 0;
 
     setFormData((prev) => ({
       ...prev,
-      budget: (baseBudget + planAmount).toString(),
+      budget: (projectBudget).toString(),
+      extras: projectBudget - price,
+      basePrice: price
     }));
   }, [selectedPlan, freelancerPackages, hasPackages]);
 
@@ -144,7 +146,10 @@ const ProjectModal = ({
       console.error("Error creating project:", error);
     }
   };
-
+  const handleBudget = (ev) => {
+    console.log(ev.target.value);
+    setTotalBudget(Number(ev.target.value))
+  }
   const handleApprove = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -179,7 +184,10 @@ const ProjectModal = ({
       console.error("Error approving project:", error);
     }
   };
-
+  const handleBudgetChange = (value) => {
+    console.log({ value });
+    setTotalBudget(value)
+  }
   const handleReject = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -329,12 +337,12 @@ const ProjectModal = ({
                 </div>
 
                 <div className="form-group">
-                  <label>Base Budget (R):</label>
+                  <label>Project Budget (R):</label>
                   <input
                     type="number"
                     name="budget"
-                    value={price}
-                    onChange={handleChange}
+                    value={totalBudget }
+                    onChange={handleBudget}
                     required
                     min="1"
                     placeholder="Enter the base amount for the project"
@@ -403,6 +411,7 @@ const ProjectModal = ({
                   selectedPlan={selectedPlan}
                   onPlanChange={setSelectedPlan}
                   planPrices={freelancerPackages}
+                  setBudget={handleBudgetChange}
                 />
                 {hasPackages && (
                   <div className="total-budget-section">
@@ -413,12 +422,12 @@ const ProjectModal = ({
                       </span>
                     </div>
                     <div className="total-budget-row">
-                      <span>Plan Amount:</span>
-                      <span>R {price}</span>
+                      <span>Extras:</span>
+                      <span>R {totalBudget - price}</span>
                     </div>
                     <div className="total-budget-row total">
                       <span>Total Budget:</span>
-                      <span>R {price}</span>
+                      <span>R {totalBudget}</span>
                     </div>
                   </div>
                 )}

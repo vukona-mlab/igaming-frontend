@@ -2,7 +2,7 @@ import React from "react";
 import "./PlanOptions.css";
 import checkIcon from "../../../../assets/check.svg";
 
-const PlanOptions = ({ selectedPlan, onPlanChange, planPrices }) => {
+const PlanOptions = ({ selectedPlan, onPlanChange, planPrices, setBudget }) => {
   const hasPackages =
     planPrices && Array.isArray(planPrices) && planPrices.length > 0;
   console.log({ planPrices });
@@ -16,7 +16,7 @@ const PlanOptions = ({ selectedPlan, onPlanChange, planPrices }) => {
     : [];
 
     console.log({ planPrices });
-      const benefits = planPrices?.find(pkg => pkg.name === selectedPlan).benefits ?? []
+      const benefits = planPrices?.find(pkg => pkg.name === selectedPlan)?.benefits ?? []
       
   console.log({ benefits });
 
@@ -33,6 +33,7 @@ const PlanOptions = ({ selectedPlan, onPlanChange, planPrices }) => {
                 className={`package-card ${
                   selectedPlan === plan.id ? "selected" : ""
                 }`}
+                onClick={() => { onPlanChange(plan.id); setBudget(plan.price) }}
               >
                 <div className="radio-group">
                   <input
@@ -40,7 +41,7 @@ const PlanOptions = ({ selectedPlan, onPlanChange, planPrices }) => {
                     id={plan.id}
                     name="plan"
                     checked={selectedPlan === plan.id}
-                    onChange={() => onPlanChange(plan.id)}
+                    
                   />
 
                   <div className="label-price-group">
