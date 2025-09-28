@@ -2,7 +2,7 @@ import React from "react";
 import "./PlanOptions.css";
 import checkIcon from "../../../../assets/check.svg";
 
-const PlanOptions = ({ selectedPlan, onPlanChange, planPrices }) => {
+const PlanOptions = ({ selectedPlan, onPlanChange, planPrices, freelancerPackages }) => {
   const hasPackages =
     planPrices && Array.isArray(planPrices) && planPrices.length > 0;
   console.log({ planPrices });
@@ -15,7 +15,10 @@ const PlanOptions = ({ selectedPlan, onPlanChange, planPrices }) => {
       }))
     : [];
 
-  const benefits = ["20 days faster", "Free Logo", "Free design"];
+    console.log({ planPrices });
+      const benefits = planPrices?.find(pkg => pkg.name === selectedPlan).benefits ?? []
+      const price = planPrices?.find(pkg => pkg.name === selectedPlan).price
+  console.log({ benefits, price });
 
   return (
     <div className="pricing-section">
@@ -52,7 +55,7 @@ const PlanOptions = ({ selectedPlan, onPlanChange, planPrices }) => {
           <div className="benefits-section">
             <h3>Benefits</h3>
             <ul>
-              {benefits.map((benefit, index) => (
+              {benefits && benefits.length > 0 && benefits.map((benefit, index) => (
                 <li key={index}>
                   <img src={checkIcon} alt="check" /> {benefit}
                 </li>

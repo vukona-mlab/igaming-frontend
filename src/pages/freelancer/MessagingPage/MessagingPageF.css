@@ -1,10 +1,19 @@
-.messagePageContainer {
-  width: calc(90%);
-  height: calc(100vh - 84px - 46px - 96px) !important;
+.MessagingPageF {
+  min-height: 100vh;
+  background: #fff;
+  overflow: hidden;
+  /* background-color: red; */
+}
+
+.messagePageFContainer {
+  width: calc(100%);
+  height: calc(100vh - 84px - 46px) !important;
   padding: 25px 0;
   display: flex;
   justify-content: center;
   gap: 15px;
+    padding-left: 16px;
+  padding-right: 16px;
 }
 
 /* @media (min-width: 1441px) {

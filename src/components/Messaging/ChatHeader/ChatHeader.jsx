@@ -35,6 +35,7 @@ const ChatHeader = ({ currentChat, projectStatus }) => {
   const userRole = localStorage.getItem("role");
   const currentUserId = localStorage.getItem("uid");
   const isFreelancer = userRole === "freelancer";
+  console.log({ isFreelancer });
   
   const reasons = [
     "Harassment or bullying",

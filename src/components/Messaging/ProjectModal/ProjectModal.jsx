@@ -24,10 +24,10 @@ const ProjectModal = ({
     inPlatform: true,
     link: "",
   });
-  const [selectedPlan, setSelectedPlan] = useState("standard");
+  const [selectedPlan, setSelectedPlan] = useState("Standard");
   const [totalBudget, setTotalBudget] = useState(0);
   const [freelancerPackages, setFreelancerPackages] = useState([]);
-
+  const price = freelancerPackages?.find(pkg => pkg.name === selectedPlan).price
   // Fetch freelancer's packages when component mounts
   useEffect(() => {
     const fetchFreelancerPackages = async () => {
@@ -43,7 +43,10 @@ const ProjectModal = ({
         );
         if (response.ok) {
           const data = await response.json();
-          setFreelancerPackages(data.user.packages || []);
+          const freelancerPackages = data.user.packages.filter(pkg => pkg.price !== 0)
+          console.log({ freelancerPackages });
+
+          setFreelancerPackages(freelancerPackages || []);
         }
       } catch (error) {
         console.error("Error fetching freelancer packages:", error);
@@ -217,7 +220,7 @@ const ProjectModal = ({
           <h2>
             {isClientView
               ? "Service Level Agreement Details"
-              : "Service Level Agreement"}
+              : "Service Level Agreemen"}
           </h2>
           <button className="close-button" onClick={onClose}>
             ×
@@ -267,11 +270,17 @@ const ProjectModal = ({
               </div>
 
               <div className="pricing-section">
-                <PlanOptions
-                  selectedPlan={selectedPlan}
-                  onPlanChange={setSelectedPlan}
-                  planPrices={freelancerPackages}
-                />
+                {
+                  freelancerPackages && (
+                    <PlanOptions
+                      selectedPlan={selectedPlan}
+                      onPlanChange={setSelectedPlan}
+                      planPrices={freelancerPackages}
+                      freelancerPackages={freelancerPackages}
+                    />
+                  )
+                }
+
                 {hasPackages && (
                   <div className="total-budget-section">
                     <div className="total-budget-row">
@@ -325,7 +334,7 @@ const ProjectModal = ({
                   <input
                     type="number"
                     name="budget"
-                    value={formData.budget}
+                    value={price}
                     onChange={handleChange}
                     required
                     min="1"
@@ -401,18 +410,16 @@ const ProjectModal = ({
                     <div className="total-budget-row">
                       <span>Base Budget:</span>
                       <span>
-                        R
-                        {parseInt(formData.budget) - getSelectedPlanPrice() ||
-                          "0"}
+                        R {price}
                       </span>
                     </div>
                     <div className="total-budget-row">
                       <span>Plan Amount:</span>
-                      <span>R{getSelectedPlanPrice()}</span>
+                      <span>R {price}</span>
                     </div>
                     <div className="total-budget-row total">
                       <span>Total Budget:</span>
-                      <span>R{formData.budget || "0"}</span>
+                      <span>R {price}</span>
                     </div>
                   </div>
                 )}
