@@ -20,6 +20,7 @@ import { onAuthStateChanged, signInAnonymously } from "firebase/auth";
 import { auth, db } from "../../config/firebase";
 import { useNavigate } from "react-router-dom";
 import { ClassNames } from "@emotion/react";
+import Swal from "sweetalert2";
 function LandingPage() {
   const [user, setUser] = useState(null);
   const [name, setName] = useState('')
@@ -32,7 +33,14 @@ function LandingPage() {
   const navigate = useNavigate()
   const handleQuerySubmit = async () => {
     try {
-
+      if (!name || !email || !surname || !phoneNumber || !subject || !message) {
+        Swal.fire({
+          title: "One or more fields missing",
+          text: "Please make sure to have data in all the inputs before you attempt to send a message.",
+          icon: "error",
+        });
+        return
+      }
       const roomsRef = collection(db, "achats")
       const roomDocRef = await addDoc(roomsRef, {
         active: true,

@@ -77,11 +77,11 @@ export default function ContactPage({setName, setSurname, setEmail, setSubject, 
                 <div className="social-icon-c">
                   <SlSocialInstagram id="ig" className="ig-icon" />
                 </div>
-                <div className="social-icon-c">
+                {/* <div className="social-icon-c">
                   <FaDiscord id="discord" className="discord-icon" />
-                </div>
+                </div> */}
               </div>
-              <div className="ellipse-conainer">
+              {/* <div className="ellipse-conainer">
                 <img
                   src="/images/Ellipse-full.png"
                   alt="full ellipse"
@@ -92,7 +92,7 @@ export default function ContactPage({setName, setSurname, setEmail, setSubject, 
                   alt="half ellipse"
                   className="half-ellipse"
                 ></img>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="right-c">
@@ -108,6 +108,7 @@ export default function ContactPage({setName, setSurname, setEmail, setSubject, 
                     id="fname"
                     name="fname"
                     className="input-field-c"
+                    placeholder="John"
                     onChange={(ev) => setName(ev.target.value)}
                   />
                   <br />
@@ -116,9 +117,10 @@ export default function ContactPage({setName, setSurname, setEmail, setSubject, 
                   </label>
                   <br />
                   <input
-                    type="text"
+                    type="email"
                     id="email"
                     name="email"
+                    placeholder="john.doe@igaming.co.za"
                     className="input-field-c"
                     onChange={(ev) => setEmail(ev.target.value)}
                   />
@@ -133,6 +135,7 @@ export default function ContactPage({setName, setSurname, setEmail, setSubject, 
                     id="lname"
                     name="lname"
                     className="input-field-c"
+                    placeholder="Doe"
                     onChange={(ev) => setSurname(ev.target.value)}
                   />
                   <br />
@@ -145,6 +148,7 @@ export default function ContactPage({setName, setSurname, setEmail, setSubject, 
                     id="phoneNumber"
                     name="phoneNumber"
                     className="input-field-c"
+                    placeholder="0123456789"
                     onChange={(ev) => setPhoneNumber(ev.target.value)}
                   />
                 </div>
@@ -157,7 +161,7 @@ export default function ContactPage({setName, setSurname, setEmail, setSubject, 
                   <input
                     id="subject"
                     name="subject"
-                    placeholder="Write write your subject"
+                    placeholder="Write your subject"
                     style={{ height: "50px", padding: 10 }}
                     className="message-c"
                     onChange={(ev) => setSubject(ev.target.value)}
@@ -170,7 +174,7 @@ export default function ContactPage({setName, setSurname, setEmail, setSubject, 
                   <textarea
                     id="message"
                     name="message"
-                    placeholder="Write write your message.."
+                    placeholder="Write your message.."
                     style={{ height: "200px" }}
                     className="message-c"
                     onChange={(ev) => setMessage(ev.target.value)}
