@@ -20,7 +20,12 @@ const ChatInput = ({
   const handleImageCapture = (event) => {
     setFileIcon(URL.createObjectURL(event.target.files[0]));
   };
-
+  const handleKeyDown = (e) => {
+    console.log(e.key);
+    if (e.key === "Enter") {
+      handleSendClick()
+    }
+  }
   const handleSendClick = () => {
     if (text.trim() || files || fileIcon) {
       sendMessage(text, files, fileIcon);
@@ -60,6 +65,7 @@ const ChatInput = ({
           value={text}
           onChange={(e) => setText(e.target.value)}
           disabled={!isProfileComplete}
+          onKeyDown={handleKeyDown}
         />
 
         {/* Show Camera Icon when input is empty, else show Send Icon */}
