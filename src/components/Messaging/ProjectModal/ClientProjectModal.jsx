@@ -6,10 +6,8 @@ import PlanOptions from "../ProjectForm/PlanOptions/PlanOptions";
 import ProjectDescription from "../ProjectForm/ProjectDescription/ProjectDescription";
 import DocumentSection from "../ProjectForm/DocumentSection/DocumentSection";
 import BACKEND_URL from "../../../config/backend-config";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import { db } from "../../../config/firebase";
 
-const ProjectModal = ({
+const ClientProjectModal = ({
   isOpen,
   onClose,
   chatId,
@@ -29,28 +27,7 @@ const ProjectModal = ({
   const [selectedPlan, setSelectedPlan] = useState("Standard");
   const [totalBudget, setTotalBudget] = useState(0);
   const [freelancerPackages, setFreelancerPackages] = useState([]);
-  const [projectDetails, setProjectDetails] = useState({})
   const price = freelancerPackages?.find(pkg => pkg.name === selectedPlan)?.price ?? 0
-
-  console.log({ projectData });
-  useEffect(() => {
-    (async() => {
-    if(projectData) {
-      const docRef = collection(db, 'projects')
-      const qry = query(docRef, where('chatId', '==', projectData?.chatId))
-      const collectionSnap = await getDocs(qry)
-      const details = collectionSnap.docs.map(doc => {
-        return {
-          ...doc.data(),
-          id: doc.id
-        }
-      })[0]
-      console.log({ details });
-      setProjectDetails(details)
-    }
-    })();
-
-  }, [projectData])
   // Fetch freelancer's packages when component mounts
   useEffect(() => {
     const fetchFreelancerPackages = async () => {
@@ -132,7 +109,6 @@ const ProjectModal = ({
         return;
       }
       console.log({ totalBudget: formData.budget });
-      console.log({ totalBudget  });
       // return
       const response = await fetch(`${BACKEND_URL}/api/projects`, {
         method: "POST",
@@ -142,11 +118,8 @@ const ProjectModal = ({
         },
         body: JSON.stringify({
           ...formData,
-          budget: totalBudget, // Use the total budget including plan amount
+          budget: formData.budget.toString(), // Use the total budget including plan amount
           clientId: projectData.clientId,
-          extras: totalBudget > price ? totalBudget - price : 0,
-          baseBudget: price,
-          benefits: freelancerPackages?.find(pkg => pkg.name === selectedPlan)?.benefits ?? [],
           freelancerId: projectData.freelancerId,
           requirements: formData.requirements
             .split(",")
@@ -181,7 +154,7 @@ const ProjectModal = ({
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `${BACKEND_URL}/api/projects/${projectData.id ? projectData.id : projectDetails.id}/status`,
+        `${BACKEND_URL}/api/projects/${projectData.id}/status`,
         {
           method: "PUT",
           headers: {
@@ -265,7 +238,7 @@ const ProjectModal = ({
           {isClientView ? (
             <div className="project-form-container">
               <div className="sla-section">
-                <ProjectDescription description={projectDetails.description} title={projectDetails.title} />
+                <ProjectDescription description={description}/>
 
                 <DocumentSection
                   documentName="777SpiningGameRequirements.PDF"
@@ -276,9 +249,17 @@ const ProjectModal = ({
                   <div className="price-row">
                     <span>Price</span>
                     <span>
-                      R{projectData.budget > 0 ? projectData.budget : projectDetails.budget}
+                      R{projectData.budget > 0 ? projectData.budget : 1000}
                     </span>
                   </div>
+                  {hasPackages && (
+                    <div className="price-row">
+                      <span>Checkout price</span>
+                      <span>
+                        R{parseInt(projectData.budget) + getSelectedPlanPrice()}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 <div className="button-group">
@@ -303,8 +284,7 @@ const ProjectModal = ({
                       selectedPlan={selectedPlan}
                       onPlanChange={setSelectedPlan}
                       planPrices={freelancerPackages}
-                      benefitsList={projectDetails.benefits ? projectDetails.benefits : null}
-                      isClient={false}
+                      isClient={true}
                     />
                   )
                 }
@@ -315,16 +295,17 @@ const ProjectModal = ({
                       <span>Base Budget:</span>
                       <span>
                         R
-                        {projectDetails.budget}
+                        {parseInt(formData.budget) - getSelectedPlanPrice() ||
+                          "0"}
                       </span>
                     </div>
                     <div className="total-budget-row">
                       <span>Plan Amount:</span>
-                      <span>R{projectDetails.extras ?? 0}</span>
+                      <span>R{getSelectedPlanPrice()}</span>
                     </div>
                     <div className="total-budget-row total">
                       <span>Total Budget:</span>
-                      <span>R{projectDetails.budget}</span>
+                      <span>R{formData.budget || "0"}</span>
                     </div>
                   </div>
                 )}
@@ -443,7 +424,7 @@ const ProjectModal = ({
                     </div>
                     <div className="total-budget-row">
                       <span>Extras:</span>
-                      <span>R {totalBudget > price ? totalBudget - price : 0 }</span>
+                      <span>R {totalBudget - price}</span>
                     </div>
                     <div className="total-budget-row total">
                       <span>Total Budget:</span>
@@ -460,4 +441,4 @@ const ProjectModal = ({
   );
 };
 
-export default ProjectModal;
+export default ClientProjectModal;
