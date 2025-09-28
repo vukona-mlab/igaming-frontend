@@ -2,7 +2,7 @@ import React from "react";
 import "./PlanOptions.css";
 import checkIcon from "../../../../assets/check.svg";
 
-const PlanOptions = ({ selectedPlan, onPlanChange, planPrices, freelancerPackages }) => {
+const PlanOptions = ({ selectedPlan, onPlanChange, planPrices }) => {
   const hasPackages =
     planPrices && Array.isArray(planPrices) && planPrices.length > 0;
   console.log({ planPrices });
@@ -17,8 +17,8 @@ const PlanOptions = ({ selectedPlan, onPlanChange, planPrices, freelancerPackage
 
     console.log({ planPrices });
       const benefits = planPrices?.find(pkg => pkg.name === selectedPlan).benefits ?? []
-      const price = planPrices?.find(pkg => pkg.name === selectedPlan).price
-  console.log({ benefits, price });
+      
+  console.log({ benefits });
 
   return (
     <div className="pricing-section">

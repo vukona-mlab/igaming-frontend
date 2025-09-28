@@ -276,7 +276,6 @@ const ProjectModal = ({
                       selectedPlan={selectedPlan}
                       onPlanChange={setSelectedPlan}
                       planPrices={freelancerPackages}
-                      freelancerPackages={freelancerPackages}
                     />
                   )
                 }
