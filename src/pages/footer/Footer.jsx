@@ -1,9 +1,49 @@
-import React from "react";
+import {useState} from "react";
+import { Link } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll"; // Smooth scrolling
 import "./Footer.css"; // Ensure styling
+
 import SectionContainer from "../../components/SectionContainer";
+import BACKEND_URL from "../../config/backend-config";  
 
 const Footer = () => {
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubscribe = async () => {
+    if (!email) {
+      setMessage("Please enter a valid email");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await fetch(`${BACKEND_URL}/api/auth/subscribe`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setMessage(data.message || "Subscribed successfully!");
+        setEmail("");
+      } else {
+        setMessage(data.error || data.message || "Subscription failed");
+      }
+    } catch (error) {
+      console.error("Subscription error:", error);
+      setMessage("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+ // check if user is logged in 
+ const token = localStorage.getItem("token");
+ const profileLink = token ? "/profile": "/freelancer-register"
+
   return (
     <footer className="footer">
       <SectionContainer>
@@ -44,14 +84,14 @@ const Footer = () => {
                   </ScrollLink>
                 </li>
                 <li>
-                  <ScrollLink
-                    to="profile"
-                    smooth={true}
-                    duration={500}
+                  <Link
+                    to={profileLink}
+                    
+                    
                     className="quick-link"
                   >
                     Profile
-                  </ScrollLink>
+                  </Link>
                 </li>
                 <li>
                   <ScrollLink
@@ -98,10 +138,19 @@ const Footer = () => {
             </h3>
             <input
               type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email address"
               className="w-full p-2 border rounded-md mb-2"
             />
-            <button className="subscribe-button">Subscribe</button>
+            <button
+              onClick={handleSubscribe}
+              className="subscribe-button"
+              disabled={loading}
+            >
+              {loading ? "Subscribing..." : "Subscribe"}
+            </button>
+            
           </div>
 
           {/* Bottom Section */}

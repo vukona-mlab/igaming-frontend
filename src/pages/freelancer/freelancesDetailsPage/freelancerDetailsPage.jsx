@@ -24,17 +24,23 @@ const FreelancerDetails = (props) => {
   const [error, setError] = useState("");
   const [currentTab, setCurrentTab] = useState("Profile");
   const [bio, setBio] = useState("");
+  const [hasPaid, setHasPaid] = useState(false)
   const navigation = useNavigate();
 
   const location = useLocation();
   //console.log({ location });
   const freelancer_id = location.pathname.split("/")[2];
   console.log({ id: freelancer_id });
+
+
   useEffect(() => {
     fetchProjects();
     fetchReviews();
     fetchFreelancerData();
   }, [freelancer_id]);
+
+
+
   const fetchProjects = async () => {
     if (freelancer_id) {
       //console.log({ freelancer_id });
@@ -48,6 +54,9 @@ const FreelancerDetails = (props) => {
       }
     }
   };
+
+
+
   const fetchFreelancerData = async () => {
     if (freelancer_id) {
       const response = await fetch(
@@ -308,7 +317,26 @@ const FreelancerDetails = (props) => {
     }
   };
  
+const checkPaymentStatus = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch(`${BACKEND_URL}/api/payment-history`, {
+      headers: {
+        Authorization:token.startsWith("Bearer" ) ? token: `Bearer ${token}`}
+    })
 
+    const data = await response.json();
+    const payments = data.transactions || [];
+    //check if any completed payments exists for this freelancer
+    const paid = payments.some((tx)=> tx.freelancerId === freelancer_id && tabClasses.status === "completed");
+    setHasPaid(paid);
+
+  } catch (error) {
+    console.error("Error checking payment status:" ,err)
+  } finally{
+    setLoading(false)
+  }
+}
 
 
 
@@ -317,114 +345,211 @@ const FreelancerDetails = (props) => {
   };
 
   const shouldShowSidebar = currentTab === "Profile";
-
+ 
   const handleReviewSubmit = async (stars, message) => {
-    try {
-      let token = localStorage.getItem("token");
-      if (!token) {
-        Swal.fire({
-          icon: "error",
-          title: "Authentication Required",
-          text: "Please sign in to submit a review",
-        });
-        return;
-      }
+  try {
+    let token = localStorage.getItem("token");
+    const clientId = localStorage.getItem("uid");
 
-      if (!token.startsWith("Bearer ")) {
-        token = `Bearer ${token}`;
-      }
-
-      const clientId = localStorage.getItem("uid");
-
-      if (!clientId) {
-        Swal.fire({
-          icon: "error",
-          title: "Client Login Required",
-          text: "You must be logged in as a client to submit a review",
-        });
-        return;
-      }
-
-      const reviewData = {
-        clientId,
-        freelancerId: freelancer_id,
-        stars,
-        message,
-      };
-
-      console.log("Submitting review:", reviewData);
-
-      // Show loading state
-      Swal.fire({
-        title: "Submitting Review",
-        text: "Please wait...",
-        allowOutsideClick: false,
-        didOpen: () => {
-          Swal.showLoading();
-        },
-      });
-
-      const response = await fetch(`${BACKEND_URL}/api/reviews`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-        body: JSON.stringify(reviewData),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to submit review");
-      }
-
-      const responseData = await response.json();
-      console.log("Review submitted successfully:", responseData);
-
-      // Show success message with SweetAlert
-      Swal.fire({
-        icon: "success",
-        title: "Review Submitted!",
-        text: "Your review has been submitted and is pending approval.",
-        confirmButtonText: "Great!",
-        confirmButtonColor: "#4CAF50",
-      });
-
-      // Refresh reviews after submission to show pending review
-      try {
-        const refreshedReviewsResponse = await fetch(
-          `${BACKEND_URL}/api/reviews?freelancerId=${freelancer_id}`,
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
-        );
-
-        if (refreshedReviewsResponse.ok) {
-          const refreshedReviewsData = await refreshedReviewsResponse.json();
-          const allReviews = refreshedReviewsData.reviews || [];
-          // We can show all reviews including pending ones, or filter to approved only
-          const approvedReviews = allReviews.filter(
-            (review) => review.status === "Approved"
-          );
-          setReviews(approvedReviews);
-          setReviewsError(null);
-        }
-      } catch (refreshError) {
-        console.error("Error refreshing reviews:", refreshError);
-      }
-    } catch (error) {
-      console.error("Error submitting review:", error);
-
-      // Show error message with SweetAlert
+    if (!token || !clientId) {
       Swal.fire({
         icon: "error",
-        title: "Review Submission Failed",
-        text: error.message || "Failed to submit review. Please try again.",
+        title: "Authentication Required",
+        text: "You must be signed in as a client to submit a review",
       });
+      return;
     }
-  };
+
+    if (!token.startsWith("Bearer ")) token = `Bearer ${token}`;
+
+    // Step 1: Check payment history
+    const paymentResponse = await fetch(`${BACKEND_URL}/api/payment-history`, {
+      headers: { Authorization: token },
+    });
+    const paymentData = await paymentResponse.json();
+
+    const hasPaid = (paymentData.transactions || []).some(
+      (tx) => tx.freelancerId === freelancer_id && tx.status === "completed"
+    );
+
+    if (!hasPaid) {
+      Swal.fire({
+        icon: "warning",
+        title: "Payment Required",
+        text: "You must hire this freelancer before submitting a review",
+      });
+      return;
+    }
+
+    // Step 2: Prepare review data
+    const reviewData = { clientId, freelancerId: freelancer_id, stars, message };
+
+    Swal.fire({
+      title: "Submitting Review",
+      text: "Please wait...",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    // Step 3: Submit review
+    const response = await fetch(`${BACKEND_URL}/api/reviews`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      body: JSON.stringify(reviewData),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Failed to submit review");
+    }
+
+    const responseData = await response.json();
+    console.log("Review submitted successfully:", responseData);
+
+    Swal.fire({
+      icon: "success",
+      title: "Review Submitted!",
+      text: "Your review has been submitted and is pending approval.",
+      confirmButtonText: "Great!",
+      confirmButtonColor: "#4CAF50",
+    });
+
+    // Step 4: Refresh reviews
+    const refreshedReviewsResponse = await fetch(
+      `${BACKEND_URL}/api/reviews?freelancerId=${freelancer_id}`,
+      { headers: { Authorization: token } }
+    );
+
+    if (refreshedReviewsResponse.ok) {
+      const refreshedReviewsData = await refreshedReviewsResponse.json();
+      const approvedReviews = (refreshedReviewsData.reviews || []).filter(
+        (review) => review.status === "Approved"
+      );
+      setReviews(approvedReviews);
+      setReviewsError(null);
+    }
+  } catch (error) {
+    console.error("Error submitting review:", error);
+    Swal.fire({
+      icon: "error",
+      title: "Review Submission Failed",
+      text: error.message || "Failed to submit review. Please try again.",
+    });
+  }
+};
+
+
+
+  // const handleReviewSubmit = async (stars, message) => {
+  //   try {
+  //     let token = localStorage.getItem("token");
+  //     if (!token) {
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "Authentication Required",
+  //         text: "Please sign in to submit a review",
+  //       });
+  //       return;
+  //     }
+
+  //     if (!token.startsWith("Bearer ")) {
+  //       token = `Bearer ${token}`;
+  //     }
+
+  //     const clientId = localStorage.getItem("uid");
+
+  //     if (!clientId) {
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "Client Login Required",
+  //         text: "You must be logged in as a client to submit a review",
+  //       });
+  //       return;
+  //     }
+
+  //     const reviewData = {
+  //       clientId,
+  //       freelancerId: freelancer_id,
+  //       stars,
+  //       message,
+  //     };
+
+  //     console.log("Submitting review:", reviewData);
+
+  //     // Show loading state
+  //     Swal.fire({
+  //       title: "Submitting Review",
+  //       text: "Please wait...",
+  //       allowOutsideClick: false,
+  //       didOpen: () => {
+  //         Swal.showLoading();
+  //       },
+  //     });
+
+  //     const response = await fetch(`${BACKEND_URL}/api/reviews`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: token,
+  //       },
+  //       body: JSON.stringify(reviewData),
+  //     });
+
+  //     if (!response.ok) {
+  //       const errorData = await response.json();
+  //       throw new Error(errorData.error || "Failed to submit review");
+  //     }
+
+  //     const responseData = await response.json();
+  //     console.log("Review submitted successfully:", responseData);
+
+  //     // Show success message with SweetAlert
+  //     Swal.fire({
+  //       icon: "success",
+  //       title: "Review Submitted!",
+  //       text: "Your review has been submitted and is pending approval.",
+  //       confirmButtonText: "Great!",
+  //       confirmButtonColor: "#4CAF50",
+  //     });
+
+  //     // Refresh reviews after submission to show pending review
+  //     try {
+  //       const refreshedReviewsResponse = await fetch(
+  //         `${BACKEND_URL}/api/reviews?freelancerId=${freelancer_id}`,
+  //         {
+  //           headers: {
+  //             Authorization: token,
+  //           },
+  //         }
+  //       );
+
+  //       if (refreshedReviewsResponse.ok) {
+  //         const refreshedReviewsData = await refreshedReviewsResponse.json();
+  //         const allReviews = refreshedReviewsData.reviews || [];
+  //         // We can show all reviews including pending ones, or filter to approved only
+  //         const approvedReviews = allReviews.filter(
+  //           (review) => review.status === "Approved"
+  //         );
+  //         setReviews(approvedReviews);
+  //         setReviewsError(null);
+  //       }
+  //     } catch (refreshError) {
+  //       console.error("Error refreshing reviews:", refreshError);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error submitting review:", error);
+
+  //     // Show error message with SweetAlert
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Review Submission Failed",
+  //       text: error.message || "Failed to submit review. Please try again.",
+  //     });
+  //   }
+  // };
   useEffect(() => {
     console.log({ freelancerData });
   }, [freelancerData]);
@@ -461,7 +586,7 @@ const FreelancerDetails = (props) => {
                   <Col md={3} className="sidebar-col">
                     <FreelancerProjectCards
                       image={freelancerData.profilePicture}
-                      specialities={freelancerData.specialities}
+                      specialties={freelancerData.specialties}
                       bio={bio}
                     />
                   </Col>
@@ -479,6 +604,13 @@ const FreelancerDetails = (props) => {
                       handleMessageClick(freelancerData?.id, price)
                     }
                   />
+                   {hasPaid ? (
+                       <ReviewForm onSubmit={handleReviewSubmit} />
+                         ) : (
+                        <Alert variant="info" className="mt-3">
+                        You must hire this freelancer before submitting a review.
+                        </Alert>
+                  )}
                 </Col>
               </Row>
             </div>
