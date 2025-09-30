@@ -30,6 +30,7 @@ const DiscoveryPage = () => {
       } else {
         navigate(`/discovery`);
       }
+      
     }
   };
 

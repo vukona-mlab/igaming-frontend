@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,Suspense, lazy} from "react";
 import NavBar from "../../components/Common/Navbar/navbar";
 import "./LandingPage.css";
 import SubNavBar from "../../components/Common/SubNavBar/SubNavBar";
