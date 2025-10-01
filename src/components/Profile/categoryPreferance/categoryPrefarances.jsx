@@ -20,36 +20,29 @@ const CategoryPreferences = ({
   console.log({ categoriesArr });
   const [formData, setFormData] = useState({
     categories: {
-      graphicDesign:
-        categoriesArr && categoriesArr.indexOf("graphicDesign") !== -1
+      gameDevelopment:
+        categoriesArr && categoriesArr.indexOf("game development") !== -1
           ? true
           : false,
-      uiUxDesign:
-        categoriesArr && categoriesArr.indexOf("uiUxDesign") !== -1
+      creativeAndDesign:
+        categoriesArr && categoriesArr.indexOf("Creative and Design") !== -1
           ? true
           : false,
-      animation:
-        categoriesArr && categoriesArr.indexOf("animation") !== -1
+      audioAndMusic:
+        categoriesArr && categoriesArr.indexOf("audio and music") !== -1
           ? true
           : false,
-      imageEditing:
-        categoriesArr && categoriesArr.indexOf("imageEditing") !== -1
+      qualityAssurance:
+        categoriesArr && categoriesArr.indexOf("quality assurance") !== -1
           ? true
           : false,
-      gameArt:
-        categoriesArr && categoriesArr.indexOf("gameArt") !== -1 ? true : false,
-      characterModeling:
-        categoriesArr && categoriesArr.indexOf("characterModeling") !== -1
+      complianceAndLegal:
+        categoriesArr && categoriesArr.indexOf("Compliance and legal") !== -1 ? true : false,
+      contentAndMarketing:
+        categoriesArr && categoriesArr.indexOf("content and marketing") !== -1
           ? true
           : false,
-      gameDesigners:
-        categoriesArr && categoriesArr.indexOf("gameDesigners") !== -1
-          ? true
-          : false,
-      typography:
-        categoriesArr && categoriesArr.indexOf("typography") !== -1
-          ? true
-          : false,
+      
     },
     prices: {
       basic:
@@ -152,10 +145,10 @@ return (
       <Form onSubmit={handleSubmit} className="px-5 py-1">
         <Row className="mb-4 align-items-start">
           {/* First Column */}
-          <Col xs={12} md={3} className="mb-3">
+          <Col xs={12} md={4} className="mb-3">
             <h5 className="category-header mb-3">Categories Preferences</h5>
             <div className="checkbox-group">
-              {["graphicDesign", "uiUxDesign", "animation", "imageEditing"].map(
+              {["game development", "Creative and Design", "audio and music", "quality assurance", "Compliance and legal", "content and marketing"].map(
                 (category) => (
                   <div key={category} className="checkbox-item">
                     <Form.Check
@@ -173,31 +166,7 @@ return (
             </div>
           </Col>
 
-          {/* Middle Column */}
-          <Col xs={12} md={3} className="mb-3">
-            <h5 className="category-header mb-3 invisible">Hidden Header</h5>
-            <div className="checkbox-group">
-              {[
-                "gameArt",
-                "characterModeling",
-                "gameDesigners",
-                "typography",
-              ].map((category) => (
-                <div key={category} className="checkbox-item">
-                  <Form.Check
-                    type="checkbox"
-                    label={category.replace(/([A-Z])/g, " $1")}
-                    name={category}
-                    className="custom-checkbox"
-                    checked={formData.categories[category]}
-                    onChange={handleCheckboxChange}
-                    disabled={!isUpdate}
-                  />
-                </div>
-              ))}
-            </div>
-          </Col>
-
+         
           {/* Third Column */}
           <Col xs={12} md={6} className="mb-3">
             <h5 className="category-header mb-3">Price Plan</h5>

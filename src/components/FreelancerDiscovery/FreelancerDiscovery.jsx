@@ -10,7 +10,7 @@ import BACKEND_URL from "../../config/backend-config";
 import Swal from "sweetalert2";
 
 const FreelancerDiscovery = ({ searchQuery, category, disabled }) => {
-  const [freelancers, setFreelancers] = useState([]); 
+  const [freelancers, setFreelancers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [columns, setColumns] = useState(4);
@@ -19,45 +19,8 @@ const FreelancerDiscovery = ({ searchQuery, category, disabled }) => {
   const [totalPages, setTotalPages] = useState(1);
   const [pageSize, setPageSize] = useState(8);
   const [categories, setCategories] = useState([]);
-  const cacheRef = useRef({}); // cache API responses
+  const cacheRef = useRef({});
   const navigate = useNavigate();
-
-  // Dynamically fetch freelancers whenever searchQuery or category changes
-  useEffect(() => {
-    const key = `${category || "all"}-${searchQuery || ""}`;
-
-    // If cached, use cache
-    if (cacheRef.current[key]) {
-      setFreelancers(cacheRef.current[key]);
-      setCategories([
-        ...new Set(cacheRef.current[key].map(f => f.category).filter(Boolean)),
-      ]);
-      setLoading(false);
-      return;
-    }
-
-    fetchFreelancers(key);
-  }, [searchQuery, category]);
-
-  // Initial fetch on mount
-  useEffect(() => {
-    fetchFreelancers();
-  }, []);
-
-  // Adjust columns for responsive layout
-  useEffect(() => {
-    const handleResize = () => {
-      const width = window.innerWidth;
-      if (width <= 600) setColumns(1);
-      else if (width <= 900) setColumns(2);
-      else if (width <= 1200) setColumns(3);
-      else setColumns(4);
-    };
-
-    handleResize(); // initial calculation
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   const showError = (message) => {
     Swal.fire({
@@ -67,7 +30,6 @@ const FreelancerDiscovery = ({ searchQuery, category, disabled }) => {
     });
   };
 
-  // Fetch freelancers from API with optional search & category filtering
   const fetchFreelancers = async (cacheKey) => {
     setLoading(true);
     try {
@@ -78,18 +40,14 @@ const FreelancerDiscovery = ({ searchQuery, category, disabled }) => {
       );
 
       if (!response.ok) throw new Error("Failed to fetch freelancers");
-
       const data = await response.json();
-      console.log("Fetched freelancers data", data);
 
       setFreelancers(data.freelancers);
       setCategories([...new Set(data.freelancers.map(f => f.category).filter(Boolean))]);
       setTotalPages(Math.ceil(data.freelancers.length / pageSize));
       setCurrentPage(1);
 
-      // Cache the fetched data
       if (cacheKey) cacheRef.current[cacheKey] = data.freelancers;
-
       setLoading(false);
     } catch (err) {
       setError(err.message);
@@ -98,7 +56,32 @@ const FreelancerDiscovery = ({ searchQuery, category, disabled }) => {
     }
   };
 
-  // Fetch reviews for each freelancer
+  useEffect(() => {
+    const key = `${category || "all"}-${searchQuery || ""}`;
+    if (cacheRef.current[key]) {
+      setFreelancers(cacheRef.current[key]);
+      setCategories([
+        ...new Set(cacheRef.current[key].map(f => f.category).filter(Boolean)),
+      ]);
+      setLoading(false);
+      return;
+    }
+    fetchFreelancers(key);
+  }, [searchQuery, category]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width <= 600) setColumns(1);
+      else if (width <= 900) setColumns(2);
+      else if (width <= 1200) setColumns(3);
+      else setColumns(4);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const fetchReviews = async (freelancerId) => {
     try {
       const res = await fetch(`${BACKEND_URL}/api/reviews/${freelancerId}`);
@@ -109,21 +92,19 @@ const FreelancerDiscovery = ({ searchQuery, category, disabled }) => {
     }
   };
 
-  // Handle sending a message to a freelancer
+  useEffect(() => {
+    freelancers.forEach(f => fetchReviews(f.id));
+  }, [freelancers]);
+
   const handleMessageClick = async (freelancerId) => {
     try {
       if (!freelancerId) return;
       let token = localStorage.getItem("token");
       if (!token) {
-        Swal.fire({
-          icon: "warning",
-          title: "Sign In Required",
-          text: "Please sign in to send messages",
-        });
+        Swal.fire({ icon: "warning", title: "Sign In Required", text: "Please sign in to send messages" });
         navigate("/client-signin");
         return;
       }
-
       if (!token.startsWith("Bearer ")) token = `Bearer ${token}`;
       const uid = localStorage.getItem("uid");
       if (uid === freelancerId) {
@@ -145,13 +126,10 @@ const FreelancerDiscovery = ({ searchQuery, category, disabled }) => {
       });
 
       if (!response.ok) throw new Error("Failed to create chat");
-
       const data = await response.json();
-      Swal.fire({
-        icon: "success",
-        title: "Chat Created",
-        text: "You can now chat with this freelancer.",
-      }).then(() => navigate(`/messaging-client/${data.chatId}`));
+
+      Swal.fire({ icon: "success", title: "Chat Created", text: "You can now chat with this freelancer." })
+        .then(() => navigate(`/messaging-client/${data.chatId}`));
     } catch (err) {
       showError(err.message || "Failed to create chat.");
     }
@@ -160,7 +138,6 @@ const FreelancerDiscovery = ({ searchQuery, category, disabled }) => {
   if (loading) return <div className="freelancer-discovery-loading"><div className="spinner"></div></div>;
   if (error) return <div className="freelancer-discovery-error">Error: {error}</div>;
 
-  // Calculate paginated rows
   const rows = [];
   for (let i = (currentPage - 1) * pageSize; i < currentPage * pageSize && i < freelancers.length; i += columns) {
     rows.push(freelancers.slice(i, i + columns));
@@ -179,7 +156,10 @@ const FreelancerDiscovery = ({ searchQuery, category, disabled }) => {
               className={`category-tag ${category === c ? "active" : ""}`}
               onClick={() => {
                 const newCategory = category === c ? "" : c;
-                fetchFreelancers(); // refetch on category click
+                const params = new URLSearchParams();
+                if (newCategory) params.set("category", newCategory);
+                if (searchQuery) params.set("search", searchQuery);
+                navigate(`/discovery?${params.toString()}`);
               }}
             >
               {c}
@@ -202,7 +182,7 @@ const FreelancerDiscovery = ({ searchQuery, category, disabled }) => {
                       name={freelancer.displayName || "Anonymous Freelancer"}
                       jobTitle={freelancer.jobTitle || "Freelancer"}
                       projectsCompleted={freelancer.projects?.length || 0}
-                      rating={reviews[freelancer.id] || 0} 
+                      rating={reviews[freelancer.id] || 0}
                       messageIcon={messageIcon}
                       onMessageClick={() => handleMessageClick(freelancer.id)}
                       disabled={disabled}

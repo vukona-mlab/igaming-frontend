@@ -118,6 +118,38 @@
   border-radius: 15px;
 }
 
+.categories-section {
+  margin: 1rem 0;
+}
+
+.categories-section h5 {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  color: #333;
+}
+
+.category-dropdown {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 0.95rem;
+  color: #333;
+  outline: none;
+  transition: border 0.2s ease-in-out;
+}
+
+.category-dropdown:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+.category-dropdown option {
+  padding: 8px;
+}
+
+
 @media screen and (max-width: 768px) {
   .client-register-right {
     display: none;
