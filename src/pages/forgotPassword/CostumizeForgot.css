@@ -3,6 +3,9 @@
   height: 100vh;
   background: #fff;
   position: relative;
+    align-items: stretch;
+  width: 100% !important;
+  overflow: hidden;
 }
 
 /* Register Button */
@@ -35,25 +38,30 @@
 }
 
 .reset-left {
-  margin-top: 20px;
-  flex: 1;
+  flex: 55%;
+  width: 55% !important;
   background: #fff;
-  padding: 50px;
+  padding: 500px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  /* Align content to the top */
+  justify-content: center;
   position: relative;
+  height: calc(100% - 100px);
+  margin-top: 0;
+  width: 100% !important;
+  align-items: center !important;
+  overflow: scroll;
 }
 
 /* Adjust the Reset Form Position */
 
 .reset-form {
-  margin-top: 45px;
+  margin-top: 450px;
   /* Adjust this value as needed */
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  background-color: red;
 }
 
 /* Red vertical line */

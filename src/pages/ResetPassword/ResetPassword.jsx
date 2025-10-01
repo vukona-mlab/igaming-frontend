@@ -84,21 +84,26 @@ const ResetPassword = () => {
               name="username"
               value={formData.username}
               onChange={handleChange}
-              placeholder="Enter username"
+              placeholder="john.doe@gmail.com"
+              id="reset-input"
             />
             {errors.username && <p className="error-text">{errors.username}</p>}
           </div>
-
+        </div>
           <LoadingButton
             onClick={handleReset}
             text={loading ? "Processing..." : "Reset"}
             disabled={loading}
+            className={'reset-loading-button'}
           />
-        </div>
       </div>
 
-      <div className="reset-right">
-        <img src="/images/ri-experts.jpg" alt="Woman with digital interface" />
+      <div className="client-register-right d-flex align-items-stretch">
+        <img
+          src="/images/ri-experts.jpg"
+          alt="Woman with digital interface"
+          className="img-fluid h-100"
+        />
       </div>
     </div>
   );

@@ -205,6 +205,7 @@ const ClientLogin = () => {
             onClick={handleLogin}
             text={loading ? "Please wait..." : "Continue with email"}
             disabled={loading}
+            className={'client-loading-button'}
           />
           <GoogleSignInButton
             handleGoogleSignIn={handleGoogleSignIn}

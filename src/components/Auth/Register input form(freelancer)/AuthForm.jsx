@@ -36,7 +36,7 @@ const AuthForm = ({ formData, setFormData, onSubmit, errors, validateEmail, vali
           <Form.Control
             type="text"
             name="username"
-            placeholder="Enter username"
+            placeholder="john.doe@gmail.com"
             value={formData.username}
             onChange={(ev) => { handleChange(ev); validateEmail(ev.target.value)}}
             isInvalid={!!errors.username}

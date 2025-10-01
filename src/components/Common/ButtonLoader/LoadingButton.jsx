@@ -1,9 +1,9 @@
 import { useState } from "react";
 import "./LoadingButton.css";
 
-const LoadingButton = ({ onClick, text,isLoading }) => {
+const LoadingButton = ({ onClick, text,isLoading, style, className }) => {
   return (
-    <button onClick={onClick} className="loading-button" disabled={isLoading}>
+    <button onClick={onClick} className={`loading-button ${className}`} disabled={isLoading} style={style}>
       {isLoading ? (
         <img
           src="/images/load.gif" // Path to your GIF
