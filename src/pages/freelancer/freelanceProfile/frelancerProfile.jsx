@@ -188,52 +188,66 @@ const ProfilePage = (props) => {
     }
   };
   const updateUserProfile = async (data) => {
+
     try {
-      if (JSON.stringify(data) === "{}") {
+    if (!Object.keys(data).length) return;
+
+    if (data.dateOfBirth) {
+      const dob = new Date(data.dateOfBirth);
+      const today = new Date();
+      const age = today.getFullYear() - dob.getFullYear();
+      const monthDiff = today.getMonth() - dob.getMonth();
+      const dayDiff = today.getDate() - dob.getDate();
+
+      const isUnder16 =
+        age < 16 ||
+        (age === 16 && (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)));
+
+      if (isUnder16) {
+        Swal.fire({
+          title: "Age Restriction",
+          text: "You must be at least 16 years old to use this platform",
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
         return;
       }
-      // console.log("DATA ", data);
+    }
 
-      const formData = new FormData();
+    if (JSON.stringify(data) === "{}") return;
 
-      formData.append("profilePicture", image || "");
-      if (image) {
-        const response = await fetch(`${url}/api/auth/users/${uid}/update`, {
-          method: "PUT",
-          headers: {
-            Authorization: token,
-          },
-          body: formData,
-        });
-        if (response.ok) {
-          const data = await response.json();
-        } else {
-          // Handle error
-        }
-      }
+    const formDataObj = new FormData();
+    formDataObj.append("profilePicture", image || "");
 
+    if (image) {
       const response = await fetch(`${url}/api/auth/users/${uid}/update`, {
         method: "PUT",
-        headers: {
-          Authorization: token,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+        headers: { Authorization: token },
+        body: formDataObj,
       });
       if (response.ok) {
-        const data = await response.json();
-        // console.log(data);
-
-        // Show SweetAlert after successful update
-        showAlert();
-      } else {
-        // Handle error
+        await response.json();
       }
-      setIsUpdate(false);
-    } catch (error) {
-      console.log(error);
     }
-  };
+
+    const response = await fetch(`${url}/api/auth/users/${uid}/update`, {
+      method: "PUT",
+      headers: {
+        Authorization: token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (response.ok) {
+      await response.json();
+      showAlert();
+    }
+    setIsUpdate(false);
+  } catch (error) {
+    console.log(error);
+  }
+};
   const handleDocument = () => {
     navigate("/view-document");
   };
@@ -353,117 +367,133 @@ const ProfilePage = (props) => {
           Your account is blocked, please talk to admin to see how to unlock it. Many features will be disabled while your account is blocked.
         </div>
       )}
-      <Navbar />
-      <ProfileSubNav showTransactions={false} />
-      <SectionContainer>
-        {showProjectModal && projectData && (
-          <ProjectUpload
-            onClose={() => {
-              setShowProjectModal(false);
-            }}
-            projectData={projectData}
-            showProjectUploadAlert={showProjectUploadAlert}
-          />
-        )}
-        <Container fluid style={{}} className="p-0 m-0">
-          <NewPriceCard
-            showModal={showPriceModal}
-            setNewBenefitList={setCurrentBenefits}
-            price={currentPrice}
-            benefits={currentBenefits}
-            type={currentType}
-            handleFormSubmit={handlePriceFormSubmit}
-            setShowModal={(name, price, benefits) =>
-              setShowPriceModal(name, price, benefits)
-            }
-          />
-          <div className="div-btn-top p-2 pr-upload-btns">
-            <Button
-              variant="dark"
-              className="add-my-documents"
-              onClick={() => setShowProjectModal(true)}
-              type="submit"
-            >
-              Upload Project
-            </Button>
-            <Button
-              variant="dark"
-              className="add-my-documents"
-              onClick={handleDocument}
-              type="submit"
-            >
-              Add Document
-            </Button>
-          </div>
-          <div className="profile-edit d-flex justify-content-between align-items-center ps-0">
-            <div className="welcome-message">
-              {formData.displayName !== "" ? (
-                <h4 className="welcome-name">
-                  Welcome, {formData.displayName}
-                </h4>
-              ) : (
-                <h4 className="welcome-name"></h4>
-              )}
-              {/* Placeholder for the user's name */}
-            </div>
-            <div>
-              <SwitchRoleButton
-                currentRole={currentRole}
-                onRoleSwitch={handleRoleSwitch}
-              />
-              {!isUpdate && (
-                <Button variant="dark" onClick={() => setIsUpdate(true)}>
-                  Edit
-                </Button>
-              )}
-            </div>
-          </div>
 
-          {/* First Row with ProfileCard and ProfileForm */}
-          <Row className="my-4">
-            <Col md={3}>
-              {/* Left Column - ProfileCard Component */}
-              <ProfileCard
-                jobTitle={jobTitle || formData.speciality}
-                image={currImage}
-                handleImageChange={handleImageChange}
+      <Navbar />
+
+      {!isProfileComplete ? (
+        <div
+          style={{
+            background: "#fef3c7",
+            color: "#78350f",
+            padding: "1rem",
+            borderRadius: "8px",
+            marginBottom: "1rem",
+            textAlign: "center",
+            fontWeight: 600,
+            fontSize: "1rem",
+          }}
+        >
+          Please complete your profile to access all features.
+        </div>
+      ) : (
+        <>
+          <ProfileSubNav showTransactions={false} />
+          <SectionContainer>
+            {showProjectModal && projectData && (
+              <ProjectUpload
+                onClose={() => setShowProjectModal(false)}
+                projectData={projectData}
+                showProjectUploadAlert={showProjectUploadAlert}
               />
-            </Col>
-            <Col md={9}>
-              {/* Right Column - ProfileForm Component with props from components */}
-              <ProfileForm
-                formData={{
-                  name: formData.name || "",
-                  surname: formData.surname || "",
-                  displayName: formData.displayName || "",
-                  phone: formData.phone || "",
-                  email: formData.email || "",
-                  dateOfBirth: formData.dateOfBirth || "",
-                  speciality: formData.speciality || "",
-                }}
-                handleChange={handleChange}
-                isUpdate={isUpdate}
+            )}
+            <Container fluid className="p-0 m-0">
+              <NewPriceCard
+                showModal={showPriceModal}
+                setNewBenefitList={setCurrentBenefits}
+                price={currentPrice}
+                benefits={currentBenefits}
+                type={currentType}
+                handleFormSubmit={handlePriceFormSubmit}
+                setShowModal={(name, price, benefits) =>
+                  setShowPriceModal(name, price, benefits)
+                }
               />
-              <Row>
-                <Col>
-                  {/* Below the profile card and form - CategoryPreferences Component */}
-                  <CategoryPreferences
-                    onSubmit={handleCategoriesSubmit}
-                    isUpdate={isUpdate}
-                    cancel={() => setIsUpdate(false)}
-                    categoriesArr={formData.categories}
-                    packagesObj={formData.packages}
-                    pricePackages={pricePackages}
-                    handleAddFeature={handleAddFeature}
-                    benefits={benefits}
-                    showPriceModal={handleShowPriceModal}
+
+              <div className="div-btn-top p-2 pr-upload-btns">
+                <Button
+                  variant="dark"
+                  className="add-my-documents"
+                  onClick={() => setShowProjectModal(true)}
+                  type="submit"
+                >
+                  Upload Project
+                </Button>
+                <Button
+                  variant="dark"
+                  className="add-my-documents"
+                  onClick={handleDocument}
+                  type="submit"
+                >
+                  Add Document
+                </Button>
+              </div>
+
+              <div className="profile-edit d-flex justify-content-between align-items-center ps-0">
+                <div className="welcome-message">
+                  {formData.displayName !== "" ? (
+                    <h4 className="welcome-name">
+                      Welcome, {formData.displayName}
+                    </h4>
+                  ) : (
+                    <h4 className="welcome-name"></h4>
+                  )}
+                </div>
+                <div>
+                  <SwitchRoleButton
+                    currentRole={currentRole}
+                    onRoleSwitch={handleRoleSwitch}
+                  />
+                  {!isUpdate && (
+                    <Button variant="dark" onClick={() => setIsUpdate(true)}>
+                      Edit
+                    </Button>
+                  )}
+                </div>
+              </div>
+
+              <Row className="my-4">
+                <Col md={3}>
+                  <ProfileCard
+                    jobTitle={jobTitle || formData.speciality}
+                    image={currImage}
+                    handleImageChange={handleImageChange}
                   />
                 </Col>
+                <Col md={9}>
+                  <ProfileForm
+                    formData={{
+                      name: formData.name || "",
+                      surname: formData.surname || "",
+                      displayName: formData.displayName || "",
+                      phone: formData.phone || "",
+                      email: formData.email || "",
+                      dateOfBirth: formData.dateOfBirth || "",
+                      speciality: formData.speciality || "",
+                    }}
+                    handleChange={handleChange}
+                    isUpdate={isUpdate}
+                  />
+                  <Row>
+                    <Col>
+                      <CategoryPreferences
+                        onSubmit={handleCategoriesSubmit}
+                        isUpdate={isUpdate}
+                        cancel={() => setIsUpdate(false)}
+                        categoriesArr={formData.categories}
+                        packagesObj={formData.packages}
+                        pricePackages={pricePackages}
+                        handleAddFeature={handleAddFeature}
+                        benefits={benefits}
+                        showPriceModal={handleShowPriceModal}
+                      />
+                    </Col>
+                  </Row>
+                </Col>
               </Row>
-            </Col>
-          </Row>
-        </Container>
-      </SectionContainer>
+            </Container>
+          </SectionContainer>
+        </>
+      )}
     </>
   );
 };
