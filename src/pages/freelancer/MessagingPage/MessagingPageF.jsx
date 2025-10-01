@@ -15,6 +15,7 @@ import { get } from "react-scroll/modules/mixins/scroller";
 import { CheckLg } from "react-bootstrap-icons";
 import ProfileCompletionModal from "../../../components/Common/ProfileCompletionModal";
 import { useProfileCompletionContext } from '../../../components/Common/ProfileCompletionContext';
+import PageLoader from "../../../components/Common/PageLoader";
 
 const MessagingPage = (props) => {
   const { isProfileComplete, isModalOpen } = useProfileCompletionContext();
@@ -63,10 +64,10 @@ const MessagingPage = (props) => {
       chats.length > 0 && current == "Chats"
         ? chats.filter((chat) => !chat.hasOwnProperty("tags"))
         : current == "Admin"
-        ? chats.filter(
+          ? chats.filter(
             (chat) => chat.tags && chat.tags.some((tag) => tag === "admin")
           )
-        : chats.filter(
+          : chats.filter(
             (chat) => chat.tags && chat.tags.some((tag) => tag === "report")
           );
 
@@ -313,48 +314,57 @@ const MessagingPage = (props) => {
       )}
       <Navbar />
       <ProfileSubNav />
-      <SectionContainer>
-        <div className="messagePageFContainer">
-          <PeopleComponent
-            people={filteredChats}
-            setcurrentChatId={setCurrentChatId}
-            setCurrentClientId={setCurrentClientId}
-            setCurrentClientName={setCurrentClientName}
-            isReports={isReports}
-            isAdmins={isAdmins}
-            current={current}
-            setCurrent={setCurrent}
-            handleAdminChat={handleAdminChat}
-          />
+      {
+        loading ? (
+          <PageLoader />
+        ) : (
+          <>
+            <SectionContainer>
+              <div className="messagePageFContainer">
+                <PeopleComponent
+                  people={filteredChats}
+                  setcurrentChatId={setCurrentChatId}
+                  setCurrentClientId={setCurrentClientId}
+                  setCurrentClientName={setCurrentClientName}
+                  isReports={isReports}
+                  isAdmins={isAdmins}
+                  current={current}
+                  setCurrent={setCurrent}
+                  handleAdminChat={handleAdminChat}
+                />
 
-          {filteredChats.length === 0 ? (
-            <EmptyChatBox />
-          ) : (
-            currentChatId && (
-              <ChatBox
-                chatId={currentChatId}
-                currentChat={currentChat}
-                currentClientId={currentClientId}
-                currentClientName={currentClientName}
+                {filteredChats.length === 0 ? (
+                  <EmptyChatBox />
+                ) : (
+                  currentChatId && (
+                    <ChatBox
+                      chatId={currentChatId}
+                      currentChat={currentChat}
+                      currentClientId={currentClientId}
+                      currentClientName={currentClientName}
+                    />
+                  )
+                )}
+              </div>
+            </SectionContainer>
+            {showZoomModal && (
+              <ZoomMeetingModal
+                isOpen={showZoomModal}
+                onClose={() => setShowZoomModal(false)}
+                meetingDetails={meetingDetails}
+                isInvitation={isInvitation}
               />
-            )
-          )}
-        </div>
-      </SectionContainer>
-      {showZoomModal && (
-        <ZoomMeetingModal
-          isOpen={showZoomModal}
-          onClose={() => setShowZoomModal(false)}
-          meetingDetails={meetingDetails}
-          isInvitation={isInvitation}
-        />
-      )}
-      {/* Modal only appears on this page */}
-      <ProfileCompletionModal />
-      {/* Grey-out effect for main content */}
-      <div style={!isProfileComplete ? { opacity: 0.5, pointerEvents: 'none' } : {}}>
-        {/* ...existing content, e.g. SectionContainer, chat UI... */}
-      </div>
+            )}
+            {/* Modal only appears on this page */}
+            <ProfileCompletionModal />
+            {/* Grey-out effect for main content */}
+            <div style={!isProfileComplete ? { opacity: 0.5, pointerEvents: 'none' } : {}}>
+              {/* ...existing content, e.g. SectionContainer, chat UI... */}
+            </div>
+          </>
+        )
+      }
+
     </div>
   );
 };

@@ -12,6 +12,7 @@ import ReviewForm from "../../../components/Reviews/ReviewForm/ReviewForm";
 import "./freelancerDetailsPage.css";
 import SectionContainer from "../../../components/SectionContainer";
 import BACKEND_URL from "../../../config/backend-config";
+import PageLoader from "../../../components/Common/PageLoader";
 
 const FreelancerDetails = (props) => {
   // const { freelancer_id } = useParams();
@@ -558,12 +559,7 @@ const checkPaymentStatus = async () => {
     <>
       <Navbar />
       {loading ? (
-        <div
-          className="d-flex justify-content-center align-items-center"
-          style={{ height: "80vh" }}
-        >
-          <Spinner animation="border" variant="primary" />
-        </div>
+        <PageLoader/>
       ) : (
         <SectionContainer padding={20}>
           <Container fluid className="main-container">

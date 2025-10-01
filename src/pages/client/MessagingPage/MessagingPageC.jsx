@@ -19,6 +19,7 @@ import EmptyChatBox from "../../../components/Messaging/ChatBox/EmptyChatBox";
 import ProfileCompletionModal from "../../../components/Common/ProfileCompletionModal";
 import { useProfileCompletionContext } from "../../../components/Common/ProfileCompletionContext";
 import Swal from "sweetalert2";
+import PageLoader from "../../../components/Common/PageLoader";
 
 const MessagingPageC = () => {
   const [loading, setLoading] = useState(false);
@@ -337,10 +338,6 @@ const MessagingPageC = () => {
       setLoading(false);
     }
   };
-
-  if (loading) {
-    return <div className="loading">Loading...</div>;
-  }
   return (
     <div className="MessagingPageC" style={{ position: "relative" }}>
       {/* Banner if profile is incomplete */}
@@ -378,7 +375,12 @@ const MessagingPageC = () => {
       )}
       <Navbar />
       <ProfileSubNav />
-      <SectionContainer>
+      {
+        loading ? (
+          <PageLoader />
+        ) : (
+          <>
+                <SectionContainer>
         <SearchBar placeholder="Search people..." onSearch={handleSearch} />
       </SectionContainer>
 
@@ -440,6 +442,10 @@ const MessagingPageC = () => {
           {/* ...existing content, e.g. SectionContainer, chat UI... */}
         </div>
       </SectionContainer>
+          </>
+        )
+      }
+
     </div>
   );
 };

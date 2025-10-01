@@ -181,11 +181,11 @@ const withProfileCheck = (WrappedComponent, options = {}) => {
     }, [checkProfileCompletion, BACKEND_URL]);
 
     // Show loading state
-    if (loading) {
-      return options.loadingComponent || (
-        <LoadingSpinner text={options.loadingText || 'Please Wait...'} />
-      );
-    }
+    // if (loading) {
+    //   return options.loadingComponent || (
+    //     <LoadingSpinner text={options.loadingText || 'Please Wait...'} />
+    //   );
+    // }
 
     // Show error state
     if (error) {

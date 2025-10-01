@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import SectionContainer from "../SectionContainer";
 import BACKEND_URL from "../../config/backend-config";
 import Swal from "sweetalert2";
+import PageLoader from "../Common/PageLoader";
 
 const FreelancerDiscovery = ({ searchQuery, category, disabled }) => {
   const [freelancers, setFreelancers] = useState([]); 
@@ -157,7 +158,7 @@ const FreelancerDiscovery = ({ searchQuery, category, disabled }) => {
     }
   };
 
-  if (loading) return <div className="freelancer-discovery-loading"><div className="spinner"></div></div>;
+  if (loading) return <PageLoader text="Please wait"/>
   if (error) return <div className="freelancer-discovery-error">Error: {error}</div>;
 
   // Calculate paginated rows

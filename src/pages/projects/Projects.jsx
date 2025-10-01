@@ -13,6 +13,7 @@ import BACKEND_URL from "../../config/backend-config";
 import SectionContainer from "../../components/SectionContainer";
 import ProfileCompletionModal from '../../components/Common/ProfileCompletionModal';
 import { useProfileCompletionContext } from '../../components/Common/ProfileCompletionContext';
+import PageLoader from "../../components/Common/PageLoader";
 
 const Projects = (props) => {
   const { isProfileComplete, isModalOpen, blocked } = useProfileCompletionContext();
@@ -172,45 +173,54 @@ const Projects = (props) => {
       )}
       <Navbar />
       <ProfileSubNav />
-      <SectionContainer>
-        {/* Banner if profile is incomplete */}
-        {!isProfileComplete && (
-          <div style={{
-            background: '#f3f4f6',
-            color: '#92400e',
-            padding: '1rem',
-            borderRadius: '8px',
-            marginBottom: '1rem',
-            textAlign: 'center',
-            fontWeight: 600,
-            fontSize: '1rem'
-          }}>
-            Actions are disabled until your profile is complete.
-          </div>
-        )}
+      {
+        loading ? (
+          <PageLoader />
+        ) : (
+          <>
+            <SectionContainer>
+              {/* Banner if profile is incomplete */}
+              {!isProfileComplete && (
+                <div style={{
+                  background: '#f3f4f6',
+                  color: '#92400e',
+                  padding: '1rem',
+                  borderRadius: '8px',
+                  marginBottom: '1rem',
+                  textAlign: 'center',
+                  fontWeight: 600,
+                  fontSize: '1rem'
+                }}>
+                  Actions are disabled until your profile is complete.
+                </div>
+              )}
 
-        <div className="pj-search-upload" style={!isProfileComplete ? { opacity: 0.5, pointerEvents: 'none' } : {}}>
-          <SearchBar onSearch={setSearchTerm} />
-          {/* {role === "freelancer" && (
+              <div className="pj-search-upload" style={!isProfileComplete ? { opacity: 0.5, pointerEvents: 'none' } : {}}>
+                <SearchBar onSearch={setSearchTerm} />
+                {/* {role === "freelancer" && (
             <button className="pj-upload-btn" disabled={!isProfileComplete} style={!isProfileComplete ? { opacity: 0.5, cursor: 'not-allowed' } : {}}>
               Upload project
             </button>
           )} */}
-        </div>
-      </SectionContainer>
-      <ProjectsTabsHeader handleTabChange={setFilter} />
-      <div className="pj-main-container" style={!isProfileComplete ? { opacity: 0.5, pointerEvents: 'none' } : {}}>
-        {filteredData.length > 0 ? (
-          <ProjectsTable type={role} projects={filteredData} />
-        ) : (
-          <SectionContainer>
-            <div className="pj-no-data">No data</div>
-          </SectionContainer>
-        )}
-      </div>
-      {/* Modal only appears on this page */}
-      <ProfileCompletionModal />
-      {/* Overlay removed: only grey-out and banner remain */}
+              </div>
+            </SectionContainer>
+            <ProjectsTabsHeader handleTabChange={setFilter} />
+            <div className="pj-main-container" style={!isProfileComplete ? { opacity: 0.5, pointerEvents: 'none' } : {}}>
+              {filteredData.length > 0 ? (
+                <ProjectsTable type={role} projects={filteredData} />
+              ) : (
+                <SectionContainer>
+                  <div className="pj-no-data">No data</div>
+                </SectionContainer>
+              )}
+            </div>
+            {/* Modal only appears on this page */}
+            <ProfileCompletionModal />
+            {/* Overlay removed: only grey-out and banner remain */}
+          </>
+        )
+      }
+
     </div>
   );
 };

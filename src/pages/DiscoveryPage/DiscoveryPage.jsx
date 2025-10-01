@@ -15,7 +15,7 @@ const DiscoveryPage = () => {
   const navigate = useNavigate();
   const { query, category } = Object.fromEntries(searchParams);
   const { isProfileComplete, isModalOpen, blocked } = useProfileCompletionContext();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const handleSearch = (query) => {
     if (query.trim() !== "") {
