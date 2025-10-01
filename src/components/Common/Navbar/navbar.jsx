@@ -149,7 +149,7 @@ const handleLogoutConfirm = async () => {
           </Navbar.Collapse>
           <div className="placeholder">
             {token !== "" && token !== null ? (
-              <div style={{ display: "flex", gap: "15px" }}>
+              <div style={{ display: "flex", gap: "15px",  background:"none"}}>
                 <img
                   src={
                     profilePicture !== ""

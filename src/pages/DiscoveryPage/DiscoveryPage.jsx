@@ -1,48 +1,38 @@
 import React, { useState, useEffect } from "react";
+import { useParams, useSearchParams, useNavigate, Outlet } from "react-router-dom";
 import NavBar from "../../components/Common/Navbar/navbar";
 import SubNavBar from "../../components/Common/SubNavBar/SubNavBar";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import FreelancerDiscovery from "../../components/FreelancerDiscovery/FreelancerDiscovery";
-import "./DiscoveryPage.css";
-import { useParams, Outlet, useSearchParams, useNavigate } from "react-router-dom";
 import SectionContainer from "../../components/SectionContainer";
 import { useProfileCompletionContext } from "../../components/Common/ProfileCompletionContext";
 import { Spinner } from "react-bootstrap";
+import "./DiscoveryPage.css";
 
 const DiscoveryPage = () => {
   const { freelancer_id } = useParams();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { query, category } = Object.fromEntries(searchParams);
-  const { isProfileComplete, isModalOpen, blocked } = useProfileCompletionContext();
-  const [loading, setLoading] = useState(false);
+  const { isProfileComplete, blocked } = useProfileCompletionContext();
 
-  const handleSearch = (query) => {
-    if (query.trim() !== "") {
-      if (category) {
-        navigate(`/discovery?category=${category}&search=${query}`);
-      } else {
-        navigate(`/discovery?search=${query}`);
-      }
-    } else {
-      if (category) {
-        navigate(`/discovery?category=${category}`);
-      } else {
-        navigate(`/discovery`);
-      }
-      
-    }
+  const query = searchParams.get("search") || "";
+  const category = searchParams.get("category") || "";
+
+  const [loading, setLoading] = useState(true);
+
+  const handleSearch = (searchTerm) => {
+    const params = new URLSearchParams();
+    if (category) params.set("category", category);
+    if (searchTerm.trim()) params.set("search", searchTerm);
+    navigate(`/discovery?${params.toString()}`);
   };
 
   useEffect(() => {
-    // Simulate small delay for loader effect (or remove if not needed)
-    const timer = setTimeout(() => setLoading(false), 300); 
+    const timer = setTimeout(() => setLoading(false), 300);
     return () => clearTimeout(timer);
   }, []);
 
-  if (freelancer_id !== "" && typeof freelancer_id !== "undefined") {
-    return <Outlet />;
-  }
+  if (freelancer_id) return <Outlet />;
 
   if (loading) {
     return (
@@ -67,18 +57,17 @@ const DiscoveryPage = () => {
             fontSize: "1rem",
           }}
         >
-          Your account is blocked, please talk to admin to see how to unlock it. Many features will be disabled while your account is blocked.
+          Your account is blocked. Many features are disabled. Please contact admin.
         </div>
       )}
+
       <div className="navigation-container">
         <NavBar />
         <SubNavBar />
       </div>
+
       <SectionContainer>
-        <SearchBar
-          placeholder="Search by name or job title..."
-          onSearch={handleSearch}
-        />
+        <SearchBar placeholder="Search by name or job title..." onSearch={handleSearch} />
       </SectionContainer>
 
       <div className="section-divider"></div>

@@ -4,38 +4,31 @@ import "./categoryPrefarances.css"; // Ensure this path is correct
 
 const CategoryPreferences = ({ onSubmit, isUpdate, cancel, categoriesArr }) => {
   const [formData, setFormData] = useState({
-    categories: {
-      graphicDesign:
-        categoriesArr && categoriesArr.indexOf("graphicDesign") !== -1
+     categories: {
+      gameDevelopment:
+        categoriesArr && categoriesArr.indexOf("game development") !== -1
           ? true
           : false,
-      uiUxDesign:
-        categoriesArr && categoriesArr.indexOf("uiUxDesign") !== -1
+      creativeAndDesign:
+        categoriesArr && categoriesArr.indexOf("Creative and Design") !== -1
           ? true
           : false,
-      animation:
-        categoriesArr && categoriesArr.indexOf("animation") !== -1
+      audioAndMusic:
+        categoriesArr && categoriesArr.indexOf("audio and music") !== -1
           ? true
           : false,
-      imageEditing:
-        categoriesArr && categoriesArr.indexOf("imageEditing") !== -1
+      qualityAssurance:
+        categoriesArr && categoriesArr.indexOf("quality assurance") !== -1
           ? true
           : false,
-      gameArt:
-        categoriesArr && categoriesArr.indexOf("gameArt") !== -1 ? true : false,
-      characterModeling:
-        categoriesArr && categoriesArr.indexOf("characterModeling") !== -1
+      complianceAndLegal:
+        categoriesArr && categoriesArr.indexOf("Compliance and legal") !== -1 ? true : false,
+      contentAndMarketing:
+        categoriesArr && categoriesArr.indexOf("content and marketing") !== -1
           ? true
           : false,
-      gameDesigners:
-        categoriesArr && categoriesArr.indexOf("gameDesigners") !== -1
-          ? true
-          : false,
-      typography:
-        categoriesArr && categoriesArr.indexOf("typography") !== -1
-          ? true
-          : false,
-    },
+      
+    }
   });
 
   // Handle checkbox change
