@@ -164,3 +164,19 @@ ul li {
     width: 100%;
   }
 }
+
+.category-links-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px
+}
+.category-links {
+  cursor: pointer;
+  text-decoration: none;
+  color: #333;
+}
+
+.category-links:hover {
+  text-decoration: underline;
+  color: #ff4500;
+}

@@ -121,14 +121,26 @@ const Footer = () => {
           {/* Categories */}
           <div className="w-full sm:w-1/3 mb-6">
             <h3 className="font-semibold text-lg mb-2">Categories</h3>
-            <ul className="space-y-2">
-              <li className="category-item">Game Development</li>
-              <li className="category-item">Creative Design</li>
-              <li className="category-item">Music & Audio</li>
-              <li className="category-item">Compliance & Legal</li>
-              <li className="category-item">Content & Marketing</li>
-              <li className="category-item">Operations</li>
-            </ul>
+            <div className="space-y-2 category-links-container">
+                <Link to={'/discovery?category=game development'} className="category-links">
+                  Game Development
+                </Link>
+                <Link to={'/discovery?category=creative design'} className="category-links">
+                  Creative Design
+                </Link>
+                <Link to={'/discovery?category=music & audio'} className="category-links">
+                  Music & Audio
+                </Link>
+                <Link to={'/discovery?category=compliance & legal'} className="category-links">
+                  Compliance & Legal
+                </Link>
+                <Link to={'/discovery?category=content & marketing'} className="category-links">
+                  Content & Marketing
+                </Link>
+                <Link to={'/discovery?category=operations'} className="category-links">
+                  Operations
+                </Link>
+            </div>
           </div>
 
           {/* Newsletter Subscription */}
