@@ -10,18 +10,26 @@ import Swal from "sweetalert2";
 
 const FreelancerDiscovery = ({ searchQuery, category, disabled }) => {
   const [freelancers, setFreelancers] = useState([]);
+  const [filteredFreelancers, setFilteredFreelancers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [columns, setColumns] = useState(4);
+  const [reviews, setReviews] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [pageSize, setPageSize] = useState(30);
+  const [categories, setCategories] = useState([]);
+  const [activeCategory, setActiveCategory] = useState("");
 
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchFreelancers();
-  }, [searchQuery, category, currentPage]);
+  }, []);
+
+  useEffect(() => {
+    filterFreelancers();
+  }, [searchQuery, activeCategory, freelancers]);
 
   useEffect(() => {
     updateColumns();
@@ -49,20 +57,18 @@ const FreelancerDiscovery = ({ searchQuery, category, disabled }) => {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(
-        `${BACKEND_URL}/api/freelancers?category=${category}&search=${searchQuery}&page=${currentPage}&pageSize=${pageSize}`,
-        {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : "",
-          },
-        }
-      );
+      const response = await fetch(`${BACKEND_URL}/api/freelancers`, {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : "",
+        },
+      });
 
       if (!response.ok) throw new Error("Failed to fetch freelancers");
 
       const data = await response.json();
+      console.log("Fetched freelancers data", data)
       setFreelancers(data.freelancers);
-      setTotalPages(Math.ceil(data.totalCount / pageSize) || 1);
+      setCategories([...new Set(data.freelancers.map(f => f.category).filter(Boolean))]);
       setLoading(false);
     } catch (err) {
       setError(err.message);
@@ -70,6 +76,47 @@ const FreelancerDiscovery = ({ searchQuery, category, disabled }) => {
       showError(err.message || "Failed to load freelancers");
     }
   };
+
+  const fetchReviews = async(freelancerId) =>{
+    try{
+      const res = await fetch(`{$BACKEND_URL}/api/reviews/${freelancerId}`);
+      const data = await res.json();
+      setReviews(prev => ({ ...prev, [freelancerId]: data.averageRating}));
+    } catch (err) {
+      console.error("Failed to fetch reviews", err)
+      
+    }
+  };
+
+
+  const filterFreelancers = (selectedFreelancers) => {
+    const activeCategory = selectedFreelancers || category;
+
+    const filtered = freelancers.filter((f)=> {
+      const query = searchQuery?.toLowercase() || "";
+
+    const matchesQuery = 
+    !query ||
+    f.displayName?.toLowercase().includes(query) ||
+    f.jobTitle?.toLowercase().includes(query) ||
+    f.name?.toLowercase().includes(query) ||
+    f.surname?.toLowercase().includes(query) ||
+    f.email?.toLowercase().include(query);
+
+    const matchesCategory = !activeCategory || 
+    f.category === activeCategory ||
+    f.categories.includes(activeCategory) //handle array categories
+
+      return matchesQuery && matchesCategory;
+    })
+
+    setFilteredFreelancers(filtered);
+    setTotalPages(Math.ceil(filtered.length / pageSize ) || 1);
+    setCurrentPage(1);
+  }
+
+
+
 
   const handleMessageClick = async (freelancerId) => {
     try {
@@ -137,10 +184,9 @@ const FreelancerDiscovery = ({ searchQuery, category, disabled }) => {
     return <div className="freelancer-discovery-error">Error: {error}</div>;
   }
 
-  // Group freelancers into rows based on columns
   const rows = [];
-  for (let i = 0; i < freelancers.length; i += columns) {
-    rows.push(freelancers.slice(i, i + columns));
+  for (let i = (currentPage - 1) * pageSize; i < currentPage * pageSize && i < filteredFreelancers.length; i += columns) {
+    rows.push(filteredFreelancers.slice(i, i + columns));
   }
 
   const handleNext = () => currentPage < totalPages && setCurrentPage(currentPage + 1);
@@ -149,6 +195,20 @@ const FreelancerDiscovery = ({ searchQuery, category, disabled }) => {
   return (
     <SectionContainer>
       <div style={{ padding: "20px" }}>
+        <div className="category-suggestions">
+          
+          {categories.map((c) => (
+            <span key={c} 
+            className={`category-tag ${activeCategory === c ? "active" : ""}`}
+             onChange={() =>{
+                const newCategory = activeCategory === c ? "" : c;
+                 setActiveCategory(newCategory)
+               }}>
+              {c}
+            </span>
+          ))}
+        </div>
+
         <div className="freelancer-discovery">
           {rows.length > 0 ? (
             rows.map((row, rowIndex) => (
@@ -164,12 +224,12 @@ const FreelancerDiscovery = ({ searchQuery, category, disabled }) => {
                       name={freelancer.displayName || "Anonymous Freelancer"}
                       jobTitle={freelancer.jobTitle || "Freelancer"}
                       projectsCompleted={freelancer.projects?.length || 0}
-                      rating={4.5}
+                      rating={reviews[freelancer.id] || 0} 
                       messageIcon={messageIcon}
                       onMessageClick={() => handleMessageClick(freelancer.id)}
                       disabled={disabled}
                     />
-                    <div className="hover-message">Click image to view more</div>
+                    
                   </div>
                 ))}
               </div>

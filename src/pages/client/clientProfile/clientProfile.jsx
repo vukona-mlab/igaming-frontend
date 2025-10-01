@@ -109,6 +109,30 @@ const ProfilePage = (props) => {
     try {
       if (!Object.keys(data).length) return;
 
+
+      if (data.dateOfBirth) {
+        const dob = new Date(data.dateOfBirth);
+        const today = new Date();
+        const age = today.getFullYear() - dob.getFullYear();
+        const monthDiff = today.getMonth() - dob.getMonth();
+        const dayDiff = today.getDate() - dob.getDate();
+
+        const isUnder16 = 
+        age < 16 || 
+        (age === 16 && (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0 )));
+
+
+        if (isUnder16) {
+          Swal.fire({
+            title: "Age Restriction",
+            text: "You must be at least 16 years old to use this platform",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return; // stop update
+        }
+      }
+
       const formData = new FormData();
       formData.append("name", data.name);
       formData.append("surname", data.surname);
