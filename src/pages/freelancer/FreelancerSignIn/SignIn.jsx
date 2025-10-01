@@ -189,7 +189,11 @@ const FreelancerSignIn = () => {
             </span>
           </div>
 
-          <LoadingButton onClick={handleLogin} text="Continue with email" />
+          <LoadingButton
+            onClick={handleLogin}
+            text="Continue with email"
+            className={'client-loading-button'}
+          />
           <GoogleSignInButton handleGoogleSignIn={handleGoogleSignIn} />
         </div>
       </div>

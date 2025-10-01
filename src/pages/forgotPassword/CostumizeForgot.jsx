@@ -68,10 +68,11 @@ const CostumizeForgot = () => {
       </div>
 
       {/* Right Section */}
-      <div className="reset-right">
+      <div className="client-register-right d-flex align-items-stretch">
         <img
           src="/images/ri-experts.jpg"
           alt="Woman with digital interface"
+          className="img-fluid h-100"
         />
       </div>
     </div>

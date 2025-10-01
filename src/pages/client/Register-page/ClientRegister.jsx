@@ -160,7 +160,12 @@ const ClientRegister = () => {
 
           <ErrorSpan error={submissionError} />
           {/* Sign Up Button */}
-          <LoadingButton onClick={handleRegister} text="Continue with email" isLoading={isLoading} />
+          <LoadingButton
+            onClick={handleRegister}
+            text="Continue with email"
+            isLoading={isLoading}
+            className={'client-loading-button'}
+          />
 
           {/* Google Sign-In Button */}
           <GoogleSignInButton handleGoogleSignIn={handleGoogleSignIn} />

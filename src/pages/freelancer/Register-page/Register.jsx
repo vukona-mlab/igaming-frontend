@@ -164,7 +164,12 @@ const Register = () => {
           />
           <ErrorSpan error={submissionError} />
           
-          <LoadingButton onClick={handleRegister} text="Continue with email" isLoading={isLoading} />
+          <LoadingButton
+            onClick={handleRegister}
+            text="Continue with email"
+            isLoading={isLoading}
+            className={'client-loading-button'}
+          />
           <GoogleSignInButton handleGoogleSignIn={handleGoogleSignIn} />
         </div>
       </div>
