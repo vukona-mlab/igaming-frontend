@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import withProfileCheck from "../../../../components/Common/withProfileCheck";
-import { FaFileUpload, FaEye, FaTrash } from "react-icons/fa";
+import { FaFileUpload, FaEye, FaTrash, FaEdit } from "react-icons/fa";
 import { Container, Button, Form, Table } from "react-bootstrap";
 import Navbar from "../../../../components/Common/Navbar/navbar";
 import axios from "axios";
@@ -93,8 +93,8 @@ const DocumentUpload = (props) => {
     console.log("Submitting Documents:", documents);
 
     try {
-      const response = await axios.put(
-        `${BACKEND_URL}/api/auth/users/${userId}/upload`,
+      const response = await axios.post(
+        `${BACKEND_URL}/api/auth/users/:userId/upload`,
         formData,
         {
           headers: {
@@ -179,14 +179,22 @@ const DocumentUpload = (props) => {
                         href={doc.url}
                         target="_blank"
                       >
-                        <FaEye /> View
+                        <FaEye /> 
                       </Button>
                       <Button
                         variant="danger"
                         size="sm"
                         onClick={() => handleDelete(doc.id)}
                       >
-                        <FaTrash /> Remove
+                        <FaTrash /> 
+                      </Button>
+                      <Button
+                      variant="edit"
+                      size="sm"
+
+                      >
+                        
+                        
                       </Button>
                     </>
                   )}

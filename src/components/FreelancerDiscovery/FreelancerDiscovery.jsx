@@ -35,7 +35,7 @@ const FreelancerDiscovery = ({ searchQuery, category, disabled }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `${BACKEND_URL}/api/freelancers?search=${searchQuery || ""}&category=${category || ""}`,
+        `${BACKEND_URL}/api/freelancers`,
         { headers: { Authorization: token ? `Bearer ${token}` : "" } }
       );
 
@@ -44,7 +44,7 @@ const FreelancerDiscovery = ({ searchQuery, category, disabled }) => {
 
       setFreelancers(data.freelancers);
       setCategories([...new Set(data.freelancers.map(f => f.category).filter(Boolean))]);
-      setTotalPages(Math.ceil(data.freelancers.length / pageSize));
+      setTotalPages(Math.ceil(filteredFreelancers.length / pageSize));
       setCurrentPage(1);
 
       if (cacheKey) cacheRef.current[cacheKey] = data.freelancers;
@@ -135,13 +135,27 @@ const FreelancerDiscovery = ({ searchQuery, category, disabled }) => {
     }
   };
 
+  const filteredFreelancers = freelancers.filter((f) => {
+  const matchesSearch =
+    !searchQuery ||
+    (f.displayName && f.displayName.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    (f.jobTitle && f.jobTitle.toLowerCase().includes(searchQuery.toLowerCase()));
+
+  const matchesCategory =
+    !category || f.category?.toLowerCase() === category.toLowerCase();
+
+  return matchesSearch && matchesCategory;
+});
+
+
   if (loading) return <div className="freelancer-discovery-loading"><div className="spinner"></div></div>;
   if (error) return <div className="freelancer-discovery-error">Error: {error}</div>;
 
-  const rows = [];
-  for (let i = (currentPage - 1) * pageSize; i < currentPage * pageSize && i < freelancers.length; i += columns) {
-    rows.push(freelancers.slice(i, i + columns));
-  }
+const rows = [];
+for (let i = (currentPage - 1) * pageSize; i < currentPage * pageSize && i < filteredFreelancers.length; i += columns) {
+  rows.push(filteredFreelancers.slice(i, i + columns));
+}
+
 
   const handleNext = () => currentPage < totalPages && setCurrentPage(currentPage + 1);
   const handlePrevious = () => currentPage > 1 && setCurrentPage(currentPage - 1);
@@ -149,23 +163,7 @@ const FreelancerDiscovery = ({ searchQuery, category, disabled }) => {
   return (
     <SectionContainer>
       <div style={{ padding: "20px" }}>
-        <div className="category-suggestions">
-          {categories.map((c) => (
-            <span
-              key={c}
-              className={`category-tag ${category === c ? "active" : ""}`}
-              onClick={() => {
-                const newCategory = category === c ? "" : c;
-                const params = new URLSearchParams();
-                if (newCategory) params.set("category", newCategory);
-                if (searchQuery) params.set("search", searchQuery);
-                navigate(`/discovery?${params.toString()}`);
-              }}
-            >
-              {c}
-            </span>
-          ))}
-        </div>
+        
 
         <div className="freelancer-discovery">
           {rows.length > 0 ? (
