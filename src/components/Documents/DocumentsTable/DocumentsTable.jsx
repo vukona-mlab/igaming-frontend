@@ -71,6 +71,16 @@ export default function DocumentsTable({ statusFilter }) {
     }
   };
 
+   const UpdateDocuments = async(docId) => {
+    try {
+      const response = await fetch(
+        `${BACKEND_URL}/api/auth/users/${userId}/:userId/update-status`
+      )
+    } catch (error) {
+      
+    }
+   }
+  
   return (
     <div className="overlord">
       {/* Documents Table */}
